@@ -22422,7 +22422,7 @@ module.exports = function normalizeComponent (
 /* unused harmony export Provide */
 /* unused harmony export Model */
 /* unused harmony export Prop */
-/* unused harmony export Watch */
+/* harmony export (immutable) */ __webpack_exports__["b"] = Watch;
 /* unused harmony export Emit */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component__ = __webpack_require__(43);
@@ -34468,7 +34468,27 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     state: {
         welcome: "welcome",
+        isLogin: true,
+        user: {},
+        autheticating: false
     },
+    mutations: {
+        logout(state) {
+            localStorage.removeItem('user-token');
+            localStorage.removeItem('login');
+            localStorage.removeItem('remember');
+            state.islogin = false;
+            state.token = '';
+        },
+        setToken(state, { token, remember }) {
+            localStorage.setItem('access_token', token);
+            localStorage.setItem('token_created', new Date().getTime().toString());
+            localStorage.setItem('remember', undefined !== remember && remember == true ? "true" : "false");
+        },
+        getToken() {
+            return localStorage.getItem('access_token');
+        }
+    }
 }));
 
 
@@ -35472,6 +35492,8 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_DefaultLayout_vue__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_DefaultLayout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__layouts_DefaultLayout_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -35480,10 +35502,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
+
 let App = class App extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
+    validateRouter() {
+        console.log("Route", this.$route.name);
+    }
+    mounted() {
+        console.log(this.$store.state.isLogin);
+    }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["b" /* Watch */])('$route.name')
+], App.prototype, "validateRouter", null);
 App = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */])({})
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */])({
+        components: {
+            DefaultLayout: __WEBPACK_IMPORTED_MODULE_2__layouts_DefaultLayout_vue___default.a
+        }
+    })
 ], App);
 /* harmony default export */ __webpack_exports__["default"] = (App);
 
@@ -35496,7 +35532,16 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {}, [_vm._v("\n    Welcome\n")])
+  return _c(
+    "div",
+    {},
+    [
+      _vm.$store.state.isLogin
+        ? [_c("default-layout", [_c("router-view")], 1)]
+        : [_vm._v("\n        No welcome\n        "), _c("router-view")]
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -35513,6 +35558,134 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(12)
+/* script */
+var __vue_script__ = __webpack_require__(57)
+/* template */
+var __vue_template__ = __webpack_require__(58)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/layouts/DefaultLayout.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d8c615e2", Component.options)
+  } else {
+    hotAPI.reload("data-v-d8c615e2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(13);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
+};
+DefaultLayout = __decorate([
+    __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */]
+], DefaultLayout);
+/* harmony default export */ __webpack_exports__["default"] = (DefaultLayout);
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "loginContent" } }, [
+      _c("section", { attrs: { id: "sideMenu" } }, [
+        _vm._v("\n        Sidebar\n    ")
+      ]),
+      _vm._v(" "),
+      _c("div", { attrs: { id: "mainContent" } }, [
+        _c("section", { attrs: { id: "headerContent" } }, [
+          _c("div", { staticClass: "sidebar headerSidebar" }, [
+            _vm._v("\n                Account Control\n            ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "headerConent" }, [
+            _vm._v("\n                Action\n            ")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("section", { attrs: { id: "innnerContent" } }, [
+          _c("div", { staticClass: "sidebar bodySidebar" }, [
+            _vm._v("\n                Body sidebar\n            ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "bodyContent" }, [
+            _vm._v("\n                Body Content\n            ")
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-d8c615e2", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

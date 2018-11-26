@@ -1,9 +1,7 @@
 <template>
     <div class="">
         <template v-if="$store.state.isLogin">
-            <default-layout>
-                <router-view></router-view>
-            </default-layout>
+            <default-layout></default-layout>
         </template>
         <template v-else>
             No welcome

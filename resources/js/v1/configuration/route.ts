@@ -3,6 +3,9 @@ import VueRouter from 'vue-router';
 
 import Example from '../Example.vue';
 
+import ChatBotComponent from '../components/chatbot/ContentComponent.vue';
+import ChatBotSidebar from '../components/chatbot/SidebarComponent.vue';
+
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -12,8 +15,10 @@ export default new VueRouter({
         {
             path: "/",
             name: "home",
-            meta: {},
-            component: Example
+            meta: {
+                sidebar: ChatBotSidebar
+            },
+            component: ChatBotComponent
         }
     ]
 });

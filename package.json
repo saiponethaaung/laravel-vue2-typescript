@@ -28,6 +28,7 @@
         "vuex": "^3.0.1"
     },
     "dependencies": {
+        "material-design-icons": "^3.0.1",
         "vue-masonry": "^0.11.6",
         "vue-router": "^3.0.1"
     }

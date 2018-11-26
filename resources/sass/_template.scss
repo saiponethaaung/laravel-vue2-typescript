@@ -1,0 +1,161 @@
+#loginContent {
+    width: 100vw;
+    height: 100vh;
+    background: #e2e2e2;
+    overflow: hidden;
+    display: flex;
+}
+
+#sideMenu {
+    width: $sidebarWidth;
+    height: inherit;
+    background: #f7f6f6;
+    box-shadow: 1px 0px 7px 0px rgba(0,0,0,0.4);
+    position: relative;
+    z-index: 11;
+    #sideNav {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        a {
+            width: $sidebarWidth;
+            height: $sidebarWidth;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $iconPrimary;
+            text-decoration: none;
+            position: relative;
+            &:hover {
+                color: $iconActive;
+                background: $iconActiveBackground;
+                .icon-label {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
+            .icon-label {
+                position: absolute;
+                top: 24px;
+                right: 0;
+                text-align: left;
+                display: inline-table;
+                // min-width: 100%;
+                background: #fff;
+                padding: 0 10px 0 10px;
+                border: 1px solid #e2e2e2;
+                font-size: 13px;
+                height: 25px;
+                line-height: 25px;
+                border-radius: 5px;
+                left: 82px;
+                visibility: hidden;
+                opacity: 0;
+                transition: 300ms opacity;
+                &::before {
+                    content: "";
+                    position: absolute;
+                    height: 10px;
+                    background: #fff;
+                    border-left: 1px solid #e2e2e2;
+                    left: -5px;
+                    width: 10px;
+                    transform: rotate(45deg);
+                    top: 7.68px;
+                    border-bottom: 1px solid #e2e2e2;
+                }
+            }
+        }
+    }
+}
+
+
+#mainContent {
+    width: calc(100% - #{$sidebarWidth});
+    height: inherit;
+    background: peru;
+}
+
+#headerContent {
+    width: 100%;
+    height: $headerHeight;
+    background: $primaryBackground;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .headerSidebar {
+        height: inherit;
+        width: $sidebarControlWidth;
+        line-height: $headerHeight;
+        border-right: 1px solid $borderPrimary;
+        padding: 0 30px;
+        .projectInfoContainer {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            height: 40px;
+            margin-top: 18px;
+        }
+        .projectIconWrapper {
+            height: 34px;
+            width: $porjectIconWidth;
+            margin: 0;
+            .projectIcon {
+                height: inherit;
+                width: inherit;
+                float: left;
+            }
+        }
+        .projectInfo {
+            width: calc(100% - #{$porjectIconWidth+$porjectNavWidth});
+            padding-left: 20px;
+            .projectName {
+                font-weight: bold;
+                line-height: 24px;
+                font-size: 14px;
+                margin: 0;
+            }
+            .projectVendor {
+                margin: 0;
+                font-size: 12px;
+                line-height: 16px;
+                font-style: italic;
+                color: #aaaaaa;
+                a {
+                    color: inherit;
+                    text-decoration: underline;
+                }
+            }
+        }
+        .projectNavControl {
+            width: $porjectNavWidth;
+        }
+    }
+    .headerConent {
+        width: calc(100% - #{$sidebarControlWidth});
+        height: inherit;
+        line-height: $headerHeight;
+        border-bottom: 1px solid $borderPrimary;
+        padding: 0 15px;
+    }
+}
+
+#innnerContent {
+    height: calc(100% - #{$headerHeight});
+    background: $primaryBackground;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .bodySidebar {
+        height: 100%;
+        width: $sidebarControlWidth;
+        border-right: 1px solid $borderPrimary;
+        padding: 15px 30px;
+        overflow: auto;
+    }
+    .bodyContent {
+        width: calc(100% - #{$sidebarControlWidth});
+        height: 100%;
+    }
+}

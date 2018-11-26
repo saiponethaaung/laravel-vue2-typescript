@@ -10466,6 +10466,325 @@ a.text-dark:focus {
   }
 }
 
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/vendor/material-design-icons/iconMaterialIcons-Regular.eot?e79bfd88537def476913f3ed52f4f4b3);
+  /* For IE6-8 */
+  src: local("Material Icons"), local("MaterialIcons-Regular"), url(/fonts/vendor/material-design-icons/iconMaterialIcons-Regular.woff2?570eb83859dc23dd0eec423a49e147fe) format("woff2"), url(/fonts/vendor/material-design-icons/iconMaterialIcons-Regular.woff?012cf6a10129e2275d79d6adac7f3b02) format("woff"), url(/fonts/vendor/material-design-icons/iconMaterialIcons-Regular.ttf?a37b0c01c0baf1888ca812cc0508f6e2) format("truetype");
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Support for IE. */
+  -webkit-font-feature-settings: 'liga';
+          font-feature-settings: 'liga';
+}
+
+#loginContent {
+  width: 100vw;
+  height: 100vh;
+  background: #e2e2e2;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#sideMenu {
+  width: 72px;
+  height: inherit;
+  background: #f7f6f6;
+  -webkit-box-shadow: 1px 0px 7px 0px rgba(0, 0, 0, 0.4);
+          box-shadow: 1px 0px 7px 0px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 11;
+}
+
+#sideMenu #sideNav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#sideMenu #sideNav a {
+  width: 72px;
+  height: 72px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #aaaaaa;
+  text-decoration: none;
+  position: relative;
+}
+
+#sideMenu #sideNav a:hover {
+  color: #c238eb;
+  background: #ffffff;
+}
+
+#sideMenu #sideNav a:hover .icon-label {
+  visibility: visible;
+  opacity: 1;
+}
+
+#sideMenu #sideNav a .icon-label {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  text-align: left;
+  display: inline-table;
+  background: #fff;
+  padding: 0 10px 0 10px;
+  border: 1px solid #e2e2e2;
+  font-size: 13px;
+  height: 25px;
+  line-height: 25px;
+  border-radius: 5px;
+  left: 82px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: 300ms opacity;
+  transition: 300ms opacity;
+}
+
+#sideMenu #sideNav a .icon-label::before {
+  content: "";
+  position: absolute;
+  height: 10px;
+  background: #fff;
+  border-left: 1px solid #e2e2e2;
+  left: -5px;
+  width: 10px;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  top: 7.68px;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+#mainContent {
+  width: calc(100% - 72px);
+  height: inherit;
+  background: peru;
+}
+
+#headerContent {
+  width: 100%;
+  height: 72px;
+  background: #ffffff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#headerContent .headerSidebar {
+  height: inherit;
+  width: 352px;
+  line-height: 72px;
+  border-right: 1px solid #ebebeb;
+  padding: 0 30px;
+}
+
+#headerContent .headerSidebar .projectInfoContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  height: 40px;
+  margin-top: 18px;
+}
+
+#headerContent .headerSidebar .projectIconWrapper {
+  height: 34px;
+  width: 34px;
+  margin: 0;
+}
+
+#headerContent .headerSidebar .projectIconWrapper .projectIcon {
+  height: inherit;
+  width: inherit;
+  float: left;
+}
+
+#headerContent .headerSidebar .projectInfo {
+  width: calc(100% - 54px);
+  padding-left: 20px;
+}
+
+#headerContent .headerSidebar .projectInfo .projectName {
+  font-weight: bold;
+  line-height: 24px;
+  font-size: 14px;
+  margin: 0;
+}
+
+#headerContent .headerSidebar .projectInfo .projectVendor {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-style: italic;
+  color: #aaaaaa;
+}
+
+#headerContent .headerSidebar .projectInfo .projectVendor a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+#headerContent .headerSidebar .projectNavControl {
+  width: 20px;
+}
+
+#headerContent .headerConent {
+  width: calc(100% - 352px);
+  height: inherit;
+  line-height: 72px;
+  border-bottom: 1px solid #ebebeb;
+  padding: 0 15px;
+}
+
+#innnerContent {
+  height: calc(100% - 72px);
+  background: #ffffff;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#innnerContent .bodySidebar {
+  height: 100%;
+  width: 352px;
+  border-right: 1px solid #ebebeb;
+  padding: 15px 30px;
+  overflow: auto;
+}
+
+#innnerContent .bodyContent {
+  width: calc(100% - 352px);
+  height: 100%;
+}
+
+.chatBotHeading {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 40px;
+  margin: 0;
+}
+
+.chatBlockHeading {
+  font-size: 14px;
+  line-height: 30px;
+  margin: 0;
+}
+
+.chatBlockContentList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: unset;
+      -ms-flex-pack: unset;
+          justify-content: unset;
+  width: calc(100% + 10px);
+  margin-left: -5px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.chatBlockContent {
+  cursor: pointer;
+  width: calc(100%/3 - 10px);
+  height: 40px;
+  font-size: 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: #f7f6f6;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.chatBlockContent.addMore {
+  color: #aaaaaa;
+}
+
+.addMoreBlock {
+  cursor: pointer;
+  height: 30px;
+  line-height: 30px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: none;
+  background: transparent;
+  margin-top: 15px;
+  color: #72bb53;
+  font-size: 14px;
+  outline: none;
+  padding: 0;
+}
+
+.addMoreBlock:focus {
+  outline: none;
+}
+
+.addMoreBlock i {
+  margin-right: 5px;
+  font-size: 18px;
+}
+
 .navbar-laravel {
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

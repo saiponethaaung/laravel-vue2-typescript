@@ -1,0 +1,59 @@
+.chatBotHeading {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 40px;
+    margin: 0;
+}
+
+.chatBlockHeading {
+    font-size: 14px;
+    line-height: 30px;
+    margin: 0;
+}
+
+.chatBlockContentList {
+    display: flex;
+    justify-content: unset;
+    width: calc(100% + 10px);
+    margin-left: -5px;
+    flex-wrap: wrap;
+}
+
+.chatBlockContent {
+    cursor: pointer;
+    width: calc(100%/3 - 10px);
+    height: 40px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $primaryChatBlock;
+    border-radius: 5px;
+    margin: 5px;
+    &.addMore {
+        color: $iconPrimary;
+    }
+}
+
+.addMoreBlock {
+    cursor: pointer;
+    height: 30px;
+    line-height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    margin-top: 15px;
+    color: #72bb53;
+    font-size: 14px;
+    outline: none;
+    padding: 0;
+    &:focus {
+        outline: none;
+    }
+    i {
+        margin-right: 5px;
+        font-size: 18px;
+    }
+}

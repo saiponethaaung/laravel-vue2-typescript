@@ -8,7 +8,7 @@
 import './configuration/bootstrap';
 import Vue from 'vue';
 import router from './configuration/route';
-import store from './configuration/store'
+import store from './configuration/store';
 // import { VueMasonryPlugin } from 'vue-masonry';
 import App from './App.vue';
 import axios from 'axios';
@@ -32,7 +32,7 @@ axios.interceptors.response.use(
 );
 
 router.beforeEach((to, from, next) => {
-
+    next();
 });
 
 /*

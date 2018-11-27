@@ -6,8 +6,13 @@
                 Loading...
             </template>
             <template v-else>
-                <div v-for="(block, index) in blocks" :key="index">
+                <div v-for="(block, index) in blocks" :key="index" class="chatBlock">
                     <h5 class="chatBlockHeading">{{ block.title }}</h5>
+                    <div v-if="!block.lock" class="chatBlockControl">
+                        <button @click="delBlockIndex=index">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
                     <div class="chatBlockContentList">
                         <div v-for="(section, sIndex) in block.sections" :key="sIndex" class="chatBlockContent">
                             {{ section.title }}
@@ -27,24 +32,56 @@
                 </template>
             </template>
         </div>
+        <template v-if="showDelConfirm">
+            <popup-component :type="1">
+                <button @click="showDelConfirm=false;delBlockIndex=-1;">
+                    <i class="material-icons">close</i>
+                </button>
+                Inner Content
+                <button @click="showDelConfirm=false;delBlockIndex=-1;">Cancel</button>
+                <button @click="blocks[delBlockIndex].allowDelete=true;showDelConfirm=false;deleteChatBlock();">Ok</button>
+            </popup-component>
+        </template>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
+import { Component, Watch } from 'vue-property-decorator';
 import ChatBlockModel from '../../models/ChatBlockModel';
 import Axios from 'axios';
 
 @Component
 export default class SidebarComponent extends Vue {
     
-    private creating : boolean = false;
-    private blockLoading : boolean = false;
-    private blocks : Array<ChatBlockModel> = [];
+    private delBlockIndex: number = -1;
+    private showDelConfirm: boolean = false;
+    private creating: boolean = false;
+    private blockLoading: boolean = false;
+    private blocks: Array<ChatBlockModel> = [];
 
     async mounted() {
         await this.loadBlocks();
+    }
+
+    @Watch('delBlockIndex')
+    async deleteChatBlock() {
+        if(this.delBlockIndex==-1 || undefined===this.blocks[this.delBlockIndex]) return;
+
+        if(this.blocks[this.delBlockIndex].canDelete) {
+            let deleteBlock = await this.blocks[this.delBlockIndex].deleteBlock();
+
+            if(deleteBlock.status) {
+                this.blocks.splice(this.delBlockIndex, 1);
+            } else {
+                alert(deleteBlock.mesg);
+                this.blocks[this.delBlockIndex].allowDelete = false;
+            }
+ 
+            this.delBlockIndex = -1;
+        } else {
+            this.showDelConfirm = true;
+        }
     }
 
     async loadBlocks() {

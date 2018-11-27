@@ -10705,6 +10705,32 @@ a.text-dark:focus {
   height: 100%;
 }
 
+.popupContainer {
+  position: fixed;
+  z-index: 11;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.popupContainer .defPopCon {
+  width: 400px;
+  min-height: 350px;
+  background: #ffffff;
+  border-radius: 5px;
+}
+
 .chatBotHeading {
   font-size: 18px;
   font-weight: bold;
@@ -10716,6 +10742,49 @@ a.text-dark:focus {
   font-size: 14px;
   line-height: 30px;
   margin: 0;
+  width: calc(100% - 40px);
+  float: left;
+}
+
+.chatBlockControl {
+  width: 40px;
+  height: 30px;
+  line-height: 30px;
+  float: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.chatBlockControl button {
+  border: none;
+  background: transparent;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  cursor: pointer;
+}
+
+.chatBlockControl i {
+  font-size: 18px;
+  cursor: pointer;
+  color: #aaaaaa;
+}
+
+.chatBlock {
+  margin-bottom: 15px;
 }
 
 .chatBlockContentList {

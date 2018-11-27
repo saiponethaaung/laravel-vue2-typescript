@@ -22,5 +22,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::group(['prefix' => 'chat-bot'], function() {
         Route::post('block', 'V1\\Api\\ChatBotController@createBlock')->name('chatbot.block.create');
         Route::get('blocks', 'V1\\Api\\ChatBotController@getBlocks')->name('chatbot.blocks.get');
+
+        Route::delete('block/{blockId}', 'V1\\Api\\ChatBotController@deleteBlock')->name('chatbot.section.create');
     });
 });

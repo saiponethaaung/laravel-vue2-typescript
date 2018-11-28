@@ -8,7 +8,11 @@ export default new Vuex.Store({
         welcome: "welcome",
         isLogin: true,
         user: {},
-        autheticating: false
+        autheticating: false,
+        chatBot: {
+            block: -1,
+            section: -1
+        }
     },
     mutations: {
         logout(state) {
@@ -25,6 +29,12 @@ export default new Vuex.Store({
         },
         getToken() {
             return localStorage.getItem('access_token');
+        },
+        selectChatBot(state, {section, block}) {
+            state.chatBot = {
+                section: section,
+                block: block
+            }
         }
     }
 } as StoreOptions<any>);

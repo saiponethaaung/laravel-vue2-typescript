@@ -7,6 +7,7 @@ export default class ChatBlockModel extends AjaxErrorHandler{
     private chatBlock: ChatBlock;
     private isAllowDelete: boolean = false;
     private isDeleting: boolean = false;
+    private creatingSection: boolean = false;
 
     constructor(chatBlock : ChatBlock, sections: Array<ChatBlockSection>) {
         super();
@@ -70,8 +71,24 @@ export default class ChatBlockModel extends AjaxErrorHandler{
         this.isAllowDelete = status;
     }
 
-    private createNewContent() {
+    get isSecCreating() : Boolean{
+        return this.creatingSection;
+    }
 
+    async createNewSection() {
+        this.creatingSection = true;
+        
+        await Axios({
+            url: `/api/v1/chat-bot/block/${this.id}/section`,
+            method: 'post'
+        }).then((res: any) => {
+            this.buildContentModel(res.data.data);
+        }).catch((err: any) => {
+            let mesg = this.globalHandler(err, 'Failed to create new section!')
+            alert(mesg);
+        });
+
+        this.creatingSection = false;
     }
 
     async deleteBlock() {
@@ -84,7 +101,7 @@ export default class ChatBlockModel extends AjaxErrorHandler{
             url: `/api/v1/chat-bot/block/${this.id}`,
             method: 'delete'
         }).catch((err: any) => {
-            res.mesg = this.globalHandler(err, "Failed to delete category!");
+            res.mesg = this.globalHandler(err, "Failed to delete block!");
             res.status = false;
         });
 

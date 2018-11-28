@@ -22551,7 +22551,7 @@ return jQuery;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(15);
-module.exports = __webpack_require__(59);
+module.exports = __webpack_require__(63);
 
 
 /***/ }),
@@ -22563,10 +22563,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__configuration_bootstrap__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__configuration_route__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__configuration_store__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__App_vue__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__configuration_store__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__App_vue__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_axios__);
@@ -33015,16 +33015,69 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(50);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
 
 
 let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
+    constructor() {
+        super(...arguments);
+        this.changeCount = 0;
+        this.loadingToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+        this.isLoading = false;
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__["a" /* default */]();
+    }
+    get botSection() {
+        return this.$store.state.chatBot.section;
+    }
+    get botBlock() {
+        return this.$store.state.chatBot.block;
+    }
+    botSectionChange() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.botSection > 0 && this.botBlock > 0) {
+                this.loadContent();
+            }
+            this.changeCount++;
+        });
+    }
+    loadContent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loadingToken.cancel();
+            this.loadingToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+            this.isLoading = true;
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `/api/v1/chat-bot/block/${this.botBlock}/section/${this.botSection}/content`,
+                cancelToken: this.loadingToken.token
+            }).then((res) => {
+            }).catch((err) => {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                alert(mesg);
+            });
+            this.isLoading = false;
+        });
+    }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Watch */])('$store.state.chatBot')
+], ContentComponent.prototype, "botSectionChange", null);
 ContentComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */]
 ], ContentComponent);
@@ -34453,7 +34506,25 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    Content\n")])
+  return _c(
+    "div",
+    [
+      _vm.botSection > 0 && _vm.botBlock > 0
+        ? [
+            _vm._v(
+              "\n        " +
+                _vm._s(_vm.$store.state.chatBot.section) +
+                "\n        " +
+                _vm._s(_vm.$store.state.chatBot.block) +
+                "\n        "
+            ),
+            _c("br"),
+            _vm._v("- total change (" + _vm._s(_vm.changeCount) + ")\n    ")
+          ]
+        : [_vm._v("\n        There is noting to see here!\n    ")]
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -34474,7 +34545,7 @@ var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(47)
 /* template */
-var __vue_template__ = __webpack_require__(50)
+var __vue_template__ = __webpack_require__(51)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -34549,11 +34620,18 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
         this.creating = false;
         this.blockLoading = false;
         this.blocks = [];
+        this.selectedBlock = "";
     }
     mounted() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.loadBlocks();
         });
+    }
+    selectBlock() {
+        let blockSection = this.selectedBlock.split("-");
+        blockSection[0] = parseInt(blockSection[0]);
+        blockSection[1] = parseInt(blockSection[1]);
+        this.$store.commit('selectChatBot', { section: this.blocks[blockSection[0]].id, block: this.blocks[blockSection[0]].sections[blockSection[1]].id });
     }
     deleteChatBlock() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -34604,6 +34682,9 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
     }
 };
 __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Watch */])('selectedBlock')
+], SidebarComponent.prototype, "selectBlock", null);
+__decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Watch */])('delBlockIndex')
 ], SidebarComponent.prototype, "deleteChatBlock", null);
 SidebarComponent = __decorate([
@@ -34620,7 +34701,7 @@ SidebarComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ChatBlockSectionModel__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__ = __webpack_require__(50);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -34637,6 +34718,7 @@ class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler
         super();
         this.isAllowDelete = false;
         this.isDeleting = false;
+        this.creatingSection = false;
         this.chatBlock = chatBlock;
         this.chatBlock.sections = [];
         for (let section of sections) {
@@ -34683,7 +34765,23 @@ class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler
     set allowDelete(status) {
         this.isAllowDelete = status;
     }
-    createNewContent() {
+    get isSecCreating() {
+        return this.creatingSection;
+    }
+    createNewSection() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.creatingSection = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/chat-bot/block/${this.id}/section`,
+                method: 'post'
+            }).then((res) => {
+                this.buildContentModel(res.data.data);
+            }).catch((err) => {
+                let mesg = this.globalHandler(err, 'Failed to create new section!');
+                alert(mesg);
+            });
+            this.creatingSection = false;
+        });
     }
     deleteBlock() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -34695,7 +34793,7 @@ class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler
                 url: `/api/v1/chat-bot/block/${this.id}`,
                 method: 'delete'
             }).catch((err) => {
-                res.mesg = this.globalHandler(err, "Failed to delete category!");
+                res.mesg = this.globalHandler(err, "Failed to delete block!");
                 res.status = false;
             });
             return res;
@@ -34715,6 +34813,9 @@ class ChatBlockSectionModel {
     constructor(blockSection) {
         this.blockSection = blockSection;
     }
+    get id() {
+        return this.blockSection.id;
+    }
     get title() {
         return this.blockSection.title;
     }
@@ -34728,6 +34829,41 @@ class ChatBlockSectionModel {
 
 /***/ }),
 /* 50 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class AjaxErrorHandler {
+    globalHandler(err, mesg) {
+        if (undefined === mesg) {
+            return "Operation failed!";
+        }
+        if (err.response.status === 422) {
+            return this.handle422(err, mesg);
+        }
+        if (err.response.status === 404) {
+            return this.handle404(err, mesg);
+        }
+        return mesg;
+    }
+    handle422(err, mesg) {
+        if (err.response.data && err.response.data.mesg) {
+            return err.response.data.mesg;
+        }
+        return mesg;
+    }
+    handle404(err, mesg) {
+        if (err.response.data && err.response.data.mesg) {
+            return err.response.data.mesg;
+        }
+        return mesg;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AjaxErrorHandler;
+
+
+
+/***/ }),
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -34778,7 +34914,19 @@ var render = function() {
                         _vm._l(block.sections, function(section, sIndex) {
                           return _c(
                             "div",
-                            { key: sIndex, staticClass: "chatBlockContent" },
+                            {
+                              key: sIndex,
+                              staticClass: "chatBlockContent",
+                              class: {
+                                selectedBlock:
+                                  _vm.selectedBlock === index + "-" + sIndex
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.selectedBlock = index + "-" + sIndex
+                                }
+                              }
+                            },
                             [
                               _vm._v(
                                 "\n                        " +
@@ -34790,15 +34938,38 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         !block.lock
-                          ? _c(
-                              "div",
-                              { staticClass: "chatBlockContent addMore" },
-                              [
-                                _c("i", { staticClass: "material-icons" }, [
-                                  _vm._v("add")
-                                ])
-                              ]
-                            )
+                          ? [
+                              !block.isSecCreating
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass: "chatBlockContent addMore",
+                                      on: {
+                                        click: function($event) {
+                                          block.createNewSection()
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "i",
+                                        { staticClass: "material-icons" },
+                                        [_vm._v("add")]
+                                      )
+                                    ]
+                                  )
+                                : _c(
+                                    "div",
+                                    { staticClass: "chatBlockContent addMore" },
+                                    [
+                                      _c(
+                                        "i",
+                                        { staticClass: "material-icons" },
+                                        [_vm._v("autorenew")]
+                                      )
+                                    ]
+                                  )
+                            ]
                           : _vm._e()
                       ],
                       2
@@ -34834,6 +35005,7 @@ var render = function() {
               _c(
                 "button",
                 {
+                  staticClass: "closePopConfirm",
                   on: {
                     click: function($event) {
                       _vm.showDelConfirm = false
@@ -34843,33 +35015,73 @@ var render = function() {
                 },
                 [_c("i", { staticClass: "material-icons" }, [_vm._v("close")])]
               ),
-              _vm._v("\n            Inner Content\n            "),
-              _c(
-                "button",
-                {
-                  on: {
-                    click: function($event) {
-                      _vm.showDelConfirm = false
-                      _vm.delBlockIndex = -1
-                    }
-                  }
-                },
-                [_vm._v("Cancel")]
-              ),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  on: {
-                    click: function($event) {
-                      _vm.blocks[_vm.delBlockIndex].allowDelete = true
-                      _vm.showDelConfirm = false
-                      _vm.deleteChatBlock()
-                    }
-                  }
-                },
-                [_vm._v("Ok")]
-              )
+              _c("div", { staticClass: "delPopContent" }, [
+                _c("p", { staticClass: "delPopHeading" }, [
+                  _vm._v(
+                    "\n                    Are you sure you want to delete the "
+                  ),
+                  _c("b", [
+                    _vm._v(_vm._s(_vm.blocks[_vm.delBlockIndex].title))
+                  ]),
+                  _vm._v("?"),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "noticeList" }, [
+                    _vm._v(
+                      "It will effect the chatbot as following section are connected..."
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  { staticClass: "listOfSection" },
+                  _vm._l(_vm.blocks[_vm.delBlockIndex].sections, function(
+                    sub,
+                    index
+                  ) {
+                    return _c("li", { key: index }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(sub.title) +
+                          "\n                    "
+                      )
+                    ])
+                  })
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "delPopActionFooter" }, [
+                _c("div", [
+                  _c(
+                    "button",
+                    {
+                      on: {
+                        click: function($event) {
+                          _vm.showDelConfirm = false
+                          _vm.delBlockIndex = -1
+                        }
+                      }
+                    },
+                    [_vm._v("Cancel")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      on: {
+                        click: function($event) {
+                          _vm.blocks[_vm.delBlockIndex].allowDelete = true
+                          _vm.showDelConfirm = false
+                          _vm.deleteChatBlock()
+                        }
+                      }
+                    },
+                    [_vm._v("Ok")]
+                  )
+                ])
+              ])
             ])
           ]
         : _vm._e()
@@ -34888,12 +35100,12 @@ if (false) {
 }
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(53);
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
@@ -34902,7 +35114,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         welcome: "welcome",
         isLogin: true,
         user: {},
-        autheticating: false
+        autheticating: false,
+        chatBot: {
+            block: -1,
+            section: -1
+        }
     },
     mutations: {
         logout(state) {
@@ -34919,13 +35135,19 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         },
         getToken() {
             return localStorage.getItem('access_token');
+        },
+        selectChatBot(state, { section, block }) {
+            state.chatBot = {
+                section: section,
+                block: block
+            };
         }
     }
 }));
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35870,15 +36092,15 @@ var index_esm = {
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(54)
+var __vue_script__ = __webpack_require__(55)
 /* template */
-var __vue_template__ = __webpack_require__(58)
+var __vue_template__ = __webpack_require__(59)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -35917,14 +36139,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_DefaultLayout_vue__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_DefaultLayout_vue__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_DefaultLayout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__layouts_DefaultLayout_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -35957,15 +36179,15 @@ App = __decorate([
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(56)
+var __vue_script__ = __webpack_require__(57)
 /* template */
-var __vue_template__ = __webpack_require__(57)
+var __vue_template__ = __webpack_require__(58)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -36004,7 +36226,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36034,7 +36256,7 @@ DefaultLayout = __decorate([
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -36194,7 +36416,7 @@ if (false) {
 }
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -36223,30 +36445,15 @@ if (false) {
 }
 
 /***/ }),
-/* 59 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(70)
+var __vue_script__ = __webpack_require__(61)
 /* template */
-var __vue_template__ = __webpack_require__(71)
+var __vue_template__ = __webpack_require__(62)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -36285,7 +36492,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 70 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36324,7 +36531,7 @@ PopupComponent = __decorate([
 
 
 /***/ }),
-/* 71 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -36346,39 +36553,10 @@ if (false) {
 }
 
 /***/ }),
-/* 72 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 63 */
+/***/ (function(module, exports) {
 
-"use strict";
-class AjaxErrorHandler {
-    globalHandler(err, mesg) {
-        if (undefined === mesg) {
-            return "Operation failed!";
-        }
-        if (err.response.status === 422) {
-            return this.handle422(err, mesg);
-        }
-        if (err.response.status === 404) {
-            return this.handle404(err, mesg);
-        }
-        return mesg;
-    }
-    handle422(err, mesg) {
-        if (err.response.data && err.response.data.mesg) {
-            return err.response.data.mesg;
-        }
-        return mesg;
-    }
-    handle404(err, mesg) {
-        if (err.response.data && err.response.data.mesg) {
-            return err.response.data.mesg;
-        }
-        return mesg;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = AjaxErrorHandler;
-
-
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

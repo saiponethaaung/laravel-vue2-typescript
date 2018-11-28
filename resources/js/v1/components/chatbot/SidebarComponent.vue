@@ -14,12 +14,17 @@
                         </button>
                     </div>
                     <div class="chatBlockContentList">
-                        <div v-for="(section, sIndex) in block.sections" :key="sIndex" class="chatBlockContent">
+                        <div v-for="(section, sIndex) in block.sections" :key="sIndex" class="chatBlockContent"  @click="selectedBlock=`${index}-${sIndex}`" :class="{'selectedBlock': selectedBlock===`${index}-${sIndex}`}">
                             {{ section.title }}
                         </div>
-                        <div v-if="!block.lock" class="chatBlockContent addMore">
-                            <i class="material-icons">add</i>
-                        </div>
+                        <template v-if="!block.lock">
+                            <div v-if="!block.isSecCreating" class="chatBlockContent addMore" @click="block.createNewSection()">
+                                <i class="material-icons">add</i>
+                            </div>
+                            <div v-else class="chatBlockContent addMore">
+                                <i class="material-icons">autorenew</i>
+                            </div>
+                        </template>
                     </div>
                 </div>
                 <template v-if="creating">
@@ -34,12 +39,26 @@
         </div>
         <template v-if="showDelConfirm">
             <popup-component :type="1">
-                <button @click="showDelConfirm=false;delBlockIndex=-1;">
+                <button class="closePopConfirm" @click="showDelConfirm=false;delBlockIndex=-1;">
                     <i class="material-icons">close</i>
                 </button>
-                Inner Content
-                <button @click="showDelConfirm=false;delBlockIndex=-1;">Cancel</button>
-                <button @click="blocks[delBlockIndex].allowDelete=true;showDelConfirm=false;deleteChatBlock();">Ok</button>
+                <div class="delPopContent">
+                    <p class="delPopHeading">
+                        Are you sure you want to delete the <b>{{ blocks[delBlockIndex].title }}</b>?<br/>
+                        <span class="noticeList">It will effect the chatbot as following section are connected...</span>
+                    </p>
+                    <ul class="listOfSection">
+                        <li v-for="(sub, index) in blocks[delBlockIndex].sections" :key="index">
+                            {{ sub.title }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="delPopActionFooter">
+                    <div>
+                        <button @click="showDelConfirm=false;delBlockIndex=-1;">Cancel</button>
+                        <button @click="blocks[delBlockIndex].allowDelete=true;showDelConfirm=false;deleteChatBlock();">Ok</button>
+                    </div>
+                </div>
             </popup-component>
         </template>
     </div>
@@ -59,9 +78,19 @@ export default class SidebarComponent extends Vue {
     private creating: boolean = false;
     private blockLoading: boolean = false;
     private blocks: Array<ChatBlockModel> = [];
+    private selectedBlock: string = "";
 
     async mounted() {
         await this.loadBlocks();
+    }
+
+    @Watch('selectedBlock')
+    selectBlock() {
+        let blockSection: any = this.selectedBlock.split("-");
+        blockSection[0] = parseInt(blockSection[0]);
+        blockSection[1] = parseInt(blockSection[1]);
+
+        this.$store.commit('selectChatBot', { section: this.blocks[blockSection[0]].id, block: this.blocks[blockSection[0]].sections[blockSection[1]].id });
     }
 
     @Watch('delBlockIndex')

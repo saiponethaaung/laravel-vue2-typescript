@@ -173,8 +173,8 @@
     justify-content: center;
     .defPopCon {
         width: 400px;
-        min-height: 350px;
         background: $primaryBackground;
         border-radius: 5px;
+        position: relative;
     }
 }

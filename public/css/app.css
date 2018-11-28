@@ -10726,9 +10726,9 @@ a.text-dark:focus {
 
 .popupContainer .defPopCon {
   width: 400px;
-  min-height: 350px;
   background: #ffffff;
   border-radius: 5px;
+  position: relative;
 }
 
 .chatBotHeading {
@@ -10852,6 +10852,72 @@ a.text-dark:focus {
 .addMoreBlock i {
   margin-right: 5px;
   font-size: 18px;
+}
+
+.closePopConfirm {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  background: transparent;
+  border: none;
+  opacity: 0.3;
+  -webkit-transition: opacity 60ms;
+  transition: opacity 60ms;
+  cursor: pointer;
+}
+
+.closePopConfirm:hover {
+  opacity: 1;
+}
+
+.closePopConfirm:focus {
+  outline: none;
+}
+
+.delPopContent {
+  padding: 45px 30px 30px 30px;
+}
+
+.delPopContent .delPopHeading {
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.delPopContent .delPopHeading .noticeList {
+  font-weight: 300;
+  font-size: 14px;
+  margin-top: 20px;
+  display: block;
+}
+
+.delPopContent .listOfSection {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.delPopContent .listOfSection li {
+  margin-right: 11px;
+}
+
+.delPopContent .listOfSection li::after {
+  content: ",";
+}
+
+.delPopContent .listOfSection li:last-child::after {
+  content: "";
+}
+
+.delPopActionFooter {
+  border-top: 1px solid #e2e2e2;
+}
+
+.selectedBlock {
+  background: #c238eb;
+  color: #ffffff;
 }
 
 .navbar-laravel {

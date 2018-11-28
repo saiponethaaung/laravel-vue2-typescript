@@ -32,7 +32,7 @@ class ChatBotController extends Controller
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'mesg' => 'Failed to create section!',
+                'mesg' => 'Failed to create block!',
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
@@ -121,6 +121,46 @@ class ChatBotController extends Controller
             'status' => true,
             'code' => 200,
             'mesg' => 'Success delete'
+        ]);
+    }
+
+    public function createSection(Request $request)
+    {
+        if(empty(ChatBlock::find($request->blockId))) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Invalid block id!'
+            ], 422);
+        }
+
+        $section = null;
+        DB::beginTransaction();
+        try {
+            $section = ChatBlockSection::create([
+                'title' => 'New Section',
+                'block_id' => $request->blockId,
+                'order' => ChatBlockSection::where('block_id', $request->blockId)->count()+1
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to create section!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 201,
+            'data' => [
+                'id' => $section->id,
+                'title' => $section->title,
+            ]
         ]);
     }
 }

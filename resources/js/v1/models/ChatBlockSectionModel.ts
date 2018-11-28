@@ -7,6 +7,10 @@ export default class ChatBlockSectionModel {
         this.blockSection = blockSection;
     }
 
+    get id() : number {
+        return this.blockSection.id;
+    }
+
     get title() : string {
         return this.blockSection.title;
     }

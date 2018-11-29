@@ -27,5 +27,16 @@ Route::group(['prefix' => 'v1'], function() {
             Route::delete('/', 'V1\\Api\\ChatBotController@deleteBlock')->name('chatbot.block.delete');
             Route::post('section', 'V1\\Api\\ChatBotController@createSection')->name('chatbot.section.create');
         });
+
+        Route::group(['prefix' => 'block/{blockId}/section/{sectionId}/content'], function() {
+            Route::get('/', 'V1\\Api\\ChatBotContentController@getContents')->name('chatbot.content.get');
+            Route::post('/', 'V1\\Api\\ChatBotContentController@getContents')->name('chatbot.content.create');
+            Route::group(['prefix' => '{contentId}'], function() {
+                Route::put('/', 'V1\\Api\\ChatBotContentController@getContents')->name('chatbot.content.update');
+                Route::delete('/', 'V1\\Api\\ChatBotContentController@getContents')->name('chatbot.content.delete');
+                Route::post('/image', 'V1\\Api\\ChatBotContentController@getContents')->name('chatbot.content.image.upload');
+                Route::delete('/image', 'V1\\Api\\ChatBotContentController@getContents')->name('chatbot.content.image.delete');
+            });
+        });
     });
 });

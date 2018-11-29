@@ -32,10 +32,16 @@ class CreateChatBlockSectionContentTable extends Migration
             $table->unsignedInteger('section_id')->nullable();
             $table->unsignedInteger('order')->default(0);
             $table->unsignedInteger('type')->default(0);
-            $table->string('text');
-            $table->string('content');
-            $table->unsignedInteger('duration');
+            $table->string('text')->nullable();
+            $table->string('content')->nullable();
+            $table->text('image')->nullable();
+            $table->unsignedInteger('duration')->default(5);
             $table->timestamps();
+
+            $table->index('section_id');
+            $table->index('order');
+
+            $table->foreign('section_id')->references('id')->on('chat_block_section')->onDelete('restrict');
         });
     }
 
@@ -46,6 +52,6 @@ class CreateChatBlockSectionContentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chatbot_content');
+        Schema::dropIfExists('chat_block_section_content');
     }
 }

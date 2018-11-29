@@ -178,3 +178,13 @@
         position: relative;
     }
 }
+
+.inheritWH {
+    width: inherit;
+    height: inherit;
+}
+
+.inheritHFW {
+    width: 100%;
+    height: inherit;
+}

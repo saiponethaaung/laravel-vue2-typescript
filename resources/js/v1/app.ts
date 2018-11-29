@@ -12,6 +12,7 @@ import store from './configuration/store';
 // import { VueMasonryPlugin } from 'vue-masonry';
 import App from './App.vue';
 import PopupComponent from './components/common/PopupComponent.vue';
+import BuilderComponent from './components/common/BudilerComponent.vue';
 import axios from 'axios';
 
 let eventHub: any = new Vue();
@@ -48,6 +49,7 @@ router.beforeEach((to, from, next) => {
 // Vue.prototype.$eventHub = new Vue();
 Vue.component('app', App);
 Vue.component('popup-component', PopupComponent);
+Vue.component('builder-component', BuilderComponent);
 
 new Vue({
     router,

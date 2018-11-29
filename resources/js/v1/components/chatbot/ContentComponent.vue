@@ -1,12 +1,13 @@
 <template>
-    <div>
-        <template v-if="botSection>0 && botBlock>0">
-            {{ $store.state.chatBot.section }}
-            {{ $store.state.chatBot.block }}
-            <br/>- total change ({{ changeCount }})
+    <div class="inheritHFW">
+        <template v-if="$store.state.chatBot.section>0 && $store.state.chatBot.block>0">
+            <builder-component></builder-component>
         </template>
         <template v-else>
-            There is noting to see here!
+            <div class="noContent">
+                <i class="material-icons">assignment</i>
+                <span clss="noContentInfo">Select a block to start building a bot.</span>
+            </div>
         </template>
     </div>   
 </template>
@@ -19,26 +20,15 @@ import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 
 @Component
 export default class ContentComponent extends Vue {
-
-    private changeCount: number = 0;
     private loadingToken: any = Axios.CancelToken.source();
     private isLoading: boolean = false;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
-    
-    get botSection() {
-        return this.$store.state.chatBot.section;
-    }
-
-    get botBlock() {
-        return this.$store.state.chatBot.block;
-    }
 
     @Watch('$store.state.chatBot')
-    async botSectionChange() {
-        if(this.botSection>0 && this.botBlock>0) {
+    async sectionChange() {
+        if(this.$store.state.chatBot.section>0 && this.$store.state.chatBot.block>0) {
             this.loadContent();
         }
-        this.changeCount++;
     }
 
     async loadContent() {
@@ -48,7 +38,7 @@ export default class ContentComponent extends Vue {
         this.isLoading = true;
 
         await Axios({
-            url: `/api/v1/chat-bot/block/${this.botBlock}/section/${this.botSection}/content`,
+            url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
             cancelToken: this.loadingToken.token        
         }).then((res: any) => {
 

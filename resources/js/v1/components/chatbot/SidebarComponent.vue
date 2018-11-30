@@ -87,10 +87,8 @@ export default class SidebarComponent extends Vue {
     @Watch('selectedBlock')
     selectBlock() {
         let blockSection: any = this.selectedBlock.split("-");
-        blockSection[0] = parseInt(blockSection[0]);
-        blockSection[1] = parseInt(blockSection[1]);
 
-        this.$store.commit('selectChatBot', { section: this.blocks[blockSection[0]].id, block: this.blocks[blockSection[0]].sections[blockSection[1]].id });
+        this.$store.commit('selectChatBot', { block: this.blocks[blockSection[0]].id, section: this.blocks[blockSection[0]].sections[blockSection[1]].id });
     }
 
     @Watch('delBlockIndex')

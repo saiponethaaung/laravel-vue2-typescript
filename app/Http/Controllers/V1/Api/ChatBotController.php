@@ -126,16 +126,10 @@ class ChatBotController extends Controller
 
     public function createSection(Request $request)
     {
-        if(empty(ChatBlock::find($request->blockId))) {
-            return response()->json([
-                'status' => false,
-                'code' => 422,
-                'mesg' => 'Invalid block id!'
-            ], 422);
-        }
-
         $section = null;
+
         DB::beginTransaction();
+        
         try {
             $section = ChatBlockSection::create([
                 'title' => 'New Section',

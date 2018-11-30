@@ -1,7 +1,12 @@
 <template>
     <div class="inheritHFW">
         <template v-if="$store.state.chatBot.section>0 && $store.state.chatBot.block>0">
-            <builder-component></builder-component>
+            <template v-if="isLoading">
+                Loading...
+            </template>
+            <template v-else>
+                <builder-component v-model="contents"></builder-component>
+            </template>
         </template>
         <template v-else>
             <div class="noContent">
@@ -23,6 +28,7 @@ export default class ContentComponent extends Vue {
     private loadingToken: any = Axios.CancelToken.source();
     private isLoading: boolean = false;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
+    private contents: any = [];
 
     @Watch('$store.state.chatBot')
     async sectionChange() {
@@ -41,7 +47,7 @@ export default class ContentComponent extends Vue {
             url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
             cancelToken: this.loadingToken.token        
         }).then((res: any) => {
-
+            this.contents = res.data;
         }).catch((err: any) => {
             let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
 

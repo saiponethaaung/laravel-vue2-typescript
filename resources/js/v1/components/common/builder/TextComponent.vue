@@ -1,7 +1,7 @@
 <template>
     <div class="componentTypeOne">
         <div class="botTextComponent">
-            <textarea class="textBody" value="Text Component" v-on:blur="updateTextContent"></textarea>
+            <textarea class="textBody" v-model="content.value" v-on:blur="content.saveContent()"></textarea>
             <div class="textBtn">
                 <div class="addBtn">
                     <i class="material-icons">add</i>Add Button
@@ -13,9 +13,14 @@
 
 <script lang="ts">
 import { Component, Watch, Prop, Vue } from 'vue-property-decorator';
+import TextContentModel from '../../../models/bots/TextContentModel';
 
 @Component
 export default class TextComponent extends Vue {
+    @Prop({
+        type: TextContentModel,
+    }) content!: TextContentModel;
+
     mounted() {
         let textarea: any = this.$el.querySelector('textarea');
 
@@ -27,10 +32,6 @@ export default class TextComponent extends Vue {
                 textarea.style.cssText = 'height:' + (textarea.scrollHeight+10) + 'px';
             },0);
         });
-    }
-
-    updateTextContent() {
-
     }
 }
 </script>

@@ -12,7 +12,7 @@ import store from './configuration/store';
 // import { VueMasonryPlugin } from 'vue-masonry';
 import App from './App.vue';
 import PopupComponent from './components/common/PopupComponent.vue';
-import BuilderComponent from './components/common/BudilerComponent.vue';
+import BuilderComponent from './components/common/BuilderComponent.vue';
 import axios from 'axios';
 
 let eventHub: any = new Vue();

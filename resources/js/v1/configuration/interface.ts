@@ -1,4 +1,11 @@
 import ChatBlockSectionModel from "../models/ChatBlockSectionModel";
+import TextContentModel from "../models/bots/TextContentModel";
+import TypingContentModel from "../models/bots/TypingContentModel";
+import QuickReplyModel from "../models/bots/QuickReplyContentModel";
+import ListContentModel from "../models/bots/ListContentModel";
+import ImageContentModel from "../models/bots/ImageContentModel";
+import GalleryContentModel from "../models/bots/GalleryContentModel";
+import UserInputContentModel from "../models/bots/UserInputContentModel";
 
 export interface ChatBlock {
     id: number,
@@ -14,6 +21,9 @@ export interface ChatBlockSection {
 
 export interface BotContent {
     id: number
+    type: number,
+    section: number,
+    block: number
 }
 
 export interface galleryContent {

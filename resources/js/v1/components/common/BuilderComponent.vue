@@ -2,7 +2,7 @@
     <div class="contentRoot">
         <div class="contentList">
             <div v-for="(content, index) in contents" :key="index">
-                <component :is="getComponent(content.type)" :obj="content"></component>
+                <component :is="getComponent(content.type)" :content="content"></component>
             </div>
         </div>
         <div class="contentBuilderWidget">
@@ -49,9 +49,12 @@
 
 
 <script lang="ts">
-import { Component, Watch, Vue } from 'vue-property-decorator';
+import { Component, Watch, Prop, Vue } from 'vue-property-decorator';
 import TextComponent from './builder/TextComponent.vue';
 import TypingComponent from './builder/TypingComponent.vue';
+import Axios from 'axios';
+import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
+import TextContentModel from '../../models/bots/TextContentModel';
 
 @Component({
     components: {
@@ -61,34 +64,62 @@ import TypingComponent from './builder/TypingComponent.vue';
 })
 export default class BuilderComponent extends Vue {
     private contents: Array<any> = [];
+    private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
 
-    private addText() {
-        this.appendComponent({
+    @Prop({
+        type: Array,
+        default: []
+    }) value!: Array<any>;
+
+    mounted() {
+        for(let i in this.value) {
+            switch(this.value[i].type) {
+                case(1):
+                    this.contents.push(new TextContentModel(this.value[i]));
+                    break;
+            }
+        }
+    }
+
+    async addText() {
+        await this.appendComponent({
             name: 'Text section',
-            type: 'text' 
+            type: 1
         });
     }
 
-    private addTyping() {
-        this.appendComponent({
+    async addTyping() {
+        await this.appendComponent({
             name: 'Typing section',
-            type: 'typing' 
+            type: 2
         });
     }
 
-    private appendComponent(content: any) {
-        this.contents.push(content);
+    async appendComponent(content: any) {
+        let data = new FormData();
+        data.append('type', content.type);
+
+        await Axios({
+            url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
+            data: data,
+            method: 'post'
+        }).then((res) => {
+            this.contents.push(new TextContentModel(res.data.data));
+        }).catch((err) => {
+            let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new content!');
+            alert(mesg);
+        });
     }
 
-    private getComponent(type: string) {
+    private getComponent(type: number) {
         let component = null;
 
         switch(type) {
-            case('text'):
+            case(1):
                 component = TextComponent;
                 break;
 
-            case('typing'):
+            case(2):
                 component = TypingComponent;
                 break;
         }

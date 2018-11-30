@@ -10,4 +10,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    protected $types = [ 1, 2, 3, 4, 5, 6, 7];
 }

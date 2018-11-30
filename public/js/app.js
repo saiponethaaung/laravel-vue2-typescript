@@ -22586,7 +22586,7 @@ class AjaxErrorHandler {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(66);
+module.exports = __webpack_require__(72);
 
 
 /***/ }),
@@ -22603,8 +22603,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__App_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_BudilerComponent_vue__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_BudilerComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_common_BudilerComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_axios__);
 /**
@@ -22647,7 +22647,7 @@ __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */].beforeEach
 // Vue.prototype.$eventHub = new Vue();
 __WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('app', __WEBPACK_IMPORTED_MODULE_4__App_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('popup-component', __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('builder-component', __WEBPACK_IMPORTED_MODULE_6__components_common_BudilerComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('builder-component', __WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue___default.a);
 new __WEBPACK_IMPORTED_MODULE_1_vue__["default"]({
     router: __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */],
     store: __WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */],
@@ -33081,6 +33081,7 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
         this.loadingToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
         this.isLoading = false;
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__["a" /* default */]();
+        this.contents = [];
     }
     sectionChange() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -33098,6 +33099,7 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
                 url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
                 cancelToken: this.loadingToken.token
             }).then((res) => {
+                this.contents = res.data;
             }).catch((err) => {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
                 alert(mesg);
@@ -34542,7 +34544,21 @@ var render = function() {
     { staticClass: "inheritHFW" },
     [
       _vm.$store.state.chatBot.section > 0 && _vm.$store.state.chatBot.block > 0
-        ? [_c("builder-component")]
+        ? [
+            _vm.isLoading
+              ? [_vm._v("\n            Loading...\n        ")]
+              : [
+                  _c("builder-component", {
+                    model: {
+                      value: _vm.contents,
+                      callback: function($$v) {
+                        _vm.contents = $$v
+                      },
+                      expression: "contents"
+                    }
+                  })
+                ]
+          ]
         : [_vm._m(0)]
     ],
     2
@@ -34664,9 +34680,7 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
     }
     selectBlock() {
         let blockSection = this.selectedBlock.split("-");
-        blockSection[0] = parseInt(blockSection[0]);
-        blockSection[1] = parseInt(blockSection[1]);
-        this.$store.commit('selectChatBot', { section: this.blocks[blockSection[0]].id, block: this.blocks[blockSection[0]].sections[blockSection[1]].id });
+        this.$store.commit('selectChatBot', { block: this.blocks[blockSection[0]].id, section: this.blocks[blockSection[0]].sections[blockSection[1]].id });
     }
     deleteChatBlock() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -36553,15 +36567,17 @@ if (false) {
 }
 
 /***/ }),
-/* 63 */
+/* 63 */,
+/* 64 */,
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(64)
+var __vue_script__ = __webpack_require__(66)
 /* template */
-var __vue_template__ = __webpack_require__(65)
+var __vue_template__ = __webpack_require__(67)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -36578,7 +36594,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/v1/components/common/BudilerComponent.vue"
+Component.options.__file = "resources/js/v1/components/common/builder/TextComponent.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -36587,9 +36603,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6524dc66", Component.options)
+    hotAPI.createRecord("data-v-54024e4a", Component.options)
   } else {
-    hotAPI.reload("data-v-6524dc66", Component.options)
+    hotAPI.reload("data-v-54024e4a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -36600,16 +36616,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__builder_TextComponent_vue__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__builder_TextComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__builder_TextComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__builder_TypingComponent_vue__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__builder_TypingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__builder_TypingComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_TextContentModel__ = __webpack_require__(82);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -36618,40 +36631,448 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
+let TextComponent = class TextComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+    mounted() {
+        let textarea = this.$el.querySelector('textarea');
+        textarea.addEventListener('keydown', function () {
+            setTimeout(function () {
+                textarea.style.cssText = 'height:auto; padding:0';
+                // for box-sizing other than "content-box" use:
+                // el.style.cssText = '-moz-box-sizing:content-box';
+                textarea.style.cssText = 'height:' + (textarea.scrollHeight + 10) + 'px';
+            }, 0);
+        });
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Prop */])({
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_TextContentModel__["a" /* default */],
+    })
+], TextComponent.prototype, "content", void 0);
+TextComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], TextComponent);
+/* harmony default export */ __webpack_exports__["default"] = (TextComponent);
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "componentTypeOne" }, [
+    _c("div", { staticClass: "botTextComponent" }, [
+      _c("textarea", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.content.value,
+            expression: "content.value"
+          }
+        ],
+        staticClass: "textBody",
+        domProps: { value: _vm.content.value },
+        on: {
+          blur: function($event) {
+            _vm.content.saveContent()
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.content, "value", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _vm._m(0)
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "textBtn" }, [
+      _c("div", { staticClass: "addBtn" }, [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+        _vm._v("Add Button\n            ")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-54024e4a", module.exports)
+  }
+}
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(69)
+/* template */
+var __vue_template__ = __webpack_require__(70)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/builder/TypingComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-332c7011", Component.options)
+  } else {
+    hotAPI.reload("data-v-332c7011", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 69 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(3);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+let TypingComponent = class TypingComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+};
+TypingComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], TypingComponent);
+/* harmony default export */ __webpack_exports__["default"] = (TypingComponent);
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "componentTypeOne" }, [
+    _vm._v("\n    Typing Component\n")
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-332c7011", module.exports)
+  }
+}
+
+/***/ }),
+/* 71 */,
+/* 72 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__ = __webpack_require__(83);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__["a" /* default */] {
+    constructor(content) {
+        super(content);
+        this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+        this.textContent = {
+            content: content.content.text,
+            button: content.content.button
+        };
+    }
+    get value() {
+        return this.textContent.content;
+    }
+    set value(content) {
+        this.textContent.content = content;
+    }
+    get type() {
+        return 1;
+    }
+    saveContent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.saveToken.cancel();
+            this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+            this.isUpdating = true;
+            let data = new FormData();
+            data.append('content', this.value);
+            data.append('type', this.type.toString());
+            data.append('_method', 'put');
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+                url: `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`,
+                data: data,
+                method: 'post',
+                cancelToken: this.saveToken.token
+            }).catch((err) => {
+                let mesg = this.globalHandler(err, 'Failed to save text content!');
+                alert(mesg);
+            });
+            this.isUpdating = false;
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = TextContentModel;
+
+
+
+/***/ }),
+/* 83 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(14);
+
+class ChatBlockContentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(content) {
+        super();
+        this.updating = false;
+        this.content = {
+            id: content.id,
+            type: content.type,
+            block: content.block_id,
+            section: content.section_id,
+        };
+    }
+    get contentId() {
+        return this.content.id;
+    }
+    get section() {
+        return this.content.section;
+    }
+    get block() {
+        return this.content.block;
+    }
+    get type() {
+        return this.content.type;
+    }
+    get isUpdating() {
+        return this.updating;
+    }
+    set isUpdating(status) {
+        this.updating = status;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ChatBlockContentModel;
+
+
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(85)
+/* template */
+var __vue_template__ = __webpack_require__(86)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/BuilderComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ec94b11a", Component.options)
+  } else {
+    hotAPI.reload("data-v-ec94b11a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 85 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__builder_TextComponent_vue__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__builder_TextComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__builder_TextComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__builder_TypingComponent_vue__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__builder_TypingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__builder_TypingComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_AjaxErrorHandler__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_bots_TextContentModel__ = __webpack_require__(82);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+
+
 
 let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
     constructor() {
         super(...arguments);
         this.contents = [];
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_4__utils_AjaxErrorHandler__["a" /* default */]();
+    }
+    mounted() {
+        for (let i in this.value) {
+            switch (this.value[i].type) {
+                case (1):
+                    this.contents.push(new __WEBPACK_IMPORTED_MODULE_5__models_bots_TextContentModel__["a" /* default */](this.value[i]));
+                    break;
+            }
+        }
     }
     addText() {
-        this.appendComponent({
-            name: 'Text section',
-            type: 'text'
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.appendComponent({
+                name: 'Text section',
+                type: 1
+            });
         });
     }
     addTyping() {
-        this.appendComponent({
-            name: 'Typing section',
-            type: 'typing'
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.appendComponent({
+                name: 'Typing section',
+                type: 2
+            });
         });
     }
     appendComponent(content) {
-        this.contents.push(content);
+        return __awaiter(this, void 0, void 0, function* () {
+            let data = new FormData();
+            data.append('type', content.type);
+            yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
+                url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
+                data: data,
+                method: 'post'
+            }).then((res) => {
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_5__models_bots_TextContentModel__["a" /* default */](res.data.data));
+            }).catch((err) => {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new content!');
+                alert(mesg);
+            });
+        });
     }
     getComponent(type) {
         let component = null;
         switch (type) {
-            case ('text'):
+            case (1):
                 component = __WEBPACK_IMPORTED_MODULE_1__builder_TextComponent_vue___default.a;
                 break;
-            case ('typing'):
+            case (2):
                 component = __WEBPACK_IMPORTED_MODULE_2__builder_TypingComponent_vue___default.a;
                 break;
         }
         return component;
     }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Prop */])({
+        type: Array,
+        default: []
+    })
+], BuilderComponent.prototype, "value", void 0);
 BuilderComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {
@@ -36664,7 +37085,7 @@ BuilderComponent = __decorate([
 
 
 /***/ }),
-/* 65 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -36682,7 +37103,7 @@ var render = function() {
           [
             _c(_vm.getComponent(content.type), {
               tag: "component",
-              attrs: { obj: content }
+              attrs: { content: content }
             })
           ],
           1
@@ -36804,237 +37225,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6524dc66", module.exports)
-  }
-}
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(77)
-/* template */
-var __vue_template__ = __webpack_require__(78)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/v1/components/common/builder/TextComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-54024e4a", Component.options)
-  } else {
-    hotAPI.reload("data-v-54024e4a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 77 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(3);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-let TextComponent = class TextComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
-    mounted() {
-        let textarea = this.$el.querySelector('textarea');
-        textarea.addEventListener('keydown', function () {
-            setTimeout(function () {
-                textarea.style.cssText = 'height:auto; padding:0';
-                // for box-sizing other than "content-box" use:
-                // el.style.cssText = '-moz-box-sizing:content-box';
-                textarea.style.cssText = 'height:' + (textarea.scrollHeight + 10) + 'px';
-            }, 0);
-        });
-    }
-    updateTextContent() {
-    }
-};
-TextComponent = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
-], TextComponent);
-/* harmony default export */ __webpack_exports__["default"] = (TextComponent);
-
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "componentTypeOne" }, [
-    _c("div", { staticClass: "botTextComponent" }, [
-      _c("textarea", {
-        staticClass: "textBody",
-        attrs: { value: "Text Component" },
-        on: { blur: _vm.updateTextContent }
-      }),
-      _vm._v(" "),
-      _vm._m(0)
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "textBtn" }, [
-      _c("div", { staticClass: "addBtn" }, [
-        _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-        _vm._v("Add Button\n            ")
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-54024e4a", module.exports)
-  }
-}
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(80)
-/* template */
-var __vue_template__ = __webpack_require__(81)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/v1/components/common/builder/TypingComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-332c7011", Component.options)
-  } else {
-    hotAPI.reload("data-v-332c7011", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(3);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-let TypingComponent = class TypingComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
-};
-TypingComponent = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
-], TypingComponent);
-/* harmony default export */ __webpack_exports__["default"] = (TypingComponent);
-
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "componentTypeOne" }, [
-    _vm._v("\n    Typing Component\n")
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-332c7011", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-ec94b11a", module.exports)
   }
 }
 

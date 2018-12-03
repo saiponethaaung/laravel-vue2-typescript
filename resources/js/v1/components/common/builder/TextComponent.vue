@@ -7,6 +7,9 @@
                     <i class="material-icons">add</i>Add Button
                 </div>
             </div>
+            <div v-if="content.isUpdating">
+                Updating...
+            </div>
         </div>
     </div>
 </template>

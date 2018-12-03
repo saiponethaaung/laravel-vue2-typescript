@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'verifyChatBlock' => \App\Http\Middleware\ValidateChatBlock::class,
         'verifyChatBlockSection' => \App\Http\Middleware\ValidateChatSection::class,
+        'verifychatBlockSectionContent' => \App\Http\Middleware\ValidateChatContent::class,
     ];
 
     /**

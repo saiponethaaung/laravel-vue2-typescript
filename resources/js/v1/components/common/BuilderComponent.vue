@@ -5,6 +5,9 @@
                 <component :is="getComponent(content.type)" :content="content"></component>
             </div>
         </div>
+        <div v-for="i in creating" :key="i">
+            Loading...
+        </div>
         <div class="contentBuilderWidget">
             <h5 class="contentActionMesg">Add Message</h5>
             <div>
@@ -25,7 +28,7 @@
                         <i class="material-icons">textsms</i>
                         <span class="contentActionName">User Input</span>
                     </li>
-                    <li class="contentActionList">
+                    <li class="contentActionList" @click="addList">
                         <i class="material-icons">list</i>
                         <span class="contentActionName">List</span>
                     </li>
@@ -52,19 +55,24 @@
 import { Component, Watch, Prop, Vue } from 'vue-property-decorator';
 import TextComponent from './builder/TextComponent.vue';
 import TypingComponent from './builder/TypingComponent.vue';
+import ListComponent from './builder/ListComponent.vue';
 import Axios from 'axios';
 import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 import TextContentModel from '../../models/bots/TextContentModel';
+import TypingContentModel from '../../models/bots/TypingContentModel';
+import ListContentModel from '../../models/bots/ListContentModel';
 
 @Component({
     components: {
         TextComponent,
-        TypingComponent
+        TypingComponent,
+        ListComponent
     }
 })
 export default class BuilderComponent extends Vue {
     private contents: Array<any> = [];
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
+    private creating: number = 0;
 
     @Prop({
         type: Array,
@@ -73,11 +81,7 @@ export default class BuilderComponent extends Vue {
 
     mounted() {
         for(let i in this.value) {
-            switch(this.value[i].type) {
-                case(1):
-                    this.contents.push(new TextContentModel(this.value[i]));
-                    break;
-            }
+            this.buildConetnt(this.value[i]);
         }
     }
 
@@ -95,20 +99,50 @@ export default class BuilderComponent extends Vue {
         });
     }
 
+    async addList() {
+        await this.appendComponent({
+            name: 'List section',
+            type: 5
+        });
+    }
+
     async appendComponent(content: any) {
         let data = new FormData();
         data.append('type', content.type);
 
+        this.creating++;
         await Axios({
             url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
             data: data,
             method: 'post'
         }).then((res) => {
-            this.contents.push(new TextContentModel(res.data.data));
+            this.buildConetnt(res.data.data);
         }).catch((err) => {
             let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new content!');
             alert(mesg);
         });
+
+        if(this.creating>0) {
+            this.creating--;
+        } else {
+            this.creating = 0;
+        }
+    }
+
+    private buildConetnt(value: any) {
+        switch(value.type) {
+            case(1):
+                this.contents.push(new TextContentModel(value));
+                break;
+
+            case(2):
+                this.contents.push(new TypingContentModel(value));
+                break;
+
+            case(5):
+                this.contents.push(new ListContentModel(value));
+                break;
+        }
     }
 
     private getComponent(type: number) {
@@ -121,6 +155,10 @@ export default class BuilderComponent extends Vue {
 
             case(2):
                 component = TypingComponent;
+                break;
+
+            case(5):
+                component = ListComponent;
                 break;
         }
 

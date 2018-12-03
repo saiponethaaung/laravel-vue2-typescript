@@ -1,0 +1,97 @@
+.chatListContent {
+    display: inline-block;
+}
+
+.chatListRoot {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid $borderPrimary;
+    width: 260px;
+    border-radius: 5px;
+    li:not(:last-child) {
+        border-bottom: 1px solid $borderPrimary;
+    }
+}
+
+.chatListItem {
+
+}
+
+.chatListInfo {
+    width: 100%;
+    float: left;
+}
+
+.chatListInput {
+    width: calc(100% - 75px);
+    float: left;
+    padding: 15px;
+    input {
+        width: 100%;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        border: none;
+        box-shadow: none;
+        font-size: 12px;
+        padding: 3px 10px;
+        &:focus {
+            box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.07);
+            border: solid 1px rgba(0, 0, 0, 0.33) !important;
+        }
+    }
+}
+
+.chatListImage {
+    width: 60px;
+    height: 60px;
+    margin-top: 15px;
+    margin-right: 15px;
+    float: left;
+    figure {
+        margin: 0;
+        width: inherit;
+        height: inherit;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px dotted $borderPrimary;
+        border-radius: 5px;
+        label {
+            margin: 0;
+            padding: 0;
+            width: inherit;
+            height: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            input {
+                display: none;
+            }
+        }
+    }
+}
+
+.chatListButton {
+    border-radius: 2px;
+    border: solid 1px #e1e1e1;
+    background: transparent;
+    font-size: 11px;
+    line-height: 1;
+    color: #a6a6a6;
+    padding: 4px 8px;
+    font-weight: 500;
+    width: auto;
+    height: auto;
+    margin-left: 6px;
+    display: block;
+    float: left;
+    min-height: 22px;
+    position: relative;
+    cursor: pointer;
+    &:hover {
+        color: #448af2;
+        border-color: #448af2;
+    }
+}

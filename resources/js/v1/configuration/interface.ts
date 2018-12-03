@@ -56,7 +56,13 @@ export interface galleryContent {
 }
 
 export interface listContent {
-
+    id: number,
+    image: string,
+    title: string,
+    sub: string,
+    url: string,
+    content_id: number,
+    button: buttonContent
 }
 
 export interface userInputContent {

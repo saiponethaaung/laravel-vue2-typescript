@@ -22,4 +22,9 @@ class ChatBlockSectionContent extends Model
     {
         return $this->hasOne('App\Models\ChatBlockSection', 'id', 'section_id');
     }
+
+    public function galleryList()
+    {
+        return $this->hasMany('App\Models\ChatGallery', 'content_id', 'id');
+    }
 }

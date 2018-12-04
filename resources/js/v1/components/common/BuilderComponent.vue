@@ -32,7 +32,7 @@
                         <i class="material-icons">list</i>
                         <span class="contentActionName">List</span>
                     </li>
-                    <li class="contentActionList">
+                    <li class="contentActionList" @click="addGallery">
                         <i class="material-icons">add_to_photos</i>
                         <span class="contentActionName">Gallery</span>
                     </li>
@@ -53,20 +53,25 @@
 
 <script lang="ts">
 import { Component, Watch, Prop, Vue } from 'vue-property-decorator';
+import Axios from 'axios';
+import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
+
 import TextComponent from './builder/TextComponent.vue';
 import TypingComponent from './builder/TypingComponent.vue';
 import ListComponent from './builder/ListComponent.vue';
-import Axios from 'axios';
-import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
+import GalleryComponent from './builder/GalleryComponent.vue';
+
 import TextContentModel from '../../models/bots/TextContentModel';
 import TypingContentModel from '../../models/bots/TypingContentModel';
 import ListContentModel from '../../models/bots/ListContentModel';
+import GalleryContentModel from '../../models/bots/GalleryContentModel';
 
 @Component({
     components: {
         TextComponent,
         TypingComponent,
-        ListComponent
+        ListComponent,
+        GalleryComponent
     }
 })
 export default class BuilderComponent extends Vue {
@@ -105,6 +110,13 @@ export default class BuilderComponent extends Vue {
             type: 5
         });
     }
+    
+    async addGallery() {
+        await this.appendComponent({
+            name: 'Gallery section',
+            type: 6
+        });
+    }
 
     async appendComponent(content: any) {
         let data = new FormData();
@@ -115,9 +127,9 @@ export default class BuilderComponent extends Vue {
             url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
             data: data,
             method: 'post'
-        }).then((res) => {
+        }).then((res: any) => {
             this.buildConetnt(res.data.data);
-        }).catch((err) => {
+        }).catch((err: any) => {
             let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new content!');
             alert(mesg);
         });
@@ -142,6 +154,10 @@ export default class BuilderComponent extends Vue {
             case(5):
                 this.contents.push(new ListContentModel(value));
                 break;
+
+            case(6):
+                this.contents.push(new GalleryContentModel(value));
+                break;
         }
     }
 
@@ -159,6 +175,10 @@ export default class BuilderComponent extends Vue {
 
             case(5):
                 component = ListComponent;
+                break;
+
+            case(6):
+                component = GalleryComponent;
                 break;
         }
 

@@ -1,21 +1,21 @@
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
-import { listContent } from "../../configuration/interface";
-import ListContentModel from "./ListContentModel";
+import { galleryContent } from "../../configuration/interface";
 import Axios, { CancelTokenSource } from "axios";
 
-export default class ListItemModel extends AjaxErrorHandler{
+export default class GalleryItemModel extends AjaxErrorHandler{
 
-    private content: listContent;
-    private rootUrl: String = '';
+    private rootUrl: string = '';
+    private content: galleryContent;
     private updating: boolean = false;
     private uploading: boolean = false;
     private saveToken: CancelTokenSource = Axios.CancelToken.source();
     private imageToken: CancelTokenSource = Axios.CancelToken.source();
 
-    constructor(content: listContent, rootUrl: string) {
+
+    constructor(content: galleryContent, rootUrl: string) {
         super();
-        this.content = content;
         this.rootUrl = rootUrl;
+        this.content = content;
     }
 
     get id() : number {

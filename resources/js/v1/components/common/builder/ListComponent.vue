@@ -18,10 +18,15 @@
                             </div>
                             <div class="chatListImage">
                                 <figure>
-                                    <label>
-                                        <i class="material-icons">photo_camera</i>
-                                        <input type="file"/>
-                                    </label>
+                                    <template v-if="l.image">
+                                        <img :src="l.image"/>
+                                    </template>
+                                    <template v-else>
+                                        <label>
+                                            <i class="material-icons">photo_camera</i>
+                                            <input type="file" @change="l.imageUpload($event)"/>
+                                        </label>
+                                    </template>
                                 </figure>
                             </div>
                         </div>

@@ -45,13 +45,14 @@ export default class ContentComponent extends Vue {
 
         await Axios({
             url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
-            cancelToken: this.loadingToken.token        
+            cancelToken: this.loadingToken.token
         }).then((res: any) => {
             this.contents = res.data;
         }).catch((err: any) => {
-            let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
-
-            alert(mesg);
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                alert(mesg);
+            }
         });
 
         this.isLoading = false;

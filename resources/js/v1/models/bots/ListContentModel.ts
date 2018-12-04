@@ -49,5 +49,4 @@ export default class ListContentModel extends ChatBlockContentModel {
 
         this.isCreating = false;
     }
-
 }

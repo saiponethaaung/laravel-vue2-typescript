@@ -45,8 +45,10 @@ export default class TextContentModel extends ChatBlockContentModel {
             method: 'post',
             cancelToken: this.saveToken.token
         }).catch((err: any) => {
-            let mesg = this.globalHandler(err, 'Failed to save text content!');
-            alert(mesg);
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to save text content!');
+                alert(mesg);
+            }
         });
 
         this.isUpdating = false;

@@ -39,8 +39,10 @@ export default class TypingContentModel extends ChatBlockContentModel {
             method: 'post',
             cancelToken: this.saveToken.token
         }).catch((err: any) => {
-            let mesg = this.globalHandler(err, 'Failed to update typing duration!');
-            alert(mesg);
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to update typing duration!');
+                alert(mesg);
+            }
         });
 
         this.isUpdating = false;

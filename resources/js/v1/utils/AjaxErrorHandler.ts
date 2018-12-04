@@ -4,12 +4,14 @@ export default class AjaxErrorHandler {
             return "Operation failed!";
         }
 
-        if(err.response.status===422) {
-            return this.handle422(err, mesg);
-        }
+        if(err.response && err.response.status) {
+            if(err.response.status===422) {
+                return this.handle422(err, mesg);
+            }
 
-        if(err.response.status===404) {
-            return this.handle404(err, mesg);
+            if(err.response.status===404) {
+                return this.handle404(err, mesg);
+            }
         }
 
         return mesg;

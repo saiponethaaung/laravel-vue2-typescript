@@ -33,10 +33,16 @@ Route::group(['prefix' => 'v1'], function() {
                 Route::group(['prefix' => '{contentId}', 'middleware' => 'verifychatBlockSectionContent'], function() {
                     Route::put('/', 'V1\\Api\\ChatBotContentController@updateContent')->name('chatbot.content.update');
                     Route::delete('/', 'V1\\Api\\ChatBotContentController@getContent')->name('chatbot.content.delete');
-                    Route::post('/list', 'V1\\Api\\ChatBotContentController@createNewList')->name('chatbot.content.list.create');
-                    Route::put('/list/{listId}', 'V1\\Api\\ChatBotContentController@updateList')->name('chatbot.content.list.update');
                     Route::post('/image', 'V1\\Api\\ChatBotContentController@getContent')->name('chatbot.content.image.upload');
                     Route::delete('/image', 'V1\\Api\\ChatBotContentController@getContents')->name('chatbot.content.image.delete');
+
+                    Route::post('/list', 'V1\\Api\\ChatBotContentController@createNewList')->name('chatbot.content.list.create');
+                    Route::put('/list/{listId}', 'V1\\Api\\ChatBotContentController@updateList')->name('chatbot.content.list.update');
+                    Route::post('/list/{listId}/image', 'V1\\Api\\ChatBotContentController@uploadListImage')->name('chatbot.content.list.image.upload');
+
+                    Route::post('/gallery', 'V1\\Api\\ChatBotContentController@createNewgallery')->name('chatbot.content.gallery.create');
+                    Route::put('/gallery/{galleId}', 'V1\\Api\\ChatBotContentController@updateGallery')->name('chatbot.content.gallery.update');
+                    Route::post('/gallery/{galleId}/image', 'V1\\Api\\ChatBotContentController@uploadGalleryImage')->name('chatbot.content.gallery.image.upload');
                 });
             });
         });

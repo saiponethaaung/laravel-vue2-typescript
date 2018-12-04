@@ -4,6 +4,9 @@ namespace App\Http\Controllers\V1\Api;
 
 use DB;
 use Auth;
+use File;
+use Image;
+use Storage;
 use Validator;
 
 use Illuminate\Http\Request;
@@ -41,6 +44,10 @@ class ChatBotContentController extends Controller
                 case(5):
                     $parsed['content'] = $this->parseList($content);
                     break;
+
+                case(6):
+                    $parsed['content'] = $this->parseGallery($content);
+                    break;
             }
 
             $res[] = $parsed;
@@ -76,12 +83,33 @@ class ChatBotContentController extends Controller
         foreach($list as $l) {
             $res['content'][] = [
                 'id' => $l->id,
-                'image' => '',
+                'image' => $l->image && Storage::disk('public')->exists('images/list/'.$l->image) ? Storage::disk('public')->url('images/list/'.$l->image) : '',
                 'title' => $l->title,
                 'sub' => $l->sub,
                 'url' => $l->url,
                 'content_id' => $content->id,
                 'button' => null
+            ];
+        }
+
+        return $res;
+    }
+
+    public function parseGallery($content)
+    {
+        $list = ChatGallery::where('content_id', $content->id)->get();
+
+        $res = [];
+        
+        foreach($list as $l) {
+            $res[] = [
+                'id' => $l->id,
+                'image' => $l->image && Storage::disk('public')->exists('images/gallery/'.$l->image) ? Storage::disk('public')->url('images/gallery/'.$l->image) : '',
+                'title' => $l->title,
+                'sub' => $l->sub,
+                'url' => $l->url,
+                'content_id' => $content->id,
+                'button' => []
             ];
         }
 
@@ -108,6 +136,10 @@ class ChatBotContentController extends Controller
 
                 case(5):
                     $content = $this->createList($request);
+                    break;
+
+                case(6):
+                    $content = $this->createGallery($request);
                     break;
             }
         } catch(\Exception $e) {
@@ -215,13 +247,62 @@ class ChatBotContentController extends Controller
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
                 'block_id' => (int) $request->attributes->get('chatBlock')->id,
                 'content' => [
+                    'content' => [
+                        [
+                            'id' => $list->id,
+                            'title' => '',
+                            'sub' => '',
+                            'image' => '',
+                            'url' => '',
+                            'content_id' => $create->id
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        return $res;
+    }
+
+    public function createGallery(Request $request)
+    {
+        $create = CBSC::create([
+            'section_id' => $request->attributes->get('chatBlockSection')->id,
+            'order' => CBSC::where('section_id', $request->attributes->get('chatBlockSection')->id)->count()+1,
+            'type' => 6,
+            'text' => '',
+            'content' => '',
+            'image' => '',
+            'duration' => 1
+        ]);
+
+        $gallery = ChatGallery::create([
+            'title' => '',
+            'sub' => '',
+            'image' => '',
+            'url' => '',
+            'type' => 2,
+            'order' => 1,
+            'content_id' => $create->id
+        ]);
+
+        $res = [
+            'status' => true,
+            'code' => 200,
+            'data' => [
+                'id' => (int) $create->id,
+                'type' => (int) $create->type,
+                'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
+                'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'content' => [
                     [
-                        'id' => $list->id,
+                        'id' => $gallery->id,
                         'title' => '',
                         'sub' => '',
                         'image' => '',
                         'url' => '',
-                        'content_id' => $create->id
+                        'content_id' => $create->id,
+                        'button' => []
                     ]
                 ]
             ]
@@ -385,6 +466,49 @@ class ChatBotContentController extends Controller
             ]
         ], 201);
     }
+    
+    public function createNewGallery(Request $request)
+    {
+        $list = null;
+
+        DB::beginTransaction();
+        try {
+            $list = ChatGallery::create([
+                'title' => '',
+                'sub' => '',
+                'image' => '',
+                'url' => '',
+                'type' => 1,
+                'order' => ChatGallery::where('content_id', $request->contentId)->count()+1,
+                'content_id' => $request->contentId
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to create new list!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success',
+            'content' => [
+                'id' => $list->id,
+                'title' => '',
+                'sub' => '',
+                'image' => '',
+                'url' => '',
+                'content_id' => $list->id,
+                'button' => []
+            ]
+        ], 201);
+    }
 
     public function updateList(Request $request)
     {
@@ -440,8 +564,201 @@ class ChatBotContentController extends Controller
         ]);
     }
 
+    public function updateGallery(Request $request)
+    {
+        $input = $request->only('title', 'sub', 'url');
+
+        $validator = Validator::make($input, [
+            'title' => 'required|string',
+            'sub' => 'nullable|string',
+            'url' => 'nullable|url'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        $galle = ChatGallery::find($request->galleId);
+
+        if(empty($galle)) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Invalid gallery!'
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $galle->title = $input['title'];
+            $galle->sub = (String) $input['sub'];
+            $galle->url = (String) $input['url'];
+            $galle->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        } 
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success'
+        ]);
+    }
+
     public function uploadListImage(Request $request)
     {
+        $input = $request->only('image');
+
+        $validator = Validator::make($input, [
+            'image' => 'required|image|mimes:jpeg,png'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        $image = '';
+        $oldImage = '';
         
+        $list = ChatGallery::find($request->listId);
+
+        if($list->image) {
+            $oldImage = $list->image;
+        }
+
+        try {
+            $name = str_random(20)."-".date("YmdHis");
+            $ext = strtolower($input['image']->getClientOriginalExtension());
+            
+            $upload = Storage::disk('public')->putFileAs('/images/list/', $input['image'], $name.'.'.$ext);
+
+            $file = Image::make(Storage::disk('public')->get($upload));
+                
+            $file->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upSize();
+            })->encode('jpg')->save(public_path('storage/images/list/'.$name.'.'.$ext));
+
+            if($ext!=="jpg"){
+                Storage::disk('public')->delete($upload);
+                $ext = "jpg";
+            }
+
+            $list->image = $name.'.'.$ext;
+            $image = Storage::disk('public')->url('images/list/'.$name.'.'.$ext);
+            if($list->save()) {
+                if(!empty($oldImage)) {
+                    Storage::disk('public')->delete('/images/list/'.$oldImage);
+                }
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to upload image',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 201,
+            'mesg' => 'sucess',
+            'image' => $image
+        ], 201);
+    }
+
+    public function uploadGalleryImage(Request $request)
+    {
+        $input = $request->only('image');
+
+        $validator = Validator::make($input, [
+            'image' => 'required|image|mimes:jpeg,png'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        $image = '';
+        $oldImage = '';
+        
+        $gallery = ChatGallery::find($request->galleId);
+
+        if($gallery->image) {
+            $oldImage = $gallery->image;
+        }
+
+        try {
+            $name = str_random(20)."-".date("YmdHis");
+            $ext = strtolower($input['image']->getClientOriginalExtension());
+            
+            $upload = Storage::disk('public')->putFileAs('/images/gallery/', $input['image'], $name.'.'.$ext);
+
+            $file = Image::make(Storage::disk('public')->get($upload));
+                
+            $file->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upSize();
+            })->encode('jpg')->save(public_path('storage/images/gallery/'.$name.'.'.$ext));
+
+            if($ext!=="jpg"){
+                Storage::disk('public')->delete($upload);
+                $ext = "jpg";
+            }
+
+            $gallery->image = $name.'.'.$ext;
+            $image = Storage::disk('public')->url('images/gallery/'.$name.'.'.$ext);
+            if($gallery->save()) {
+                if(!empty($oldImage)) {
+                    Storage::disk('public')->delete('/images/gallery/'.$oldImage);
+                }
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to upload image',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 201,
+            'mesg' => 'sucess',
+            'image' => $image
+        ], 201);
     }
 }

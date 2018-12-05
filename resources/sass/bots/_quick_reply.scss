@@ -1,0 +1,74 @@
+.quickReplyRoot {
+    padding-left: 0;
+    display: flex;
+}
+
+.quickReplyRootContainer {
+    height: 100px;
+    padding-left: 30px;
+    border-top: 2px dotted $borderPrimary;
+    border-bottom: 2px dotted $borderPrimary;
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin-bottom: 0;
+    min-width: 100%;
+    & > li {
+        margin-right: 15px;
+        white-space: nowrap;
+        .quickReplyCapsule {
+            cursor: pointer;
+            height: 40px;
+            padding: 0 20px;
+            border: 1px solid $borderSecondary;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            max-width: 160px;
+            flex-direction: column;
+            flex: auto;
+            &.qrAddMore {
+                color: $secondaryText;
+                border-color: $borderPrimary;
+                flex-direction: row;
+                .material-icons {
+                    font-size: 18px;
+                    margin-right: 3px;
+                }
+            }
+            .quickReplyInfoBox {
+                display: none;
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                width: 200px;
+                background: #fff;
+                z-index: 11;
+                border: 1px solid $borderPrimary;
+                &.showInfoBox {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        }
+    }
+}
+
+.quickReplyTitle {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    height: 23px;
+    line-height: 23px;
+    color: $btnText1;
+}
+
+.quickReplyValue {
+    height: 17px;
+    flex: 1;
+    font-size: 12px;
+    line-height: 17px;
+    color: $secondaryText;
+}

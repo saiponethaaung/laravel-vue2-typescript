@@ -20,7 +20,7 @@
                         <i class="material-icons">speaker_notes</i>
                         <span class="contentActionName">Typing</span>
                     </li>
-                    <li class="contentActionList">
+                    <li class="contentActionList" @click="addQuickReply">
                         <i class="material-icons">reply</i>
                         <span class="contentActionName">Quick Reply</span>
                     </li>
@@ -60,11 +60,13 @@ import TextComponent from './builder/TextComponent.vue';
 import TypingComponent from './builder/TypingComponent.vue';
 import ListComponent from './builder/ListComponent.vue';
 import GalleryComponent from './builder/GalleryComponent.vue';
+import QuickReplyComponent from './builder/QuickReplyComponent.vue';
 
 import TextContentModel from '../../models/bots/TextContentModel';
 import TypingContentModel from '../../models/bots/TypingContentModel';
 import ListContentModel from '../../models/bots/ListContentModel';
 import GalleryContentModel from '../../models/bots/GalleryContentModel';
+import QuickReplyContentModel from '../../models/bots/QuickReplyContentModel';
 
 @Component({
     components: {
@@ -101,6 +103,13 @@ export default class BuilderComponent extends Vue {
         await this.appendComponent({
             name: 'Typing section',
             type: 2
+        });
+    }
+
+    async addQuickReply() {
+        await this.appendComponent({
+            name: 'Quick Reply section',
+            type: 3
         });
     }
 
@@ -151,6 +160,10 @@ export default class BuilderComponent extends Vue {
                 this.contents.push(new TypingContentModel(value));
                 break;
 
+            case(3):
+                this.contents.push(new QuickReplyContentModel(value));
+                break;
+
             case(5):
                 this.contents.push(new ListContentModel(value));
                 break;
@@ -171,6 +184,10 @@ export default class BuilderComponent extends Vue {
 
             case(2):
                 component = TypingComponent;
+                break;
+
+            case(3):
+                component = QuickReplyComponent;
                 break;
 
             case(5):

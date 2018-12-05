@@ -36926,10 +36926,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__builder_ListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__builder_ListComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__builder_GalleryComponent_vue__ = __webpack_require__(80);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__builder_GalleryComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__builder_GalleryComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__models_bots_TextContentModel__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__models_bots_TypingContentModel__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__models_bots_ListContentModel__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__models_bots_GalleryContentModel__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__models_bots_TextContentModel__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__models_bots_TypingContentModel__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__models_bots_ListContentModel__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__models_bots_GalleryContentModel__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__models_bots_QuickReplyContentModel__ = __webpack_require__(98);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -36944,6 +36947,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
+
 
 
 
@@ -36980,6 +36985,14 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
             yield this.appendComponent({
                 name: 'Typing section',
                 type: 2
+            });
+        });
+    }
+    addQuickReply() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.appendComponent({
+                name: 'Quick Reply section',
+                type: 3
             });
         });
     }
@@ -37025,16 +37038,19 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     buildConetnt(value) {
         switch (value.type) {
             case (1):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_7__models_bots_TextContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_8__models_bots_TextContentModel__["a" /* default */](value));
                 break;
             case (2):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_8__models_bots_TypingContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_9__models_bots_TypingContentModel__["a" /* default */](value));
+                break;
+            case (3):
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_12__models_bots_QuickReplyContentModel__["a" /* default */](value));
                 break;
             case (5):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_9__models_bots_ListContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_10__models_bots_ListContentModel__["a" /* default */](value));
                 break;
             case (6):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_10__models_bots_GalleryContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_11__models_bots_GalleryContentModel__["a" /* default */](value));
                 break;
         }
     }
@@ -37046,6 +37062,9 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                 break;
             case (2):
                 component = __WEBPACK_IMPORTED_MODULE_4__builder_TypingComponent_vue___default.a;
+                break;
+            case (3):
+                component = __WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue___default.a;
                 break;
             case (5):
                 component = __WEBPACK_IMPORTED_MODULE_5__builder_ListComponent_vue___default.a;
@@ -38256,9 +38275,22 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _vm._m(0),
+            _c(
+              "li",
+              {
+                staticClass: "contentActionList",
+                on: { click: _vm.addQuickReply }
+              },
+              [
+                _c("i", { staticClass: "material-icons" }, [_vm._v("reply")]),
+                _vm._v(" "),
+                _c("span", { staticClass: "contentActionName" }, [
+                  _vm._v("Quick Reply")
+                ])
+              ]
+            ),
             _vm._v(" "),
-            _vm._m(1),
+            _vm._m(0),
             _vm._v(" "),
             _c(
               "li",
@@ -38289,9 +38321,9 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _vm._m(2),
+            _vm._m(1),
             _vm._v(" "),
-            _vm._m(3)
+            _vm._m(2)
           ])
         ])
       ])
@@ -38300,16 +38332,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "contentActionList" }, [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("reply")]),
-      _vm._v(" "),
-      _c("span", { staticClass: "contentActionName" }, [_vm._v("Quick Reply")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -38355,6 +38377,310 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(96)
+/* template */
+var __vue_template__ = __webpack_require__(97)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/builder/QuickReplyComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-253bb66a", Component.options)
+  } else {
+    hotAPI.reload("data-v-253bb66a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 96 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_QuickReplyContentModel__ = __webpack_require__(98);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+let QuickReplyComponent = class QuickReplyComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+    createNewQuickReply() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.content.createQuickReply();
+        });
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Prop */])({
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_QuickReplyContentModel__["a" /* default */],
+    })
+], QuickReplyComponent.prototype, "content", void 0);
+QuickReplyComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], QuickReplyComponent);
+/* harmony default export */ __webpack_exports__["default"] = (QuickReplyComponent);
+
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "componentTypeOne quickReplyRoot" }, [
+    _c(
+      "ul",
+      { staticClass: "quickReplyRootContainer" },
+      [
+        _vm._l(_vm.content.item, function(qr, index) {
+          return _c("li", { key: index }, [
+            _c("div", { staticClass: "quickReplyCapsule" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "quickReplyTitle",
+                  on: {
+                    click: function($event) {
+                      qr.canShow = !qr.canShow
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(qr.title ? qr.title : "Enter button name"))]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "quickReplyValue",
+                  on: {
+                    click: function($event) {
+                      qr.canShow = !qr.canShow
+                    }
+                  }
+                },
+                [_vm._v("Shoppper")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "quickReplyInfoBox",
+                  class: { showInfoBox: qr.canShow }
+                },
+                [_vm._m(0, true), _vm._v(" "), _vm._m(1, true)]
+              )
+            ])
+          ])
+        }),
+        _vm._v(" "),
+        _c("li", [
+          _vm.content.isCreating
+            ? _c("div", { staticClass: "quickReplyCapsule qrAddMore" }, [
+                _vm._v("\n                Creating...\n            ")
+              ])
+            : _c(
+                "div",
+                {
+                  staticClass: "quickReplyCapsule qrAddMore",
+                  on: { click: _vm.createNewQuickReply }
+                },
+                [
+                  _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+                  _vm._v("Add Quick Reply\n            ")
+                ]
+              )
+        ])
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [_c("input", { attrs: { placeholder: "Title" } })])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("hr"),
+      _vm._v(" "),
+      _c("div", [_c("input", { attrs: { placeholder: "Enter block name" } })]),
+      _vm._v(" "),
+      _c("div", [_c("span", [_vm._v("Save reply as attribute:")])]),
+      _vm._v(" "),
+      _c("div", [_c("input", { attrs: { placeholder: "<set attribute>" } })]),
+      _vm._v(" "),
+      _c("div", [_c("input", { attrs: { placeholder: "<set value>" } })])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-253bb66a", module.exports)
+  }
+}
+
+/***/ }),
+/* 98 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__QuickReplyItemModel__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
+    constructor(content) {
+        super(content);
+        this.quickReplyContent = [];
+        this.creating = false;
+        this.rootUrl = '';
+        this.rootUrl = `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/quick-reply`;
+        for (let i of content.content) {
+            this.buildQuickReplyItem(i);
+        }
+    }
+    buildQuickReplyItem(content) {
+        this.quickReplyContent.push(new __WEBPACK_IMPORTED_MODULE_1__QuickReplyItemModel__["a" /* default */](content, this.rootUrl));
+    }
+    get item() {
+        return this.quickReplyContent;
+    }
+    get isCreating() {
+        return this.creating;
+    }
+    set isCreating(status) {
+        this.creating = status;
+    }
+    createQuickReply() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.isCreating = true;
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: this.rootUrl,
+                method: 'post'
+            }).then((res) => {
+                this.buildQuickReplyItem(res.data.data);
+            }).catch((err) => {
+                let mesg = this.globalHandler(err, 'Failed to create new quick reply!');
+                alert(mesg);
+            });
+            this.isCreating = false;
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = QuickReplyContentModel;
+
+
+
+/***/ }),
+/* 99 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(5);
+
+class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(content, rootUrl) {
+        super();
+        this.show = false;
+        this.content = content;
+        this.rootUrl = rootUrl;
+    }
+    get id() {
+        return this.content.id;
+    }
+    get title() {
+        return this.content.title;
+    }
+    set title(title) {
+        this.content.title = title;
+    }
+    get canShow() {
+        return this.show;
+    }
+    set canShow(status) {
+        this.show = status;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = QuickReplyItemModel;
+
+
 
 /***/ })
 /******/ ]);

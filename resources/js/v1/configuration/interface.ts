@@ -29,7 +29,15 @@ export interface typingContent {
 }
 
 export interface quickReplyContent {
-
+    id: number,
+    title: string,
+    attribute: {
+        id: number,
+        title: string,
+        valie: string
+    },
+    content_id: number,
+    block: Array<number>
 }
 
 export interface imageContent {

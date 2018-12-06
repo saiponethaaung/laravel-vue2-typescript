@@ -1,4 +1,9 @@
+import Axios, { CancelTokenSource } from "axios";
+
 export default class AjaxErrorHandler {
+
+    private searchToken: CancelTokenSource = Axios.CancelToken.source();
+
     globalHandler (err: any, mesg: string) {
         if(undefined===mesg) {
             return "Operation failed!";
@@ -29,5 +34,42 @@ export default class AjaxErrorHandler {
             return err.response.data.mesg;
         }
         return mesg;
+    }
+
+    async searchSections(keyword: string) {
+
+        if(undefined===keyword) {
+            keyword = "";
+        }
+
+        this.searchToken.cancel();
+        this.searchToken = Axios.CancelToken.source();
+
+        let response = {
+            status: true,
+            code: 200,
+            type: 'general',
+            mesg: 'Sucess',
+            data: []
+        };
+
+        await Axios({
+            url: `api/v1/chat-bot/blocks/search?keyword=${keyword}`,
+            method: 'get',
+            cancelToken: this.searchToken.token
+        }).then((res: any) => {
+            response.data = res.data.data;
+        }).catch((err: any) => {
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to serach blocks!');
+                response.status = false;
+                response.code = err.response.status;
+                response.mesg = mesg;
+            } else {
+                response.type = 'cancel';
+            }
+        });
+
+        return response;
     }
 }

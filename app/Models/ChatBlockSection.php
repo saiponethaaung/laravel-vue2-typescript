@@ -13,4 +13,9 @@ class ChatBlockSection extends Model
         'title',
         'order'
     ];
+
+    public function block()
+    {
+        return $this->hasOne('App\Models\ChatBlock', 'id', 'block_id');
+    }
 }

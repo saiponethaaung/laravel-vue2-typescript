@@ -4,25 +4,30 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ChatQuickReply extends Model
+class ChatUserInput extends Model
 {
-    protected $table = 'chat_quick_reply';
+    /**
+     * 
+     * Validation
+     * 
+     * null none
+     * 1 Phone
+     * 2 Email
+     * 3 Number
+     * 
+     */
+    protected $table = 'chat_user_input';
 
     protected $fillable = [
-        'title',
-        'attribute_id',
+        'question',
         'content_id',
-        'value'
+        'validation',
+        'attribute_id'
     ];
 
     public function attribute()
     {
         return $this->hasOne('App\Models\ChatAttribute', 'id', 'attribute_id');
-    }
-
-    public function blocks()
-    {
-        return $this->hasMany('App\Models\ChatQuickReplyBlock', 'quick_reply_id', 'id');
     }
 
     public function content()

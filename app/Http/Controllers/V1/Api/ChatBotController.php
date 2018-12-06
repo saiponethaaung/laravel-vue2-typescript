@@ -157,4 +157,51 @@ class ChatBotController extends Controller
             ]
         ]);
     }
+
+    public function serachSection(Request $request)
+    {
+        $keyword = "";
+        if(is_null($request->input('keyword'))==false && $request->input('keyword')) {
+            $keyword = $request->input('keyword');
+        }
+        $list = ChatBlock::query();
+        $list->with([
+            'sections' => function($query) use ($keyword) {
+                if($keyword) {
+                    $query->where('title', 'like', '%'.$keyword.'%');
+                }
+            }
+        ]);
+        $list->whereHas('sections',  function($query) use ($keyword)  {
+            if($keyword) {
+                $query->where('title', 'like', '%'.$keyword.'%');
+            }
+        });
+        $list = $list->get();
+
+        $res = [];
+
+        foreach($list as $l) {
+            $parsed = [
+                'id' => $l->id,
+                'title' => $l->title,
+                'contents' => []
+            ];
+
+            foreach($l->sections as $sec) {
+                $parsed['contents'][] = [
+                    'id' => $sec->id,
+                    'title' => $sec->title
+                ];
+            }
+
+            $res[] = $parsed;
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 422,
+            'data' => $res
+        ]);
+    }
 }

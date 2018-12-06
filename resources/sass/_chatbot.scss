@@ -154,7 +154,7 @@
 
 .contentBuilderWidget {
     padding-left: 30px;
-    padding-bottom: 30px;
+    padding-bottom: 50px;
 }
 
 .contentActionRoot {
@@ -215,7 +215,75 @@
     margin-bottom: 20px;
 }
 
+.sugContainer {
+    padding: 5px;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+}
+
+.sugBlockTitle {
+    color: $secondaryText;
+}
+
+.sugBlockSec {
+    margin-bottom: 10px;
+}
+
+.sugBlockSecTitle {
+    padding-left: 20px;
+    width: calc(100% + 10px);
+    margin-left: -5px;
+    &:hover {
+        background: $hoverBackground;
+        color: #fff;
+    }
+}
+
+.selectedLinkedBlock {
+    position: relative;
+    background: #e0e0e0;
+    line-height: 28px;
+    height: 28px;
+    border: 1px solid rgba(0, 0, 0, 0.21);
+    border-radius: 5px;
+    padding: 0 10px;
+    max-width: 100%;
+    width: auto;
+    display: inline-block;
+    .slbText {
+        max-width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: block;
+    }
+    
+    .slbDel {
+        display: none;
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        z-index: 11;
+        left: initial;
+        width: 20px;
+        height: 20px;
+        align-items: center;
+        border-radius: 100%;
+        background: $primaryBackground;
+        border: 1px solid $borderPrimary;
+        padding: 2px;
+        .material-icons {
+            font-size: 14px;
+            color: $secondaryText;
+        }
+    }
+
+    &:hover .slbDel {
+        display: flex;
+    }
+}
+
 @import './bots/text.scss';
 @import './bots/typing.scss';
 @import './bots/list.scss';
 @import './bots/quick_reply.scss';
+@import './bots/user_input.scss';

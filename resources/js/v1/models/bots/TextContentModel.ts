@@ -6,7 +6,7 @@ export default class TextContentModel extends ChatBlockContentModel {
 
     private textContent: textContent;
     private saveToken: CancelTokenSource = Axios.CancelToken.source();
-    
+    private showButton: boolean = false;
 
     constructor(content: any) {
         super(content);
@@ -26,6 +26,14 @@ export default class TextContentModel extends ChatBlockContentModel {
 
     get type() : number {
         return 1;
+    }
+
+    get showBtn() : boolean {
+        return this.showButton;
+    }
+
+    set showBtn(status: boolean) {
+        this.showButton = status;
     }
 
     async saveContent() {

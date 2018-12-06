@@ -1,0 +1,94 @@
+.userInputRootContainer {
+    max-width: 680px;
+    width: 100%;
+    border: 1px solid $borderPrimary;
+    border-radius: 5px;
+}
+
+.userInputInnerContainer {
+    padding: 15px;
+}
+
+.userInputHeading {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.uihIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e2e2e2;
+    border-radius: 100%;
+    padding: 5px;
+    margin-right: 8px;
+    .material-icons {
+        font-size: 15px;
+    }
+}
+
+.uihText {
+}
+
+.userInputDesc {
+    font-size: 13px;
+    color: $secondaryText;
+}
+
+.userInputList {
+    list-style: none;
+    padding: 0;
+}
+
+.userInputHeading {
+    display: flex;
+}
+
+.userInputForm {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+$userInputAttribute: 190px;
+$userInputValidation: 120px;
+
+.userInputQuestion {
+    width: calc(100% - #{$userInputAttribute + $userInputValidation});
+    padding-right: 10px;
+    input {
+        width: 100%;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        border: none;
+        box-shadow: none;
+        font-size: 12px;
+        padding: 3px 10px;
+        border: 1px solid $borderPrimary;
+    }
+}
+
+.userInputValidation {
+    width: $userInputValidation;
+    padding: 0px 10px;
+    .userInputValidationOption {
+        // display: none;
+    }
+}
+
+.userInputAttribute {
+    width: $userInputAttribute;
+    padding: 0px 10px;
+    input {
+        width: 100%;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        border: none;
+        box-shadow: none;
+        font-size: 12px;
+        padding: 3px 10px;
+        border: 1px solid $borderPrimary;
+    }
+}

@@ -54,5 +54,5 @@ Vue.component('builder-component', BuilderComponent);
 new Vue({
     router,
     store,
-    el: '#app'
+    el: '#app',
 });

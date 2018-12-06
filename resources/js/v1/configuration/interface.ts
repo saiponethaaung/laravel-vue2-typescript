@@ -34,10 +34,15 @@ export interface quickReplyContent {
     attribute: {
         id: number,
         title: string,
-        valie: string
+        value: string
     },
     content_id: number,
-    block: Array<number>
+    block: Array<sectionLinked>
+}
+
+export interface sectionLinked {
+    id: number,
+    title: string
 }
 
 export interface imageContent {
@@ -65,7 +70,14 @@ export interface listContent {
 }
 
 export interface userInputContent {
-
+    id: number,
+    question: string,
+    attribute: {
+        id: number,
+        title: string
+    },
+    content_id: number,
+    validation: number
 }
 
 export interface buttonContent {
@@ -77,4 +89,15 @@ export interface buttonContent {
         countryCode: number,
         number: number
     }
+}
+
+export interface blockSuggestion {
+    id: number,
+    title: string,
+    contents: [
+        {
+            id: number,
+            title: string
+        }
+    ]
 }

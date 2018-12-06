@@ -3,8 +3,13 @@
         <div class="botTextComponent">
             <textarea class="textBody" v-model="content.value" v-on:blur="content.saveContent()"></textarea>
             <div class="textBtn">
-                <div class="addBtn">
+                <div class="addBtn" @click="content.showBtn=true">
                     <i class="material-icons">add</i>Add Button
+                </div>
+                <div class="buttonPopBox" v-if="content.showBtn">
+                    <div>
+                        asd
+                    </div>
                 </div>
             </div>
             <div v-if="content.isUpdating">
@@ -30,8 +35,6 @@ export default class TextComponent extends Vue {
         textarea.addEventListener('keydown', function(){
             setTimeout(function(){
                 textarea.style.cssText = 'height:auto; padding:0';
-                // for box-sizing other than "content-box" use:
-                // el.style.cssText = '-moz-box-sizing:content-box';
                 textarea.style.cssText = 'height:' + (textarea.scrollHeight+10) + 'px';
             },0);
         });

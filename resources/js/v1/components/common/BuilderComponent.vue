@@ -24,7 +24,7 @@
                         <i class="material-icons">reply</i>
                         <span class="contentActionName">Quick Reply</span>
                     </li>
-                    <li class="contentActionList">
+                    <li class="contentActionList" @click="addUserInput">
                         <i class="material-icons">textsms</i>
                         <span class="contentActionName">User Input</span>
                     </li>
@@ -61,19 +61,23 @@ import TypingComponent from './builder/TypingComponent.vue';
 import ListComponent from './builder/ListComponent.vue';
 import GalleryComponent from './builder/GalleryComponent.vue';
 import QuickReplyComponent from './builder/QuickReplyComponent.vue';
+import UserInputComponent from './builder/UserInputComponent.vue';
 
 import TextContentModel from '../../models/bots/TextContentModel';
 import TypingContentModel from '../../models/bots/TypingContentModel';
 import ListContentModel from '../../models/bots/ListContentModel';
 import GalleryContentModel from '../../models/bots/GalleryContentModel';
 import QuickReplyContentModel from '../../models/bots/QuickReplyContentModel';
+import UserInputContentModel from '../../models/bots/UserInputContentModel';
 
 @Component({
     components: {
         TextComponent,
         TypingComponent,
         ListComponent,
-        GalleryComponent
+        GalleryComponent,
+        QuickReplyComponent,
+        UserInputComponent
     }
 })
 export default class BuilderComponent extends Vue {
@@ -110,6 +114,13 @@ export default class BuilderComponent extends Vue {
         await this.appendComponent({
             name: 'Quick Reply section',
             type: 3
+        });
+    }
+
+    async addUserInput() {
+        await this.appendComponent({
+            name: 'User Input section',
+            type: 4
         });
     }
 
@@ -164,6 +175,10 @@ export default class BuilderComponent extends Vue {
                 this.contents.push(new QuickReplyContentModel(value));
                 break;
 
+            case(4):
+                this.contents.push(new UserInputContentModel(value));
+                break;
+
             case(5):
                 this.contents.push(new ListContentModel(value));
                 break;
@@ -188,6 +203,10 @@ export default class BuilderComponent extends Vue {
 
             case(3):
                 component = QuickReplyComponent;
+                break;
+
+            case(4):
+                component = UserInputComponent;
                 break;
 
             case(5):

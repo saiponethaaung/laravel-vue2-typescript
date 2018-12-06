@@ -16,6 +16,7 @@ use App\Models\ChatBlockSectionContent as CBSC;
 use App\Models\ChatGallery;
 use App\Models\ChatAttribute;
 use App\Models\ChatQuickReply;
+use App\Models\ChatUserInput;
 
 class CreateController extends Controller
 {
@@ -39,6 +40,10 @@ class CreateController extends Controller
 
                 case(3):
                     $content = $this->createQuickReply($request);
+                    break;
+
+                case(4):
+                    $content = $this->createUserInput($request);
                     break;
 
                 case(5):
@@ -402,6 +407,108 @@ class CreateController extends Controller
                 ],
                 'content_id' => $request->contentId,
                 'block' => []
+            ]
+        ]);
+    }
+
+    public function createUserInput(Request $request)
+    {
+        $userInput = null;
+        $create = null;
+
+        DB::beginTransaction();
+
+        try {
+            $create = CBSC::create([
+                'section_id' => $request->attributes->get('chatBlockSection')->id,
+                'order' => CBSC::where('section_id', $request->attributes->get('chatBlockSection')->id)->count()+1,
+                'type' => 4,
+                'text' => '',
+                'content' => '',
+                'image' => '',
+                'duration' => 1
+            ]);
+
+            $userInput = ChatUserInput::create([
+                'question' => '',
+                'attribute_id' => null,
+                'content_id' => $create->id,
+                'validation' => null
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to create user input!',
+                'debugMesg' => $e->getMessage()
+            ];
+        }
+
+        DB::commit();
+
+        return [
+            'status' => true,
+            'code' => 200,
+            'data' => [
+                'id' => (int) $create->id,
+                'type' => (int) $create->type,
+                'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
+                'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'content' => [
+                    [
+                        'id' => $userInput->id,
+                        'question' => '',
+                        'attribute' => [
+                            'id' => 0,
+                            'title' => ''
+                        ],
+                        'content_id' => $create->id,
+                        'validation' => 0
+                    ]
+                ]
+            ]
+        ];
+    }
+
+    
+    public function createNewUserInput(Request $request)
+    {
+        $userInput = null;
+
+        DB::beginTransaction();
+
+        try {
+            $userInput = ChatUserInput::create([
+                'question' => '',
+                'attribute_id' => null,
+                'content_id' => $request->contentId,
+                'validation' => null
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to create user input!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => [
+                'id' => $userInput->id,
+                'question' => '',
+                'attribute' => [
+                    'id' => 0,
+                    'title' => ''
+                ],
+                'content_id' => $request->contentId,
+                'validation' => 0
             ]
         ]);
     }

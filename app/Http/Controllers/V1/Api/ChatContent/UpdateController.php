@@ -16,6 +16,8 @@ use App\Models\ChatBlockSectionContent as CBSC;
 use App\Models\ChatGallery;
 use App\Models\ChatAttribute;
 use App\Models\ChatQuickReply;
+use App\Models\ChatQuickReplyBlock;
+use App\Models\ChatUserInput;
 
 class UpdateController extends Controller
 {
@@ -383,5 +385,156 @@ class UpdateController extends Controller
             'mesg' => 'sucess',
             'image' => $image
         ], 201);
+    }
+
+    public function updateQuickReply(Request $request)
+    {
+        $input = $request->only('title', 'attribute', 'value');
+
+        $qr = ChatQuickReply::find($request->qrId);
+        $attrId = null;
+        
+        DB::beginTransaction();
+
+        try {
+            
+            if($input['attribute']) {
+                $attr = ChatAttribute::where('attribute', $input['attribute'])->first();
+
+                if(empty($attr)) {
+                    $attr = ChatAttribute::create([
+                        'attribute' => $input['attribute']
+                    ]);
+                }
+
+                $attrId = $attr->id;
+            }
+
+            $qr->title = $input['title'] ? $input['title'] : "";
+            $qr->value = $input['value'] ? $input['value'] : "";
+            $qr->attribute_id = $attrId;
+            $qr->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update quick reply!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Sucecss',
+            'data' => [
+                'attribute' => is_null($attrId) ? 0 : $attrId
+            ]
+        ]);
+    }
+
+    public function addQuickReplyBlock(Request $request)
+    {
+        $input = $request->only('section');
+
+        $validator = Validator::make($input, [
+            'section' => 'required|exists:chat_block_section,id'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        $exists = ChatQuickReplyBlock::where('quick_reply_id', $request->qrId)->where('section_id', $input['section'])->first();
+
+        if(!empty($exists)) {
+            return response()->json([
+                'status' => true,
+                'code' => 200,
+                'type' => 'exists'
+            ]);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            ChatQuickReplyBlock::create([
+                'quick_reply_id' => $request->qrId,
+                'section_id' => $input['section']
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to add a block!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success',
+            'type' => 'new'
+        ]);
+    }
+
+    public function updateUserInput(Request $request)
+    {
+        $input = $request->only('question', 'attribute', 'validation');
+
+        $ui = ChatUserInput::find($request->uiId);
+        $attrId = null;
+        
+        DB::beginTransaction();
+
+        try {
+            
+            if($input['attribute']) {
+                $attr = ChatAttribute::where('attribute', $input['attribute'])->first();
+
+                if(empty($attr)) {
+                    $attr = ChatAttribute::create([
+                        'attribute' => $input['attribute']
+                    ]);
+                }
+
+                $attrId = $attr->id;
+            }
+
+            $ui->question = $input['question'] ? $input['question'] : "";
+            $ui->attribute_id = $attrId;
+            $ui->validation = $input['validation'];
+            $ui->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update user input!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Sucecss',
+            'data' => [
+                'attribute' => is_null($attrId) ? 0 : $attrId
+            ]
+        ]);
     }
 }

@@ -10938,7 +10938,7 @@ a.text-dark:focus {
 
 .contentBuilderWidget {
   padding-left: 30px;
-  padding-bottom: 30px;
+  padding-bottom: 50px;
 }
 
 .contentActionRoot {
@@ -11022,6 +11022,80 @@ a.text-dark:focus {
 .componentTypeOne {
   padding-left: 30px;
   margin-bottom: 20px;
+}
+
+.sugContainer {
+  padding: 5px;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+}
+
+.sugBlockTitle {
+  color: #aaaaaa;
+}
+
+.sugBlockSec {
+  margin-bottom: 10px;
+}
+
+.sugBlockSecTitle {
+  padding-left: 20px;
+  width: calc(100% + 10px);
+  margin-left: -5px;
+}
+
+.sugBlockSecTitle:hover {
+  background: #ebebeb;
+  color: #fff;
+}
+
+.selectedLinkedBlock {
+  position: relative;
+  background: #e0e0e0;
+  line-height: 28px;
+  height: 28px;
+  border: 1px solid rgba(0, 0, 0, 0.21);
+  border-radius: 5px;
+  padding: 0 10px;
+  max-width: 100%;
+  width: auto;
+  display: inline-block;
+}
+
+.selectedLinkedBlock .slbText {
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+}
+
+.selectedLinkedBlock .slbDel {
+  display: none;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 11;
+  left: initial;
+  width: 20px;
+  height: 20px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 100%;
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  padding: 2px;
+}
+
+.selectedLinkedBlock .slbDel .material-icons {
+  font-size: 14px;
+  color: #aaaaaa;
+}
+
+.selectedLinkedBlock:hover .slbDel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .botTextComponent {
@@ -11430,6 +11504,9 @@ a.text-dark:focus {
   background: #fff;
   z-index: 11;
   border: 1px solid #ebebeb;
+  border-radius: 5px;
+  width: 190px;
+  padding: 10px 0;
 }
 
 .quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox.showInfoBox {
@@ -11440,6 +11517,35 @@ a.text-dark:focus {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+}
+
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox > div {
+  padding: 0 15px;
+}
+
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox .QRActionName {
+  border-bottom: 1px solid #ebebeb;
+  margin-bottom: 10px;
+}
+
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox .QRActionName input {
+  border-radius: 40px;
+  color: #c238eb;
+}
+
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox input {
+  height: 40px;
+  margin-bottom: 10px;
+  color: #aaaaaa;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  padding: 0 15px;
+  width: 100%;
+  font-size: 13px;
+}
+
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox input.noMgb {
+  margin-bottom: 0;
 }
 
 .quickReplyTitle {
@@ -11459,6 +11565,119 @@ a.text-dark:focus {
   font-size: 12px;
   line-height: 17px;
   color: #aaaaaa;
+}
+
+.attributeNotice {
+  font-size: 12px;
+}
+
+.userInputRootContainer {
+  max-width: 680px;
+  width: 100%;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+}
+
+.userInputInnerContainer {
+  padding: 15px;
+}
+
+.userInputHeading {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 15px;
+}
+
+.uihIcon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: #e2e2e2;
+  border-radius: 100%;
+  padding: 5px;
+  margin-right: 8px;
+}
+
+.uihIcon .material-icons {
+  font-size: 15px;
+}
+
+.userInputDesc {
+  font-size: 13px;
+  color: #aaaaaa;
+}
+
+.userInputList {
+  list-style: none;
+  padding: 0;
+}
+
+.userInputHeading {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.userInputForm {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.userInputQuestion {
+  width: calc(100% - 310px);
+  padding-right: 10px;
+}
+
+.userInputQuestion input {
+  width: 100%;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  font-size: 12px;
+  padding: 3px 10px;
+  border: 1px solid #ebebeb;
+}
+
+.userInputValidation {
+  width: 120px;
+  padding: 0px 10px;
+}
+
+.userInputAttribute {
+  width: 190px;
+  padding: 0px 10px;
+}
+
+.userInputAttribute input {
+  width: 100%;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  font-size: 12px;
+  padding: 3px 10px;
+  border: 1px solid #ebebeb;
 }
 
 .navbar-laravel {

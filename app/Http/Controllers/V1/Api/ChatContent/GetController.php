@@ -16,6 +16,7 @@ use App\Models\ChatBlockSectionContent as CBSC;
 use App\Models\ChatGallery;
 use App\Models\ChatAttribute;
 use App\Models\ChatQuickReply;
+use App\Models\ChatUserInput;
 
 class GetController extends Controller
 {
@@ -45,6 +46,10 @@ class GetController extends Controller
 
                 case(3):
                     $parsed['content'] = $this->parseQuickReply($content);
+                    break;
+
+                case(4):
+                    $parsed['content'] = $this->parseUserInput($content);
                     break;
 
                 case(5):
@@ -124,20 +129,56 @@ class GetController extends Controller
 
     public function parseQuickReply($content)
     {
-        $list = ChatQuickReply::where('content_id', $content->id)->get();
+        $list = ChatQuickReply::with([
+            'attribute',
+            'blocks',
+            'blocks.value'
+        ])->where('content_id', $content->id)->get();
+        $res = [];
+
+        foreach($list as $l) {
+            $blocks = [];
+
+            foreach($l->blocks as $b) {
+                $blocks[] = [
+                    'id' => $b->value->id,
+                    'title' => $b->value->title
+                ];
+            }
+
+            $res[] = [
+                'id' => $l->id,
+                'title' => $l->title,
+                'attribute' => [
+                    'id' => $l->attribute ? $l->attribute->id : 0,
+                    'title' => $l->attribute ? $l->attribute->attribute : '',
+                    'value' => $l->value
+                ],
+                'content_id' => $content->id,
+                'block' => $blocks
+            ];
+        }
+
+        return $res;
+    }
+
+    public function parseUserInput($content)
+    {
+        $list = ChatUserInput::with([
+            'attribute'
+        ])->where('content_id', $content->id)->get();
         $res = [];
 
         foreach($list as $l) {
             $res[] = [
                 'id' => $l->id,
-                'title' => $l->title,
+                'question' => (String) $l->question,
                 'attribute' => [
-                    'id' => 0,
-                    'title' => '',
-                    'value' => $l->value
+                    'id' => $l->attribute ? $l->attribute->id : 0,
+                    'title' => $l->attribute ? $l->attribute->attribute : '',
                 ],
                 'content_id' => $content->id,
-                'block' => []
+                'validation' => (int) $l->validation
             ];
         }
 

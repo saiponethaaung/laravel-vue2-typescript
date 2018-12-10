@@ -17,7 +17,15 @@ class CreateProjectUserTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('project_id')->nullable();
             $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('user_type')->default(1);
             $table->timestamps();
+
+            $table->index('project_id');
+            $table->index('user_id');
+            $table->index('user_type');
+
+            $table->foreign('project_id')->references('id')->on('project')->onDelete('restrict');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
         });
     }
 

@@ -13,14 +13,15 @@ import store from './configuration/store';
 import App from './App.vue';
 import PopupComponent from './components/common/PopupComponent.vue';
 import BuilderComponent from './components/common/BuilderComponent.vue';
-import axios from 'axios';
+import Axios from 'axios';
 
 let eventHub: any = new Vue();
+window.fbSdkLoaded = false;
 
 function logoutResponseHandler(error: any) {
     // if has response show the error
     if (error.response.status===401) {
-        // default handle for status 401
+        store.state.commit('logout');
         return;
     } else {
         return Promise.reject(error);
@@ -28,12 +29,24 @@ function logoutResponseHandler(error: any) {
 }
 
 
-axios.interceptors.response.use(
+Axios.interceptors.response.use(
     response => response,
     logoutResponseHandler
 );
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+    if(store.state.token!==null) {
+        Axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.token}`;
+
+        await Axios({
+            url: '/api/v1/user'
+        }).then((res) => {
+            console.log('res', res);
+            store.state.isLogin = true;
+            store.state.user = res.data;
+        });
+    }
+
     next();
 });
 

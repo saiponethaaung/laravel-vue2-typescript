@@ -6,26 +6,30 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         welcome: "welcome",
-        isLogin: true,
+        isLogin: false,
         user: {},
         autheticating: false,
         chatBot: {
             block: -1,
             section: -1
-        }
+        },
+        token: localStorage.getItem('access_token')
     },
     mutations: {
         logout(state) {
-            localStorage.removeItem('user-token');
-            localStorage.removeItem('login');
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('token_created');
             localStorage.removeItem('remember');
-            state.islogin = false;
+            state.isLogin = false;
             state.token = '';
         },
         setToken(state, {token, remember}) {
             localStorage.setItem('access_token', token);
             localStorage.setItem('token_created', new Date().getTime().toString());
             localStorage.setItem('remember', undefined!==remember && remember==true ? "true" : "false");
+        },
+        updateUserInfo(state, {user}) {
+            state.user = user;
         },
         getToken() {
             return localStorage.getItem('access_token');
@@ -34,7 +38,7 @@ export default new Vuex.Store({
             state.chatBot = {
                 section: section,
                 block: block
-            }
+            };
         }
     }
 } as StoreOptions<any>);

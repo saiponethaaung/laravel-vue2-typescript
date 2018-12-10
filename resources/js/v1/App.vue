@@ -4,8 +4,7 @@
             <default-layout></default-layout>
         </template>
         <template v-else>
-            No welcome
-            <router-view></router-view>
+            <login></login>
         </template>
     </div>
 </template>
@@ -15,10 +14,12 @@
     import Vue from 'vue';
     import { Component, Watch } from 'vue-property-decorator';
     import DefaultLayout from './layouts/DefaultLayout.vue';
+    import Login from './non-member/Login.vue';
 
     @Component({
         components: {
-            DefaultLayout
+            DefaultLayout,
+            Login
         }
     })
     export default class App extends Vue {

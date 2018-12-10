@@ -18,6 +18,11 @@ class CreateProjectPageTable extends Migration
             $table->unsignedInteger('project_id')->nullable();
             $table->string('page_id')->unique();
             $table->timestamps();
+
+            $table->index('project_id');
+            $table->index('page_id');
+
+            $table->foreign('project_id')->references('id')->on('project')->onDelete('set null');
         });
     }
 

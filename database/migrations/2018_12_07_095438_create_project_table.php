@@ -10,6 +10,7 @@ class CreateProjectTable extends Migration
      * Run the migrations.
      *
      * @return void
+     * 
      */
     public function up()
     {
@@ -17,7 +18,12 @@ class CreateProjectTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('timezone');
+            $table->unsignedInteger('user_id')->nullable();
             $table->timestamps();
+
+            $table->index('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
         });
     }
 
@@ -25,6 +31,7 @@ class CreateProjectTable extends Migration
      * Reverse the migrations.
      *
      * @return void
+     * 
      */
     public function down()
     {

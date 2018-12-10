@@ -13,12 +13,18 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
+Route::post('/user/login', 'V1\\Api\\UserAuthController@login');
 
-Route::group(['prefix' => 'v1'], function() {
+Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
+    Route::group(['prefix' => 'user'], function() {
+        Route::get('/', 'V1\\Api\\UserController@getProfile');
+        Route::post('facebook-linked', 'V1\\Api\\UserController@connectFacebook');
+    });
+
     Route::group(['prefix' => 'chat-bot'], function() {
         Route::post('block', 'V1\\Api\\ChatBotController@createBlock')->name('chatbot.block.create');
         Route::get('blocks', 'V1\\Api\\ChatBotController@getBlocks')->name('chatbot.blocks.get');

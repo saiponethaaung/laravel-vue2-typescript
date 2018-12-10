@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProjectInviteTokenTable extends Migration
+class ModifyUserTableAddColumns extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateProjectInviteTokenTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_invite_token', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+        Schema::table('users', function(Blueprint $table) {
+            $table->text('image')->after('email');
+            $table->text('facebook')->nullable()->after('image');
+            $table->text('facebook_token')->nullable()->after('facebook');
         });
     }
 
@@ -26,6 +27,6 @@ class CreateProjectInviteTokenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_invite_token');
+        //
     }
 }

@@ -10,6 +10,7 @@ declare global {
         $: any;
         jQuery: any;
         Popper: any;
+        fbSdkLoaded: boolean;
     }
 }
 

@@ -11,11 +11,11 @@ class FacebookChatbotController extends Controller
 {
     public function index(Request $request) {
         FacebookRequestLogs::create([
-            'data' => [
+            'data' => json_encode([
                 'get' => $_GET,
                 'post' => $_POST,
                 'header' => $_SERVER
-            ]
+            ])
         ]);
 
         if (isset($_GET['hub_verify_token'])) { 

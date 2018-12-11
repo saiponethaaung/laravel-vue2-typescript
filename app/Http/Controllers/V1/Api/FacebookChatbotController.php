@@ -69,7 +69,7 @@ class FacebookChatbotController extends Controller
                         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
                         $header = substr($response, 0, $header_size);
                         $result = 'from facebook '. json_encode($header); // user will get the message
-                    } catch(Exception $e) {
+                    } catch(\Exception $e) {
                         $result = 'error: '. $e->getMessage();
                     }
                     FacebookRequestLogs::create([

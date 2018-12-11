@@ -123,23 +123,23 @@ export default class DefaultLayout extends Vue {
         FB.login((res: any) => {
             console.log('fb response', res);
             if(res.status==='connected') {
-                FB.api('/me/permissions', (pres: any) => {
-                    let reqRequest = [];
-                    for(let i in pres.data) {
-                        let index = this.permissions.indexOf(pres.data[i].permission);
-                        if(index>-1 && pres.data[i].status=='granted') {
-                            continue;
-                        }
-                        reqRequest.push(pres.data[i].permission);
-                    }
 
-                    if(reqRequest.length>0) {
-                        let mesg = `Login with facebook and allow following permissions\n${reqRequest.join(', ')}`;
-                        alert(mesg);
-                    } else {
-                        this.updateFBToken(res.authResponse);
-                    }
-                });
+                let valid = true;
+
+                for(var i in this.permissions) {
+                    FB.api(`/me/permissions/${this.permissions[i]}`, (pres: any) => {
+                        if(pres.data[0].status!=='granted') {
+                            valid = false;
+
+                            let mesg = `Login with facebook and allow ${this.permissions[i]} permissions`;
+                            alert(mesg);
+                        }
+                    });
+                }
+
+                if(valid) {
+                    this.updateFBToken(res.authResponse);
+                }
             }
         }, {
             auth_type: 'rerequest',

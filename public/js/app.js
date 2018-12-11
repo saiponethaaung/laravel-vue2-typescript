@@ -36801,23 +36801,19 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         FB.login((res) => {
             console.log('fb response', res);
             if (res.status === 'connected') {
-                FB.api('/me/permissions', (pres) => {
-                    let reqRequest = [];
-                    for (let i in pres.data) {
-                        let index = this.permissions.indexOf(pres.data[i].permission);
-                        if (index > -1 && pres.data[i].status == 'granted') {
-                            continue;
+                let valid = true;
+                for (var i in this.permissions) {
+                    FB.api(`/me/permissions/${this.permissions[i]}`, (pres) => {
+                        if (pres.data[0].status !== 'granted') {
+                            valid = false;
+                            let mesg = `Login with facebook and allow ${this.permissions[i]} permissions`;
+                            alert(mesg);
                         }
-                        reqRequest.push(pres.data[i].permission);
-                    }
-                    if (reqRequest.length > 0) {
-                        let mesg = `Login with facebook and allow following permissions\n${reqRequest.join(', ')}`;
-                        alert(mesg);
-                    }
-                    else {
-                        this.updateFBToken(res.authResponse);
-                    }
-                });
+                    });
+                }
+                if (valid) {
+                    this.updateFBToken(res.authResponse);
+                }
             }
         }, {
             auth_type: 'rerequest',

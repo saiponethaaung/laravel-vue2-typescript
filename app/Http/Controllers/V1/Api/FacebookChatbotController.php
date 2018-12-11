@@ -10,8 +10,11 @@ use App\Models\FacebookRequestLogs;
 class FacebookChatbotController extends Controller
 {
     public function index(Request $request) {
+        $input = json_decode(file_get_contents('php://input'), true);
+
         FacebookRequestLogs::create([
             'data' => json_encode([
+                'raw' => $input,
                 'get' => $_GET,
                 'post' => $_POST,
                 'header' => $_SERVER

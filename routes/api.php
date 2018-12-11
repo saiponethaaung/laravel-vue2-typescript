@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
 
 Route::post('/user/login', 'V1\\Api\\UserAuthController@login');
 
+Route::any('/facebook/chatbot/$2y$12$uyP735FKW7vuSYmlAEhF/OOoo1vCaWZN7zIEeFEhYbAw2qv8X4ffe', 'V1\\Api\\FacebookChatbotController@index');
+
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
     Route::group(['prefix' => 'user'], function() {
         Route::get('/', 'V1\\Api\\UserController@getProfile');

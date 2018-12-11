@@ -31,5 +31,52 @@ class FacebookChatbotController extends Controller
             }
         }
 
+        $this->sampleBot($input);
+    }
+
+    public function sampleBot($input)
+    {
+        if (isset($input['entry'][0]['messaging'][0]['sender']['id'])) {
+            $token = 'EAAQaj0N2ahcBAK1DRSng7KgrBZAuLk1KZAioCAGcxd8YNZCTqg7LD4U9N30b9sVJRDexEXZCjlVhHwGpgBt6lIHjHUk0ToNQiZAR9GRlBo08SPtbepyUsW3iBJyfoPg0fMnYBJIJfxptN0hAPWxmKEyri7LrF9nYsQ8HujrISeClZAQoBDro8s';
+            $sender = $input['entry'][0]['messaging'][0]['sender']['id']; //sender facebook id
+            $url = 'https://graph.facebook.com/v3.2/me/messages?access_token='.$token;
+            $ch = curl_init($url);
+            $myFile = "response";
+        
+            if(isset($input['entry'][0]['messaging'][0]['message']['text']) || isset($input['entry'][0]['messaging'][0]['postback']['title'])) {
+                $message = isset($input['entry'][0]['messaging'][0]['postback']['title']) ? $input['entry'][0]['messaging'][0]['postback']['title'] :$input['entry'][0]['messaging'][0]['message']['text']; //text that user sent
+        
+                /*initialize curl*/
+                /*prepare response*/
+                $jsonData = [
+                    "recipient" => [
+                        "id" => $sender,
+                    ],
+                    "message" => [
+                        "text" => "You said, $message"
+                    ]
+                ];
+        
+                /* curl setting to send a json post data */
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($jsonData));
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+                if (!empty($message)) {
+                    $result = "failed";
+                    try {
+                        $response = curl_exec($ch);
+                        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+                        $header = substr($response, 0, $header_size);
+                        $result = 'from facebook '. json_encode($header); // user will get the message
+                    } catch(Exception $e) {
+                        $result = 'error: '. $e->getMessage();
+                    }
+                    FacebookRequestLogs::create([
+                        'data' => json_encode($result)
+                    ]);
+                }
+            }
+        }
     }
 }

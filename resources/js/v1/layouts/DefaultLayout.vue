@@ -3,19 +3,19 @@
         <section id="sideMenu">
             <ul id="sideNav">
                 <li>
-                    <router-link :to="{name: 'home'}">
+                    <router-link :to="{name: 'project.home', params: {projectid: 1}}">
                         <i class="material-icons">assistant</i>
                         <span class="icon-label">Chatbot</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'home'}">
+                    <router-link :to="{name: 'project.home', params: {projectid: 2}}">
                         <i class="material-icons">question_answer</i>
                         <span class="icon-label">Inbox</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'home'}">
+                    <router-link :to="{name: 'project.home', params: {projectid: 3}}">
                         <i class="material-icons">supervisor_account</i>
                         <span class="icon-label">Users</span>
                     </router-link>
@@ -33,7 +33,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'home'}">
+                    <router-link :to="{name: 'project.configuration'}">
                         <i class="material-icons">settings</i>
                         <span class="icon-label">Settings</span>
                     </router-link>
@@ -76,7 +76,9 @@
             </section>
             <section id="innnerContent">
                 <div class="sidebar bodySidebar">
-                    <component :is="dynamicSidebar"></component>
+                    <template v-if="!$store.state.validatingProject">
+                        <component :is="dynamicSidebar"></component>
+                    </template>
                 </div>
                 <div class="bodyContent">
                     <router-view></router-view>

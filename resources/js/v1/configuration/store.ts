@@ -13,7 +13,9 @@ export default new Vuex.Store({
             block: -1,
             section: -1
         },
-        token: localStorage.getItem('access_token')
+        token: localStorage.getItem('access_token'),
+        validatingProject: false,
+        projectInfo: {}
     },
     mutations: {
         logout(state) {
@@ -39,6 +41,12 @@ export default new Vuex.Store({
                 section: section,
                 block: block
             };
+        },
+        setProjectStatus(state, { status }) {
+            state.validatingProject = status;
+        },
+        setProjectInfo(state, { project }) {
+            state.projectInfo = project;
         }
     }
 } as StoreOptions<any>);

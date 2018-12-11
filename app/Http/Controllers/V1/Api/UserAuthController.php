@@ -11,6 +11,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\User;
 
+use App\Http\Controllers\V1\Api\FacebookController;
+
 class UserAuthController extends Controller
 {
     public function login(Request $request)

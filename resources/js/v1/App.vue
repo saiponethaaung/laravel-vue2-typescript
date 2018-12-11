@@ -1,7 +1,12 @@
 <template>
     <div class="">
         <template v-if="$store.state.isLogin">
-            <default-layout></default-layout>
+            <template v-if="$route.name!=='home'">
+                <default-layout></default-layout>
+            </template>
+            <template v-else>
+                <router-view></router-view>
+            </template>
         </template>
         <template v-else>
             <login></login>

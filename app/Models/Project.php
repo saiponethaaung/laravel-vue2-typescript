@@ -23,4 +23,9 @@ class Project extends Model
     {
         return $this->hasMany('App\Models\ProjectUser', 'project_id', 'id');
     }
+
+    public function page()
+    {
+        return $this->hasOne('App\Models\ProjectPage', 'project_id', 'id');
+    }
 }

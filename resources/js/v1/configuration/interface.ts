@@ -101,3 +101,12 @@ export interface blockSuggestion {
         }
     ]
 }
+
+export interface facebookPages {
+    id: number,
+    access_token: string,
+    name: string,
+    image: string,
+    connected: boolean,
+    currentProject: boolean
+}

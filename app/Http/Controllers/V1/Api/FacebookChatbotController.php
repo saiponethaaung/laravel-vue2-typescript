@@ -7,10 +7,25 @@ use App\Http\Controllers\Controller;
 
 use App\Models\FacebookRequestLogs;
 
+use App\Models\ProjectPage;
+
 class FacebookChatbotController extends Controller
 {
+    private $token = "EAAQaj0N2ahcBAK1DRSng7KgrBZAuLk1KZAioCAGcxd8YNZCTqg7LD4U9N30b9sVJRDexEXZCjlVhHwGpgBt6lIHjHUk0ToNQiZAR9GRlBo08SPtbepyUsW3iBJyfoPg0fMnYBJIJfxptN0hAPWxmKEyri7LrF9nYsQ8HujrISeClZAQoBDro8s";
     public function index(Request $request) {
         $input = json_decode(file_get_contents('php://input'), true);
+
+        if($input['object']!=='page') {
+            return null;
+        }
+
+        $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
+
+        if(empty($projectPage) || is_null($projectPage->project_id)) {
+            return null;
+        }
+        
+        $this->token = $projectPage->token;
 
         FacebookRequestLogs::create([
             'data' => json_encode([
@@ -37,9 +52,8 @@ class FacebookChatbotController extends Controller
     public function sampleBot($input)
     {
         if (isset($input['entry'][0]['messaging'][0]['sender']['id'])) {
-            $token = 'EAAQaj0N2ahcBAK1DRSng7KgrBZAuLk1KZAioCAGcxd8YNZCTqg7LD4U9N30b9sVJRDexEXZCjlVhHwGpgBt6lIHjHUk0ToNQiZAR9GRlBo08SPtbepyUsW3iBJyfoPg0fMnYBJIJfxptN0hAPWxmKEyri7LrF9nYsQ8HujrISeClZAQoBDro8s';
             $sender = $input['entry'][0]['messaging'][0]['sender']['id']; //sender facebook id
-            $url = 'https://graph.facebook.com/v3.2/me/messages?access_token='.$token;
+            $url = 'https://graph.facebook.com/v3.2/me/messages?access_token='.$this->token;
             $ch = curl_init($url);
             $myFile = "response";
         

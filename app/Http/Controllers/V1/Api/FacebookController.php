@@ -11,6 +11,7 @@ use Facebook\Facebook;
 class FacebookController extends Controller
 {
     private $fb;
+    private $token = null;
 
     public function __construct($token=false)
     {
@@ -19,11 +20,12 @@ class FacebookController extends Controller
     
     public function reconstruct($token=false)
     {
+        $this->token = $token ? $token : config('facebook.appId').'|'.config('facebook.appSecret');
         $this->fb = new Facebook([
             'app_id' => config('facebook.appId'),
             'app_secret' => config('facebook.appSecret'),
             'default_graph_version' => config('facebook.graphVersion'),
-            'default_access_token' => $token ? $token : config('facebook.appId').'|'.config('facebook.appSecret')
+            'default_access_token' => $this->token
         ]);
     }
 
@@ -164,7 +166,7 @@ class FacebookController extends Controller
         ];
     }
 
-    public function getPageList($token)
+    public function getPageList()
     {
         $res = [];
 
@@ -185,6 +187,137 @@ class FacebookController extends Controller
             return [
                 'status' => false,
                 'mesg' => $e->getMesesage()
+            ];
+        }
+
+        return [
+            'status' => true,
+            'list' => $res
+        ];
+    }
+
+    public function subscribeApp($pageid)
+    {
+        $res = [];
+
+        try {
+            $me = $this->fb->post(
+                '/'.$pageid.'/subscribed_apps',
+                [
+                    'subscribed_fields' => [
+                        'messages',
+                        'messaging_postbacks',
+                        'messaging_optins',
+                        'message_deliveries',
+                        'message_reads',
+                        'messaging_payments',
+                        'messaging_pre_checkouts',
+                        'messaging_checkout_updates',
+                        'messaging_referrals',
+                        'message_echoes',
+                        'standby',
+                        'messaging_handovers',
+                        'messaging_policy_enforcement'
+                    ]
+                ]
+            )->getGraphObject()->asArray();
+            $res = $me;
+        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Graph returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Exception $e) {
+            return [
+                'status' => false,
+                'mesg' => $e->getMesesage()
+            ];
+        }
+
+        if(!$res['success']) {
+            return [
+                'status' => false,
+                'mesg' => 'Failed to subscribe an app!',
+                'debug' => $res
+            ];
+        }
+
+        return [
+            'status' => true,
+            'list' => $res
+        ];
+    }
+
+    public function issubscribeApp($pageid)
+    {
+        $res = [];
+
+        try {
+            $me = $this->fb->get(
+                '/'.$pageid.'/subscribed_apps',
+                $this->token
+            )->getGraphEdge()->asArray();
+            $res = $me;
+        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Graph returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Exception $e) {
+            return [
+                'status' => false,
+                'mesg' => $e->getMesesage()
+            ];
+        }
+
+        return [
+            'status' => true,
+            'isSubscribe' => !empty($res),
+            'raw' => $res
+        ];
+    }
+
+    public function unsubscribeApp($pageid)
+    {
+        $res = [];
+
+        try {
+            $me = $this->fb->delete(
+                '/'.$pageid.'/subscribed_apps'
+            )->getGraphNode()->asArray();
+            $res = $me;
+        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Graph returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Exception $e) {
+            return [
+                'status' => false,
+                'mesg' => $e->getMesesage()
+            ];
+        }
+
+        if(!$res['success']) {
+            return [
+                'status' => false,
+                'mesg' => 'Failed to unsubscribe an app!',
+                'debug' => $res
             ];
         }
 

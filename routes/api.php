@@ -22,6 +22,7 @@ Route::post('/user/login', 'V1\\Api\\UserAuthController@login');
 Route::any('/facebook/chatbot/$2y$12$uyP735FKW7vuSYmlAEhF/OOoo1vCaWZN7zIEeFEhYbAw2qv8X4ffe', 'V1\\Api\\FacebookChatbotController@index');
 
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
+
     Route::group(['prefix' => 'user'], function() {
         Route::get('/', 'V1\\Api\\UserController@getProfile');
         Route::post('facebook-linked', 'V1\\Api\\UserController@connectFacebook');
@@ -31,16 +32,21 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::get('list', 'V1\\Api\\ProjectController@list')->name('chatbot.project.list');
     });
 
-    Route::group(['prefix' => 'project/{projectId}'], function(){
+    Route::group(['prefix' => 'project/{projectId}', 'middleware' => 'verifyPorject'], function() {
         Route::get('/', 'V1\\Api\\ProjectController@projectInfo')->name('chatbot.project.info');
         Route::get('/pages', 'V1\\Api\\ProjectController@getPage')->name('chatbot.project.page');
+        Route::post('/pages/link', 'V1\\Api\\ProjectController@linkProject')->name('chatbot.project.page.link');
+        Route::delete('/pages/link', 'V1\\Api\\ProjectController@unlinkProject')->name('chatbot.project.page.unlink');
+        
         Route::group(['prefix' => 'chat-bot'], function() {
+
             Route::post('block', 'V1\\Api\\ChatBotController@createBlock')->name('chatbot.block.create');
             Route::get('blocks', 'V1\\Api\\ChatBotController@getBlocks')->name('chatbot.blocks.get');
 
             Route::get('blocks/search', 'V1\\Api\\ChatBotController@serachSection')->name('chatbot.section.serach');
 
             Route::group(['prefix' => 'block/{blockId}', 'middleware' => 'verifyChatBlock'], function() {
+
                 Route::delete('/', 'V1\\Api\\ChatBotController@deleteBlock')->name('chatbot.block.delete');
                 Route::post('section', 'V1\\Api\\ChatBotController@createSection')->name('chatbot.section.create');
 
@@ -81,3 +87,11 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         });
     });
 });
+
+Route::any('{any}/{all?}', function() {
+    return response()->json([
+        'status' => false,
+        'code' => 404,
+        'mesg' => 'Endpoint not found!'
+    ], 404);
+})->where('all', '.+');

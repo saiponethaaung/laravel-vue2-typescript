@@ -3,37 +3,37 @@
         <section id="sideMenu">
             <ul id="sideNav">
                 <li>
-                    <router-link :to="{name: 'project.home', params: {projectid: 1}}">
+                    <router-link :to="{name: 'project.home', params: {projectid: $route.params.projectid}}">
                         <i class="material-icons">assistant</i>
                         <span class="icon-label">Chatbot</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project.home', params: {projectid: 2}}">
+                    <router-link :to="{name: 'project.home', params: {projectid: $route.params.projectid}}">
                         <i class="material-icons">question_answer</i>
                         <span class="icon-label">Inbox</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project.home', params: {projectid: 3}}">
+                    <router-link :to="{name: 'project.home', params: {projectid: $route.params.projectid}}">
                         <i class="material-icons">supervisor_account</i>
                         <span class="icon-label">Users</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'home'}">
+                    <router-link :to="{name: 'project.home', params: {projectid: $route.params.projectid}}">
                         <i class="material-icons">volume_up</i>
                         <span class="icon-label">Broadcast</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'home'}">
+                    <router-link :to="{name: 'project.home', params: {projectid: $route.params.projectid}}">
                         <i class="material-icons">stars</i>
                         <span class="icon-label">Star</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project.configuration'}">
+                    <router-link :to="{name: 'project.configuration', params: {projectid: $route.params.projectid}}">
                         <i class="material-icons">settings</i>
                         <span class="icon-label">Settings</span>
                     </router-link>
@@ -53,10 +53,10 @@
                     <div class="projectList">
                         <div class="projectInfoContainer">
                             <figure class="projectIconWrapper">
-                                <img src="/images/sample/logo.png" class="projectIcon"/>
+                                <img :src="this.$store.state.projectInfo.image ? this.$store.state.projectInfo.image : '/images/sample/logo.png'" class="projectIcon"/>
                             </figure>
                             <div class="projectInfo">
-                                <h4 class="projectName">Tech Hub Myanmar</h4>
+                                <h4 class="projectName">{{ this.$store.state.projectInfo.name ? this.$store.state.projectInfo.name : '-' }}</h4>
                                 <h6 class="projectVendor">powered by <a href="javascript:void(0);">Pixybot</a></h6>
                             </div>
                             <div class="projectNavControl">

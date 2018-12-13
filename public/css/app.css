@@ -10741,6 +10741,10 @@ a.text-dark:focus {
   height: inherit;
 }
 
+.ovAuto {
+  overflow: auto;
+}
+
 .chatBotHeading {
   font-size: 18px;
   font-weight: bold;
@@ -11678,6 +11682,50 @@ a.text-dark:focus {
   font-size: 12px;
   padding: 3px 10px;
   border: 1px solid #ebebeb;
+}
+
+.pageList {
+  list-style: none;
+  padding: 15px;
+}
+
+.pageRoot {
+  padding: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.pageRoot .pageImage {
+  width: 50px;
+  height: 50px;
+  margin: 0;
+}
+
+.pageRoot .pageImage img {
+  width: 100%;
+  height: 100%;
+}
+
+.pageRoot .pageInfo {
+  height: 100%;
+  position: relative;
+  width: 100%;
+  padding-left: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.pageRoot .pageInfo p {
+  margin-bottom: 0;
+  width: 100%;
 }
 
 .navbar-laravel {

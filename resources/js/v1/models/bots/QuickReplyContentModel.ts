@@ -11,7 +11,7 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
     
     constructor(content: any) {
         super(content);
-        this.rootUrl = `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/quick-reply`;
+        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/quick-reply`;
         for(let i of content.content) {
             this.buildQuickReplyItem(i);
         }

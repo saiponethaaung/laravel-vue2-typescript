@@ -89,6 +89,7 @@ class CreateController extends Controller
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
                 'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     'text' => $create->content,
                     'button' => []
@@ -119,6 +120,7 @@ class CreateController extends Controller
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
                 'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     'duration' => $create->duration,
                 ]
@@ -158,6 +160,7 @@ class CreateController extends Controller
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
                 'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     'content' => [
                         [
@@ -206,6 +209,7 @@ class CreateController extends Controller
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
                 'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     [
                         'id' => $gallery->id,
@@ -352,6 +356,7 @@ class CreateController extends Controller
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
                 'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     [
                         'id' => $quickReply->id,
@@ -455,6 +460,7 @@ class CreateController extends Controller
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
                 'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     [
                         'id' => $userInput->id,

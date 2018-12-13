@@ -11,7 +11,7 @@ export default class UserInputContentModel extends ChatBlockContentModel {
     
     constructor(content: any) {
         super(content);
-        this.rootUrl = `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/user-input`;
+        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/user-input`;
         for(let i of content.content) {
             this.buildUserInputItem(i);
         }

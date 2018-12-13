@@ -115,7 +115,7 @@ export default class SidebarComponent extends Vue {
         this.blockLoading = true;
 
         await Axios({
-            url: "/api/v1/chat-bot/blocks"
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/blocks`
         }).then((res: any) => {
             for(let chatBlock of res.data.data) {
                 this.blocks.push(new ChatBlockModel(chatBlock.block, chatBlock.sections));
@@ -131,7 +131,7 @@ export default class SidebarComponent extends Vue {
         this.creating = true;
 
         await Axios({
-            url: "/api/v1/chat-bot/block",
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block`,
             method: "POST"
         }).then((res: any) => {
             this.blocks.push(new ChatBlockModel(res.data.data, []));

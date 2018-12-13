@@ -32,6 +32,7 @@ class GetController extends Controller
                 'type' => (int) $content->type,
                 'section_id' => (int) $content->section->id,
                 'block_id' => (int) $content->section->block_id,
+                'project' => md5($request->attributes->get('project')->id),
                 'content' => null
             ];
 

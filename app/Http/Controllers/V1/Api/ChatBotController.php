@@ -24,6 +24,7 @@ class ChatBotController extends Controller
         try {
             $block = ChatBlock::create([
                 'title' => 'Untitle block',
+                'project_id' => $request->attributes->get('project')->id,
                 'is_lock' => false,
                 'type' => 1
             ]);
@@ -44,6 +45,7 @@ class ChatBotController extends Controller
             'code' => 201,
             'data' => [
                 'id' => $block->id,
+                'project' => md5($block->project_id),
                 'title' => $block->title,
                 'lock' => $block->is_lock
             ]
@@ -74,6 +76,7 @@ class ChatBotController extends Controller
             $parsed = [
                 'block' => [
                     'id' => $block->id,
+                    'project' => md5($block->project_id),
                     'title' => $block->title,
                     'lock' => $block->type===0 || $block->is_lock ? true : false
                 ],

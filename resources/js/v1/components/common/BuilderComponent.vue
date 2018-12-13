@@ -144,7 +144,7 @@ export default class BuilderComponent extends Vue {
 
         this.creating++;
         await Axios({
-            url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
             data: data,
             method: 'post'
         }).then((res: any) => {

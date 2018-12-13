@@ -2,6 +2,7 @@ import ChatBlockSectionModel from "../models/ChatBlockSectionModel";
 
 export interface ChatBlock {
     id: number,
+    project: string,
     title: string,
     lock: boolean,
     sections: Array<ChatBlockSectionModel>
@@ -16,7 +17,8 @@ export interface BotContent {
     id: number
     type: number,
     section: number,
-    block: number
+    block: number,
+    project: string
 }
 
 export interface textContent {

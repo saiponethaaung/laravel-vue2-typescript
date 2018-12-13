@@ -48,7 +48,7 @@ export default class TextContentModel extends ChatBlockContentModel {
         data.append('_method', 'put');
 
         await Axios({
-            url: `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`,
+            url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`,
             data: data,
             method: 'post',
             cancelToken: this.saveToken.token

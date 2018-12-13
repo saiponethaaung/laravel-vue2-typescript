@@ -75,11 +75,15 @@ export default class ChatBlockModel extends AjaxErrorHandler{
         return this.creatingSection;
     }
 
+    get project() : string {
+        return this.chatBlock.project;
+    }
+
     async createNewSection() {
         this.creatingSection = true;
         
         await Axios({
-            url: `/api/v1/chat-bot/block/${this.id}/section`,
+            url: `/api/v1/project/${this.project}/chat-bot/block/${this.id}/section`,
             method: 'post'
         }).then((res: any) => {
             this.buildContentModel(res.data.data);
@@ -98,7 +102,7 @@ export default class ChatBlockModel extends AjaxErrorHandler{
         };
 
         await Axios({
-            url: `/api/v1/chat-bot/block/${this.id}`,
+            url: `/api/v1/project/${this.project}/chat-bot/block/${this.id}`,
             method: 'delete'
         }).catch((err: any) => {
             res.mesg = this.globalHandler(err, "Failed to delete block!");

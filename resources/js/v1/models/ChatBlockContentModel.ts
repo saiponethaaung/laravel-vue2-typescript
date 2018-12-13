@@ -12,6 +12,7 @@ export default class ChatBlockContentModel extends AjaxErrorHandler {
             type: content.type,
             block: content.block_id,
             section: content.section_id,
+            project: content.project
         };
     }
 
@@ -37,6 +38,10 @@ export default class ChatBlockContentModel extends AjaxErrorHandler {
 
     set isUpdating(status: boolean) {
         this.updating = status;
+    }
+
+    get project(): string {
+        return this.content.project;
     }
 
 }

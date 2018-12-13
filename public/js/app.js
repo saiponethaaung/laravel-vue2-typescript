@@ -11687,6 +11687,7 @@ class ChatBlockContentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxError
             type: content.type,
             block: content.block_id,
             section: content.section_id,
+            project: content.project
         };
     }
     get contentId() {
@@ -11706,6 +11707,9 @@ class ChatBlockContentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxError
     }
     set isUpdating(status) {
         this.updating = status;
+    }
+    get project() {
+        return this.content.project;
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ChatBlockContentModel;
@@ -23035,7 +23039,7 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
             data.append('type', this.type.toString());
             data.append('_method', 'put');
             yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
-                url: `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`,
+                url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`,
                 data: data,
                 method: 'post',
                 cancelToken: this.saveToken.token
@@ -23095,7 +23099,7 @@ class TypingContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMo
             data.append('_method', 'put');
             this.isUpdating = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`,
+                url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`,
                 data: data,
                 method: 'post',
                 cancelToken: this.saveToken.token
@@ -23146,7 +23150,7 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
         this.listButton = content.content.button;
     }
     buildListItem(content) {
-        this.listContent.push(new __WEBPACK_IMPORTED_MODULE_2__ListItemModel__["a" /* default */](content, `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/list`));
+        this.listContent.push(new __WEBPACK_IMPORTED_MODULE_2__ListItemModel__["a" /* default */](content, `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/list`));
     }
     get item() {
         return this.listContent;
@@ -23161,7 +23165,7 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
         return __awaiter(this, void 0, void 0, function* () {
             this.isCreating = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/list`,
+                url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/list`,
                 method: 'post'
             }).then((res) => {
                 this.buildListItem(res.data.content);
@@ -23208,7 +23212,7 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentM
         }
     }
     buildGalleryItem(content) {
-        this.galleryContent.push(new __WEBPACK_IMPORTED_MODULE_1__GalleryItemModel__["a" /* default */](content, `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/gallery`));
+        this.galleryContent.push(new __WEBPACK_IMPORTED_MODULE_1__GalleryItemModel__["a" /* default */](content, `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/gallery`));
     }
     get item() {
         return this.galleryContent;
@@ -23223,7 +23227,7 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentM
         return __awaiter(this, void 0, void 0, function* () {
             this.isCreating = true;
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
-                url: `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/gallery`,
+                url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/gallery`,
                 method: 'post'
             }).then((res) => {
                 this.buildGalleryItem(res.data.content);
@@ -23265,7 +23269,7 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConte
         this.quickReplyContent = [];
         this.creating = false;
         this.rootUrl = '';
-        this.rootUrl = `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/quick-reply`;
+        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/quick-reply`;
         for (let i of content.content) {
             this.buildQuickReplyItem(i);
         }
@@ -23328,7 +23332,7 @@ class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConten
         this.userInputContent = [];
         this.creating = false;
         this.rootUrl = '';
-        this.rootUrl = `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/user-input`;
+        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/user-input`;
         for (let i of content.content) {
             this.buildUserInputItem(i);
         }
@@ -36026,7 +36030,7 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
             this.loadingToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
             this.isLoading = true;
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
-                url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
                 cancelToken: this.loadingToken.token
             }).then((res) => {
                 this.contents = res.data;
@@ -36224,7 +36228,7 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
         return __awaiter(this, void 0, void 0, function* () {
             this.blockLoading = true;
             yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
-                url: "/api/v1/chat-bot/blocks"
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/blocks`
             }).then((res) => {
                 for (let chatBlock of res.data.data) {
                     this.blocks.push(new __WEBPACK_IMPORTED_MODULE_2__models_ChatBlockModel__["a" /* default */](chatBlock.block, chatBlock.sections));
@@ -36238,7 +36242,7 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
         return __awaiter(this, void 0, void 0, function* () {
             this.creating = true;
             yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
-                url: "/api/v1/chat-bot/block",
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block`,
                 method: "POST"
             }).then((res) => {
                 this.blocks.push(new __WEBPACK_IMPORTED_MODULE_2__models_ChatBlockModel__["a" /* default */](res.data.data, []));
@@ -36335,11 +36339,14 @@ class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler
     get isSecCreating() {
         return this.creatingSection;
     }
+    get project() {
+        return this.chatBlock.project;
+    }
     createNewSection() {
         return __awaiter(this, void 0, void 0, function* () {
             this.creatingSection = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/chat-bot/block/${this.id}/section`,
+                url: `/api/v1/project/${this.project}/chat-bot/block/${this.id}/section`,
                 method: 'post'
             }).then((res) => {
                 this.buildContentModel(res.data.data);
@@ -36357,7 +36364,7 @@ class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler
                 mesg: "Success"
             };
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/chat-bot/block/${this.id}`,
+                url: `/api/v1/project/${this.project}/chat-bot/block/${this.id}`,
                 method: 'delete'
             }).catch((err) => {
                 res.mesg = this.globalHandler(err, "Failed to delete block!");
@@ -38718,7 +38725,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
             data.append('type', content.type);
             this.creating++;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
                 data: data,
                 method: 'post'
             }).then((res) => {

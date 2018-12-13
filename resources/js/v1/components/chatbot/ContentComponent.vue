@@ -44,7 +44,7 @@ export default class ContentComponent extends Vue {
         this.isLoading = true;
 
         await Axios({
-            url: `/api/v1/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
             cancelToken: this.loadingToken.token
         }).then((res: any) => {
             this.contents = res.data;

@@ -17,7 +17,7 @@ export default class GalleryContentModel extends ChatBlockContentModel {
     }
 
     private buildGalleryItem(content: galleryContent) {
-        this.galleryContent.push(new GalleryItemModel(content, `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/gallery`));
+        this.galleryContent.push(new GalleryItemModel(content, `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/gallery`));
     }
 
     get item() : Array<GalleryItemModel> {
@@ -36,7 +36,7 @@ export default class GalleryContentModel extends ChatBlockContentModel {
         this.isCreating = true;
 
         await Axios({
-            url: `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/gallery`,
+            url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/gallery`,
             method: 'post'
         }).then((res: any) => {
             this.buildGalleryItem(res.data.content);

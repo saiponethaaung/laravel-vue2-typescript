@@ -27,6 +27,15 @@ class ValidateChatBlock
             ], 422);
         }
 
+        if((int) $block->project_id!==(int) $request->attributes->get('project')->id) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Invalid project block!'
+            ], 422);
+        }
+
+
         $request->attributes->add([
             'chatBlock' => $block
         ]);

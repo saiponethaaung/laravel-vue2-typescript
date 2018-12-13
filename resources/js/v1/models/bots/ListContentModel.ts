@@ -19,7 +19,7 @@ export default class ListContentModel extends ChatBlockContentModel {
     }
 
     private buildListItem(content: listContent) {
-        this.listContent.push(new ListItemModel(content, `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/list`));
+        this.listContent.push(new ListItemModel(content, `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/list`));
     }
 
     get item() : Array<ListItemModel> {
@@ -38,7 +38,7 @@ export default class ListContentModel extends ChatBlockContentModel {
         this.isCreating = true;
 
         await Axios({
-            url: `/api/v1/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/list`,
+            url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/list`,
             method: 'post'
         }).then((res: any) => {
             this.buildListItem(res.data.content);

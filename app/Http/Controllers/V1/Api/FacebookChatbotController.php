@@ -12,6 +12,7 @@ use App\Models\ProjectPage;
 class FacebookChatbotController extends Controller
 {
     private $token = "EAAQaj0N2ahcBAK1DRSng7KgrBZAuLk1KZAioCAGcxd8YNZCTqg7LD4U9N30b9sVJRDexEXZCjlVhHwGpgBt6lIHjHUk0ToNQiZAR9GRlBo08SPtbepyUsW3iBJyfoPg0fMnYBJIJfxptN0hAPWxmKEyri7LrF9nYsQ8HujrISeClZAQoBDro8s";
+    
     public function index(Request $request) {
         $input = json_decode(file_get_contents('php://input'), true);
 

@@ -3,14 +3,17 @@
         <div class="botTextComponent">
             <textarea class="textBody" v-model="content.value" v-on:blur="content.saveContent()"></textarea>
             <div class="textBtn">
-                <div class="addBtn" @click="content.showBtn=true">
+                <div class="addBtn btnCon" v-if="content.addingNewBtn">
+                    Creating...
+                </div>
+                <div class="addBtn" @click="content.addButton()">
                     <i class="material-icons">add</i>Add Button
                 </div>
-                <div class="buttonPopBox" v-if="content.showBtn">
+                <!-- <div class="buttonPopBox" v-if="content.showBtn">
                     <div>
                         asd
                     </div>
-                </div>
+                </div> -->
             </div>
             <div v-if="content.isUpdating">
                 Updating...

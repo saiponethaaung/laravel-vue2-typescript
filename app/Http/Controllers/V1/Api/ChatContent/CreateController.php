@@ -17,6 +17,7 @@ use App\Models\ChatGallery;
 use App\Models\ChatAttribute;
 use App\Models\ChatQuickReply;
 use App\Models\ChatUserInput;
+use App\Models\ChatButton;
 
 class CreateController extends Controller
 {
@@ -517,5 +518,62 @@ class CreateController extends Controller
                 'validation' => 0
             ]
         ]);
+    }
+
+    public function createTextButton(Request $request)
+    {
+        $total = ChatButton::where('content_id', $request->attributes->get('chatBlockSectionContent')->id)->count();
+        if($total>2) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Text button at it\'s limit!'
+            ], 422);
+        }
+
+        $res = $this->createButton($request, $total, $request->attributes->get('chatBlockSectionContent')->id);
+
+        if($res['status']===false) {
+            return response()->json($res, $res['code']);
+        }
+
+        return response()->json([
+            'mesg' => 123
+        ]);
+    }
+
+    public function createButton(Request $request, $order=0, $content=null, $gallery=null)
+    {
+        $button = null;
+
+        DB::beginTransaction();
+        try {
+            $button = ChatButton::create([
+                'title' => '',
+                'text' => '',
+                'phone' => '',
+                'url' => '',
+                'content_id' => $content,
+                'gallery_id' => $gallery,
+                'action_type' => 0,
+                'order' => $order+1
+            ]);
+        } catch(\Exceptin $e) {
+            DB::rollback();
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to create a button!',
+                'debugMesg' => $e->getMessage()
+            ];
+        }
+
+        DB::commit();
+
+        return [
+            'status' => true,
+            'code' => 201,
+            'button' => $button
+        ];
     }
 }

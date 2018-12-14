@@ -1,15 +1,20 @@
 import Axios, { CancelToken, CancelTokenSource } from "axios";
 import { textContent, BotContent } from "../../configuration/interface";
 import ChatBlockContentModel from "../ChatBlockContentModel";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
 export default class TextContentModel extends ChatBlockContentModel {
-
+    
+    private rootUrl: string;
     private textContent: textContent;
+    private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private saveToken: CancelTokenSource = Axios.CancelToken.source();
-    private showButton: boolean = false;
+    private buttonToken: CancelTokenSource = Axios.CancelToken.source();
+    private buttonCreating: boolean = false;
 
     constructor(content: any) {
         super(content);
+        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
         this.textContent = {
             content: content.content.text,
             button: content.content.button
@@ -29,11 +34,37 @@ export default class TextContentModel extends ChatBlockContentModel {
     }
 
     get showBtn() : boolean {
-        return this.showButton;
+        return this.textContent.button.length<3;
     }
 
-    set showBtn(status: boolean) {
-        this.showButton = status;
+    get addingNewBtn() : boolean {
+        return this.buttonCreating;
+    }
+
+    set addingNewBtn(status: boolean) {
+        this.buttonCreating = status;
+    }
+
+    async addButton() {
+        this.addingNewBtn = true;
+
+        this.buttonToken.cancel();
+        this.buttonToken = Axios.CancelToken.source();
+
+        await Axios({
+            url: `${this.rootUrl}/button/text`,
+            method: 'post',
+            cancelToken: this.buttonToken.token
+        }).then((res) => {
+            this.textContent.button.push(res.data.button);
+        }).catch((err) => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
+                alert(mesg);
+            }
+        });
+
+        this.addingNewBtn = false;
     }
 
     async saveContent() {
@@ -48,7 +79,7 @@ export default class TextContentModel extends ChatBlockContentModel {
         data.append('_method', 'put');
 
         await Axios({
-            url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`,
+            url: this.rootUrl,
             data: data,
             method: 'post',
             cancelToken: this.saveToken.token

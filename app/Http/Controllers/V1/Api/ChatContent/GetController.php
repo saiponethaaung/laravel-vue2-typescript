@@ -17,6 +17,7 @@ use App\Models\ChatGallery;
 use App\Models\ChatAttribute;
 use App\Models\ChatQuickReply;
 use App\Models\ChatUserInput;
+use App\Models\ChatButton;
 
 class GetController extends Controller
 {
@@ -70,9 +71,27 @@ class GetController extends Controller
 
     public function parseText($content)
     {
+        $button = ChatButton::where('content_id', $content->id)->get();
+
+        $buttonList = [];
+
+        foreach($button as $btn) {
+            $buttonList[] = [
+                'id' => $btn->id,
+                'type' => $btn->action_type,
+                'title' => $btn->title,
+                'block' => [],
+                'url' => $btn->url,
+                'phone' => [
+                    'countryCode' => 95,
+                    'number' => null
+                ]
+            ];
+        }
+
         return [
             'text' => $content->content,
-            'button' => []
+            'button' => $buttonList
         ];
     }
 

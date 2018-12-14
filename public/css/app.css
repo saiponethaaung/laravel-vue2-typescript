@@ -11149,6 +11149,10 @@ a.text-dark:focus {
   margin-right: 8px;
 }
 
+.btnCon {
+  border-bottom: 1px solid #ebebeb;
+}
+
 .typingRoot {
   display: inline-block;
   border: 1px solid #e2e2e2;

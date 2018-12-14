@@ -59,7 +59,11 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
                         Route::post('/image', 'V1\\Api\\ChatContent\\GetController@getContent')->name('chatbot.content.image.upload');
                         Route::delete('/image', 'V1\\Api\\ChatContent\\GetController@getContents')->name('chatbot.content.image.delete');
 
-                        Route::group(['prefix' => 'gallery'], function() {
+                        Route::group(['prefix' => 'button'], function() {
+                            Route::post('text', 'V1\\Api\\ChatContent\\CreateController@createTextButton')->name('chatbot.content.text.button.create');
+                        });
+
+                        Route::group(['prefix' => 'list'], function() {
                             Route::post('/', 'V1\\Api\\ChatContent\\CreateController@createNewList')->name('chatbot.content.list.create');
                             Route::put('/{listId}', 'V1\\Api\\ChatContent\\UpdateController@updateList')->name('chatbot.content.list.update');
                             Route::post('/{listId}/image', 'V1\\Api\\ChatContent\\UpdateController@uploadListImage')->name('chatbot.content.list.image.upload');

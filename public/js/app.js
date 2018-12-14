@@ -22994,6 +22994,7 @@ function applyToTag (styleElement, obj) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -23004,11 +23005,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 
+
 class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__["a" /* default */] {
     constructor(content) {
         super(content);
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__["a" /* default */]();
         this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
-        this.showButton = false;
+        this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+        this.buttonCreating = false;
+        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
         this.textContent = {
             content: content.content.text,
             button: content.content.button
@@ -23024,10 +23029,33 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
         return 1;
     }
     get showBtn() {
-        return this.showButton;
+        return this.textContent.button.length < 3;
     }
-    set showBtn(status) {
-        this.showButton = status;
+    get addingNewBtn() {
+        return this.buttonCreating;
+    }
+    set addingNewBtn(status) {
+        this.buttonCreating = status;
+    }
+    addButton() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.addingNewBtn = true;
+            this.buttonToken.cancel();
+            this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+                url: `${this.rootUrl}/button/text`,
+                method: 'post',
+                cancelToken: this.buttonToken.token
+            }).then((res) => {
+                this.textContent.button.push(res.data.button);
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
+                    alert(mesg);
+                }
+            });
+            this.addingNewBtn = false;
+        });
     }
     saveContent() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -23039,7 +23067,7 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
             data.append('type', this.type.toString());
             data.append('_method', 'put');
             yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
-                url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`,
+                url: this.rootUrl,
                 data: data,
                 method: 'post',
                 cancelToken: this.saveToken.token
@@ -38971,13 +38999,19 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("div", { staticClass: "textBtn" }, [
+        _vm.content.addingNewBtn
+          ? _c("div", { staticClass: "addBtn btnCon" }, [
+              _vm._v("\n                Creating...\n            ")
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c(
           "div",
           {
             staticClass: "addBtn",
             on: {
               click: function($event) {
-                _vm.content.showBtn = true
+                _vm.content.addButton()
               }
             }
           },
@@ -38985,13 +39019,7 @@ var render = function() {
             _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
             _vm._v("Add Button\n            ")
           ]
-        ),
-        _vm._v(" "),
-        _vm.content.showBtn
-          ? _c("div", { staticClass: "buttonPopBox" }, [
-              _c("div", [_vm._v("\n                    asd\n                ")])
-            ])
-          : _vm._e()
+        )
       ]),
       _vm._v(" "),
       _vm.content.isUpdating

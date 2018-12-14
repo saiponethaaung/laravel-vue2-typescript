@@ -83,8 +83,9 @@ export interface userInputContent {
 }
 
 export interface buttonContent {
+    id: number,
     type: number,
-    content: string,
+    title: string,
     block: Array<number>,
     url: string,
     phone: {

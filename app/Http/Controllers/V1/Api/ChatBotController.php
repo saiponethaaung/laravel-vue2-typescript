@@ -56,6 +56,7 @@ class ChatBotController extends Controller
     {
         $blocks = ChatBlock::query();
         $blocks->with(['sections']);
+        $blocks->where('project_id', $request->attributes->get('project')->id);
         $blocks->orderBy('order', 'asc');
         $blocks = $blocks->get();
 

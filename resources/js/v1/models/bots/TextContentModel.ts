@@ -1,5 +1,5 @@
 import Axios, { CancelToken, CancelTokenSource } from "axios";
-import { textContent, BotContent } from "../../configuration/interface";
+import { textContent, BotContent, buttonContent } from "../../configuration/interface";
 import ChatBlockContentModel from "../ChatBlockContentModel";
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
@@ -11,6 +11,7 @@ export default class TextContentModel extends ChatBlockContentModel {
     private saveToken: CancelTokenSource = Axios.CancelToken.source();
     private buttonToken: CancelTokenSource = Axios.CancelToken.source();
     private buttonCreating: boolean = false;
+    private buttonEditIndex: number = -1;
 
     constructor(content: any) {
         super(content);
@@ -33,6 +34,10 @@ export default class TextContentModel extends ChatBlockContentModel {
         return 1;
     }
 
+    get buttons() : Array<buttonContent>{
+        return this.textContent.button;
+    }
+
     get showBtn() : boolean {
         return this.textContent.button.length<3;
     }
@@ -43,6 +48,14 @@ export default class TextContentModel extends ChatBlockContentModel {
 
     set addingNewBtn(status: boolean) {
         this.buttonCreating = status;
+    }
+
+    get btnEditIndex() : number {
+        return this.buttonEditIndex;
+    }
+
+    set btnEditIndex(index: number) {
+        this.buttonEditIndex = index;
     }
 
     async addButton() {

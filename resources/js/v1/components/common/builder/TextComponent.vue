@@ -3,10 +3,19 @@
         <div class="botTextComponent">
             <textarea class="textBody" v-model="content.value" v-on:blur="content.saveContent()"></textarea>
             <div class="textBtn">
+                <div class="addBtn btnCon" v-for="(button, index) in content.buttons" :key="index" @click="content.btnEditIndex=index">
+                    {{ button.title ? button.title : 'New Button' }}
+                    <button-component
+                        :button="button"
+                        v-if="content.btnEditIndex===index"
+                        v-on:closeContent="(status) => {
+                            if(status && content.btnEditIndex===index) content.btnEditIndex=-1;
+                        }"></button-component>
+                </div>
                 <div class="addBtn btnCon" v-if="content.addingNewBtn">
                     Creating...
                 </div>
-                <div class="addBtn" @click="content.addButton()">
+                <div class="addBtn" v-if="content.buttons.length<3 && !content.addingNewBtn" @click="content.addButton()">
                     <i class="material-icons">add</i>Add Button
                 </div>
                 <!-- <div class="buttonPopBox" v-if="content.showBtn">

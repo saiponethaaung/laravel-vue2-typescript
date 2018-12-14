@@ -538,8 +538,10 @@ class CreateController extends Controller
         }
 
         return response()->json([
-            'mesg' => 123
-        ]);
+            'status' => true,
+            'code' => 201,
+            'button' => $res['button']
+        ], 201);
     }
 
     public function createButton(Request $request, $order=0, $content=null, $gallery=null)
@@ -573,7 +575,17 @@ class CreateController extends Controller
         return [
             'status' => true,
             'code' => 201,
-            'button' => $button
+            'button' => [
+                'id' => $button->id,
+                'type' => $button->action_type,
+                'title' => $button->title,
+                'block' => [],
+                'url' => $button->url,
+                'phone' => [
+                    'countryCode' => 95,
+                    'number' => null
+                ]
+            ]
         ];
     }
 }

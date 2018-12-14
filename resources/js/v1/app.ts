@@ -13,6 +13,7 @@ import store from './configuration/store';
 import App from './App.vue';
 import PopupComponent from './components/common/PopupComponent.vue';
 import BuilderComponent from './components/common/BuilderComponent.vue';
+import ButtonComponent from './components/common/builder/ButtonComponent.vue';
 import Axios from 'axios';
 
 let eventHub: any = new Vue();
@@ -63,6 +64,7 @@ router.beforeEach(async (to, from, next) => {
 Vue.component('app', App);
 Vue.component('popup-component', PopupComponent);
 Vue.component('builder-component', BuilderComponent);
+Vue.component('button-component', ButtonComponent);
 
 new Vue({
     router,

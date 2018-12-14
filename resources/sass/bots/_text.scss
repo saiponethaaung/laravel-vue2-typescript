@@ -36,6 +36,19 @@
     }
 }
 
-.btnCon {
+.btnCon:not(:last-child) {
     border-bottom: 1px solid $borderPrimary
+}
+
+.btnCon {
+    position: relative;
+}
+
+.btnComponentTypeOne {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 0px $borderPrimary;
 }

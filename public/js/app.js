@@ -186,16 +186,16 @@ module.exports = function normalizeComponent (
 /* unused harmony export Inject */
 /* unused harmony export Provide */
 /* unused harmony export Model */
-/* harmony export (immutable) */ __webpack_exports__["b"] = Prop;
-/* harmony export (immutable) */ __webpack_exports__["d"] = Watch;
-/* unused harmony export Emit */
+/* harmony export (immutable) */ __webpack_exports__["c"] = Prop;
+/* harmony export (immutable) */ __webpack_exports__["e"] = Watch;
+/* harmony export (immutable) */ __webpack_exports__["b"] = Emit;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_class_component__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_reflect_metadata__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_reflect_metadata___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_reflect_metadata__);
 /* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default.a; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0_vue__["default"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0_vue__["default"]; });
 /** vue-property-decorator verson 6.1.0 MIT LICENSE copyright 2018 kaorun343 */
 
 
@@ -23013,6 +23013,7 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
         this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.buttonCreating = false;
+        this.buttonEditIndex = -1;
         this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
         this.textContent = {
             content: content.content.text,
@@ -23028,6 +23029,9 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
     get type() {
         return 1;
     }
+    get buttons() {
+        return this.textContent.button;
+    }
     get showBtn() {
         return this.textContent.button.length < 3;
     }
@@ -23036,6 +23040,12 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
     }
     set addingNewBtn(status) {
         this.buttonCreating = status;
+    }
+    get btnEditIndex() {
+        return this.buttonEditIndex;
+    }
+    set btnEditIndex(index) {
+        this.buttonEditIndex = index;
     }
     addButton() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -23423,8 +23433,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue__ = __webpack_require__(90);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_axios__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -23447,6 +23459,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
+
 let eventHub = new __WEBPACK_IMPORTED_MODULE_1_vue__["default"]();
 window.fbSdkLoaded = false;
 function logoutResponseHandler(error) {
@@ -23459,11 +23472,11 @@ function logoutResponseHandler(error) {
         return Promise.reject(error);
     }
 }
-__WEBPACK_IMPORTED_MODULE_7_axios___default.a.interceptors.response.use(response => response, logoutResponseHandler);
+__WEBPACK_IMPORTED_MODULE_8_axios___default.a.interceptors.response.use(response => response, logoutResponseHandler);
 __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */].beforeEach((to, from, next) => __awaiter(this, void 0, void 0, function* () {
     if (__WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.token !== null) {
-        __WEBPACK_IMPORTED_MODULE_7_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.token}`;
-        yield __WEBPACK_IMPORTED_MODULE_7_axios___default()({
+        __WEBPACK_IMPORTED_MODULE_8_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.token}`;
+        yield __WEBPACK_IMPORTED_MODULE_8_axios___default()({
             url: '/api/v1/user'
         }).then((res) => {
             console.log('res', res);
@@ -23485,6 +23498,7 @@ __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */].beforeEach
 __WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('app', __WEBPACK_IMPORTED_MODULE_4__App_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('popup-component', __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('builder-component', __WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('button-component', __WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue___default.a);
 new __WEBPACK_IMPORTED_MODULE_1_vue__["default"]({
     router: __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */],
     store: __WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */],
@@ -33938,7 +33952,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-let ProjectListComponent = class ProjectListComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+let ProjectListComponent = class ProjectListComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
         this.loading = true;
@@ -35601,7 +35615,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-let ProjectRootComponent = class ProjectRootComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+let ProjectRootComponent = class ProjectRootComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
         this.validateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
@@ -35633,7 +35647,7 @@ let ProjectRootComponent = class ProjectRootComponent extends __WEBPACK_IMPORTED
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Watch */])('$route.params.projectid')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$route.params.projectid')
 ], ProjectRootComponent.prototype, "validateProject", null);
 ProjectRootComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -35750,7 +35764,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-let ProjectConfigrationComponent = class ProjectConfigrationComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+let ProjectConfigrationComponent = class ProjectConfigrationComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
         this.pages = [];
@@ -36114,7 +36128,7 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["d" /* Watch */])('$store.state.chatBot')
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$store.state.chatBot')
 ], ContentComponent.prototype, "sectionChange", null);
 ContentComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */]
@@ -36322,10 +36336,10 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["d" /* Watch */])('selectedBlock')
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('selectedBlock')
 ], SidebarComponent.prototype, "selectBlock", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["d" /* Watch */])('delBlockIndex')
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('delBlockIndex')
 ], SidebarComponent.prototype, "deleteChatBlock", null);
 SidebarComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */]
@@ -37789,7 +37803,7 @@ let App = class App extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["d" /* Watch */])('$route.name')
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$route.name')
 ], App.prototype, "validateRouter", null);
 App = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */])({
@@ -38346,7 +38360,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-let Login = class Login extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+let Login = class Login extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
         this.loading = false;
@@ -38591,7 +38605,7 @@ let PopupComponent = class PopupComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["b" /* Prop */])({
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Prop */])({
         default: 1,
         type: Number
     })
@@ -38728,7 +38742,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
         this.contents = [];
@@ -38859,7 +38873,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Prop */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
         type: Array,
         default: []
     })
@@ -38942,7 +38956,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
-let TextComponent = class TextComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+let TextComponent = class TextComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     mounted() {
         let textarea = this.$el.querySelector('textarea');
         textarea.addEventListener('keydown', function () {
@@ -38954,7 +38968,7 @@ let TextComponent = class TextComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Prop */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
         type: __WEBPACK_IMPORTED_MODULE_1__models_bots_TextContentModel__["a" /* default */],
     })
 ], TextComponent.prototype, "content", void 0);
@@ -38998,29 +39012,71 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "textBtn" }, [
-        _vm.content.addingNewBtn
-          ? _c("div", { staticClass: "addBtn btnCon" }, [
-              _vm._v("\n                Creating...\n            ")
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "addBtn",
-            on: {
-              click: function($event) {
-                _vm.content.addButton()
-              }
-            }
-          },
-          [
-            _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-            _vm._v("Add Button\n            ")
-          ]
-        )
-      ]),
+      _c(
+        "div",
+        { staticClass: "textBtn" },
+        [
+          _vm._l(_vm.content.buttons, function(button, index) {
+            return _c(
+              "div",
+              {
+                key: index,
+                staticClass: "addBtn btnCon",
+                on: {
+                  click: function($event) {
+                    _vm.content.btnEditIndex = index
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(button.title ? button.title : "New Button") +
+                    "\n                "
+                ),
+                _vm.content.btnEditIndex === index
+                  ? _c("button-component", {
+                      attrs: { button: button },
+                      on: {
+                        closeContent: function(status) {
+                          if (status && _vm.content.btnEditIndex === index) {
+                            _vm.content.btnEditIndex = -1
+                          }
+                        }
+                      }
+                    })
+                  : _vm._e()
+              ],
+              1
+            )
+          }),
+          _vm._v(" "),
+          _vm.content.addingNewBtn
+            ? _c("div", { staticClass: "addBtn btnCon" }, [
+                _vm._v("\n                Creating...\n            ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.content.buttons.length < 3 && !_vm.content.addingNewBtn
+            ? _c(
+                "div",
+                {
+                  staticClass: "addBtn",
+                  on: {
+                    click: function($event) {
+                      _vm.content.addButton()
+                    }
+                  }
+                },
+                [
+                  _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+                  _vm._v("Add Button\n            ")
+                ]
+              )
+            : _vm._e()
+        ],
+        2
+      ),
       _vm._v(" "),
       _vm.content.isUpdating
         ? _c("div", [_vm._v("\n            Updating...\n        ")])
@@ -39109,7 +39165,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 
-let TypingComponent = class TypingComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+let TypingComponent = class TypingComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
         this.showOption = false;
@@ -39136,12 +39192,12 @@ let TypingComponent = class TypingComponent extends __WEBPACK_IMPORTED_MODULE_0_
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Prop */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
         type: __WEBPACK_IMPORTED_MODULE_1__models_bots_TypingContentModel__["a" /* default */],
     })
 ], TypingComponent.prototype, "content", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Watch */])('content.duration')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('content.duration')
 ], TypingComponent.prototype, "durationChange", null);
 TypingComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -39300,13 +39356,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
-let ListComponent = class ListComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+let ListComponent = class ListComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     createNewList() {
         this.content.createList();
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Prop */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
         type: __WEBPACK_IMPORTED_MODULE_1__models_bots_ListContentModel__["a" /* default */],
     })
 ], ListComponent.prototype, "content", void 0);
@@ -39679,13 +39735,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
-let GalleryComponent = class GalleryComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+let GalleryComponent = class GalleryComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     createNewGallery() {
         this.content.createGallery();
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Prop */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
         type: __WEBPACK_IMPORTED_MODULE_1__models_bots_GalleryContentModel__["a" /* default */],
     })
 ], GalleryComponent.prototype, "content", void 0);
@@ -40072,7 +40128,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 
-let QuickReplyComponent = class QuickReplyComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+let QuickReplyComponent = class QuickReplyComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     createNewQuickReply() {
         return __awaiter(this, void 0, void 0, function* () {
             this.content.createQuickReply();
@@ -40101,7 +40157,7 @@ let QuickReplyComponent = class QuickReplyComponent extends __WEBPACK_IMPORTED_M
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Prop */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
         type: __WEBPACK_IMPORTED_MODULE_1__models_bots_QuickReplyContentModel__["a" /* default */],
     })
 ], QuickReplyComponent.prototype, "content", void 0);
@@ -40611,7 +40667,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 
-let UserInputComponent = class UserInputComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Vue */] {
+let UserInputComponent = class UserInputComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
         this.validation = [
@@ -40649,7 +40705,7 @@ let UserInputComponent = class UserInputComponent extends __WEBPACK_IMPORTED_MOD
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Prop */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
         type: __WEBPACK_IMPORTED_MODULE_1__models_bots_UserInputContentModel__["a" /* default */],
     })
 ], UserInputComponent.prototype, "content", void 0);
@@ -41115,6 +41171,293 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(125)
+/* template */
+var __vue_template__ = __webpack_require__(126)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/builder/ButtonComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-25c1f636", Component.options)
+  } else {
+    hotAPI.reload("data-v-25c1f636", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 125 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.blockKeyword = "";
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */]();
+    }
+    closeContent(status) { }
+    ;
+    documentClick(e) {
+        let el = this.$refs.textBtn;
+        let target = e.target;
+        if ((el !== target) && !el.contains(target)) {
+            this.closeContent(true);
+            return null;
+        }
+        this.closeContent(false);
+    }
+    created() {
+        document.addEventListener('click', this.documentClick);
+    }
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener('click', this.documentClick);
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], ButtonComponent.prototype, "button", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('closeContent')
+], ButtonComponent.prototype, "closeContent", null);
+ButtonComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], ButtonComponent);
+/* harmony default export */ __webpack_exports__["default"] = (ButtonComponent);
+
+
+/***/ }),
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { ref: "textBtn", staticClass: "btnComponentTypeOne" }, [
+    _c("div", { staticClass: "buttonPopContent" }, [
+      _c("div", { staticClass: "buttonPopHeading" }, [
+        _c("p", { staticClass: "buttonPopInfo" }, [
+          _vm._v("If subscriber clicks")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "actionInfo" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.button.id,
+                expression: "button.id"
+              }
+            ],
+            attrs: { type: "text" },
+            domProps: { value: _vm.button.id },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.button, "id", $event.target.value)
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "buttonOptions" }, [
+        _c("div", { staticClass: "buttionActions" }, [
+          _c("ul", [
+            _c(
+              "li",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.button.type = 0
+                  }
+                }
+              },
+              [_vm._v("Blocks")]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.button.type = 1
+                  }
+                }
+              },
+              [_vm._v("URL")]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.button.type = 2
+                  }
+                }
+              },
+              [_vm._v("Phone call")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm.button.type === 0
+              ? _c("div", [
+                  _vm._v(
+                    "\n                        block\n                        "
+                  ),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.blockKeyword,
+                        expression: "blockKeyword"
+                      }
+                    ],
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.blockKeyword },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.blockKeyword = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.button.type === 1
+              ? _c("div", [
+                  _vm._v(
+                    "\n                        url\n                        "
+                  ),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.button.url,
+                        expression: "button.url"
+                      }
+                    ],
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.button.url },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.button, "url", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.button.type === 2
+              ? _c("div", [
+                  _vm._v(
+                    "\n                        phone\n                        "
+                  ),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.button.phone,
+                        expression: "button.phone"
+                      }
+                    ],
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.button.phone },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.button, "phone", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              : _vm._e()
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-25c1f636", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

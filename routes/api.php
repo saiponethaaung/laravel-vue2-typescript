@@ -32,6 +32,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::get('list', 'V1\\Api\\ProjectController@list')->name('chatbot.project.list');
     });
 
+    Route::get('chat-bot/blocks/search', 'V1\\Api\\ChatBotController@serachSection')->name('chatbot.section.serach');
+
     Route::group(['prefix' => 'project/{projectId}', 'middleware' => 'verifyPorject'], function() {
         Route::get('/', 'V1\\Api\\ProjectController@projectInfo')->name('chatbot.project.info');
         Route::get('/pages', 'V1\\Api\\ProjectController@getPage')->name('chatbot.project.page');
@@ -43,7 +45,6 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
             Route::post('block', 'V1\\Api\\ChatBotController@createBlock')->name('chatbot.block.create');
             Route::get('blocks', 'V1\\Api\\ChatBotController@getBlocks')->name('chatbot.blocks.get');
 
-            Route::get('blocks/search', 'V1\\Api\\ChatBotController@serachSection')->name('chatbot.section.serach');
 
             Route::group(['prefix' => 'block/{blockId}', 'middleware' => 'verifyChatBlock'], function() {
 
@@ -61,6 +62,15 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 
                         Route::group(['prefix' => 'button'], function() {
                             Route::post('text', 'V1\\Api\\ChatContent\\CreateController@createTextButton')->name('chatbot.content.text.button.create');
+                            Route::post('list', 'V1\\Api\\ChatContent\\CreateController@createListButton')->name('chatbot.content.list.button.create');
+                            Route::post('list/{listid}', 'V1\\Api\\ChatContent\\CreateController@createListItemButton')->name('chatbot.content.list.itme.button.create');
+                            Route::post('gallery/{galleryid}', 'V1\\Api\\ChatContent\\CreateController@createGalleryButton')->name('chatbot.content.gallery.button.create');
+                            Route::group(['prefix' => '{buttonid}'], function() {
+                                Route::put('/', 'V1\\Api\\ChatContent\\UpdateController@updateButtonInfo')->name('chatbot.content.button.update');
+                                Route::delete('/', 'V1\\Api\\ChatContent\\DeleteController@deleteButton')->name('chatbot.content.button.delete');
+                                Route::put('block', 'V1\\Api\\ChatContent\\UpdateController@updateTextButtonBlock')->name('chatbot.content.button.block.update');
+                                Route::delete('block', 'V1\\Api\\ChatContent\\DeleteController@deleteButtonBlock')->name('chatbot.content.button.block.delete');
+                            });
                         });
 
                         Route::group(['prefix' => 'list'], function() {

@@ -233,10 +233,15 @@
     padding-left: 20px;
     width: calc(100% + 10px);
     margin-left: -5px;
+    cursor: pointer;
     &:hover {
         background: $hoverBackground;
         color: #fff;
     }
+}
+
+.selectedBlockCon {
+    margin-top: 10px;
 }
 
 .selectedLinkedBlock {
@@ -271,6 +276,7 @@
         background: $primaryBackground;
         border: 1px solid $borderPrimary;
         padding: 2px;
+        cursor: pointer;
         .material-icons {
             font-size: 14px;
             color: $secondaryText;
@@ -282,6 +288,132 @@
     }
 }
 
+.buttonActionGroup {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .buttonName {
+        line-height: 8px;
+    }
+    .buttonActionName {
+        line-height: 5px;
+        font-size: 11px;
+        padding-top: 6px;
+    }
+}
+
+.btnComponentTypeOne {
+    position: absolute;
+    top: 0;
+    left: -15px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 0px $borderPrimary;
+    border: 1px solid $borderPrimary;
+    background: #fff;
+    min-width: calc(260px + 30px);
+    z-index: 11;
+    cursor: default;
+
+    .buttonPopHeading {
+        text-align: center;
+    }
+
+    .buttonPopInfo {
+        margin: 0;
+        line-height: 28px;
+        height: 28px;
+        font-size: 15px;
+        color: $secondaryText!important;
+    }
+
+    input {
+        position: relative;
+        margin: 8px 0 0 0;
+        display: inline-block;
+        vertical-align: top;
+        cursor: text;
+        line-height: 28px;
+        border-radius: 7px;
+        padding: 0 10px;
+        width: 175px;
+        border: 1px solid $borderPrimary;
+        font-size: 13px;
+    }
+
+    .actionInfo {
+        padding-bottom: 10px;
+        border-bottom: 1px solid $borderPrimary;
+        width: calc(100% + 20px);
+        margin-left: -10px;
+    }
+
+    .buttonOptions {
+        padding: 0;
+        list-style: none;
+        display: flex;
+        font-size: 12px;
+        line-height: 30px;
+        margin-bottom: 10px;
+        li {
+            padding-right: 10px;
+            color: $secondaryText!important;
+            cursor: pointer;
+            .optionContent {
+                border-bottom: 2px solid transparent;
+            }
+
+            &.activeOption .optionContent {
+                color: #000;
+                border-color: #000;
+            }
+        }
+    }
+
+    .buttonActions,
+    .buttonValueCon {
+        width: 100%;
+    }
+
+    .optionValue {
+        position: relative;
+        line-height: 20px;
+        text-align: left;
+        color: #000;
+        font-size: 13px;
+
+        input {
+            width: 100%;
+        }
+
+        .sugContainer {
+            margin-top: 15px;
+        }
+    }
+}
+
+.btnCon:not(:last-child) {
+    border-bottom: 1px solid $borderPrimary
+}
+
+.btnCon {
+    position: relative;
+}
+
+.btnCon,
+.chatListRootButton,
+.chatListButton {
+    &:hover {
+        .delIcon {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+}
 @import './bots/text.scss';
 @import './bots/typing.scss';
 @import './bots/list.scss';

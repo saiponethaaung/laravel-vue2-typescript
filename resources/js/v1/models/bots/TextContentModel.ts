@@ -22,6 +22,10 @@ export default class TextContentModel extends ChatBlockContentModel {
         };
     }
 
+    get url() : string {
+        return this.rootUrl;
+    }
+
     get value() : string {
         return this.textContent.content;
     }
@@ -36,6 +40,10 @@ export default class TextContentModel extends ChatBlockContentModel {
 
     get buttons() : Array<buttonContent>{
         return this.textContent.button;
+    }
+
+    set buttons(buttons: Array<buttonContent>) {
+        this.textContent.button = buttons;
     }
 
     get showBtn() : boolean {
@@ -78,6 +86,20 @@ export default class TextContentModel extends ChatBlockContentModel {
         });
 
         this.addingNewBtn = false;
+    }
+
+    async delButton(index: number) {
+        await Axios({
+            url: `${this.rootUrl}/button/${this.buttons[index].id}`,
+            method: 'delete',
+        }).then((res) => {
+            this.buttons.splice(index, 1);
+        }).catch((err) => {
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to delete a button!');
+                alert(mesg);
+            }
+        });
     }
 
     async saveContent() {

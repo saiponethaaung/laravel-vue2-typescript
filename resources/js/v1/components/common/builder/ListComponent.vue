@@ -30,7 +30,27 @@
                                 </figure>
                             </div>
                         </div>
-                        <div class="chatListButton">Add Button</div>
+                        <div class="chatListButton noborder" v-if="l.addingNewBtn">
+                            Creating...
+                        </div>
+                        <div class="chatListButton" v-if="!l.addingNewBtn && l.button==null" @click="l.addButton()">
+                            Add Button
+                        </div>
+                        <div class="chatListButton" v-if="l.button!==null">
+                            <div @click="l.btnEdit=true">
+                                {{ l.button.title ? l.button.title : 'New Button' }}
+                            </div>
+                            <div class="delIcon" @click="l.delButton()">
+                                <i class="material-icons">delete_outline</i>
+                            </div>
+                            <button-component
+                                :rootUrl="`${content.url}/button`"
+                                :button="l.button"
+                                v-if="l.btnEdit"
+                                v-on:closeContent="(status) => {
+                                    if(status && l.btnEdit===true) l.btnEdit=false;
+                                }"></button-component>
+                        </div>
                     </div>
                     <div class="clear"></div>
                 </li>
@@ -40,9 +60,30 @@
                 <li v-if="content.item.length<4 && !content.isCreating" @click="createNewList" class="addMoreChatListItem addBtn">
                     + Add Item
                 </li>
-                <li class="chatListRootButton addBtn">
-                    Button
+                <li class="chatListRootButton addBtn" v-if="content.button!==null">
+                    <div class="buttonActionGroup" @click="content.btnEdit=true">
+                        <div class="buttonName">{{ content.button.title ? content.button.title : 'New Button' }}</div>
+                        <div class="buttonActionName" v-if="content.button.type===0 && content.button.block.length>0">{{ content.button.block[0].title }}</div>
+                        <div class="buttonActionName" v-if="content.button.type===1 && content.button.url">{{ content.button.url }}</div>
+                        <div class="buttonActionName" v-if="content.button.type===2 && content.button.phone.number">{{ content.button.phone.number }}</div>
+                    </div>
+                    <div class="delIcon" @click="content.delButton()">
+                        <i class="material-icons">delete_outline</i>
+                    </div>
+                    <button-component
+                        :rootUrl="`${content.url}/button`"
+                        :button="content.button"
+                        v-if="content.btnEdit"
+                        v-on:closeContent="(status) => {
+                            if(status && content.btnEdit===true) content.btnEdit=false;
+                        }"></button-component>
                 </li>
+                <div class="addBtn" v-if="content.button==null && !content.addingNewBtn" @click="content.addButton()">
+                    <i class="material-icons">add</i>Add Button
+                </div>
+                <div class="addBtn btnCon" v-if="content.addingNewBtn">
+                    Creating...
+                </div>
             </ul>
         </div>
     </div>

@@ -18,4 +18,19 @@ class ChatButton extends Model
         'action_type',
         'order'
     ];
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($button) {
+            foreach($button->blocks as $block) {
+                $block->delete();
+            }
+        });
+    }
+
+    public function blocks()
+    {
+        return $this->hasMany('App\Models\ChatButtonBlock', 'button_id', 'id');
+    }
 }

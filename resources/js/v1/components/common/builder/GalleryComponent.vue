@@ -28,7 +28,28 @@
                             </div>
                         </div>
                         <div class="chatGalleryButtons">
-                            <div class="addBtn">+ Add Button</div>
+                            <div class="addBtn btnCon" v-for="(button, sindex) in l.buttons" :key="sindex">
+                                <div class="buttonActionGroup" @click="l.btnEdit=sindex">
+                                    <div class="buttonName">{{ button.title ? button.title : 'New Button' }}</div>
+                                    <div class="buttonActionName" v-if="button.type===0 && button.block.length>0">{{ button.block[0].title }}</div>
+                                    <div class="buttonActionName" v-if="button.type===1 && button.url">{{ button.url }}</div>
+                                    <div class="buttonActionName" v-if="button.type===2 && button.phone.number">{{ button.phone.number }}</div>
+                                </div>
+                                <div class="delIcon" @click="l.delButton(sindex)">
+                                    <i class="material-icons">delete_outline</i>
+                                </div>
+                                <button-component
+                                    :rootUrl="`${content.url}/button`"
+                                    :button="button"
+                                    v-if="l.btnEdit===sindex"
+                                    v-on:closeContent="(status) => {
+                                        if(status && l.btnEdit===sindex) l.btnEdit=-1;
+                                    }"></button-component>
+                            </div>
+                            <div class="addBtn btnCon" v-if="l.addingNewBtn">Creating...</div>
+                            <div class="addBtn" v-if="!l.addingNewBtn && l.buttons.length<3" @click="l.addButton()">
+                                <i class="material-icons">add</i>Add Button
+                            </div>
                         </div>
                     </div>
                 </li>

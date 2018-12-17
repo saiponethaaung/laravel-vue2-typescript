@@ -544,6 +544,78 @@ class CreateController extends Controller
         ], 201);
     }
 
+    public function createGalleryButton(Request $request)
+    {
+        $total = ChatButton::where('gallery_id', $request->galleryid)->count();
+        if($total>2) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Gallery button at it\'s limit!'
+            ], 422);
+        }
+
+        $res = $this->createButton($request, $total, null, $request->galleryid);
+
+        if($res['status']===false) {
+            return response()->json($res, $res['code']);
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 201,
+            'button' => $res['button']
+        ], 201);
+    }
+
+    public function createListButton(Request $request)
+    {
+        $total = ChatButton::where('content_id', $request->attributes->get('chatBlockSectionContent')->id)->count();
+        if($total>=1) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'List button at it\'s limit!'
+            ], 422);
+        }
+
+        $res = $this->createButton($request, 1, $request->attributes->get('chatBlockSectionContent')->id);
+
+        if($res['status']===false) {
+            return response()->json($res, $res['code']);
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 201,
+            'button' => $res['button']
+        ], 201);
+    }
+
+    public function createListItemButton(Request $request)
+    {
+        $total = ChatButton::where('gallery_id', $request->listid)->count();
+        if($total>=1) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'List item button at it\'s limit!'
+            ], 422);
+        }
+
+        $res = $this->createButton($request, 1, null, $request->listid);
+
+        if($res['status']===false) {
+            return response()->json($res, $res['code']);
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 201,
+            'button' => $res['button']
+        ], 201);
+    }
+
     public function createButton(Request $request, $order=0, $content=null, $gallery=null)
     {
         $button = null;

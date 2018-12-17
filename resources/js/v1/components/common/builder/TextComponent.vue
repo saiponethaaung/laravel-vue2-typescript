@@ -3,9 +3,18 @@
         <div class="botTextComponent">
             <textarea class="textBody" v-model="content.value" v-on:blur="content.saveContent()"></textarea>
             <div class="textBtn">
-                <div class="addBtn btnCon" v-for="(button, index) in content.buttons" :key="index" @click="content.btnEditIndex=index">
-                    {{ button.title ? button.title : 'New Button' }}
+                <div class="addBtn btnCon" v-for="(button, index) in content.buttons" :key="index">
+                    <div class="buttonActionGroup" @click="content.btnEditIndex=index">
+                        <div class="buttonName">{{ button.title ? button.title : 'New Button' }}</div>
+                        <div class="buttonActionName" v-if="button.type===0 && button.block.length>0">{{ button.block[0].title }}</div>
+                        <div class="buttonActionName" v-if="button.type===1 && button.url">{{ button.url }}</div>
+                        <div class="buttonActionName" v-if="button.type===2 && button.phone.number">{{ button.phone.number }}</div>
+                    </div>
+                    <div class="delIcon" @click="content.delButton(index)">
+                        <i class="material-icons">delete_outline</i>
+                    </div>
                     <button-component
+                        :rootUrl="`${content.url}/button`"
                         :button="button"
                         v-if="content.btnEditIndex===index"
                         v-on:closeContent="(status) => {

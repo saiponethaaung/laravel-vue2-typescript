@@ -18,6 +18,8 @@ use App\Models\ChatAttribute;
 use App\Models\ChatQuickReply;
 use App\Models\ChatQuickReplyBlock;
 use App\Models\ChatUserInput;
+use App\Models\ChatButton;
+use App\Models\ChatButtonBlock;
 
 class UpdateController extends Controller
 {
@@ -535,6 +537,132 @@ class UpdateController extends Controller
             'data' => [
                 'attribute' => is_null($attrId) ? 0 : $attrId
             ]
+        ]);
+    }
+
+    public function updateTextButtonBlock(Request $request)
+    {
+        $update = $this->updateButtonBlock($request, $request->buttonid);
+        return response()->json($update, $update['code']);
+    }
+
+    private function updateButtonBlock(Request $request, $buttonid=null)
+    {
+        if($buttonid===null) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Button id required!'
+            ];
+        }
+
+        $validator = Validator::make($request->only('section'), [
+            'section' => 'required|exists:chat_block_section,id'
+        ]);
+
+        if($validator->fails()) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ];
+        }
+
+        $exists = ChatButtonBlock::where('button_id', $buttonid)->where('section_id', $request->input('section'))->first();
+
+        if(!empty($exists)) {
+            return [
+                'status' => true,
+                'code' => 200,
+                'type' => 'exists'
+            ];
+        }
+
+        DB::beginTransaction();
+
+        try {
+            ChatButtonBlock::create([
+                'button_id' => $buttonid,
+                'section_id' => $request->input('section')
+            ]);
+
+            $chatButton = ChatButton::find($buttonid);
+            $chatButton->url = '';
+            $chatButton->phone = null;
+            $chatButton->action_type = 0;
+            $chatButton->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to add a block!',
+                'debugMesg' => $e->getMessage()
+            ];
+        }
+
+        DB::commit();
+
+        return [
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success',
+            'type' => 'new'
+        ];
+    }
+
+    public function updateButtonInfo(Request $request)
+    {
+        $input = $request->only('title', 'url', 'number', 'type');
+
+        $validator = Validator::make($input, [
+            'title' => 'nullable',
+            'url' => 'nullable',
+            'number' => 'nullable',
+            'type' => 'required|in:0,1,2'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        $button = ChatButton::find($request->buttonid);
+
+        DB::beginTransaction();
+
+        try {
+            $button->title = $input['title'] ? $input['title'] : '';
+            $button->url = $request->type==1 ? $input['url'] : '';
+            $button->phone = $request->type==2 ? $input['number'] : null;
+            $button->action_type = $input['type'];
+            $button->save();
+
+            if($button->type!=0) {
+                $block = ChatButtonBlock::where('button_id', $request->buttonid)->first();
+                if(!empty($block)) {
+                    $block->delete();
+                }
+            }
+        } catch(\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update button info!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success'
         ]);
     }
 }

@@ -33,7 +33,7 @@ export default class ContentComponent extends Vue {
     @Watch('$store.state.chatBot')
     async sectionChange() {
         if(this.$store.state.chatBot.section>0 && this.$store.state.chatBot.block>0) {
-            this.loadContent();
+            await this.loadContent();
         }
     }
 
@@ -42,6 +42,7 @@ export default class ContentComponent extends Vue {
         this.loadingToken = Axios.CancelToken.source();
 
         this.isLoading = true;
+        this.contents = [];
 
         await Axios({
             url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
@@ -52,6 +53,8 @@ export default class ContentComponent extends Vue {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
                 alert(mesg);
+            } else {
+                this.loadingToken.cancel();
             }
         });
 

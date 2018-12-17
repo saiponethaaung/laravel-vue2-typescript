@@ -54,7 +54,7 @@ export default class AjaxErrorHandler {
         };
 
         await Axios({
-            url: `api/v1/chat-bot/blocks/search?keyword=${keyword}`,
+            url: `/api/v1/chat-bot/blocks/search?keyword=${keyword}`,
             method: 'get',
             cancelToken: this.searchToken.token
         }).then((res: any) => {

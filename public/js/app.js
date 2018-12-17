@@ -372,7 +372,7 @@ class AjaxErrorHandler {
                 data: []
             };
             yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
-                url: `api/v1/chat-bot/blocks/search?keyword=${keyword}`,
+                url: `/api/v1/chat-bot/blocks/search?keyword=${keyword}`,
                 method: 'get',
                 cancelToken: this.searchToken.token
             }).then((res) => {
@@ -23020,6 +23020,9 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
             button: content.content.button
         };
     }
+    get url() {
+        return this.rootUrl;
+    }
     get value() {
         return this.textContent.content;
     }
@@ -23031,6 +23034,9 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
     }
     get buttons() {
         return this.textContent.button;
+    }
+    set buttons(buttons) {
+        this.textContent.button = buttons;
     }
     get showBtn() {
         return this.textContent.button.length < 3;
@@ -23065,6 +23071,21 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
                 }
             });
             this.addingNewBtn = false;
+        });
+    }
+    delButton(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+                url: `${this.rootUrl}/button/${this.buttons[index].id}`,
+                method: 'delete',
+            }).then((res) => {
+                this.buttons.splice(index, 1);
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to delete a button!');
+                    alert(mesg);
+                }
+            });
         });
     }
     saveContent() {
@@ -23164,6 +23185,7 @@ class TypingContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMo
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ListItemModel__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -23175,20 +23197,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
+
 class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
     constructor(content) {
         super(content);
+        this.rootUrl = "";
         this.listContent = [];
         this.listButton = null;
         this.creating = false;
+        this.buttonEdit = false;
         this.orderToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-        for (let i of content.content.content) {
-            this.buildListItem(i);
+        this.buttonCreating = false;
+        this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__["a" /* default */]();
+        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
+        for (let i in content.content.content) {
+            this.buildListItem(content.content.content[i]);
         }
         this.listButton = content.content.button;
     }
     buildListItem(content) {
-        this.listContent.push(new __WEBPACK_IMPORTED_MODULE_2__ListItemModel__["a" /* default */](content, `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/list`));
+        this.listContent.push(new __WEBPACK_IMPORTED_MODULE_2__ListItemModel__["a" /* default */](content, `${this.rootUrl}/list`));
+    }
+    get url() {
+        return this.rootUrl;
     }
     get item() {
         return this.listContent;
@@ -23198,6 +23230,61 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
     }
     set isCreating(status) {
         this.creating = status;
+    }
+    get addingNewBtn() {
+        return this.buttonCreating;
+    }
+    set addingNewBtn(status) {
+        this.buttonCreating = status;
+    }
+    get button() {
+        return this.listButton;
+    }
+    set button(button) {
+        this.listButton = button;
+    }
+    get btnEdit() {
+        return this.buttonEdit;
+    }
+    set btnEdit(status) {
+        this.buttonEdit = status;
+    }
+    addButton() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.addingNewBtn = true;
+            this.buttonToken.cancel();
+            this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl}/button/list`,
+                method: 'post',
+                cancelToken: this.buttonToken.token
+            }).then((res) => {
+                this.listButton = res.data.button;
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
+                    alert(mesg);
+                }
+            });
+            this.addingNewBtn = false;
+        });
+    }
+    delButton() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.button !== null) {
+                yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                    url: `${this.rootUrl}/button/${this.button.id}`,
+                    method: 'delete',
+                }).then((res) => {
+                    this.button = null;
+                }).catch((err) => {
+                    if (err.response) {
+                        let mesg = this.globalHandler(err, 'Failed to delete a button!');
+                        alert(mesg);
+                    }
+                });
+            }
+        });
     }
     createList() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -23245,12 +23332,16 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentM
         this.galleryContent = [];
         this.creating = false;
         this.orderToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
         for (let i of content.content) {
             this.buildGalleryItem(i);
         }
     }
     buildGalleryItem(content) {
-        this.galleryContent.push(new __WEBPACK_IMPORTED_MODULE_1__GalleryItemModel__["a" /* default */](content, `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/gallery`));
+        this.galleryContent.push(new __WEBPACK_IMPORTED_MODULE_1__GalleryItemModel__["a" /* default */](content, `${this.rootUrl}/gallery`));
+    }
+    get url() {
+        return this.rootUrl;
     }
     get item() {
         return this.galleryContent;
@@ -23414,7 +23505,7 @@ class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConten
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(25);
-module.exports = __webpack_require__(115);
+module.exports = __webpack_require__(118);
 
 
 /***/ }),
@@ -23433,7 +23524,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue__ = __webpack_require__(90);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue__ = __webpack_require__(115);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_axios__);
@@ -36103,7 +36194,7 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
     sectionChange() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.$store.state.chatBot.section > 0 && this.$store.state.chatBot.block > 0) {
-                this.loadContent();
+                yield this.loadContent();
             }
         });
     }
@@ -36112,6 +36203,7 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
             this.loadingToken.cancel();
             this.loadingToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
             this.isLoading = true;
+            this.contents = [];
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
                 cancelToken: this.loadingToken.token
@@ -36121,6 +36213,9 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
                     alert(mesg);
+                }
+                else {
+                    this.loadingToken.cancel();
                 }
             });
             this.isLoading = false;
@@ -39019,24 +39114,66 @@ var render = function() {
           _vm._l(_vm.content.buttons, function(button, index) {
             return _c(
               "div",
-              {
-                key: index,
-                staticClass: "addBtn btnCon",
-                on: {
-                  click: function($event) {
-                    _vm.content.btnEditIndex = index
-                  }
-                }
-              },
+              { key: index, staticClass: "addBtn btnCon" },
               [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(button.title ? button.title : "New Button") +
-                    "\n                "
+                _c(
+                  "div",
+                  {
+                    staticClass: "buttonActionGroup",
+                    on: {
+                      click: function($event) {
+                        _vm.content.btnEditIndex = index
+                      }
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "buttonName" }, [
+                      _vm._v(_vm._s(button.title ? button.title : "New Button"))
+                    ]),
+                    _vm._v(" "),
+                    button.type === 0 && button.block.length > 0
+                      ? _c("div", { staticClass: "buttonActionName" }, [
+                          _vm._v(_vm._s(button.block[0].title))
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    button.type === 1 && button.url
+                      ? _c("div", { staticClass: "buttonActionName" }, [
+                          _vm._v(_vm._s(button.url))
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    button.type === 2 && button.phone.number
+                      ? _c("div", { staticClass: "buttonActionName" }, [
+                          _vm._v(_vm._s(button.phone.number))
+                        ])
+                      : _vm._e()
+                  ]
                 ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "delIcon",
+                    on: {
+                      click: function($event) {
+                        _vm.content.delButton(index)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("delete_outline")
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
                 _vm.content.btnEditIndex === index
                   ? _c("button-component", {
-                      attrs: { button: button },
+                      attrs: {
+                        rootUrl: _vm.content.url + "/button",
+                        button: button
+                      },
                       on: {
                         closeContent: function(status) {
                           if (status && _vm.content.btnEditIndex === index) {
@@ -39398,6 +39535,9 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
         this.uploading = false;
         this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
         this.imageToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.buttonCreating = false;
+        this.buttonEdit = false;
+        this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
         this.content = content;
         this.rootUrl = rootUrl;
     }
@@ -39421,6 +39561,12 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
     }
     set url(url) {
         this.content.url = url;
+    }
+    get button() {
+        return this.content.button;
+    }
+    set button(button) {
+        this.content.button = button;
     }
     get image() {
         return this.content.image;
@@ -39464,6 +39610,18 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
             this.isUpdating = false;
         });
     }
+    get addingNewBtn() {
+        return this.buttonCreating;
+    }
+    set addingNewBtn(status) {
+        this.buttonCreating = status;
+    }
+    get btnEdit() {
+        return this.buttonEdit;
+    }
+    set btnEdit(status) {
+        this.buttonEdit = status;
+    }
     imageUpload(e) {
         return __awaiter(this, void 0, void 0, function* () {
             this.imageToken.cancel();
@@ -39485,6 +39643,43 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
                 }
             });
             this.isUploading = false;
+        });
+    }
+    delButton() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.button !== null) {
+                yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                    url: `${this.rootUrl.replace('/list', '')}/button/${this.button.id}`,
+                    method: 'delete',
+                }).then((res) => {
+                    this.button = null;
+                }).catch((err) => {
+                    if (err.response) {
+                        let mesg = this.globalHandler(err, 'Failed to delete a button!');
+                        alert(mesg);
+                    }
+                });
+            }
+        });
+    }
+    addButton() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.addingNewBtn = true;
+            this.buttonToken.cancel();
+            this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl.replace('/list', '')}/button/list/${this.id}`,
+                method: 'post',
+                cancelToken: this.buttonToken.token
+            }).then((res) => {
+                this.button = res.data.button;
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to create new button!');
+                    alert(mesg);
+                }
+            });
+            this.addingNewBtn = false;
         });
     }
 }
@@ -39627,9 +39822,94 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "chatListButton" }, [
-                  _vm._v("Add Button")
-                ])
+                l.addingNewBtn
+                  ? _c("div", { staticClass: "chatListButton noborder" }, [
+                      _vm._v(
+                        "\n                        Creating...\n                    "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                !l.addingNewBtn && l.button == null
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "chatListButton",
+                        on: {
+                          click: function($event) {
+                            l.addButton()
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        Add Button\n                    "
+                        )
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                l.button !== null
+                  ? _c(
+                      "div",
+                      { staticClass: "chatListButton" },
+                      [
+                        _c(
+                          "div",
+                          {
+                            on: {
+                              click: function($event) {
+                                l.btnEdit = true
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(
+                                  l.button.title ? l.button.title : "New Button"
+                                ) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "delIcon",
+                            on: {
+                              click: function($event) {
+                                l.delButton()
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("delete_outline")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        l.btnEdit
+                          ? _c("button-component", {
+                              attrs: {
+                                rootUrl: _vm.content.url + "/button",
+                                button: l.button
+                              },
+                              on: {
+                                closeContent: function(status) {
+                                  if (status && l.btnEdit === true) {
+                                    l.btnEdit = false
+                                  }
+                                }
+                              }
+                            })
+                          : _vm._e()
+                      ],
+                      1
+                    )
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "clear" })
@@ -39653,9 +39933,114 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _c("li", { staticClass: "chatListRootButton addBtn" }, [
-            _vm._v("\n                Button\n            ")
-          ])
+          _vm.content.button !== null
+            ? _c(
+                "li",
+                { staticClass: "chatListRootButton addBtn" },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "buttonActionGroup",
+                      on: {
+                        click: function($event) {
+                          _vm.content.btnEdit = true
+                        }
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "buttonName" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm.content.button.title
+                              ? _vm.content.button.title
+                              : "New Button"
+                          )
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm.content.button.type === 0 &&
+                      _vm.content.button.block.length > 0
+                        ? _c("div", { staticClass: "buttonActionName" }, [
+                            _vm._v(_vm._s(_vm.content.button.block[0].title))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.content.button.type === 1 && _vm.content.button.url
+                        ? _c("div", { staticClass: "buttonActionName" }, [
+                            _vm._v(_vm._s(_vm.content.button.url))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.content.button.type === 2 &&
+                      _vm.content.button.phone.number
+                        ? _c("div", { staticClass: "buttonActionName" }, [
+                            _vm._v(_vm._s(_vm.content.button.phone.number))
+                          ])
+                        : _vm._e()
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "delIcon",
+                      on: {
+                        click: function($event) {
+                          _vm.content.delButton()
+                        }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("delete_outline")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.content.btnEdit
+                    ? _c("button-component", {
+                        attrs: {
+                          rootUrl: _vm.content.url + "/button",
+                          button: _vm.content.button
+                        },
+                        on: {
+                          closeContent: function(status) {
+                            if (status && _vm.content.btnEdit === true) {
+                              _vm.content.btnEdit = false
+                            }
+                          }
+                        }
+                      })
+                    : _vm._e()
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.content.button == null && !_vm.content.addingNewBtn
+            ? _c(
+                "div",
+                {
+                  staticClass: "addBtn",
+                  on: {
+                    click: function($event) {
+                      _vm.content.addButton()
+                    }
+                  }
+                },
+                [
+                  _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+                  _vm._v("Add Button\n            ")
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.content.addingNewBtn
+            ? _c("div", { staticClass: "addBtn btnCon" }, [
+                _vm._v("\n                Creating...\n            ")
+              ])
+            : _vm._e()
         ],
         2
       )
@@ -39777,6 +40162,9 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
         this.uploading = false;
         this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
         this.imageToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.buttonCreating = false;
+        this.buttonEdit = -1;
+        this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
         this.rootUrl = rootUrl;
         this.content = content;
     }
@@ -39806,6 +40194,12 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
     }
     set image(image) {
         this.content.image = image;
+    }
+    get buttons() {
+        return this.content.button;
+    }
+    set buttons(buttons) {
+        this.content.button = buttons;
     }
     get isUpdating() {
         return this.updating;
@@ -39864,6 +40258,53 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
                 }
             });
             this.isUploading = false;
+        });
+    }
+    get addingNewBtn() {
+        return this.buttonCreating;
+    }
+    set addingNewBtn(status) {
+        this.buttonCreating = status;
+    }
+    get btnEdit() {
+        return this.buttonEdit;
+    }
+    set btnEdit(index) {
+        this.buttonEdit = index;
+    }
+    addButton() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.addingNewBtn = true;
+            this.buttonToken.cancel();
+            this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl.replace('/gallery', '')}/button/gallery/${this.id}`,
+                method: 'post',
+                cancelToken: this.buttonToken.token
+            }).then((res) => {
+                this.content.button.push(res.data.button);
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to create new button!');
+                    alert(mesg);
+                }
+            });
+            this.addingNewBtn = false;
+        });
+    }
+    delButton(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl.replace('/gallery', '')}/button/${this.buttons[index].id}`,
+                method: 'delete',
+            }).then((res) => {
+                this.buttons.splice(index, 1);
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to delete a button!');
+                    alert(mesg);
+                }
+            });
         });
     }
 }
@@ -40000,7 +40441,125 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(0, true)
+                _c(
+                  "div",
+                  { staticClass: "chatGalleryButtons" },
+                  [
+                    _vm._l(l.buttons, function(button, sindex) {
+                      return _c(
+                        "div",
+                        { key: sindex, staticClass: "addBtn btnCon" },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "buttonActionGroup",
+                              on: {
+                                click: function($event) {
+                                  l.btnEdit = sindex
+                                }
+                              }
+                            },
+                            [
+                              _c("div", { staticClass: "buttonName" }, [
+                                _vm._v(
+                                  _vm._s(
+                                    button.title ? button.title : "New Button"
+                                  )
+                                )
+                              ]),
+                              _vm._v(" "),
+                              button.type === 0 && button.block.length > 0
+                                ? _c(
+                                    "div",
+                                    { staticClass: "buttonActionName" },
+                                    [_vm._v(_vm._s(button.block[0].title))]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              button.type === 1 && button.url
+                                ? _c(
+                                    "div",
+                                    { staticClass: "buttonActionName" },
+                                    [_vm._v(_vm._s(button.url))]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              button.type === 2 && button.phone.number
+                                ? _c(
+                                    "div",
+                                    { staticClass: "buttonActionName" },
+                                    [_vm._v(_vm._s(button.phone.number))]
+                                  )
+                                : _vm._e()
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "delIcon",
+                              on: {
+                                click: function($event) {
+                                  l.delButton(sindex)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", { staticClass: "material-icons" }, [
+                                _vm._v("delete_outline")
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          l.btnEdit === sindex
+                            ? _c("button-component", {
+                                attrs: {
+                                  rootUrl: _vm.content.url + "/button",
+                                  button: button
+                                },
+                                on: {
+                                  closeContent: function(status) {
+                                    if (status && l.btnEdit === sindex) {
+                                      l.btnEdit = -1
+                                    }
+                                  }
+                                }
+                              })
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    }),
+                    _vm._v(" "),
+                    l.addingNewBtn
+                      ? _c("div", { staticClass: "addBtn btnCon" }, [
+                          _vm._v("Creating...")
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !l.addingNewBtn && l.buttons.length < 3
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "addBtn",
+                            on: {
+                              click: function($event) {
+                                l.addButton()
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("add")
+                            ]),
+                            _vm._v("Add Button\n                        ")
+                          ]
+                        )
+                      : _vm._e()
+                  ],
+                  2
+                )
               ])
             ])
           }),
@@ -40038,16 +40597,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "chatGalleryButtons" }, [
-      _c("div", { staticClass: "addBtn" }, [_vm._v("+ Add Button")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -41168,28 +41718,14 @@ if (false) {
 
 /***/ }),
 /* 115 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(125)
+var __vue_script__ = __webpack_require__(116)
 /* template */
-var __vue_template__ = __webpack_require__(126)
+var __vue_template__ = __webpack_require__(117)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -41228,26 +41764,42 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 125 */
+/* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
 
 
 let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
+        this.saveBlock = false;
+        this.deleteBlock = false;
         this.blockKeyword = "";
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */]();
+        this.blockList = [];
+        this.blockToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+        this.updateToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
     }
     closeContent(status) { }
     ;
@@ -41255,10 +41807,110 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
         let el = this.$refs.textBtn;
         let target = e.target;
         if ((el !== target) && !el.contains(target)) {
-            this.closeContent(true);
+            this.updateContent();
+            setTimeout(() => {
+                this.closeContent(true);
+            }, 500);
             return null;
         }
         this.closeContent(false);
+    }
+    loadSuggestion() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let suggestion = yield this.ajaxHandler.searchSections(this.blockKeyword);
+            if (suggestion.type === 'cancel')
+                return;
+            if (suggestion.status === false) {
+                alert(suggestion.mesg);
+                return;
+            }
+            this.blockList = suggestion.data;
+        });
+    }
+    addBlock(block, section) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.blockToken.cancel();
+            this.blockToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+            this.saveBlock = true;
+            let data = new FormData();
+            data.append('section', this.blockList[block].contents[section].id.toString());
+            data.append('_method', 'put');
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `${this.rootUrl}/${this.button.id}/block`,
+                data: data,
+                method: 'post',
+                cancelToken: this.blockToken.token
+            }).then((res) => {
+                this.button.block.push({
+                    id: this.blockList[block].contents[section].id,
+                    title: this.blockList[block].contents[section].title
+                });
+                this.blockList = [];
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to connect a block!');
+                    alert(mesg);
+                }
+            });
+            this.saveBlock = false;
+        });
+    }
+    delBlock() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.deleteBlock = true;
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `${this.rootUrl}/${this.button.id}/block`,
+                method: 'delete'
+            }).then((res) => {
+                this.button.block = [];
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to delete a block!');
+                    alert(mesg);
+                }
+            });
+            this.deleteBlock = false;
+        });
+    }
+    cancelUpdate() {
+        this.updateToken.cancel();
+        this.updateToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+    }
+    updateContent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.updateToken.cancel();
+            this.updateToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+            let data = new FormData();
+            data.append('title', this.button.title);
+            data.append('url', this.button.url);
+            data.append('number', this.button.phone.number ? this.button.phone.number.toString() : '');
+            data.append('type', this.button.type.toString());
+            data.append('_method', 'put');
+            __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `${this.rootUrl}/${this.button.id}`,
+                data: data,
+                method: 'post',
+                cancelToken: this.updateToken.token
+            }).then((res) => {
+                if (this.button.type === 0) {
+                    this.button.url = '';
+                    this.button.phone.number = null;
+                }
+                else if (this.button.type === 1) {
+                    this.button.block = [];
+                    this.button.phone.number = null;
+                }
+                else if (this.button.type === 2) {
+                    this.button.block = [];
+                    this.button.url = '';
+                }
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to update button!');
+                    alert(mesg);
+                }
+            });
+        });
     }
     created() {
         document.addEventListener('click', this.documentClick);
@@ -41272,6 +41924,9 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], ButtonComponent.prototype, "button", void 0);
 __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], ButtonComponent.prototype, "rootUrl", void 0);
+__decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('closeContent')
 ], ButtonComponent.prototype, "closeContent", null);
 ButtonComponent = __decorate([
@@ -41281,7 +41936,7 @@ ButtonComponent = __decorate([
 
 
 /***/ }),
-/* 126 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -41301,18 +41956,24 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.button.id,
-                expression: "button.id"
+                value: _vm.button.title,
+                expression: "button.title"
               }
             ],
             attrs: { type: "text" },
-            domProps: { value: _vm.button.id },
+            domProps: { value: _vm.button.title },
             on: {
+              focus: function($event) {
+                _vm.cancelUpdate()
+              },
+              blur: function($event) {
+                _vm.updateContent()
+              },
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.button, "id", $event.target.value)
+                _vm.$set(_vm.button, "title", $event.target.value)
               }
             }
           })
@@ -41320,79 +41981,179 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "buttonOptions" }, [
-        _c("div", { staticClass: "buttionActions" }, [
-          _c("ul", [
+        _c("div", { staticClass: "buttonActions" }, [
+          _c("ul", { staticClass: "buttonOptions" }, [
             _c(
               "li",
               {
+                class: { activeOption: _vm.button.type === 0 },
                 on: {
                   click: function($event) {
                     _vm.button.type = 0
                   }
                 }
               },
-              [_vm._v("Blocks")]
+              [
+                _c("span", { staticClass: "optionContent" }, [
+                  _vm._v(
+                    "\n                            Blocks\n                        "
+                  )
+                ])
+              ]
             ),
             _vm._v(" "),
             _c(
               "li",
               {
+                class: { activeOption: _vm.button.type === 1 },
                 on: {
                   click: function($event) {
                     _vm.button.type = 1
                   }
                 }
               },
-              [_vm._v("URL")]
+              [
+                _c("span", { staticClass: "optionContent" }, [
+                  _vm._v(
+                    "\n                            Url\n                        "
+                  )
+                ])
+              ]
             ),
             _vm._v(" "),
             _c(
               "li",
               {
+                class: { activeOption: _vm.button.type === 2 },
                 on: {
                   click: function($event) {
                     _vm.button.type = 2
                   }
                 }
               },
-              [_vm._v("Phone call")]
+              [
+                _c("span", { staticClass: "optionContent" }, [
+                  _vm._v(
+                    "\n                            Phone call\n                        "
+                  )
+                ])
+              ]
             )
           ]),
           _vm._v(" "),
-          _c("div", [
+          _c("div", { staticClass: "buttonValueCon" }, [
             _vm.button.type === 0
-              ? _c("div", [
-                  _vm._v(
-                    "\n                        block\n                        "
-                  ),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.blockKeyword,
-                        expression: "blockKeyword"
-                      }
-                    ],
-                    attrs: { type: "text" },
-                    domProps: { value: _vm.blockKeyword },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.blockKeyword = $event.target.value
-                      }
-                    }
-                  })
-                ])
+              ? _c(
+                  "div",
+                  { staticClass: "optionValue" },
+                  [
+                    _vm._v(
+                      "\n                        they receive the block\n                        "
+                    ),
+                    _vm.button.block.length > 0
+                      ? [
+                          _c("div", { staticClass: "selectedBlockCon" }, [
+                            _c("div", { staticClass: "selectedLinkedBlock" }, [
+                              _c("span", { staticClass: "slbText" }, [
+                                _vm._v(_vm._s(_vm.button.block[0].title))
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "slbDel",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.delBlock()
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", { staticClass: "material-icons" }, [
+                                    _vm._v("delete_outline")
+                                  ])
+                                ]
+                              )
+                            ])
+                          ])
+                        ]
+                      : [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.blockKeyword,
+                                expression: "blockKeyword"
+                              }
+                            ],
+                            attrs: { type: "text", placeholder: "Block name" },
+                            domProps: { value: _vm.blockKeyword },
+                            on: {
+                              keyup: function($event) {
+                                _vm.loadSuggestion()
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.blockKeyword = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.blockList.length > 0
+                            ? [
+                                _c(
+                                  "div",
+                                  { staticClass: "sugContainer" },
+                                  _vm._l(_vm.blockList, function(b, index) {
+                                    return _c(
+                                      "div",
+                                      { key: index, staticClass: "sugBlock" },
+                                      [
+                                        _c(
+                                          "div",
+                                          { staticClass: "sugBlockTitle" },
+                                          [_vm._v(_vm._s(b.title))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          { staticClass: "sugBlockSec" },
+                                          _vm._l(b.contents, function(
+                                            s,
+                                            sindex
+                                          ) {
+                                            return _c(
+                                              "div",
+                                              {
+                                                key: sindex,
+                                                staticClass: "sugBlockSecTitle",
+                                                on: {
+                                                  click: function($event) {
+                                                    _vm.addBlock(index, sindex)
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v(_vm._s(s.title))]
+                                            )
+                                          })
+                                        )
+                                      ]
+                                    )
+                                  })
+                                )
+                              ]
+                            : _vm._e()
+                        ]
+                  ],
+                  2
+                )
               : _vm._e(),
             _vm._v(" "),
             _vm.button.type === 1
-              ? _c("div", [
-                  _vm._v(
-                    "\n                        url\n                        "
-                  ),
+              ? _c("div", { staticClass: "optionValue" }, [
                   _c("input", {
                     directives: [
                       {
@@ -41402,9 +42163,15 @@ var render = function() {
                         expression: "button.url"
                       }
                     ],
-                    attrs: { type: "text" },
+                    attrs: { type: "text", placeholder: "Url" },
                     domProps: { value: _vm.button.url },
                     on: {
+                      focus: function($event) {
+                        _vm.cancelUpdate()
+                      },
+                      blur: function($event) {
+                        _vm.updateContent()
+                      },
                       input: function($event) {
                         if ($event.target.composing) {
                           return
@@ -41417,27 +42184,34 @@ var render = function() {
               : _vm._e(),
             _vm._v(" "),
             _vm.button.type === 2
-              ? _c("div", [
-                  _vm._v(
-                    "\n                        phone\n                        "
-                  ),
+              ? _c("div", { staticClass: "optionValue" }, [
                   _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.button.phone,
-                        expression: "button.phone"
+                        value: _vm.button.phone.number,
+                        expression: "button.phone.number"
                       }
                     ],
-                    attrs: { type: "text" },
-                    domProps: { value: _vm.button.phone },
+                    attrs: { type: "text", placeholder: "Phone number" },
+                    domProps: { value: _vm.button.phone.number },
                     on: {
+                      focus: function($event) {
+                        _vm.cancelUpdate()
+                      },
+                      blur: function($event) {
+                        _vm.updateContent()
+                      },
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.button, "phone", $event.target.value)
+                        _vm.$set(
+                          _vm.button.phone,
+                          "number",
+                          $event.target.value
+                        )
                       }
                     }
                   })
@@ -41458,6 +42232,12 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-25c1f636", module.exports)
   }
 }
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

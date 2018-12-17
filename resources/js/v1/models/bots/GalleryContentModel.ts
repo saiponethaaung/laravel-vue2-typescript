@@ -5,19 +5,25 @@ import Axios, { CancelTokenSource } from "axios";
 
 export default class GalleryContentModel extends ChatBlockContentModel {
     
+    private rootUrl: string;
     private galleryContent: Array<GalleryItemModel> = [];
     private creating: boolean = false;
     private orderToken: CancelTokenSource = Axios.CancelToken.source();
 
     constructor(content: any) {
         super(content);
+        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
         for(let i of content.content) {
             this.buildGalleryItem(i);
         }
     }
 
     private buildGalleryItem(content: galleryContent) {
-        this.galleryContent.push(new GalleryItemModel(content, `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/gallery`));
+        this.galleryContent.push(new GalleryItemModel(content, `${this.rootUrl}/gallery`));
+    }
+
+    get url() : string {
+        return this.rootUrl;
     }
 
     get item() : Array<GalleryItemModel> {

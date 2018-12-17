@@ -1,5 +1,5 @@
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
-import { galleryContent } from "../../configuration/interface";
+import { galleryContent, buttonContent } from "../../configuration/interface";
 import Axios, { CancelTokenSource } from "axios";
 
 export default class GalleryItemModel extends AjaxErrorHandler{
@@ -10,6 +10,9 @@ export default class GalleryItemModel extends AjaxErrorHandler{
     private uploading: boolean = false;
     private saveToken: CancelTokenSource = Axios.CancelToken.source();
     private imageToken: CancelTokenSource = Axios.CancelToken.source();
+    private buttonCreating: boolean = false;
+    private buttonEdit: number = -1;
+    private buttonToken: CancelTokenSource = Axios.CancelToken.source();
 
 
     constructor(content: galleryContent, rootUrl: string) {
@@ -54,6 +57,14 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         this.content.image = image;
     }
 
+    get buttons(): Array<buttonContent> {
+        return this.content.button;
+    }
+    
+    set buttons(buttons: Array<buttonContent>) {
+        this.content.button = buttons;
+    }
+    
     get isUpdating() : boolean {
         return this.updating;
     }
@@ -120,5 +131,57 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         });
 
         this.isUploading = false;
+    }
+
+    get addingNewBtn() : boolean {
+        return this.buttonCreating;
+    }
+
+    set addingNewBtn(status: boolean) {
+        this.buttonCreating = status;
+    }
+
+    get btnEdit() : number {
+        return this.buttonEdit;
+    }
+
+    set btnEdit(index: number) {
+        this.buttonEdit = index;
+    }
+
+    async addButton() {
+        this.addingNewBtn = true;
+
+        this.buttonToken.cancel();
+        this.buttonToken = Axios.CancelToken.source();
+
+        await Axios({
+            url: `${this.rootUrl.replace('/gallery', '')}/button/gallery/${this.id}`,
+            method: 'post',
+            cancelToken: this.buttonToken.token
+        }).then((res) => {
+            this.content.button.push(res.data.button);
+        }).catch((err) => {
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to create new button!');
+                alert(mesg);
+            }
+        });
+
+        this.addingNewBtn = false;
+    }
+
+    async delButton(index: number) {
+        await Axios({
+            url: `${this.rootUrl.replace('/gallery', '')}/button/${this.buttons[index].id}`,
+            method: 'delete',
+        }).then((res) => {
+            this.buttons.splice(index, 1);
+        }).catch((err) => {
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to delete a button!');
+                alert(mesg);
+            }
+        });
     }
 }

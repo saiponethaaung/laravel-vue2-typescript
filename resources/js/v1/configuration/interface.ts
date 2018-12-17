@@ -68,7 +68,7 @@ export interface listContent {
     sub: string,
     url: string,
     content_id: number,
-    button: buttonContent
+    button: null | buttonContent
 }
 
 export interface userInputContent {
@@ -86,11 +86,11 @@ export interface buttonContent {
     id: number,
     type: number,
     title: string,
-    block: Array<number>,
+    block: Array<sectionLinked>,
     url: string,
     phone: {
         countryCode: number,
-        number: number
+        number: number | null
     }
 }
 

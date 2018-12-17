@@ -10745,6 +10745,38 @@ a.text-dark:focus {
   overflow: auto;
 }
 
+.noborder {
+  border: none !important;
+}
+
+.delIcon {
+  visibility: hidden;
+  opacity: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 11;
+  left: initial;
+  width: 20px;
+  height: 20px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 100%;
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.delIcon .material-icons {
+  font-size: 14px;
+  color: #aaaaaa;
+}
+
 .chatBotHeading {
   font-size: 18px;
   font-weight: bold;
@@ -11046,11 +11078,16 @@ a.text-dark:focus {
   padding-left: 20px;
   width: calc(100% + 10px);
   margin-left: -5px;
+  cursor: pointer;
 }
 
 .sugBlockSecTitle:hover {
   background: #ebebeb;
   color: #fff;
+}
+
+.selectedBlockCon {
+  margin-top: 10px;
 }
 
 .selectedLinkedBlock {
@@ -11089,6 +11126,7 @@ a.text-dark:focus {
   background: #ffffff;
   border: 1px solid #ebebeb;
   padding: 2px;
+  cursor: pointer;
 }
 
 .selectedLinkedBlock .slbDel .material-icons {
@@ -11100,6 +11138,144 @@ a.text-dark:focus {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.buttonActionGroup {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.buttonActionGroup .buttonName {
+  line-height: 8px;
+}
+
+.buttonActionGroup .buttonActionName {
+  line-height: 5px;
+  font-size: 11px;
+  padding-top: 6px;
+}
+
+.btnComponentTypeOne {
+  position: absolute;
+  top: 0;
+  left: -15px;
+  padding: 10px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 0px #ebebeb;
+          box-shadow: 0px 0px 0px #ebebeb;
+  border: 1px solid #ebebeb;
+  background: #fff;
+  min-width: calc(260px + 30px);
+  z-index: 11;
+  cursor: default;
+}
+
+.btnComponentTypeOne .buttonPopHeading {
+  text-align: center;
+}
+
+.btnComponentTypeOne .buttonPopInfo {
+  margin: 0;
+  line-height: 28px;
+  height: 28px;
+  font-size: 15px;
+  color: #aaaaaa !important;
+}
+
+.btnComponentTypeOne input {
+  position: relative;
+  margin: 8px 0 0 0;
+  display: inline-block;
+  vertical-align: top;
+  cursor: text;
+  line-height: 28px;
+  border-radius: 7px;
+  padding: 0 10px;
+  width: 175px;
+  border: 1px solid #ebebeb;
+  font-size: 13px;
+}
+
+.btnComponentTypeOne .actionInfo {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ebebeb;
+  width: calc(100% + 20px);
+  margin-left: -10px;
+}
+
+.btnComponentTypeOne .buttonOptions {
+  padding: 0;
+  list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 12px;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+
+.btnComponentTypeOne .buttonOptions li {
+  padding-right: 10px;
+  color: #aaaaaa !important;
+  cursor: pointer;
+}
+
+.btnComponentTypeOne .buttonOptions li .optionContent {
+  border-bottom: 2px solid transparent;
+}
+
+.btnComponentTypeOne .buttonOptions li.activeOption .optionContent {
+  color: #000;
+  border-color: #000;
+}
+
+.btnComponentTypeOne .buttonActions,
+.btnComponentTypeOne .buttonValueCon {
+  width: 100%;
+}
+
+.btnComponentTypeOne .optionValue {
+  position: relative;
+  line-height: 20px;
+  text-align: left;
+  color: #000;
+  font-size: 13px;
+}
+
+.btnComponentTypeOne .optionValue input {
+  width: 100%;
+}
+
+.btnComponentTypeOne .optionValue .sugContainer {
+  margin-top: 15px;
+}
+
+.btnCon:not(:last-child) {
+  border-bottom: 1px solid #ebebeb;
+}
+
+.btnCon {
+  position: relative;
+}
+
+.btnCon:hover .delIcon,
+.chatListRootButton:hover .delIcon,
+.chatListButton:hover .delIcon {
+  visibility: visible;
+  opacity: 1;
 }
 
 .botTextComponent {
@@ -11147,24 +11323,6 @@ a.text-dark:focus {
 .addBtn i {
   font-size: 18px;
   margin-right: 8px;
-}
-
-.btnCon:not(:last-child) {
-  border-bottom: 1px solid #ebebeb;
-}
-
-.btnCon {
-  position: relative;
-}
-
-.btnComponentTypeOne {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 10px;
-  border-radius: 5px;
-  -webkit-box-shadow: 0px 0px 0px #ebebeb;
-          box-shadow: 0px 0px 0px #ebebeb;
 }
 
 .typingRoot {
@@ -11240,7 +11398,7 @@ a.text-dark:focus {
   border-radius: 5px;
 }
 
-.chatListRoot li:not(:last-child) {
+.chatListRoot > li:not(:last-child) {
   border-bottom: 1px solid #ebebeb;
 }
 
@@ -11447,6 +11605,10 @@ a.text-dark:focus {
           justify-content: center;
   cursor: pointer;
   font-size: 50px;
+}
+
+.chatListRootButton {
+  position: relative;
 }
 
 .quickReplyRoot {

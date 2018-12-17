@@ -71,20 +71,29 @@ class GetController extends Controller
 
     public function parseText($content)
     {
-        $button = ChatButton::where('content_id', $content->id)->get();
+        $button = ChatButton::with('blocks', 'blocks.value')->where('content_id', $content->id)->get();
 
         $buttonList = [];
 
         foreach($button as $btn) {
+            $blocks = [];
+
+            foreach($btn->blocks as $block) {
+                $blocks[] = [
+                    'id' => $block->value->id,
+                    'title' => $block->value->title
+                ];
+            }
+
             $buttonList[] = [
                 'id' => $btn->id,
                 'type' => $btn->action_type,
                 'title' => $btn->title,
-                'block' => [],
+                'block' => $blocks,
                 'url' => $btn->url,
                 'phone' => [
                     'countryCode' => 95,
-                    'number' => null
+                    'number' => $btn->phone
                 ]
             ];
         }
@@ -106,12 +115,65 @@ class GetController extends Controller
     {
         $list = ChatGallery::where('content_id', $content->id)->get();
 
+        $listButton = null;
+        $button = ChatButton::with('blocks', 'blocks.value')->where('content_id', $content->id)->first();
+
+        if(!empty($button)) {
+            $blocks = [];
+
+            foreach($button->blocks as $block) {
+                $blocks[] = [
+                    'id' => $block->value->id,
+                    'title' => $block->value->title
+                ];
+            }
+
+            $listButton = [
+                'id' => $button->id,
+                'type' => $button->action_type,
+                'title' => $button->title,
+                'block' => $blocks,
+                'url' => $button->url,
+                'phone' => [
+                    'countryCode' => 95,
+                    'number' => $button->phone
+                ]
+            ];
+        }
+
         $res = [
             'content' => [],
-            'button' => null
+            'button' => $listButton
         ];
         
         foreach($list as $l) {
+
+            $listItemButton = null;
+            $button = ChatButton::with('blocks', 'blocks.value')->where('gallery_id', $l->id)->first();
+
+            if(!empty($button)) {
+                $blocks = [];
+
+                foreach($button->blocks as $block) {
+                    $blocks[] = [
+                        'id' => $block->value->id,
+                        'title' => $block->value->title
+                    ];
+                }
+
+                $listItemButton = [
+                    'id' => $button->id,
+                    'type' => $button->action_type,
+                    'title' => $button->title,
+                    'block' => $blocks,
+                    'url' => $button->url,
+                    'phone' => [
+                        'countryCode' => 95,
+                        'number' => $button->phone
+                    ]
+                ];
+            }
+            
             $res['content'][] = [
                 'id' => $l->id,
                 'image' => $l->image && Storage::disk('public')->exists('images/list/'.$l->image) ? Storage::disk('public')->url('images/list/'.$l->image) : '',
@@ -119,7 +181,7 @@ class GetController extends Controller
                 'sub' => $l->sub,
                 'url' => $l->url,
                 'content_id' => $content->id,
-                'button' => null
+                'button' => $listItemButton
             ];
         }
 
@@ -133,6 +195,34 @@ class GetController extends Controller
         $res = [];
         
         foreach($list as $l) {
+
+            $button = ChatButton::with('blocks', 'blocks.value')->where('gallery_id', $l->id)->get();
+
+            $buttonList = [];
+
+            foreach($button as $btn) {
+                $blocks = [];
+
+                foreach($btn->blocks as $block) {
+                    $blocks[] = [
+                        'id' => $block->value->id,
+                        'title' => $block->value->title
+                    ];
+                }
+
+                $buttonList[] = [
+                    'id' => $btn->id,
+                    'type' => $btn->action_type,
+                    'title' => $btn->title,
+                    'block' => $blocks,
+                    'url' => $btn->url,
+                    'phone' => [
+                        'countryCode' => 95,
+                        'number' => $btn->phone
+                    ]
+                ];
+            }
+            
             $res[] = [
                 'id' => $l->id,
                 'image' => $l->image && Storage::disk('public')->exists('images/gallery/'.$l->image) ? Storage::disk('public')->url('images/gallery/'.$l->image) : '',
@@ -140,7 +230,7 @@ class GetController extends Controller
                 'sub' => $l->sub,
                 'url' => $l->url,
                 'content_id' => $content->id,
-                'button' => []
+                'button' => $buttonList
             ];
         }
 

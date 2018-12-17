@@ -9,13 +9,9 @@
     border: 1px solid $borderPrimary;
     width: 260px;
     border-radius: 5px;
-    li:not(:last-child) {
+    > li:not(:last-child) {
         border-bottom: 1px solid $borderPrimary;
     }
-}
-
-.chatListItem {
-
 }
 
 .chatListInfo {
@@ -168,4 +164,8 @@
         cursor: pointer;
         font-size: 50px;
     }
+}
+
+.chatListRootButton {
+    position: relative;
 }

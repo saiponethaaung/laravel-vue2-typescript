@@ -138,6 +138,19 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         });
 
         this.saveBlock = false;
+    }
 
+    async delButton(index: number) {
+        await Axios({
+            url: `${this.rootUrl}/${this.id}/block`,
+            method: 'delete',
+        }).then((res) => {
+            this.content.block = [];
+        }).catch((err) => {
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to delete a block!');
+                alert(mesg);
+            }
+        });
     }
 }

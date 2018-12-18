@@ -37,6 +37,10 @@ export default class ListContentModel extends ChatBlockContentModel {
         return this.listContent;
     }
 
+    set item(list: Array<ListItemModel>) {
+        this.listContent = list;
+    }
+
     get isCreating(): boolean {
         return this.creating;
     }
@@ -121,5 +125,19 @@ export default class ListContentModel extends ChatBlockContentModel {
         });
 
         this.isCreating = false;
+    }
+
+    async delItem(index: number) {
+        await Axios({
+            url: `${this.rootUrl}/list/${this.item[index].id}`,
+            method: 'delete',
+        }).then((res) => {
+            this.item.splice(index, 1);
+        }).catch((err) => {
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to delete a list!');
+                alert(mesg);
+            }
+        });
     }
 }

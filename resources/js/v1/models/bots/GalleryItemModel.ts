@@ -184,4 +184,18 @@ export default class GalleryItemModel extends AjaxErrorHandler{
             }
         });
     }
+    
+    async delImage(index: number) {
+        await Axios({
+            url: `${this.rootUrl}/${this.id}/image`,
+            method: 'delete',
+        }).then((res) => {
+            this.content.image = '';
+        }).catch((err) => {
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to delete a button!');
+                alert(mesg);
+            }
+        });
+    }
 }

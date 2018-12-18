@@ -11,7 +11,7 @@
                         <div class="buttonActionName" v-if="button.type===2 && button.phone.number">{{ button.phone.number }}</div>
                     </div>
                     <div class="delIcon" @click="content.delButton(index)">
-                        <i class="material-icons">delete_outline</i>
+                        <i class="material-icons">delete</i>
                     </div>
                     <button-component
                         :rootUrl="`${content.url}/button`"

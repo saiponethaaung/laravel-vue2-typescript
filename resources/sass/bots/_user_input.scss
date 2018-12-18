@@ -28,9 +28,6 @@
     }
 }
 
-.uihText {
-}
-
 .userInputDesc {
     font-size: 13px;
     color: $secondaryText;
@@ -39,6 +36,10 @@
 .userInputList {
     list-style: none;
     padding: 0;
+}
+
+.userInputCon {
+    position: relative;
 }
 
 .userInputHeading {
@@ -90,5 +91,12 @@ $userInputValidation: 120px;
         font-size: 12px;
         padding: 3px 10px;
         border: 1px solid $borderPrimary;
+    }
+}
+
+.userInputCon {
+    .delIcon {
+        top: 3px!important;
+        right: -13px!important;
     }
 }

@@ -149,6 +149,20 @@ export default class ListItemModel extends AjaxErrorHandler{
         this.isUploading = false;
     }
 
+    async delImage(e: any) {
+        await Axios({
+            url: `${this.rootUrl}/${this.id}/image`,
+            method: 'delete',
+        }).then((res: any) => {
+            this.image = '';
+        }).catch((err: any) => {
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to delete an image!');
+                alert(mesg);
+            }
+        });
+    }
+
     async delButton() {
         if(this.button!==null) {
             await Axios({

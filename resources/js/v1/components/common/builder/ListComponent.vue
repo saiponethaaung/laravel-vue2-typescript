@@ -19,7 +19,15 @@
                             <div class="chatListImage">
                                 <figure>
                                     <template v-if="l.image">
-                                        <img :src="l.image"/>
+                                        <div class="listItemImageCon">
+                                            <img :src="l.image"/>
+                                        </div>
+                                        <div class="hoverOptions">
+                                            <div class="removeIcon" @click="l.delImage()">
+                                                <i class="material-icons">close</i>
+                                                <span>remove</span>
+                                            </div>
+                                        </div>
                                     </template>
                                     <template v-else>
                                         <label>
@@ -41,7 +49,7 @@
                                 {{ l.button.title ? l.button.title : 'New Button' }}
                             </div>
                             <div class="delIcon" @click="l.delButton()">
-                                <i class="material-icons">delete_outline</i>
+                                <i class="material-icons">delete</i>
                             </div>
                             <button-component
                                 :rootUrl="`${content.url}/button`"
@@ -53,6 +61,9 @@
                         </div>
                     </div>
                     <div class="clear"></div>
+                    <div class="delIcon chatListItemDelIcon" @click="content.delItem(index)">
+                        <i class="material-icons">delete</i>
+                    </div>
                 </li>
                 <li v-if="content.isCreating" class="addMoreChatListItem addBtn">
                     Creating...
@@ -68,7 +79,7 @@
                         <div class="buttonActionName" v-if="content.button.type===2 && content.button.phone.number">{{ content.button.phone.number }}</div>
                     </div>
                     <div class="delIcon" @click="content.delButton()">
-                        <i class="material-icons">delete_outline</i>
+                        <i class="material-icons">delete</i>
                     </div>
                     <button-component
                         :rootUrl="`${content.url}/button`"

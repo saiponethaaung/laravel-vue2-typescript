@@ -15,6 +15,16 @@ class ChatQuickReply extends Model
         'value'
     ];
 
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($qr) {
+            foreach($qr->blocks as $block) {
+                $block->delete();
+            }
+        });
+    }
+
     public function attribute()
     {
         return $this->hasOne('App\Models\ChatAttribute', 'id', 'attribute_id');

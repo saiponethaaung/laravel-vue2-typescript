@@ -23225,6 +23225,9 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
     get item() {
         return this.listContent;
     }
+    set item(list) {
+        this.listContent = list;
+    }
     get isCreating() {
         return this.creating;
     }
@@ -23301,6 +23304,21 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
             this.isCreating = false;
         });
     }
+    delItem(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl}/list/${this.item[index].id}`,
+                method: 'delete',
+            }).then((res) => {
+                this.item.splice(index, 1);
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to delete a list!');
+                    alert(mesg);
+                }
+            });
+        });
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ListContentModel;
 
@@ -23346,6 +23364,9 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentM
     get item() {
         return this.galleryContent;
     }
+    set item(gallery) {
+        this.galleryContent = gallery;
+    }
     get isCreating() {
         return this.creating;
     }
@@ -23365,6 +23386,21 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentM
                 alert(mesg);
             });
             this.isCreating = false;
+        });
+    }
+    delItem(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `${this.rootUrl}/gallery/${this.item[index].id}`,
+                method: 'delete',
+            }).then((res) => {
+                this.item.splice(index, 1);
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to delete a card!');
+                    alert(mesg);
+                }
+            });
         });
     }
 }
@@ -23409,6 +23445,9 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConte
     get item() {
         return this.quickReplyContent;
     }
+    set item(quickReply) {
+        this.quickReplyContent = quickReply;
+    }
     get isCreating() {
         return this.creating;
     }
@@ -23428,6 +23467,21 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConte
                 alert(mesg);
             });
             this.isCreating = false;
+        });
+    }
+    delItem(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `${this.rootUrl}/${this.item[index].id}`,
+                method: 'delete',
+            }).then((res) => {
+                this.item.splice(index, 1);
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to delete a quick reply!');
+                    alert(mesg);
+                }
+            });
         });
     }
 }
@@ -23472,6 +23526,9 @@ class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConten
     get item() {
         return this.userInputContent;
     }
+    set item(userInput) {
+        this.userInputContent = userInput;
+    }
     get isCreating() {
         return this.creating;
     }
@@ -23493,6 +23550,21 @@ class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConten
                 }
             });
             this.isCreating = false;
+        });
+    }
+    delItem(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `${this.rootUrl}/${this.item[index].id}`,
+                method: 'delete',
+            }).then((res) => {
+                this.item.splice(index, 1);
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to delete a user input!');
+                    alert(mesg);
+                }
+            });
         });
     }
 }
@@ -38802,12 +38874,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__builder_UserInputComponent_vue__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__builder_UserInputComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__builder_UserInputComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__models_bots_TextContentModel__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__models_bots_TypingContentModel__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__models_bots_ListContentModel__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__models_bots_GalleryContentModel__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__models_bots_QuickReplyContentModel__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__models_bots_UserInputContentModel__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__builder_ImageComponent_vue__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__builder_ImageComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__builder_ImageComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__models_bots_TextContentModel__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__models_bots_TypingContentModel__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__models_bots_ListContentModel__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__models_bots_GalleryContentModel__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__models_bots_QuickReplyContentModel__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__models_bots_UserInputContentModel__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__models_bots_ImageContentModel__ = __webpack_require__(130);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38822,6 +38897,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
+
 
 
 
@@ -38897,6 +38974,14 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
             });
         });
     }
+    addImage() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.appendComponent({
+                name: 'Image section',
+                type: 7
+            });
+        });
+    }
     appendComponent(content) {
         return __awaiter(this, void 0, void 0, function* () {
             let data = new FormData();
@@ -38923,22 +39008,25 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     buildConetnt(value) {
         switch (value.type) {
             case (1):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_9__models_bots_TextContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_10__models_bots_TextContentModel__["a" /* default */](value));
                 break;
             case (2):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_10__models_bots_TypingContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_11__models_bots_TypingContentModel__["a" /* default */](value));
                 break;
             case (3):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_13__models_bots_QuickReplyContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_14__models_bots_QuickReplyContentModel__["a" /* default */](value));
                 break;
             case (4):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_14__models_bots_UserInputContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_15__models_bots_UserInputContentModel__["a" /* default */](value));
                 break;
             case (5):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_11__models_bots_ListContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_12__models_bots_ListContentModel__["a" /* default */](value));
                 break;
             case (6):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_12__models_bots_GalleryContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_13__models_bots_GalleryContentModel__["a" /* default */](value));
+                break;
+            case (7):
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_16__models_bots_ImageContentModel__["a" /* default */](value));
                 break;
         }
     }
@@ -38963,6 +39051,9 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
             case (6):
                 component = __WEBPACK_IMPORTED_MODULE_6__builder_GalleryComponent_vue___default.a;
                 break;
+            case (7):
+                component = __WEBPACK_IMPORTED_MODULE_9__builder_ImageComponent_vue___default.a;
+                break;
         }
         return component;
     }
@@ -38981,7 +39072,8 @@ BuilderComponent = __decorate([
             ListComponent: __WEBPACK_IMPORTED_MODULE_5__builder_ListComponent_vue___default.a,
             GalleryComponent: __WEBPACK_IMPORTED_MODULE_6__builder_GalleryComponent_vue___default.a,
             QuickReplyComponent: __WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue___default.a,
-            UserInputComponent: __WEBPACK_IMPORTED_MODULE_8__builder_UserInputComponent_vue___default.a
+            UserInputComponent: __WEBPACK_IMPORTED_MODULE_8__builder_UserInputComponent_vue___default.a,
+            ImageComponent: __WEBPACK_IMPORTED_MODULE_9__builder_ImageComponent_vue___default.a
         }
     })
 ], BuilderComponent);
@@ -39163,7 +39255,7 @@ var render = function() {
                   },
                   [
                     _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("delete_outline")
+                      _vm._v("delete")
                     ])
                   ]
                 ),
@@ -39645,6 +39737,21 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
             this.isUploading = false;
         });
     }
+    delImage(e) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl}/${this.id}/image`,
+                method: 'delete',
+            }).then((res) => {
+                this.image = '';
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to delete an image!');
+                    alert(mesg);
+                }
+            });
+        });
+    }
     delButton() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.button !== null) {
@@ -39799,7 +39906,32 @@ var render = function() {
                       "figure",
                       [
                         l.image
-                          ? [_c("img", { attrs: { src: l.image } })]
+                          ? [
+                              _c("div", { staticClass: "listItemImageCon" }, [
+                                _c("img", { attrs: { src: l.image } })
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "hoverOptions" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "removeIcon",
+                                    on: {
+                                      click: function($event) {
+                                        l.delImage()
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", { staticClass: "material-icons" }, [
+                                      _vm._v("close")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("remove")])
+                                  ]
+                                )
+                              ])
+                            ]
                           : [
                               _c("label", [
                                 _c("i", { staticClass: "material-icons" }, [
@@ -39886,7 +40018,7 @@ var render = function() {
                           },
                           [
                             _c("i", { staticClass: "material-icons" }, [
-                              _vm._v("delete_outline")
+                              _vm._v("delete")
                             ])
                           ]
                         ),
@@ -39912,7 +40044,20 @@ var render = function() {
                   : _vm._e()
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "clear" })
+              _c("div", { staticClass: "clear" }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "delIcon chatListItemDelIcon",
+                  on: {
+                    click: function($event) {
+                      _vm.content.delItem(index)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
+              )
             ])
           }),
           _vm._v(" "),
@@ -39993,7 +40138,7 @@ var render = function() {
                     },
                     [
                       _c("i", { staticClass: "material-icons" }, [
-                        _vm._v("delete_outline")
+                        _vm._v("delete")
                       ])
                     ]
                   ),
@@ -40307,6 +40452,21 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
             });
         });
     }
+    delImage(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl}/${this.id}/image`,
+                method: 'delete',
+            }).then((res) => {
+                this.content.image = '';
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to delete a button!');
+                    alert(mesg);
+                }
+            });
+        });
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = GalleryItemModel;
 
@@ -40334,7 +40494,32 @@ var render = function() {
                   { staticClass: "chatGalleryImage" },
                   [
                     l.image
-                      ? [_c("img", { attrs: { src: l.image } })]
+                      ? [
+                          _c("div", { staticClass: "imageCon" }, [
+                            _c("img", { attrs: { src: l.image } })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "hoverOptions" }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "removeIcon",
+                                on: {
+                                  click: function($event) {
+                                    l.delImage()
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("close")
+                                ]),
+                                _vm._v(" "),
+                                _c("span", [_vm._v("remove")])
+                              ]
+                            )
+                          ])
+                        ]
                       : [
                           _c("label", [
                             _c("i", { staticClass: "material-icons" }, [
@@ -40507,7 +40692,7 @@ var render = function() {
                             },
                             [
                               _c("i", { staticClass: "material-icons" }, [
-                                _vm._v("delete_outline")
+                                _vm._v("delete")
                               ])
                             ]
                           ),
@@ -40559,6 +40744,23 @@ var render = function() {
                       : _vm._e()
                   ],
                   2
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "delIcon",
+                    on: {
+                      click: function($event) {
+                        _vm.content.delItem(index)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("delete")
+                    ])
+                  ]
                 )
               ])
             ])
@@ -40849,6 +41051,21 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
             this.saveBlock = false;
         });
     }
+    delButton(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl}/${this.id}/block`,
+                method: 'delete',
+            }).then((res) => {
+                this.content.block = [];
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to delete a block!');
+                    alert(mesg);
+                }
+            });
+        });
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = QuickReplyItemModel;
 
@@ -40947,7 +41164,24 @@ var render = function() {
                                     _vm._v(_vm._s(qr.block[0].title))
                                   ]),
                                   _vm._v(" "),
-                                  _vm._m(0, true)
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "slbDel",
+                                      on: {
+                                        click: function($event) {
+                                          qr.delButton()
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "i",
+                                        { staticClass: "material-icons" },
+                                        [_vm._v("delete")]
+                                      )
+                                    ]
+                                  )
                                 ]
                               )
                             ]
@@ -41036,7 +41270,7 @@ var render = function() {
                       2
                     ),
                     _vm._v(" "),
-                    _vm._m(1, true),
+                    _vm._m(0, true),
                     _vm._v(" "),
                     _c("div", [
                       _c("input", {
@@ -41092,6 +41326,19 @@ var render = function() {
                     ])
                   ])
                 ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "delIcon",
+                  on: {
+                    click: function($event) {
+                      _vm.content.delItem(index)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
               )
             ])
           ])
@@ -41120,14 +41367,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "slbDel" }, [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("delete_outline")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -41466,7 +41705,24 @@ var render = function() {
                         }
                       })
                     ])
-                  ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "delIcon",
+                      on: {
+                        click: function($event) {
+                          _vm.content.delItem(index)
+                        }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("delete")
+                      ])
+                    ]
+                  )
                 ])
               })
             ],
@@ -41675,9 +41931,21 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _vm._m(0),
+            _c(
+              "li",
+              { staticClass: "contentActionList", on: { click: _vm.addImage } },
+              [
+                _c("i", { staticClass: "material-icons" }, [
+                  _vm._v("insert_photo")
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "contentActionName" }, [
+                  _vm._v("Image")
+                ])
+              ]
+            ),
             _vm._v(" "),
-            _vm._m(1)
+            _vm._m(0)
           ])
         ])
       ])
@@ -41686,16 +41954,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "contentActionList" }, [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("insert_photo")]),
-      _vm._v(" "),
-      _c("span", { staticClass: "contentActionName" }, [_vm._v("Image")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -42070,7 +42328,7 @@ var render = function() {
                                 },
                                 [
                                   _c("i", { staticClass: "material-icons" }, [
-                                    _vm._v("delete_outline")
+                                    _vm._v("delete")
                                   ])
                                 ]
                               )
@@ -42238,6 +42496,246 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(128)
+/* template */
+var __vue_template__ = __webpack_require__(129)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/builder/ImageComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-71adf432", Component.options)
+  } else {
+    hotAPI.reload("data-v-71adf432", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 128 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_ImageContentModel__ = __webpack_require__(130);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+let ImageComponent = class ImageComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_ImageContentModel__["a" /* default */],
+    })
+], ImageComponent.prototype, "content", void 0);
+ImageComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], ImageComponent);
+/* harmony default export */ __webpack_exports__["default"] = (ImageComponent);
+
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "componentTypeOne" }, [
+    _c(
+      "figure",
+      { staticClass: "imageComponentCon" },
+      [
+        _vm.content.image
+          ? [
+              _c("img", { attrs: { src: _vm.content.image } }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "hoverOptions",
+                  on: {
+                    click: function($event) {
+                      _vm.content.delImage()
+                    }
+                  }
+                },
+                [_vm._m(0)]
+              )
+            ]
+          : [
+              _c("label", [
+                _c("i", { staticClass: "material-icons" }, [
+                  _vm._v("photo_camera")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { type: "file" },
+                  on: {
+                    change: function($event) {
+                      _vm.content.imageUpload($event)
+                    }
+                  }
+                })
+              ])
+            ]
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "removeIcon" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("close")]),
+      _vm._v(" "),
+      _c("span", [_vm._v("remove")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-71adf432", module.exports)
+  }
+}
+
+/***/ }),
+/* 130 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+class ImageContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
+    constructor(content) {
+        super(content);
+        this.imageContent = {
+            image: ''
+        };
+        this.uploading = false;
+        this.imageToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.imageContent.image = content.content.image;
+        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/image`;
+    }
+    get image() {
+        return this.imageContent.image;
+    }
+    set image(image) {
+        this.imageContent.image = image;
+    }
+    get isUploading() {
+        return this.uploading;
+    }
+    set isUploading(status) {
+        this.uploading = status;
+    }
+    imageUpload(e) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.imageToken.cancel();
+            this.imageToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.isUploading = true;
+            let data = new FormData();
+            data.append('image', e.target.files[0]);
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl}`,
+                data: data,
+                method: 'post',
+                cancelToken: this.imageToken.token
+            }).then((res) => {
+                this.image = res.data.image;
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to update list!');
+                    alert(mesg);
+                }
+            });
+            this.isUploading = false;
+        });
+    }
+    delImage() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl}`,
+                method: 'delete',
+            }).then((res) => {
+                this.image = '';
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.globalHandler(err, 'Failed to delete an image!');
+                    alert(mesg);
+                }
+            });
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ImageContentModel;
+
+
 
 /***/ })
 /******/ ]);

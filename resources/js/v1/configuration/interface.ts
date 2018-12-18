@@ -48,7 +48,7 @@ export interface sectionLinked {
 }
 
 export interface imageContent {
-
+    image: string,
 }
 
 export interface galleryContent {

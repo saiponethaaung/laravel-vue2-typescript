@@ -75,25 +75,37 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 
                         Route::group(['prefix' => 'list'], function() {
                             Route::post('/', 'V1\\Api\\ChatContent\\CreateController@createNewList')->name('chatbot.content.list.create');
-                            Route::put('/{listId}', 'V1\\Api\\ChatContent\\UpdateController@updateList')->name('chatbot.content.list.update');
+                            Route::put('/{listId}', 'V1\\Api\\ChatContent\\UpdateController@updateList')->name('chatbot.content.list.item.update');
+                            Route::delete('/{listId}', 'V1\\Api\\ChatContent\\DeleteController@deleteListItem')->name('chatbot.content.list.item.delete');
                             Route::post('/{listId}/image', 'V1\\Api\\ChatContent\\UpdateController@uploadListImage')->name('chatbot.content.list.image.upload');
+                            Route::delete('/{listId}/image', 'V1\\Api\\ChatContent\\DeleteController@deleteListImage')->name('chatbot.content.list.image.delete');
                         });
 
                         Route::group(['prefix' => 'gallery'], function() {
                             Route::post('/', 'V1\\Api\\ChatContent\\CreateController@createNewgallery')->name('chatbot.content.gallery.create');
-                            Route::put('/{galleId}', 'V1\\Api\\ChatContent\\UpdateController@updateGallery')->name('chatbot.content.gallery.update');
+                            Route::put('/{galleId}', 'V1\\Api\\ChatContent\\UpdateController@updateGallery')->name('chatbot.content.gallery.item.update');
+                            Route::delete('/{galleId}', 'V1\\Api\\ChatContent\\DeleteController@deleteGalleryItem')->name('chatbot.content.gallery.item.delete');
                             Route::post('/{galleId}/image', 'V1\\Api\\ChatContent\\UpdateController@uploadGalleryImage')->name('chatbot.content.gallery.image.upload');
+                            Route::delete('/{galleId}/image', 'V1\\Api\\ChatContent\\deleteController@deleteGalleryImage')->name('chatbot.content.gallery.image.delete');
                         });
 
                         Route::group(['prefix' => 'quick-reply'], function() {
                             Route::post('/', 'V1\\Api\\ChatContent\\CreateController@createNewQuickReply')->name('chatbot.content.qr.create');
                             Route::put('/{qrId}', 'V1\\Api\\ChatContent\\UpdateController@updateQuickReply')->name('chatbot.content.qr.update');
+                            Route::delete('/{qrId}', 'V1\\Api\\ChatContent\\DeleteController@deleteQuickReplyItem')->name('chatbot.content.qr.item.delete');
                             Route::post('/{qrId}/block', 'V1\\Api\\ChatContent\\UpdateController@addQuickReplyBlock')->name('chatbot.content.qr.block.create');
+                            Route::delete('/{qrId}/block', 'V1\\Api\\ChatContent\\DeleteController@deleteQuickReplyBlock')->name('chatbot.content.qr.block.delete');
                         });
                         
                         Route::group(['prefix' => 'user-input'], function() {
                             Route::post('/', 'V1\\Api\\ChatContent\\CreateController@createNewUserInput')->name('chatbot.content.ui.create');
-                            Route::put('/{uiId}', 'V1\\Api\\ChatContent\\UpdateController@updateUserInput')->name('chatbot.content.ui.update');
+                            Route::put('/{uiId}', 'V1\\Api\\ChatContent\\UpdateController@updateUserInput')->name('chatbot.content.ui.item.update');
+                            Route::delete('/{uiId}', 'V1\\Api\\ChatContent\\DeleteController@deleteUserInputItem')->name('chatbot.content.ui.item.delete');
+                        });
+                        
+                        Route::group(['prefix' => 'image'], function() {
+                            Route::post('/', 'V1\\Api\\ChatContent\\UpdateController@uploadImageImage')->name('chatbot.content.image.image.upload');
+                            Route::delete('/', 'V1\\Api\\ChatContent\\DeleteController@deleteImageImage')->name('chatbot.content.image.image.delete');
                         });
                     });
                 });

@@ -61,6 +61,10 @@ class GetController extends Controller
                 case(6):
                     $parsed['content'] = $this->parseGallery($content);
                     break;
+
+                case(7):
+                    $parsed['content'] = $this->parseImage($content);
+                    break;
             }
 
             $res[] = $parsed;
@@ -293,5 +297,12 @@ class GetController extends Controller
         }
 
         return $res;
+    }
+
+    public function parseImage($content)
+    {
+        return [
+            'image' => $content->image && Storage::disk('public')->exists('images/photos/'.$content->image) ? Storage::disk('public')->url('images/photos/'.$content->image) : ''
+        ];
     }
 }

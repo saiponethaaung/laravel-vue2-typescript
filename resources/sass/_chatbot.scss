@@ -406,6 +406,9 @@
 
 .btnCon,
 .chatListRootButton,
+.chatGalleryContainer,
+.quickReplyCapsule,
+.userInputCon,
 .chatListButton {
     &:hover {
         .delIcon {
@@ -414,8 +417,15 @@
         }
     }
 }
+
+.chatListItem:hover .chatListItemDelIcon {
+    visibility: visible;
+    opacity: 1;
+} 
+
 @import './bots/text.scss';
 @import './bots/typing.scss';
 @import './bots/list.scss';
 @import './bots/quick_reply.scss';
 @import './bots/user_input.scss';
+@import './bots/image.scss';

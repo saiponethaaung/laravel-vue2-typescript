@@ -14,8 +14,8 @@
                                 <template v-if="qr.block.length>0">
                                     <div class="selectedLinkedBlock">
                                         <span class="slbText">{{ qr.block[0].title }}</span>
-                                        <div class="slbDel">
-                                            <i class="material-icons">delete_outline</i>
+                                        <div class="slbDel" @click="qr.delButton()">
+                                            <i class="material-icons">delete</i>
                                         </div>
                                     </div>
                                 </template>
@@ -43,6 +43,9 @@
                                 <input class="noMgb" placeholder="<Set value>" v-model="qr.value" v-on:blur="qr.saveContent()">
                             </div>
                         </div>
+                    </div>
+                    <div class="delIcon" @click="content.delItem(index)">
+                        <i class="material-icons">delete</i>
                     </div>
                 </div>
             </li>

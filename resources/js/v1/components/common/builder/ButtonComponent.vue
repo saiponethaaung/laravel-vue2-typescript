@@ -34,7 +34,7 @@
                                     <div class="selectedLinkedBlock">
                                         <span class="slbText">{{ button.block[0].title }}</span>
                                         <div class="slbDel" @click="delBlock()">
-                                            <i class="material-icons">delete_outline</i>
+                                            <i class="material-icons">delete</i>
                                         </div>
                                     </div>
                                 </div>

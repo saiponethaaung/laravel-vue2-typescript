@@ -35,6 +35,9 @@
                                     <input type="text" v-model="ui.attribute" v-on:blur="ui.saveContent()"/>
                                 </div>
                             </div>
+                            <div class="delIcon" @click="content.delItem(index)">
+                                <i class="material-icons">delete</i>
+                            </div>
                         </li>
                     </ul>
                     <div>

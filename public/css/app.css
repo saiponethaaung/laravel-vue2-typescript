@@ -11273,7 +11273,15 @@ a.text-dark:focus {
 
 .btnCon:hover .delIcon,
 .chatListRootButton:hover .delIcon,
+.chatGalleryContainer:hover .delIcon,
+.quickReplyCapsule:hover .delIcon,
+.userInputCon:hover .delIcon,
 .chatListButton:hover .delIcon {
+  visibility: visible;
+  opacity: 1;
+}
+
+.chatListItem:hover .chatListItemDelIcon {
   visibility: visible;
   opacity: 1;
 }
@@ -11453,6 +11461,66 @@ a.text-dark:focus {
           justify-content: center;
   border: 2px dotted #ebebeb;
   border-radius: 5px;
+  position: relative;
+}
+
+.chatListImage figure .listItemImageCon {
+  width: inherit;
+  height: inherit;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: relative;
+}
+
+.chatListImage figure .hoverOptions {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: rgba(50, 50, 50, 0.5);
+  border-radius: inherit;
+}
+
+.chatListImage figure .hoverOptions .removeIcon {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
 }
 
 .chatListImage figure label {
@@ -11474,6 +11542,11 @@ a.text-dark:focus {
 
 .chatListImage figure label input {
   display: none;
+}
+
+.chatListImage figure:hover .hoverOptions {
+  opacity: 1;
+  visibility: visible;
 }
 
 .chatListButton {
@@ -11517,9 +11590,26 @@ a.text-dark:focus {
   margin-right: 25px;
 }
 
+.chatGalleryContainer {
+  position: relative;
+}
+
 .chatGalleryImage {
+  position: relative;
   width: 100%;
   height: 150px;
+  margin: 0;
+  padding: 0;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.chatGalleryImage .imageCon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -11529,12 +11619,53 @@ a.text-dark:focus {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
-  border-bottom: 1px solid #ebebeb;
+}
+
+.chatGalleryImage .hoverOptions {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: rgba(50, 50, 50, 0.5);
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.chatGalleryImage .hoverOptions .removeIcon {
+  width: calc(100%/3);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
 }
 
 .chatGalleryImage label {
@@ -11554,6 +11685,11 @@ a.text-dark:focus {
 
 .chatGalleryImage label input {
   display: none;
+}
+
+.chatGalleryImage:hover .hoverOptions {
+  opacity: 1;
+  visibility: visible;
 }
 
 .chatGalleryContent {
@@ -11589,6 +11725,7 @@ a.text-dark:focus {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  min-height: 260px;
 }
 
 .galleAddMore .addMoreGalleBtn {
@@ -11609,6 +11746,14 @@ a.text-dark:focus {
 
 .chatListRootButton {
   position: relative;
+}
+
+.chatListItem {
+  position: relative;
+}
+
+.chatListItemDelIcon {
+  top: calc(50% - 10px);
 }
 
 .quickReplyRoot {
@@ -11806,6 +11951,10 @@ a.text-dark:focus {
   padding: 0;
 }
 
+.userInputCon {
+  position: relative;
+}
+
 .userInputHeading {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -11862,6 +12011,97 @@ a.text-dark:focus {
   font-size: 12px;
   padding: 3px 10px;
   border: 1px solid #ebebeb;
+}
+
+.userInputCon .delIcon {
+  top: 3px !important;
+  right: -13px !important;
+}
+
+.imageComponentCon {
+  width: 260px;
+  height: 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  overflow: hidden;
+  border: 1px solid #ebebeb;
+  position: relative;
+  border-radius: 5px;
+}
+
+.imageComponentCon .hoverOptions {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: rgba(50, 50, 50, 0.5);
+  border-radius: inherit;
+}
+
+.imageComponentCon .hoverOptions .removeIcon {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.imageComponentCon label {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.imageComponentCon input {
+  display: none;
+}
+
+.imageComponentCon:hover .hoverOptions {
+  opacity: 1;
+  visibility: visible;
 }
 
 .pageList {

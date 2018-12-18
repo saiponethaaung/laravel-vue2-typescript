@@ -25,6 +25,10 @@ export default class UserInputContentModel extends ChatBlockContentModel {
         return this.userInputContent;
     }
 
+    set item(userInput: Array<UserInputItemModel>) {
+        this.userInputContent = userInput;
+    }
+
     get isCreating() : boolean {
         return this.creating;
     }
@@ -49,5 +53,19 @@ export default class UserInputContentModel extends ChatBlockContentModel {
         });
 
         this.isCreating = false;
+    }
+
+    async delItem(index: number) {
+        await Axios({
+            url: `${this.rootUrl}/${this.item[index].id}`,
+            method: 'delete',
+        }).then((res) => {
+            this.item.splice(index, 1);
+        }).catch((err) => {
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to delete a user input!');
+                alert(mesg);
+            }
+        });
     }
 }

@@ -30,6 +30,10 @@ export default class GalleryContentModel extends ChatBlockContentModel {
         return this.galleryContent;
     }
 
+    set item(gallery: Array<GalleryItemModel>) {
+        this.galleryContent = gallery;
+    }
+
     get isCreating(): boolean {
         return this.creating;
     }
@@ -52,5 +56,19 @@ export default class GalleryContentModel extends ChatBlockContentModel {
         });
 
         this.isCreating = false;
+    }
+
+    async delItem(index: number) {
+        await Axios({
+            url: `${this.rootUrl}/gallery/${this.item[index].id}`,
+            method: 'delete',
+        }).then((res) => {
+            this.item.splice(index, 1);
+        }).catch((err) => {
+            if(err.response) {
+                let mesg = this.globalHandler(err, 'Failed to delete a card!');
+                alert(mesg);
+            }
+        });
     }
 }

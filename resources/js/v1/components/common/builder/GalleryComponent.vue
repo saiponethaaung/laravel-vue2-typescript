@@ -6,7 +6,15 @@
                     <div class="chatGalleryContainer">
                         <figure class="chatGalleryImage">
                             <template v-if="l.image">
-                                <img :src="l.image"/>
+                                <div class="imageCon">
+                                    <img :src="l.image"/>
+                                </div>
+                                <div class="hoverOptions">
+                                    <div class="removeIcon" @click="l.delImage()">
+                                        <i class="material-icons">close</i>
+                                        <span>remove</span>
+                                    </div>
+                                </div>
                             </template>
                             <template v-else>
                                 <label>
@@ -36,7 +44,7 @@
                                     <div class="buttonActionName" v-if="button.type===2 && button.phone.number">{{ button.phone.number }}</div>
                                 </div>
                                 <div class="delIcon" @click="l.delButton(sindex)">
-                                    <i class="material-icons">delete_outline</i>
+                                    <i class="material-icons">delete</i>
                                 </div>
                                 <button-component
                                     :rootUrl="`${content.url}/button`"
@@ -50,6 +58,9 @@
                             <div class="addBtn" v-if="!l.addingNewBtn && l.buttons.length<3" @click="l.addButton()">
                                 <i class="material-icons">add</i>Add Button
                             </div>
+                        </div>
+                        <div class="delIcon" @click="content.delItem(index)">
+                            <i class="material-icons">delete</i>
                         </div>
                     </div>
                 </li>

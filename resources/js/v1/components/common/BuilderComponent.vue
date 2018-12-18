@@ -36,7 +36,7 @@
                         <i class="material-icons">add_to_photos</i>
                         <span class="contentActionName">Gallery</span>
                     </li>
-                    <li class="contentActionList">
+                    <li class="contentActionList" @click="addImage">
                         <i class="material-icons">insert_photo</i>
                         <span class="contentActionName">Image</span>
                     </li>
@@ -62,6 +62,7 @@ import ListComponent from './builder/ListComponent.vue';
 import GalleryComponent from './builder/GalleryComponent.vue';
 import QuickReplyComponent from './builder/QuickReplyComponent.vue';
 import UserInputComponent from './builder/UserInputComponent.vue';
+import ImageComponent from './builder/ImageComponent.vue';
 
 import TextContentModel from '../../models/bots/TextContentModel';
 import TypingContentModel from '../../models/bots/TypingContentModel';
@@ -69,6 +70,7 @@ import ListContentModel from '../../models/bots/ListContentModel';
 import GalleryContentModel from '../../models/bots/GalleryContentModel';
 import QuickReplyContentModel from '../../models/bots/QuickReplyContentModel';
 import UserInputContentModel from '../../models/bots/UserInputContentModel';
+import ImageContentModel from '../../models/bots/ImageContentModel';
 
 @Component({
     components: {
@@ -77,7 +79,8 @@ import UserInputContentModel from '../../models/bots/UserInputContentModel';
         ListComponent,
         GalleryComponent,
         QuickReplyComponent,
-        UserInputComponent
+        UserInputComponent,
+        ImageComponent
     }
 })
 export default class BuilderComponent extends Vue {
@@ -137,6 +140,13 @@ export default class BuilderComponent extends Vue {
             type: 6
         });
     }
+    
+    async addImage() {
+        await this.appendComponent({
+            name: 'Image section',
+            type: 7
+        });
+    }
 
     async appendComponent(content: any) {
         let data = new FormData();
@@ -186,6 +196,10 @@ export default class BuilderComponent extends Vue {
             case(6):
                 this.contents.push(new GalleryContentModel(value));
                 break;
+
+            case(7):
+                this.contents.push(new ImageContentModel(value));
+                break;
         }
     }
 
@@ -215,6 +229,10 @@ export default class BuilderComponent extends Vue {
 
             case(6):
                 component = GalleryComponent;
+                break;
+
+            case(7):
+                component = ImageComponent;
                 break;
         }
 

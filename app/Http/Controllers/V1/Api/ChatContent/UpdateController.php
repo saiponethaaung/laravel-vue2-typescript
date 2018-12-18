@@ -665,4 +665,76 @@ class UpdateController extends Controller
             'mesg' => 'Success'
         ]);
     }
+
+    public function uploadImageImage(Request $request)
+    {
+        $input = $request->only('image');
+
+        $validator = Validator::make($input, [
+            'image' => 'required|image|mimes:jpeg,png'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        $image = '';
+        $oldImage = '';
+        
+        $content = CBSC::find($request->attributes->get('chatBlockSectionContent')->id);
+
+        if($content->image) {
+            $oldImage = $list->image;
+        }
+
+        try {
+            $name = str_random(20)."-".date("YmdHis");
+            $ext = strtolower($input['image']->getClientOriginalExtension());
+            
+            $upload = Storage::disk('public')->putFileAs('/images/photos/', $input['image'], $name.'.'.$ext);
+
+            $file = Image::make(Storage::disk('public')->get($upload));
+                
+            $file->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upSize();
+            })->encode('jpg')->save(public_path('storage/images/photos/'.$name.'.'.$ext));
+
+            if($ext!=="jpg"){
+                Storage::disk('public')->delete($upload);
+                $ext = "jpg";
+            }
+
+            $content->image = $name.'.'.$ext;
+            $image = Storage::disk('public')->url('images/photos/'.$name.'.'.$ext);
+            if($content->save()) {
+                if(!empty($oldImage)) {
+                    Storage::disk('public')->delete('/images/photos/'.$oldImage);
+                }
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to upload image',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 201,
+            'mesg' => 'sucess',
+            'image' => $image
+        ], 201);
+    }
 }

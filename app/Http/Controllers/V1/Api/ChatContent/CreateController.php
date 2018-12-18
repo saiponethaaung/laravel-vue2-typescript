@@ -54,6 +54,10 @@ class CreateController extends Controller
                 case(6):
                     $content = $this->createGallery($request);
                     break;
+
+                case(7):
+                    $content = $this->createImage($request);
+                    break;
             }
         } catch(\Exception $e) {
             DB::rollback();
@@ -228,6 +232,38 @@ class CreateController extends Controller
         return $res;
     }
 
+    public function createImage(Request $request)
+    {
+        $content = CBSC::create([
+            'section_id' => $request->attributes->get('chatBlockSection')->id,
+            'order' => CBSC::where('section_id', $request->attributes->get('chatBlockSection')->id)->count()+1,
+            'type' => 7,
+            'text' => '',
+            'content' => '',
+            'image' => '',
+            'duration' => 1
+        ]);
+
+        $res = [
+            'status' => true,
+            'code' => 200,
+            'data' => [
+                'id' => (int) $content->id,
+                'type' => (int) $content->type,
+                'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
+                'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'project' => md5($request->attributes->get('project')->id),
+                'content' => [
+                    [
+                        'image' => '',
+                    ]
+                ]
+            ]
+        ];
+
+        return $res;
+    }
+
     public function createNewList(Request $request)
     {
         $list = null;
@@ -265,7 +301,8 @@ class CreateController extends Controller
                 'sub' => '',
                 'image' => '',
                 'url' => '',
-                'content_id' => $list->id
+                'content_id' => $list->id,
+                'button' => null
             ]
         ], 201);
     }

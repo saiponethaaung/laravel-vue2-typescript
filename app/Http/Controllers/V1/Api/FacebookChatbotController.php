@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FacebookRequestLogs;
 
 use App\Models\ProjectPage;
+use App\Http\Controllers\V1\Api\ChatBotProjectController;
 
 class FacebookChatbotController extends Controller
 {
@@ -47,7 +48,49 @@ class FacebookChatbotController extends Controller
             }
         }
 
-        $this->sampleBot($input);
+        if(is_null($projectPage->project_id)) {
+            $this->sampleBot($input);
+        } else {
+            $this.parseMessage($input);
+        }
+    }
+
+    public function parseMessage($projectId, $input) {
+        $project = new ChatBotProjectController($projectId);
+        $messages = $project->process($input);
+
+        foreach($messages as $mesg) {
+
+            switch($mesg['type']) {
+                case(1):
+                    $mes = '';
+                    break;
+            }
+            
+        }
+    }
+
+    public function execResponse($res)
+    {
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($jsonData));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        
+        $result = "failed";
+        
+        try {
+            $response = curl_exec($ch);
+            $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            $header = substr($response, 0, $header_size);
+            $result = 'from facebook '. json_encode($header); // user will get the message
+        } catch(\Exception $e) {
+            $result = 'error: '. $e->getMessage();
+        }
+
+        FacebookRequestLogs::create([
+            'data' => json_encode($result)
+        ]);
     }
 
     public function sampleBot($input)
@@ -68,7 +111,7 @@ class FacebookChatbotController extends Controller
                         "id" => $sender,
                     ],
                     "message" => [
-                        "text" => "You said, $message"
+                        "text" => "Hello from Pixy Bots. Your page setup with our bot is not complete otherwise you will get the default answer. By the way you said, $message"
                     ]
                 ];
         

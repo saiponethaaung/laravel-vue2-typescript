@@ -14,8 +14,8 @@ class ModifyChatButtonTableChangeUrlFromIntergerToText extends Migration
     public function up()
     {
         Schema::table('chat_button', function(Blueprint $table) {
-            $table->renameColumn('url_size', 'url');
-            $table->text('url')->change();
+            $table->text('url')->change()->renameColumn('url_size', 'url');
+            // $table->;
         });
     }
 

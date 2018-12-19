@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ModifyChatButtonTableChangeUrlFromIntergerToText extends Migration
+class ModifyChatButtonChangeColumnName extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class ModifyChatButtonTableChangeUrlFromIntergerToText extends Migration
     public function up()
     {
         Schema::table('chat_button', function(Blueprint $table) {
-            $table->text('url_size')->change();
+            $table->renameColumn('url_size', 'url');
         });
     }
 

@@ -43,6 +43,10 @@ export default class ChatBlockModel extends AjaxErrorHandler{
         return this.chatBlock.sections;
     }
 
+    set sections(sections: Array<ChatBlockSectionModel>) {
+        this.chatBlock.sections = sections;
+    }
+
     get deleting() : boolean {
         return this.isDeleting;
     }

@@ -5,7 +5,7 @@
                 Loading...
             </template>
             <template v-else>
-                <builder-component v-model="contents"></builder-component>
+                <builder-component :value="contents" :section="section"></builder-component>
             </template>
         </template>
         <template v-else>
@@ -29,6 +29,7 @@ export default class ContentComponent extends Vue {
     private isLoading: boolean = false;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private contents: any = [];
+    private section: any = null;
 
     @Watch('$store.state.chatBot')
     async sectionChange() {
@@ -48,7 +49,8 @@ export default class ContentComponent extends Vue {
             url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
             cancelToken: this.loadingToken.token
         }).then((res: any) => {
-            this.contents = res.data;
+            this.contents = res.data.content;
+            this.section = res.data.section;
         }).catch((err: any) => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');

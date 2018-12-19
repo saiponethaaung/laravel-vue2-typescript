@@ -86,9 +86,13 @@ export default class SidebarComponent extends Vue {
 
     @Watch('selectedBlock')
     selectBlock() {
-        let blockSection: any = this.selectedBlock.split("-");
+        if(this.selectedBlock==="") {
+            this.$store.commit('selectChatBot', { block: -1, section: -1 });
+        } else {
+            let blockSection: any = this.selectedBlock.split("-");
 
-        this.$store.commit('selectChatBot', { block: this.blocks[blockSection[0]].id, section: this.blocks[blockSection[0]].sections[blockSection[1]].id });
+            this.$store.commit('selectChatBot', { block: this.blocks[blockSection[0]].id, section: this.blocks[blockSection[0]].sections[blockSection[1]].id });
+        }
     }
 
     @Watch('delBlockIndex')
@@ -100,6 +104,8 @@ export default class SidebarComponent extends Vue {
 
             if(deleteBlock.status) {
                 this.blocks.splice(this.delBlockIndex, 1);
+                this.selectedBlock = "";
+                this.$store.commit('selectChatBot', { block: -1, section: -1 });
             } else {
                 alert(deleteBlock.mesg);
                 this.blocks[this.delBlockIndex].allowDelete = false;
@@ -108,6 +114,36 @@ export default class SidebarComponent extends Vue {
             this.delBlockIndex = -1;
         } else {
             this.showDelConfirm = true;
+        }
+    }
+
+    @Watch('$store.state.delBot')
+    async deleteSection() {
+        if(this.$store.state.delBot.section==-1 && this.$store.state.delBot.block==-1) return null;
+        for(let i in this.blocks) {
+            if(this.blocks[i].id!=this.$store.state.delBot.block) continue;
+            for(let s in this.blocks[i].sections) {
+                if(this.blocks[i].sections[s].id!=this.$store.state.delBot.section) continue;
+                this.blocks[i].sections.splice(parseInt(s), 1);
+                this.selectedBlock = "";
+                this.$store.commit('selectChatBot', { block: -1, section: -1 });
+                break;
+            }
+            break;
+        }
+    }
+
+    @Watch('$store.state.updateBot')
+    async updateSectionTitle() {
+        if(this.$store.state.updateBot.section==-1 && this.$store.state.updateBot.block==-1) return null;
+        for(let i in this.blocks) {
+            if(this.blocks[i].id!=this.$store.state.updateBot.block) continue;
+            for(let s in this.blocks[i].sections) {
+                if(this.blocks[i].sections[s].id!=this.$store.state.updateBot.section) continue;
+                this.blocks[i].sections[s].title = this.$store.state.updateBot.title;
+                break;
+            }
+            break;
         }
     }
 

@@ -357,4 +357,31 @@ class DeleteController extends Controller
             'mesg' => 'sucess'
         ], 200);
     }
+
+    public function deleteContent(Request $request)
+    {
+        DB::beginTransaction();
+
+        $content = CBSC::find($request->attributes->get('chatBlockSectionContent')->id);
+
+        try {
+            $content->delete();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to delete a message!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'sucess'
+        ], 200);
+    }
 }

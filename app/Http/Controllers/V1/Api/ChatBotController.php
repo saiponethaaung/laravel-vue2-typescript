@@ -55,7 +55,9 @@ class ChatBotController extends Controller
     public function getBlocks(Request $request)
     {
         $blocks = ChatBlock::query();
-        $blocks->with(['sections']);
+        $blocks->with(['sections' => function($query) {
+            $query->orderBy('order', 'asc');
+        }]);
         $blocks->where('project_id', $request->attributes->get('project')->id);
         $blocks->orderBy('order', 'asc');
         $blocks = $blocks->get();
@@ -162,6 +164,83 @@ class ChatBotController extends Controller
         ]);
     }
 
+    public function updateSection(Request $request)
+    {
+        $input = $request->only('title');
+
+        $validator = Validator::make($input, [
+            'title' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        $section = ChatBlockSection::find($request->attributes->get('chatBlockSection')->id);
+
+        DB::beginTransaction();
+
+        try {
+            $section->title = $input['title'];
+            $section->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update block title!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
+        ]);
+    }
+
+    public function deleteSection(Request $request)
+    {
+        if($request->attributes->get('chatBlock')->is_lock==1) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Cannot delete section that is locked by parent!'
+            ], 422);
+        }
+
+        $section = ChatBlockSection::find($request->attributes->get('chatBlockSection')->id);
+
+        DB::beginTransaction();
+
+        try {
+            $section->delete();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to delete a block!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
+        ]);
+    }
+
     public function serachSection(Request $request)
     {
         $keyword = "";
@@ -204,7 +283,7 @@ class ChatBotController extends Controller
 
         return response()->json([
             'status' => true,
-            'code' => 422,
+            'code' => 200,
             'data' => $res
         ]);
     }

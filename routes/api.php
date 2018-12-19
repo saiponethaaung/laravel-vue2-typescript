@@ -51,12 +51,20 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
                 Route::delete('/', 'V1\\Api\\ChatBotController@deleteBlock')->name('chatbot.block.delete');
                 Route::post('section', 'V1\\Api\\ChatBotController@createSection')->name('chatbot.section.create');
 
+                Route::group(['prefix' => 'section/{sectionId}', 'middleware' => 'verifyChatBlockSection'], function() {
+                    Route::put('/', 'V1\\Api\\ChatBotController@updateSection')->name('chatbot.section.update');
+                    Route::delete('/', 'V1\\Api\\ChatBotController@deleteSection')->name('chatbot.section.delete');
+                });
+
                 Route::group(['prefix' => 'section/{sectionId}/content', 'middleware' => 'verifyChatBlockSection'], function() {
+
                     Route::get('/', 'V1\\Api\\ChatContent\\GetController@getContents')->name('chatbot.content.get');
                     Route::post('/', 'V1\\Api\\ChatContent\\CreateController@createContents')->name('chatbot.content.create');
+                    
                     Route::group(['prefix' => '{contentId}', 'middleware' => 'verifychatBlockSectionContent'], function() {
+                    
                         Route::put('/', 'V1\\Api\\ChatContent\\UpdateController@updateContent')->name('chatbot.content.update');
-                        Route::delete('/', 'V1\\Api\\ChatContent\\GetController@getContent')->name('chatbot.content.delete');
+                        Route::delete('/', 'V1\\Api\\ChatContent\\DeleteController@deleteContent')->name('chatbot.content.delete');
                         Route::post('/image', 'V1\\Api\\ChatContent\\GetController@getContent')->name('chatbot.content.image.upload');
                         Route::delete('/image', 'V1\\Api\\ChatContent\\GetController@getContents')->name('chatbot.content.image.delete');
 

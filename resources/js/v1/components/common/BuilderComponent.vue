@@ -1,7 +1,23 @@
 <template>
     <div class="contentRoot">
+        <div>
+            <template v-if="section.lock">
+                <div>{{ section.title }}</div>
+            </template>
+            <template v-else>
+                <input type="text" v-model="section.title" v-on:blur="updateSection"/>
+                <div class="deleteAction" @click="delSection()">
+                    <i class="material-icons">delete</i>
+                </div>
+            </template>
+        </div>
         <div class="contentList">
-            <div v-for="(content, index) in contents" :key="index">
+            <div v-for="(content, index) in contents" :key="index" class="conentItem">
+                <div class="optionSection">
+                    <div class="deleteAction" @click="delItem(index)">
+                        <i class="material-icons">delete</i>
+                    </div>
+                </div>
                 <component :is="getComponent(content.type)" :content="content"></component>
             </div>
         </div>
@@ -53,7 +69,7 @@
 
 <script lang="ts">
 import { Component, Watch, Prop, Vue } from 'vue-property-decorator';
-import Axios from 'axios';
+import Axios,{ CancelTokenSource } from 'axios';
 import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 
 import TextComponent from './builder/TextComponent.vue';
@@ -87,11 +103,14 @@ export default class BuilderComponent extends Vue {
     private contents: Array<any> = [];
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private creating: number = 0;
+    private sectionToken: CancelTokenSource = Axios.CancelToken.source();
 
     @Prop({
         type: Array,
         default: []
     }) value!: Array<any>;
+
+    @Prop() section!: any;
 
     mounted() {
         for(let i in this.value) {
@@ -237,6 +256,68 @@ export default class BuilderComponent extends Vue {
         }
 
         return component;
+    }
+
+    async delItem(index:number) {
+        if(confirm('Are you sure you want to delete?')) {
+            await Axios({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content/${this.contents[index].contentId}`,
+                method: 'delete'
+            }).then((res) => {
+                this.contents.splice(index, 1);   
+            }).catch((err) => {
+                if(err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to delete message!');
+                    alert(mesg);
+                }
+            });
+        }
+    }
+
+    async updateSection() {
+        this.sectionToken.cancel();
+        this.sectionToken = Axios.CancelToken.source();
+
+        let data = new FormData();
+        data.append('title', this.section.title);
+        data.append('_method', 'put');
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}`,
+            data: data,
+            method: 'post',
+            cancelToken: this.sectionToken.token
+        }).then((res) => {
+            this.$store.commit('updateChatBot', {
+                block: this.$store.state.chatBot.block,
+                section: this.$store.state.chatBot.section,
+                title: this.section.title
+            });
+        }).catch((err) => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to update block title!');
+                alert(mesg);
+            }
+        });
+    }
+
+    async delSection() {
+        if(confirm('Are you sure you want to delete this block with it\'s content?')) {
+            await Axios({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}`,
+                method: 'delete',
+            }).then((res) => {
+                this.$store.commit('deleteChatBot', {
+                    block: this.$store.state.chatBot.block,
+                    section: this.$store.state.chatBot.section,
+                });
+            }).catch((err) => {
+                if(err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to update block title!');
+                    alert(mesg);
+                }
+            });
+        }
     }
 }
 </script>

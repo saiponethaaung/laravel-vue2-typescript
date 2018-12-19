@@ -27,6 +27,12 @@ class GetController extends Controller
 
         $res = [];
 
+        $section = [
+            'id' => $request->attributes->get('chatBlockSection')->id,
+            'title' => $request->attributes->get('chatBlockSection')->title,
+            'lock' => $request->attributes->get('chatBlock')->is_lock
+        ];
+
         foreach($contents as $content) {
             $parsed = [
                 'id' => (int) $content->id,
@@ -70,7 +76,10 @@ class GetController extends Controller
             $res[] = $parsed;
         }
 
-        return response()->json($res);
+        return response()->json([
+            'section' => $section,
+            'content' => $res
+        ]);
     }
 
     public function parseText($content)

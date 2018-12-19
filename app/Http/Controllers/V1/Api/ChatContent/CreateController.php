@@ -174,9 +174,11 @@ class CreateController extends Controller
                             'sub' => '',
                             'image' => '',
                             'url' => '',
-                            'content_id' => $create->id
-                        ]
-                    ]
+                            'content_id' => $create->id,
+                            'button' => null
+                        ],
+                    ],
+                    'button' => null
                 ]
             ]
         ];

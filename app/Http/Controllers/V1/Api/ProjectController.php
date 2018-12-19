@@ -61,7 +61,7 @@ class ProjectController extends Controller
                     'status' => false,
                     'code' => 422,
                     'mesg' => $pageInfo['mesg']
-                ]);
+                ], 422);
             }
             
             $res['pageConnected'] = true;
@@ -147,7 +147,7 @@ class ProjectController extends Controller
                 'status' => false,
                 'code' => 422,
                 'mesg' => $pageInfo['mesg']
-            ]);
+            ], 422);
         } else {
             // Response error if page id and provided id from post are not matched
             if($pageInfo['data']['id']!=$input['id']) {
@@ -282,7 +282,7 @@ class ProjectController extends Controller
                 'status' => false,
                 'code' => 422,
                 'mesg' => $pageInfo['mesg']
-            ]);
+            ], 422);
         } else {
             // Response error if page id and provided id from post are not matched
             if($pageInfo['data']['id']!=$projectPage['page_id']) {

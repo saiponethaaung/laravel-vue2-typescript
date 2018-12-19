@@ -13,6 +13,15 @@ export default new Vuex.Store({
             block: -1,
             section: -1
         },
+        delBot: {
+            block: -1,
+            section: -1
+        },
+        updateBot: {
+            block: -1,
+            section: -1,
+            title: ''
+        },
         token: localStorage.getItem('access_token'),
         validatingProject: false,
         projectInfo: {}
@@ -40,6 +49,19 @@ export default new Vuex.Store({
             state.chatBot = {
                 section: section,
                 block: block
+            };
+        },
+        deleteChatBot(state, {section, block}) {
+            state.delBot = {
+                section: section,
+                block: block
+            };
+        },
+        updateChatBot(state, {section, block, title}) {
+            state.updateBot = {
+                section: section,
+                block: block,
+                title: title
             };
         },
         setProjectStatus(state, { status }) {

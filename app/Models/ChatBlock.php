@@ -11,6 +11,7 @@ class ChatBlock extends Model
     protected $fillable = [
         'title',
         'is_lock',
+        'project_id',
         'type'
     ];
 

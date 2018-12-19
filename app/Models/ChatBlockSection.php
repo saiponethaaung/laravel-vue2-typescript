@@ -14,8 +14,24 @@ class ChatBlockSection extends Model
         'order'
     ];
 
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($section) {
+            foreach($section->contents as $content) {
+                $content->delete();
+            }
+        });
+
+    }
+
     public function block()
     {
         return $this->hasOne('App\Models\ChatBlock', 'id', 'block_id');
+    }
+
+    public function contents()
+    {
+        return $this->hasMany('App\Models\ChatBlockSectionContent', 'section_id', 'id');
     }
 }

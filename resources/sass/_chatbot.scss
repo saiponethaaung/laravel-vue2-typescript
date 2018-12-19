@@ -421,7 +421,39 @@
 .chatListItem:hover .chatListItemDelIcon {
     visibility: visible;
     opacity: 1;
-} 
+}
+
+.conentItem {
+    position: relative;
+    &:hover {
+        .optionSection {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+    .optionSection {
+        position: absolute;
+        top: 0;
+        left: 4px;
+        visibility: hidden;
+        opacity: 0;
+        .deleteAction {
+            color: $iconPrimary;
+            background: $iconActiveBackground;
+            border: 1px solid $borderPrimary;
+            border-radius: 3px;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            .material-icons {
+                font-size: 18px;
+            }
+        }
+    }
+}
 
 @import './bots/text.scss';
 @import './bots/typing.scss';

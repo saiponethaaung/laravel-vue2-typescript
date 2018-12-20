@@ -32,7 +32,7 @@ class ProcessWebhook implements ShouldQueue
     public function handle()
     {
         FacebookRequestLogs::create([
-            'data' => "job - " . date()
+            'data' => "job - " . date('Y-m-d H:i:s')
         ]);
     }
 }

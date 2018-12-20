@@ -30,16 +30,16 @@
                 "id": "298170577572248",
                 "time": 1544518356846,
                 "messaging": [
-                {
-                    "sender": {
-                        "id": "1922223287846635"
-                    },
-                    "recipient": {
-                        "id": "298170577572248"
-                    },
-                    "timestamp": 1544518356607,
-                    "message": {
-                        "mid": "DHH2lnSdx2QT8cdzFUQfvasDsu3m-O5wD0z4TDzmY4X703xyM5QnA0OmbyVKFlT6qNzQ3roCXySUHsO20jU88A",
+                    {
+                        "sender": {
+                            "id": "1922223287846635"
+                        },
+                        "recipient": {
+                            "id": "298170577572248"
+                        },
+                        "timestamp": 1544518356607,
+                        "message": {
+                            "mid": "DHH2lnSdx2QT8cdzFUQfvasDsu3m-O5wD0z4TDzmY4X703xyM5QnA0OmbyVKFlT6qNzQ3roCXySUHsO20jU88A",
                             "seq": 53758,
                             "text": "a"
                         }

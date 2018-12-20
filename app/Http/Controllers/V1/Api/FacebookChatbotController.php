@@ -13,7 +13,8 @@ use App\Http\Controllers\V1\Api\ChatBotProjectController;
 class FacebookChatbotController extends Controller
 {
     private $token = "EAAQaj0N2ahcBAK1DRSng7KgrBZAuLk1KZAioCAGcxd8YNZCTqg7LD4U9N30b9sVJRDexEXZCjlVhHwGpgBt6lIHjHUk0ToNQiZAR9GRlBo08SPtbepyUsW3iBJyfoPg0fMnYBJIJfxptN0hAPWxmKEyri7LrF9nYsQ8HujrISeClZAQoBDro8s";
-    
+    private $url = '';
+
     public function index(Request $request) {
         $input = json_decode(file_get_contents('php://input'), true);
 
@@ -28,15 +29,9 @@ class FacebookChatbotController extends Controller
         }
         
         $this->token = $projectPage->token;
+        $this->url = 'https://graph.facebook.com/v3.2/me/messages?access_token='.$this->token;
 
-        FacebookRequestLogs::create([
-            'data' => json_encode([
-                'raw' => $input,
-                'get' => $_GET,
-                'post' => $_POST,
-                'header' => $_SERVER
-            ])
-        ]);
+        
 
         if (isset($_GET['hub_verify_token'])) { 
             if ($_GET['hub_verify_token'] === '$2y$12$uyP735FKW7vuSYmlAEhF/OOoo1vCaWZN7zIEeFEhYbAw2qv8X4ffe') {
@@ -51,27 +46,121 @@ class FacebookChatbotController extends Controller
         if(is_null($projectPage->project_id)) {
             $this->sampleBot($input);
         } else {
-            $this.parseMessage($input);
+            $this->parseMessage($projectPage->project_id, $input);
         }
     }
 
     public function parseMessage($projectId, $input) {
-        $project = new ChatBotProjectController($projectId);
-        $messages = $project->process($input);
+        
+        $log = FacebookRequestLogs::create([
+            'data' => json_encode([
+                'raw' => $input,
+                'get' => $_GET,
+                'post' => $_POST,
+            ])
+        ]);
 
-        foreach($messages as $mesg) {
+        // Read payload
+        if(isset($input['entry'][0]['messaging'][0]['read'])) {
+            $log->is_read = true;
+            $log->save();
+            die();
+        }
+        
+        // deliver payload
+        if(isset($input['entry'][0]['messaging'][0]['delivery'])) {
+            $log->is_deliver = true;
+            $log->save();
+            die();
+        }
 
-            switch($mesg['type']) {
-                case(1):
-                    $mes = '';
-                    break;
+        if (isset($input['entry'][0]['messaging'][0]['sender']['id'])) {
+            if(
+                isset($input['entry'][0]['messaging'][0]['message']['text']) ||
+                isset($input['entry'][0]['messaging'][0]['postback']['title'])
+            ) {
+
+                // echo payload
+                if(isset($input['entry'][0]['messaging'][0]['message']['is_echo'])) {
+                    $log->is_echo = true;
+                    $log->save();
+                    die();
+                }
+
+                if(isset($input['entry'][0]['messaging'][0]['postback'])) {
+                    $log->is_payload = true;
+                    $log->save();
+                } else {
+                    $log->is_income = true;
+                    $log->save();
+                }
+                
+                $sender = $input['entry'][0]['messaging'][0]['sender']['id'];
+
+                $project = new ChatBotProjectController($projectId);
+                $messages = $project->process($input);
+
+                FacebookRequestLogs::create([
+                    'data' => json_encode([
+                        'aclist' => 'action list: ',
+                        'data' => $messages
+                    ])
+                ]);
+
+                $this->execResponse([
+                    "recipient" => [
+                        "id" => $sender,
+                    ],
+                    "sender_action" => "mark_seen"
+                ]);
+
+                foreach($messages['data'] as $mesg) {
+
+                    $jsonData = [
+                        "recipient" => [
+                            "id" => $sender,
+                        ]
+                    ];
+
+                    $sleep = -1;
+
+                    switch($mesg['type']) {
+                        case(1):
+                        case(5):
+                            $jsonData['message'] = $mesg['data'];
+                            break;
+
+                        case(2):
+                            $jsonData['sender_action'] = 'typing_on';
+                            $sleep = $mesg['duration'];
+                            break;
+                    }
+
+                    FacebookRequestLogs::create([
+                        'fb_request' => true,
+                        'data' => json_encode($jsonData)
+                    ]);
+                    
+                    $this->execResponse($jsonData);
+
+                    if($sleep>-1) {
+                        sleep((int) $sleep);
+                        $jsonData['sender_action'] = 'typing_off';
+                        $this->execResponse($jsonData);
+                        // sleep($sleep);
+                        // $jsonData['sender_action'] = 'typing_off';
+                        // $this->execResponse($jsonData);
+                    } else {
+                        sleep(1);
+                    }
+                }
             }
-            
         }
     }
 
-    public function execResponse($res)
+    public function execResponse($jsonData)
     {
+        $ch = curl_init($this->url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($jsonData));
@@ -83,12 +172,13 @@ class FacebookChatbotController extends Controller
             $response = curl_exec($ch);
             $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
             $header = substr($response, 0, $header_size);
-            $result = 'from facebook '. json_encode($header); // user will get the message
+            $result = json_encode($header); // user will get the message
         } catch(\Exception $e) {
             $result = 'error: '. $e->getMessage();
         }
 
         FacebookRequestLogs::create([
+            'fb_response' => true,
             'data' => json_encode($result)
         ]);
     }
@@ -126,7 +216,7 @@ class FacebookChatbotController extends Controller
                         $response = curl_exec($ch);
                         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
                         $header = substr($response, 0, $header_size);
-                        $result = 'from facebook '. json_encode($header); // user will get the message
+                        $result = json_encode($header); // user will get the message
                     } catch(\Exception $e) {
                         $result = 'error: '. $e->getMessage();
                     }

@@ -22,6 +22,7 @@ use App\Models\ChatUserInput;
 
 use App\Models\FacebookRequestLogs;
 use App\Models\ProjectPageUser;
+use App\Models\ProjectPageUserChat;
 
 class ChatBotProjectController extends Controller
 {
@@ -35,37 +36,52 @@ class ChatBotProjectController extends Controller
         $this->projectPage = ProjectPage::where('project_id', $projectid)->first();
     }
 
+    // process input from messenger
     public function process($input=null, $payload=true)
     {
         $userid = $input['entry'][0]['messaging'][0]['sender']['id']!==$this->projectPage ? $input['entry'][0]['messaging'][0]['sender']['id']: $input['entry'][0]['messaging'][0]['recipient']['id'];
 
-        $this->user = ProjectPageUser::where('projec_page_id', $this->projectPage->id)->where('fb_user_id', $userid)->first();
+        $recordUser = $this->recordChatUser($userid);
+    
+        if(!$recordUser['status']) {
+            return $recordUser;
+        }
+        
+        DB::beginTransaction();
 
-        if(empty($this->user)) {
-            DB::beginTransaction();
+        $log;
+        $mesgText = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : '';
 
-            try {
-                $this->user = ProjectPageUser::create([
-                    'project_page_id' => $this->projectPage->id,
-                    'fb_user_id' => $userid
-                ]);
-            } catch (\Exception $e) {
-                DB::rollback();
-                return [
-                    'status' => false,
-                    'mesg' => 'Failed to record chat user!'
-                ];
-            }
-
-            DB::commit();
+        try {
+            $log = ProjectPageUserChat::create([
+                'content_id' => null,
+                'post_back' => '',
+                'from_platform' => false,
+                'mesg' => $mesgText,
+                'mesg_id' => isset($input['entry'][0]['messaging'][0]['message']['mid']) ? $input['entry'][0]['messaging'][0]['message']['mid'] : '',
+                'is_send' => false,
+            ]);
+        } catch(\Exception $e) {
+            DB::rollback();
+            return [
+                'status' => false,
+                'type' => 'um-record',
+                'mesg' => 'Failed to record mesg!'
+            ];
         }
 
-        return [
-            'status' => true,
-            'data' => $this->getDefault()
-        ];
+        DB::commit();
+
+        $response = $this->getDefault();
+        return $response;
     }
 
+    public function setAttribute()
+    {
+
+    }
+
+    // ai validation
     public function aiValidation($keyword='')
     {
 
@@ -91,6 +107,7 @@ class ChatBotProjectController extends Controller
 
         return [
             'status' => true,
+            'type' => '',
             'data' => $this->contentParser($section->contents)
         ];
     }
@@ -104,6 +121,7 @@ class ChatBotProjectController extends Controller
     {
         $res = [];
 
+        // parse content based on their content type
         foreach($contents as $content) {
             switch ($content->type) {
                 case 1:
@@ -115,7 +133,7 @@ class ChatBotProjectController extends Controller
                     break;
                 
                 case 3:
-                    // $res[] = $this->parseQuickReply($content);
+                    $res[] = $this->parseQuickReply($content);
                     break;
                 
                 case 4:
@@ -139,6 +157,7 @@ class ChatBotProjectController extends Controller
         return $res;
     }
 
+    // parse text to messenger support format
     public function parseText($content)
     {
         $buttons = [];
@@ -175,6 +194,7 @@ class ChatBotProjectController extends Controller
         ];
     }
 
+    // get duration to show typing action
     public function parseTyping($content)
     {
         return [
@@ -186,6 +206,7 @@ class ChatBotProjectController extends Controller
         ];
     }
 
+    // parse quick reply to messenger support format
     public function parseQuickReply($content)
     {
         return [
@@ -193,43 +214,43 @@ class ChatBotProjectController extends Controller
             'mesg' => '',
             'type' => 3,
             'data' => [
-                'text' => 'qc',
                 'quick_replies' => [
                     [
                         'content_type' => 'text',
                         'title' => 'Hello',
-                        'payload' => 'test payload'
+                        'payload' => 'test-payload'
                     ],
                     [
                         'content_type' => 'text',
                         'title' => '5',
-                        'payload' => 'test payload'
+                        'payload' => 'test-payload'
                     ],
                     [
                         'content_type' => 'text',
                         'title' => '4',
-                        'payload' => 'test payload'
+                        'payload' => 'test-payload'
                     ],
                     [
                         'content_type' => 'text',
                         'title' => '3',
-                        'payload' => 'test payload'
+                        'payload' => 'test-payload'
                     ],
                     [
                         'content_type' => 'text',
                         'title' => '2',
-                        'payload' => 'test payload'
+                        'payload' => 'test-payload'
                     ],
                     [
                         'content_type' => 'text',
                         'title' => '1',
-                        'payload' => 'test payload'
+                        'payload' => 'test-payload'
                     ],
                 ]
             ]
         ];
     }
 
+    // parse list to messenger support format
     public function parseList($content)
     {
         $res = [];
@@ -318,6 +339,7 @@ class ChatBotProjectController extends Controller
         ];
     }
 
+    // parse gallery (generic template) to messenger support format
     public function parseGallery($content)
     {
         $res = [];
@@ -362,8 +384,7 @@ class ChatBotProjectController extends Controller
 
             $res[] = $parsed;
         }
-
-        // $but[]
+        
         $result = [
             'attachment' => [
                 'type' => 'template',
@@ -405,6 +426,7 @@ class ChatBotProjectController extends Controller
         ];
     }
 
+    // parse image
     public function parseImage($content)
     {
         $res = [
@@ -424,6 +446,7 @@ class ChatBotProjectController extends Controller
         return $res;
     }
 
+    // Parse buttont to messenger support format
     public function parseButton($button)
     {
         $res = [
@@ -466,6 +489,40 @@ class ChatBotProjectController extends Controller
             default:
                 $res['status'] = false;
                 break;
+        }
+
+        return $res;
+    }
+
+    // record chat user
+    public function recordChatUser($userid)
+    {
+        $res = [
+            'status' => true,
+            'type' => '',
+            'mesg' => 'success'
+        ];
+
+        $this->user = ProjectPageUser::where('project_page_id', $this->projectPage->id)->where('fb_user_id', $userid)->first();
+
+        if(empty($this->user)) {
+            DB::beginTransaction();
+
+            try {
+                $this->user = ProjectPageUser::create([
+                    'project_page_id' => $this->projectPage->id,
+                    'fb_user_id' => $userid
+                ]);
+            } catch (\Exception $e) {
+                DB::rollback();
+                $res = [
+                    'status' => false,
+                    'type' => 'rcu-create',
+                    'mesg' => 'Failed to record chat user!'
+                ];
+            }
+
+            DB::commit();
         }
 
         return $res;

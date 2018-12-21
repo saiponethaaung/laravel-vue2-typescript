@@ -153,6 +153,8 @@ class FacebookChatbotController extends Controller
                         ],
                         "sender_action" => "mark_seen"
                     ]);
+
+                    $break = false;
                     
                     foreach($messages['data'] as $mesg) {
 
@@ -177,6 +179,11 @@ class FacebookChatbotController extends Controller
                             case(2):
                                 $jsonData['sender_action'] = 'typing_on';
                                 $sleep = $mesg['duration'];
+                                break;
+
+                            case(3):
+                                $break = true;
+                                $jsonData['message'] = $mesg['data'];
                                 break;
 
                             case(7):
@@ -218,6 +225,8 @@ class FacebookChatbotController extends Controller
                         } else {
                             sleep(1);
                         }
+                        
+                        if($break) break;
                     }
                 } catch (\Exception $e) {
                     FacebookRequestLogs::create([

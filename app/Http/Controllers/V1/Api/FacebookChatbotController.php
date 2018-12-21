@@ -78,25 +78,25 @@ class FacebookChatbotController extends Controller
 
     public function parseMessage($projectId, $input) {
         
-        // $log = FacebookRequestLogs::create([
-        //     'data' => json_encode([
-        //         'raw' => $input,
-        //         'get' => $_GET,
-        //         'post' => $_POST,
-        //     ])
-        // ]);
+        $log = FacebookRequestLogs::create([
+            'data' => json_encode([
+                'raw' => $input,
+                'get' => $_GET,
+                'post' => $_POST,
+            ])
+        ]);
 
         // Read payload
         if(isset($input['entry'][0]['messaging'][0]['read'])) {
-            // $log->is_read = true;
-            // $log->save();
+            $log->is_read = true;
+            $log->save();
             return;
         }
         
         // deliver payload
         if(isset($input['entry'][0]['messaging'][0]['delivery'])) {
-            // $log->is_deliver = true;
-            // $log->save();
+            $log->is_deliver = true;
+            $log->save();
             return;
         }
 
@@ -108,8 +108,8 @@ class FacebookChatbotController extends Controller
 
                 // echo payload
                 if(isset($input['entry'][0]['messaging'][0]['message']['is_echo'])) {
-                    // $log->is_echo = true;
-                    // $log->save();
+                    $log->is_echo = true;
+                    $log->save();
                     return;
                 }
 
@@ -134,6 +134,10 @@ class FacebookChatbotController extends Controller
                 try {
                     $project = new ChatBotProjectController($projectId);
                     $messages = $project->process($input);
+
+                    if($messages['status']===false) {
+                        return;
+                    }
                     unset($project);
     
                     FacebookRequestLogs::create([
@@ -149,7 +153,10 @@ class FacebookChatbotController extends Controller
                         ],
                         "sender_action" => "mark_seen"
                     ]);
+                    
                     foreach($messages['data'] as $mesg) {
+
+                        if($mesg['status']===false) continue;
 
                         $jsonData = [
                             "recipient" => [
@@ -158,14 +165,12 @@ class FacebookChatbotController extends Controller
                         ];
 
                         $sleep = -1;
-
-                        if($mesg['type']==2) {
-                            continue;
-                        }
+                        $skip = false;
 
                         switch($mesg['type']) {
                             case(1):
                             case(5):
+                            case(6):
                                 $jsonData['message'] = $mesg['data'];
                                 break;
 
@@ -173,7 +178,31 @@ class FacebookChatbotController extends Controller
                                 $jsonData['sender_action'] = 'typing_on';
                                 $sleep = $mesg['duration'];
                                 break;
+
+                            case(7):
+                                $attach = $this->getImage($mesg['data']['image']);
+                                if($attach['status']) {
+                                    $jsonData['message'] = [
+                                        'attachment' => [
+                                            'type' => 'template',
+                                            'payload' => [
+                                                'template_type' => 'media',
+                                                'elements' => [
+                                                    [
+                                                        'media_type' => 'image',
+                                                        'attachment_id' => $attach['atid'],
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ];
+                                } else {
+                                    $skip = true;
+                                }
+                                break;
                         }
+
+                        if($skip) continue;
 
                         FacebookRequestLogs::create([
                             'fb_request' => true,
@@ -200,6 +229,54 @@ class FacebookChatbotController extends Controller
                 }
             }
         }
+    }
+
+    public function getImage($img)
+    {
+        $jsonData = [
+            "message" => [
+                "attachment" => [
+                    "type" => "image",
+                    "payload" => [
+                        "is_reusable" => true,
+                        "url" => $img
+                    ]
+                ]
+            ]
+        ];
+
+        $ch = curl_init('https://graph.facebook.com/v3.2/me/message_attachments?access_token='.$this->token);
+        
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($jsonData));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        
+        $result = "failed";
+
+        $data = [
+            'status' => true,
+            'atid' => null
+        ];
+        
+        try {
+            $response = curl_exec($ch);
+            $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            $header = substr($response, 0, $header_size);
+            $result = json_decode($response, true); // user will get the message
+            $data['atid'] = $result['attachment_id'];
+        } catch(\Exception $e) {
+            $data['status'] = false;
+            $result = 'error: '. $e->getMessage();
+            FacebookRequestLogs::create([
+                'data' => json_encode([
+                    'error' => true,
+                    'data' => $e->getMessage()
+                ])
+            ]);
+        }
+
+        return $data;
     }
 
     public function execResponse($jsonData)

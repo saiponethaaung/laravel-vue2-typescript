@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\Api;
 
+use DB;
 use Storage;
 
 use Illuminate\Http\Request;
@@ -20,19 +21,49 @@ use App\Models\ChatQuickReplyBlock;
 use App\Models\ChatUserInput;
 
 use App\Models\FacebookRequestLogs;
+use App\Models\ProjectPageUser;
 
 class ChatBotProjectController extends Controller
 {
-    protected $projectid = null;
+    protected $projectid;
+    protected $projectPage;
+    protected $user;
 
     public function __construct($projectid)
     {
         $this->projectid = $projectid;
+        $this->projectPage = ProjectPage::where('project_id', $projectid)->first();
     }
 
     public function process($input=null, $payload=true)
     {
-        return $this->getDefault();
+        $userid = $input['entry'][0]['messaging'][0]['sender']['id']!==$this->projectPage ? $input['entry'][0]['messaging'][0]['sender']['id']: $input['entry'][0]['messaging'][0]['recipient']['id'];
+
+        $this->user = ProjectPageUser::where('projec_page_id', $this->projectPage->id)->where('fb_user_id', $userid)->first();
+
+        if(empty($this->user)) {
+            DB::beginTransaction();
+
+            try {
+                $this->user = ProjectPageUser::create([
+                    'project_page_id' => $this->projectPage->id,
+                    'fb_user_id' => $userid
+                ]);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return [
+                    'status' => false,
+                    'mesg' => 'Failed to record chat user!'
+                ];
+            }
+
+            DB::commit();
+        }
+
+        return [
+            'status' => true,
+            'data' => $this->getDefault()
+        ];
     }
 
     public function aiValidation($keyword='')
@@ -96,11 +127,11 @@ class ChatBotProjectController extends Controller
                     break;
                 
                 case 6:
-
+                    $res[] = $this->parseGallery($content);
                     break;
                 
                 case 7:
-
+                    $res[] = $this->parseImage($content);
                     break;
             }
         }
@@ -287,14 +318,110 @@ class ChatBotProjectController extends Controller
         ];
     }
 
-    public function parseGallery()
+    public function parseGallery($content)
     {
+        $res = [];
 
+        foreach($content->galleryList as $list) {
+            if(empty($list->title)) continue;
+
+            $buttons = [];
+
+            foreach($list->buttons as $button) {
+                $btParsed = $this->parseButton($button);
+                if($btParsed['status']) {
+                    $buttons[] = $btParsed['data'];
+                }
+            }
+
+            $image = "";
+
+            if(!empty($list->image) && Storage::disk('public')->exists('images/gallery/'.$list->image)) {
+                $image = Storage::disk('public')->url('images/gallery/'.$list->image);
+            }
+            
+            $parsed = [
+                'title' => (string) $list->title,
+                'subtitle' => (string) $list->sub
+            ];
+
+            if($image) {
+                $parsed['image_url'] = $image;
+            }
+
+            if($list->url) {
+                $parsed['default_action'] = [
+                    'type' => 'web_url',
+                    'url' => $list->url,
+                ];
+            }
+
+            if(!empty($buttons)) {
+                $parsed['buttons'] = $buttons;
+            }
+
+            $res[] = $parsed;
+        }
+
+        // $but[]
+        $result = [
+            'attachment' => [
+                'type' => 'template',
+                'payload' => [
+                    'template_type' => 'generic',
+                    'elements' => $res
+                ]
+            ],
+        ];
+
+        if(!empty($content->buttons)) {
+            $buttons = [];
+            foreach($content->buttons as $button) {
+                $btParsed = $this->parseButton($button);
+                if($btParsed['status']) {
+                    $buttons[] = $btParsed['data'];
+                }
+            }
+
+            if(!empty($buttons)) {
+                $result['attachment']['payload']['buttons'] = $buttons;
+            }
+        }
+
+        if(empty($res)) {
+            return [
+                'status' => false,
+                'mesg' => 'There is no list!',
+                'data' => [],
+                'type' => 5
+            ];
+        }
+
+        return [
+            'status' => true,
+            'mesg' => '',
+            'data' => $result,
+            'type' => 5
+        ];
     }
 
-    public function parseImage()
+    public function parseImage($content)
     {
+        $res = [
+            'status' => false,
+            'mesg' => '',
+            'data' => [
+                'image' => ''
+            ],
+            'type' => 7
+        ];
+        
+        if(!empty($content->image) && Storage::disk('public')->exists('images/photos/'.$content->image)) {
+            $res['status'] = true;
+            $res['data']['image'] = Storage::disk('public')->url('images/photos/'.$content->image);
+        }
 
+        return $res;
     }
 
     public function parseButton($button)

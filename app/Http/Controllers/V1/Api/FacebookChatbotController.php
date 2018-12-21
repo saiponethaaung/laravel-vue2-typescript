@@ -33,8 +33,7 @@ class FacebookChatbotController extends Controller
         $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
 
         if(!empty($projectPage) && is_null($projectPage->project_id)==false) {
-            $job = new ProcessWebhook($input);
-            $this->dispatch($job);
+            ProcessWebhook::dispatch($input);
         } else {
             $this->sampleBot($input);
         }

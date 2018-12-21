@@ -9,19 +9,21 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 use App\Models\FacebookRequestLogs;
-
+use App\Http\Controllers\V1\Api\FacebookChatbotController;
 class ProcessWebhook implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $input;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($input)
     {
-        //
+        $this->input = $input;
     }
 
     /**
@@ -31,9 +33,6 @@ class ProcessWebhook implements ShouldQueue
      */
     public function handle()
     {
-        sleep(rand(1, 3));
-        FacebookRequestLogs::create([
-            'data' => "job - " . date('Y-m-d H:i:s')
-        ]);
+        FacebookChatbotController::processWebHook($this->input);
     }
 }

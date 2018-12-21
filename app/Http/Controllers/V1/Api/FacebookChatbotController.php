@@ -9,6 +9,7 @@ use App\Models\FacebookRequestLogs;
 
 use App\Models\ProjectPage;
 use App\Http\Controllers\V1\Api\ChatBotProjectController;
+use App\Jobs\Facebook\Webhook\ProcessWebhook;
 
 class FacebookChatbotController extends Controller
 {
@@ -29,6 +30,15 @@ class FacebookChatbotController extends Controller
             }
         }
 
+        $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
+
+        if(!empty($projectPage) && is_null($projectPage->project_id)==false) {
+            $job = new ProcessWebhook($input);
+            $this->dispatch($job);
+        } else {
+            $this->sampleBot($input);
+        }
+
         FacebookRequestLogs::create([
             'data' => 'success'
         ]);
@@ -36,7 +46,7 @@ class FacebookChatbotController extends Controller
         return;
     }
 
-    public function processWebHook()
+    public function processWebHook($input)
     {
         if($input['object']!=='page') {
             return null;
@@ -51,20 +61,20 @@ class FacebookChatbotController extends Controller
         $this->token = $projectPage->token;
         $this->url = 'https://graph.facebook.com/v3.2/me/messages?access_token='.$this->token;
 
-        // try {
-        //     if(is_null($projectPage->project_id)) {
-        //         $this->sampleBot($input);
-        //     } else {
-        //         $this->parseMessage($projectPage->project_id, $input);
-        //     }
-        // } catch (\Exception $e) {
-        //     FacebookRequestLogs::create([
-        //         'data' => json_encode([
-        //             'error' => true,
-        //             'data' => $e->getMessage()
-        //         ])
-        //     ]);
-        // }
+        try {
+            if(is_null($projectPage->project_id)) {
+                $this->sampleBot($input);
+            } else {
+                $this->parseMessage($projectPage->project_id, $input);
+            }
+        } catch (\Exception $e) {
+            FacebookRequestLogs::create([
+                'data' => json_encode([
+                    'error' => true,
+                    'data' => $e->getMessage()
+                ])
+            ]);
+        }
     }
 
     public function parseMessage($projectId, $input) {

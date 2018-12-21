@@ -37,9 +37,9 @@ class ChatBotProjectController extends Controller
     }
 
     // process input from messenger
-    public function process($input=null, $payload=true)
+    public function process($input=null, $payload=false)
     {
-        $userid = $input['entry'][0]['messaging'][0]['sender']['id']!==$this->projectPage ? $input['entry'][0]['messaging'][0]['sender']['id']: $input['entry'][0]['messaging'][0]['recipient']['id'];
+        $userid = $input['entry'][0]['messaging'][0]['sender']['id']!==$this->projectPage->page_id ? $input['entry'][0]['messaging'][0]['sender']['id']: $input['entry'][0]['messaging'][0]['recipient']['id'];
 
         $recordUser = $this->recordChatUser($userid);
     
@@ -51,11 +51,53 @@ class ChatBotProjectController extends Controller
 
         $log;
         $mesgText = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : '';
+        $postback = '';
+        $response = [];
+
+        if($payload) {
+            $mesgText = (String) $input['entry'][0]['messaging'][0]['postback']['title'];
+            $postback = $input['entry'][0]['messaging'][0]['postback']['payload'];
+            $py = explode('-', $input['entry'][0]['messaging'][0]['postback']['payload']);
+            $button = ChatButton::with('blocks')->find($py[1]);
+
+            if(!empty($button)) {
+
+                if(!empty($button->blocks) && !is_null($button->blocks[0]->section_id)) {
+
+                    $resContent = $this->getSection($button->blocks[0]->section_id);
+
+                    if($resContent['status']) {
+                        $response = $resContent;
+                    }
+
+                }
+
+            }
+
+        } else if(isset($input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'])) {
+
+            $postback = $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'];
+            $qr = explode('-', $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload']);
+            $content = ChatBlockSectionContent::with('section')->find($qr[1]);
+
+            if(!empty($content)) {
+                $chatQuickReply = ChatQuickReply::with('blocks')->find($qr[2]);
+                if(!empty($chatQuickReply)) {
+                    if(!empty($chatQuickReply->blocks) && !is_null($chatQuickReply->blocks[0]->section_id)) {
+                        $resContent = $this->getSection($chatQuickReply->blocks[0]->section_id);
+                        if($resContent['status']) {
+                            $response = $resContent;
+                        }
+                    }
+                }
+            }
+            
+        }
 
         try {
             $log = ProjectPageUserChat::create([
                 'content_id' => null,
-                'post_back' => '',
+                'post_back' => $postback,
                 'from_platform' => false,
                 'mesg' => $mesgText,
                 'mesg_id' => isset($input['entry'][0]['messaging'][0]['message']['mid']) ? $input['entry'][0]['messaging'][0]['message']['mid'] : '',
@@ -72,19 +114,45 @@ class ChatBotProjectController extends Controller
 
         DB::commit();
 
-        $response = $this->getDefault();
+        if(empty($response)) {
+            $response = $this->getDefault();
+        }
         return $response;
     }
 
-    public function setAttribute()
-    {
+    // public function setAttribute()
+    // {
 
-    }
+    // }
 
     // ai validation
     public function aiValidation($keyword='')
     {
+        
+    }
 
+    public function getSection($section)
+    {
+        $section = ChatBlockSection::with([
+            'contents',
+            'contents.galleryList',
+            'contents.galleryList.buttons',
+            'contents.buttons',
+            'contents.quickReply',
+            'contents.userInput'
+        ])->find($section);
+        
+
+        FacebookRequestLogs::create([
+            'section' => 'section: ',
+            'data' => json_encode($section)
+        ]);
+
+        return [
+            'status' => true,
+            'type' => '',
+            'data' => $this->contentParser($section->contents)
+        ];
     }
 
     public function getDefault()
@@ -121,6 +189,8 @@ class ChatBotProjectController extends Controller
     {
         $res = [];
 
+        $break = false;
+
         // parse content based on their content type
         foreach($contents as $content) {
             switch ($content->type) {
@@ -133,6 +203,7 @@ class ChatBotProjectController extends Controller
                     break;
                 
                 case 3:
+                    $break = true;
                     $res[] = $this->parseQuickReply($content);
                     break;
                 
@@ -152,6 +223,8 @@ class ChatBotProjectController extends Controller
                     $res[] = $this->parseImage($content);
                     break;
             }
+
+            if($break) break;
         }
 
         return $res;
@@ -209,45 +282,32 @@ class ChatBotProjectController extends Controller
     // parse quick reply to messenger support format
     public function parseQuickReply($content)
     {
-        return [
+        $qr = [];
+        $res = [
             'status' => true,
             'mesg' => '',
             'type' => 3,
             'data' => [
-                'quick_replies' => [
-                    [
-                        'content_type' => 'text',
-                        'title' => 'Hello',
-                        'payload' => 'test-payload'
-                    ],
-                    [
-                        'content_type' => 'text',
-                        'title' => '5',
-                        'payload' => 'test-payload'
-                    ],
-                    [
-                        'content_type' => 'text',
-                        'title' => '4',
-                        'payload' => 'test-payload'
-                    ],
-                    [
-                        'content_type' => 'text',
-                        'title' => '3',
-                        'payload' => 'test-payload'
-                    ],
-                    [
-                        'content_type' => 'text',
-                        'title' => '2',
-                        'payload' => 'test-payload'
-                    ],
-                    [
-                        'content_type' => 'text',
-                        'title' => '1',
-                        'payload' => 'test-payload'
-                    ],
-                ]
+                'text' => 'Select an option',
+                'quick_replies' => []
             ]
         ];
+
+        foreach($content->quickReply as $quickReply) {
+            $qr[] = [
+                'content_type' => 'text',
+                'title' => $quickReply->title,
+                'payload' => 'qr-'.$content->id.'-'.$quickReply->id
+            ];
+        }
+
+        $res['data']['quick_replies'] = $qr;
+
+        if(empty($qr)) {
+            $res['status'] = false;
+        }
+
+        return $res;
     }
 
     // parse list to messenger support format
@@ -466,7 +526,7 @@ class ChatBotProjectController extends Controller
                 $res['data'] = [
                     'type' => 'postback',
                     'title' => $button->title,
-                    'payload' => 'payload'
+                    'payload' => 'button-'.$button->id
                 ];
                 break;
 

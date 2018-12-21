@@ -102,9 +102,11 @@ class FacebookChatbotController extends Controller
 
         if (isset($input['entry'][0]['messaging'][0]['sender']['id'])) {
             if(
-                isset($input['entry'][0]['messaging'][0]['message']['text'])
-                // isset($input['entry'][0]['messaging'][0]['postback']['title'])
+                isset($input['entry'][0]['messaging'][0]['message']['text']) ||
+                isset($input['entry'][0]['messaging'][0]['postback'])
             ) {
+                
+                $isPostBack = isset($input['entry'][0]['messaging'][0]['postback']);
 
                 // echo payload
                 if(isset($input['entry'][0]['messaging'][0]['message']['is_echo'])) {
@@ -133,7 +135,7 @@ class FacebookChatbotController extends Controller
 
                 try {
                     $project = new ChatBotProjectController($projectId);
-                    $messages = $project->process($input);
+                    $messages = $project->process($input, $isPostBack);
 
                     if($messages['status']===false) {
                         return;

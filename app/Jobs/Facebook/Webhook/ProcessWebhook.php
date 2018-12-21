@@ -33,6 +33,7 @@ class ProcessWebhook implements ShouldQueue
      */
     public function handle()
     {
-        FacebookChatbotController::processWebHook($this->input);
+        $fbChat = new FacebookChatbotController();
+        $fbChat->processWebHook($this->input);
     }
 }

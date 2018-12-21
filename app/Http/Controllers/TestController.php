@@ -9,6 +9,7 @@ class TestController extends Controller
 {
     public function startQueue(Request $request)
     {
-        ProcessWebhook::dispatch();
+        $input = ['awef'];
+        ProcessWebhook::dispatch($input);
     }
 }

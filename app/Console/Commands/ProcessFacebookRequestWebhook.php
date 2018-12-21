@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use App\Jobs\Facebook\Webhook\ProcessWebhook;
+
 class ProcessFacebookRequestWebhook extends Command
 {
     /**
@@ -37,6 +39,10 @@ class ProcessFacebookRequestWebhook extends Command
      */
     public function handle()
     {
-        //
+        ProcessWebhook::dispatch();
+        ProcessWebhook::dispatch();
+        ProcessWebhook::dispatch();
+        ProcessWebhook::dispatch();
+        ProcessWebhook::dispatch();
     }
 }

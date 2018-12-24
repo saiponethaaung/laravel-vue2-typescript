@@ -90,7 +90,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
+import { Component, Watch } from 'vue-property-decorator';
 import Axios from 'axios';
 import AjaxErrorHandler from '../utils/AjaxErrorHandler';
 
@@ -110,7 +110,9 @@ export default class DefaultLayout extends Vue {
         'read_page_mailboxes'
     ];
 
+    @Watch('window.fbSdkLoaded')
     get fbSdkLoaded() {
+        console.log('triggered', window.fbSdkLoaded);
         return window.fbSdkLoaded;
     }
 

@@ -30,7 +30,7 @@ class ChatBotProjectController extends Controller
     protected $projectid;
     protected $projectPage;
     protected $user;
-    protected $inputOrder;
+    protected $inputOrder = -1;
 
     public function __construct($projectid)
     {
@@ -111,10 +111,19 @@ class ChatBotProjectController extends Controller
                             ->orderBy('created_at', 'desc')
                             ->first();
             
-            if(!empty($lastRecord) && is_null($lastRecord->user_input_id)) {
+            if(!empty($lastRecord) && !is_null($lastRecord->user_input_id)) {
                 $userInput = ChatUserInput::find($lastRecord->user_input_id);
-                if(!empty($userInput) && !is_null($userInput->attribute_id)) {
-                    $this->setUserAttribute($userInput->attribute_id, $this->user->id, $mesgText);
+                if(!empty($userInput)) {
+                    if(!is_null($userInput->attribute_id)) {
+                        $this->setUserAttribute($userInput->attribute_id, $this->user->id, $mesgText);
+                    }
+
+                    $this->inputOrder = $userInput->order;
+    
+                    $resContent = $this->getResumeSection($userInput->content->section_id, ($userInput->content->order-1));
+                    if($resContent['status']) {
+                        $response = $resContent;
+                    }
                 }
             }
         }
@@ -225,6 +234,7 @@ class ChatBotProjectController extends Controller
     }
 
     public function getResumeSection($section, $order) {
+        // $inputOrder = $this->inputOrder;
         $section = ChatBlockSection::with([
             'contents' => function($query) use ($order) {
                 $query->where('order', '>', $order);
@@ -244,6 +254,9 @@ class ChatBotProjectController extends Controller
             },
             'contents.userInput' => function($query) {
                 $query->limit(1);
+                if($this->inputOrder>-1) {
+                    $query->where('order', '>', $this->inputOrder);
+                }
                 $query->orderBy('order', 'ASC');
             }
         ])->whereHas('contents', function($query) use ($order) {
@@ -284,8 +297,8 @@ class ChatBotProjectController extends Controller
                 $query->orderBy('order', 'ASC');
             },
             'contents.userInput' => function($query) {
-                $query->limit(1);
                 $query->orderBy('order', 'ASC');
+                $query->limit(1);
             }
         ])->where('block_id', $block->id)->where('type', 2)->first();
         
@@ -350,9 +363,12 @@ class ChatBotProjectController extends Controller
             }
 
             $parsed['content_id'] = $content->id;
-            $res[] = $parsed;
-
-            if($break) break;
+            if($parsed['status']) {
+                $res[] = $parsed;
+                if($break) break;
+            } else {
+                $break = false;
+            }
         }
 
         return $res;
@@ -440,24 +456,27 @@ class ChatBotProjectController extends Controller
 
     public function parseUserInput($content)
     {
-        if(empty($content->userInput) || is_null($content->userInput[0]) || empty($content->userInput[0]->question)) {
-            return [
-                'status' => false,
-                'mesg' => 'There is no userinput!',
-                'type' => 4,
-                'data' => []
-            ];
-        }
-
-        $res = [
-            "text" => $content->userInput[0]->question
+        $err = [
+            'status' => false,
+            'mesg' => 'There is no userinput!',
+            'type' => 4,
+            'data' => []
         ];
-
+        if(empty($content->userInput) || is_null($content->userInput)) {
+            return $err;
+        }
+        
+        if(empty($content->userInput[0]->question) || is_null($content->userInput[0]->attribute_id)) {
+            return $err;
+        }
+        
         return [
             'status' => true,
             'mesg' => '',
             'type' => 4,
-            'data' => $res,
+            'data' => [
+                "text" => $content->userInput[0]->question
+            ],
             'input_id' => $content->userInput[0]->id
         ];
     }

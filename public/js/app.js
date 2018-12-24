@@ -38507,7 +38507,7 @@ var render = function() {
             _vm.$store.state.user.facebook_connected
               ? [_vm._v("\n                    Action\n                ")]
               : [
-                  _vm.window.fbSdkLoaded
+                  _vm.fbSdkLoaded
                     ? _c("button", { on: { click: _vm.fbLogin } }, [
                         _vm._v("Link a facebook account")
                       ])

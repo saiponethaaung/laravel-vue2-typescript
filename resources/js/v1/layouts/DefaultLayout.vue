@@ -70,7 +70,7 @@
                         Action
                     </template>
                     <template v-else>
-                        <button v-if="window.fbSdkLoaded" @click="fbLogin">Link a facebook account</button>
+                        <button v-if="fbSdkLoaded" @click="fbLogin">Link a facebook account</button>
                     </template>
                 </div>
             </section>
@@ -108,7 +108,7 @@ export default class DefaultLayout extends Vue {
         'pages_show_list',
         'publish_pages',
         'read_page_mailboxes'
-    ];
+    ]; 
 
     get fbSdkLoaded() {
         return window.fbSdkLoaded;

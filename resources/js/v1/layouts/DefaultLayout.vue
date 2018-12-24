@@ -111,12 +111,12 @@ export default class DefaultLayout extends Vue {
     ]; 
 
     get fbSdkLoaded() {
-        return window.fbSdkLoaded;
+        return undefined!==FB;
     }
 
     get dynamicSidebar() {
         if(this.$route.meta === undefined || this.$route.meta.sidebar === undefined) {
-            return null;
+            return null;    
         }
         return this.$route.meta.sidebar;
     }

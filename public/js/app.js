@@ -37051,7 +37051,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         },
         token: localStorage.getItem('access_token'),
         validatingProject: false,
-        projectInfo: {}
+        projectInfo: {},
+        fbSdk: false,
     },
     mutations: {
         logout(state) {
@@ -37096,6 +37097,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         },
         setProjectInfo(state, { project }) {
             state.projectInfo = project;
+        },
+        updateFBSdk(state, { status }) {
+            state.fbSdk = status;
         }
     }
 }));
@@ -38121,6 +38125,28 @@ let App = class App extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
     }
     mounted() {
         console.log(this.$store.state.isLogin);
+        window.fbAsyncInit = () => {
+            FB.init({
+                appId: '1155102521322007',
+                cookie: true,
+                xfbml: true,
+                version: 'v3.2'
+            });
+            this.$store.commit('updateFBSdk', {
+                status: true
+            });
+            FB.AppEvents.logPageView();
+        };
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement('script');
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
     }
 };
 __decorate([
@@ -38227,12 +38253,6 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
             'publish_pages',
             'read_page_mailboxes'
         ];
-    }
-    get fbSdkLoaded() {
-        return this.fbStatus();
-    }
-    fbStatus() {
-        return 'undefined' != typeof (FB);
     }
     get dynamicSidebar() {
         if (this.$route.meta === undefined || this.$route.meta.sidebar === undefined) {
@@ -38510,7 +38530,7 @@ var render = function() {
             _vm.$store.state.user.facebook_connected
               ? [_vm._v("\n                    Action\n                ")]
               : [
-                  _vm.fbSdkLoaded
+                  _vm.$store.state.fbSdk
                     ? _c("button", { on: { click: _vm.fbLogin } }, [
                         _vm._v("Link a facebook account")
                       ])

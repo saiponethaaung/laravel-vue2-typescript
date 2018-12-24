@@ -11,6 +11,7 @@ declare global {
         jQuery: any;
         Popper: any;
         fbSdkLoaded: boolean;
+        fbAsyncInit: any;
     }
 }
 

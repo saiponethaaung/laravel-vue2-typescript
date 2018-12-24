@@ -70,7 +70,7 @@
                         Action
                     </template>
                     <template v-else>
-                        <button v-if="fbSdkLoaded" @click="fbLogin">Link a facebook account</button>
+                        <button v-if="$store.state.fbSdk" @click="fbLogin">Link a facebook account</button>
                     </template>
                 </div>
             </section>
@@ -109,14 +109,6 @@ export default class DefaultLayout extends Vue {
         'publish_pages',
         'read_page_mailboxes'
     ]; 
-
-    get fbSdkLoaded() {
-        return this.fbStatus();
-    }
-
-    fbStatus() {
-        return 'undefined'!=typeof(FB);
-    }
 
     get dynamicSidebar() {
         if(this.$route.meta === undefined || this.$route.meta.sidebar === undefined) {

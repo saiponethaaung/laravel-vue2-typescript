@@ -24,7 +24,8 @@ export default new Vuex.Store({
         },
         token: localStorage.getItem('access_token'),
         validatingProject: false,
-        projectInfo: {}
+        projectInfo: {},
+        fbSdk: false,
     },
     mutations: {
         logout(state) {
@@ -69,6 +70,9 @@ export default new Vuex.Store({
         },
         setProjectInfo(state, { project }) {
             state.projectInfo = project;
+        },
+        updateFBSdk(state, { status }) {
+            state.fbSdk = status;
         }
     }
 } as StoreOptions<any>);

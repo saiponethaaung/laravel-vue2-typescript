@@ -38229,10 +38229,10 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         ];
     }
     get fbSdkLoaded() {
-        return undefined !== this.fbStatus();
+        return this.fbStatus();
     }
     fbStatus() {
-        return FB;
+        return undefined !== FB;
     }
     get dynamicSidebar() {
         if (this.$route.meta === undefined || this.$route.meta.sidebar === undefined) {

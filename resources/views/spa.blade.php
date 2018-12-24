@@ -12,6 +12,7 @@
         <div id="app">
             <app ref="rootApp"></app>
         </div>
+        <script src="{{ mix('js/app.js') }}"></script>
         <script>
             window.fbAsyncInit = function() {
                 FB.init({
@@ -34,6 +35,5 @@
                 fjs.parentNode.insertBefore(js, fjs);
                 }(document, 'script', 'facebook-jssdk'));
         </script> 
-        <script src="{{ mix('js/app.js') }}"></script>
     </body>
 </html>

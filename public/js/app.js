@@ -38229,7 +38229,6 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         ];
     }
     get fbSdkLoaded() {
-        console.log('triggered', window.fbSdkLoaded);
         return window.fbSdkLoaded;
     }
     get dynamicSidebar() {
@@ -38282,9 +38281,6 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         });
     }
 };
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('window.fbSdkLoaded')
-], DefaultLayout.prototype, "fbSdkLoaded", null);
 DefaultLayout = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */]
 ], DefaultLayout);
@@ -38511,7 +38507,7 @@ var render = function() {
             _vm.$store.state.user.facebook_connected
               ? [_vm._v("\n                    Action\n                ")]
               : [
-                  _vm.fbSdkLoaded
+                  _vm.window.fbSdkLoaded
                     ? _c("button", { on: { click: _vm.fbLogin } }, [
                         _vm._v("Link a facebook account")
                       ])

@@ -38232,7 +38232,7 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         return this.fbStatus();
     }
     fbStatus() {
-        return undefined !== FB;
+        return 'undefined' != typeof (FB);
     }
     get dynamicSidebar() {
         if (this.$route.meta === undefined || this.$route.meta.sidebar === undefined) {

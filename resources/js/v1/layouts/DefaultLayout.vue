@@ -115,7 +115,7 @@ export default class DefaultLayout extends Vue {
     }
 
     fbStatus() {
-        return undefined!==FB;
+        return 'undefined'!=typeof(FB);
     }
 
     get dynamicSidebar() {

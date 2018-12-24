@@ -12,6 +12,7 @@ class ChatQuickReply extends Model
         'title',
         'attribute_id',
         'content_id',
+        'order',
         'value'
     ];
 

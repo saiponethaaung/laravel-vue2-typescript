@@ -29,6 +29,11 @@ class ChatButton extends Model
         });
     }
 
+    public function content()
+    {
+        return $this->hasOne('App\Models\ChatBlockSectionContent', 'id', 'content_id');
+    }
+
     public function blocks()
     {
         return $this->hasMany('App\Models\ChatButtonBlock', 'button_id', 'id');

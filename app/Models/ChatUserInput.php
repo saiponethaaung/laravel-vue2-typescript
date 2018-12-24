@@ -22,6 +22,7 @@ class ChatUserInput extends Model
         'question',
         'content_id',
         'validation',
+        'order',
         'attribute_id'
     ];
 

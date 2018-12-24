@@ -5,10 +5,12 @@ namespace App\Http\Controllers\V1\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Models\ProjectPage;
+use App\Models\ProjectPageUserChat;
 use App\Models\FacebookRequestLogs;
 
-use App\Models\ProjectPage;
 use App\Http\Controllers\V1\Api\ChatBotProjectController;
+
 use App\Jobs\Facebook\Webhook\ProcessWebhook;
 
 class FacebookChatbotController extends Controller
@@ -138,6 +140,11 @@ class FacebookChatbotController extends Controller
                     $messages = $project->process($input, $isPostBack);
 
                     if($messages['status']===false) {
+                        FacebookRequestLogs::create([
+                            'data' => json_encode([
+                                'data' => $messages
+                            ])
+                        ]);
                         return;
                     }
                     unset($project);
@@ -170,6 +177,17 @@ class FacebookChatbotController extends Controller
 
                         $sleep = -1;
                         $skip = false;
+                        
+
+                        $recordChat = [
+                            'content_id' => $mesg['content_id'],
+                            'post_back' => '',
+                            'from_platform' => true,
+                            'mesg' => '',
+                            'mesg_id' => '',
+                            'project_page_user_id' => $messages['userid'],
+                            'is_send' => true,
+                        ];
 
                         switch($mesg['type']) {
                             case(1):
@@ -185,6 +203,12 @@ class FacebookChatbotController extends Controller
 
                             case(3):
                                 $break = true;
+                                $jsonData['message'] = $mesg['data'];
+                                break;
+
+                            case(4):
+                                $break = true;
+                                $recordChat['user_input_id'] = $mesg['input_id'];
                                 $jsonData['message'] = $mesg['data'];
                                 break;
 
@@ -217,6 +241,8 @@ class FacebookChatbotController extends Controller
                             'fb_request' => true,
                             'data' => json_encode($jsonData)
                         ]);
+
+                        $recordChat = ProjectPageUserChat::create($recordChat);
                         
                         $this->execResponse($jsonData);
 
@@ -234,7 +260,8 @@ class FacebookChatbotController extends Controller
                     FacebookRequestLogs::create([
                         'data' => json_encode([
                             'error' => true,
-                            'data' => $e->getMessage()
+                            'data' => $e->getMessage(),
+                            'raw' => $e
                         ])
                     ]);
                 }
@@ -309,10 +336,13 @@ class FacebookChatbotController extends Controller
             $result = 'error: '. $e->getMessage();
         }
 
+        
         FacebookRequestLogs::create([
             'fb_response' => true,
             'data' => $result
         ]);
+
+        return $result;
     }
 
     public function sampleBot($input)

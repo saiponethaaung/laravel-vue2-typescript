@@ -23,12 +23,14 @@ use App\Models\ChatUserInput;
 use App\Models\FacebookRequestLogs;
 use App\Models\ProjectPageUser;
 use App\Models\ProjectPageUserChat;
+use App\Models\ProjectPageUserAttribute;
 
 class ChatBotProjectController extends Controller
 {
     protected $projectid;
     protected $projectPage;
     protected $user;
+    protected $inputOrder;
 
     public function __construct($projectid)
     {
@@ -47,8 +49,6 @@ class ChatBotProjectController extends Controller
             return $recordUser;
         }
         
-        DB::beginTransaction();
-
         $log;
         $mesgText = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : '';
         $postback = '';
@@ -58,22 +58,24 @@ class ChatBotProjectController extends Controller
             $mesgText = (String) $input['entry'][0]['messaging'][0]['postback']['title'];
             $postback = $input['entry'][0]['messaging'][0]['postback']['payload'];
             $py = explode('-', $input['entry'][0]['messaging'][0]['postback']['payload']);
-            $button = ChatButton::with('blocks')->find($py[1]);
 
-            if(!empty($button)) {
+            if(isset($py[1])) {
+                $button = ChatButton::with('blocks')->find($py[1]);
 
-                if(!empty($button->blocks) && !is_null($button->blocks[0]->section_id)) {
+                if(!empty($button)) {
 
-                    $resContent = $this->getSection($button->blocks[0]->section_id);
+                    if(!empty($button->blocks) && isset($button->blocks[0]) && !is_null($button->blocks[0]->section_id)) {
 
-                    if($resContent['status']) {
-                        $response = $resContent;
+                        $resContent = $this->getSection($button->blocks[0]->section_id);
+
+                        if($resContent['status']) {
+                            $response = $resContent;
+                        }
+
                     }
 
                 }
-
             }
-
         } else if(isset($input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'])) {
 
             $postback = $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'];
@@ -81,10 +83,20 @@ class ChatBotProjectController extends Controller
             $content = ChatBlockSectionContent::with('section')->find($qr[1]);
 
             if(!empty($content)) {
-                $chatQuickReply = ChatQuickReply::with('blocks')->find($qr[2]);
+                $chatQuickReply = ChatQuickReply::with(['content', 'blocks'])->find($qr[2]);
                 if(!empty($chatQuickReply)) {
-                    if(!empty($chatQuickReply->blocks) && !is_null($chatQuickReply->blocks[0]->section_id)) {
+
+                    if(!is_null($chatQuickReply->attribute_id) && $chatQuickReply->value) {
+                        $this->setUserAttribute($chatQuickReply->attribute_id, $this->user->id, $chatQuickReply->value);
+                    }
+
+                    if(!empty($chatQuickReply->blocks) && isset($chatQuickReply->blocks[0]) && !is_null($chatQuickReply->blocks[0]->section_id)) {
                         $resContent = $this->getSection($chatQuickReply->blocks[0]->section_id);
+                        if($resContent['status']) {
+                            $response = $resContent;
+                        }
+                    } else {
+                        $resContent = $this->getResumeSection($chatQuickReply->content->section_id, $chatQuickReply->content->order);
                         if($resContent['status']) {
                             $response = $resContent;
                         }
@@ -92,8 +104,22 @@ class ChatBotProjectController extends Controller
                 }
             }
             
+        } else {
+            $lastRecord = ProjectPageUserChat::where('project_page_user_id', $this->user->id)
+                            ->where('is_send', true)
+                            ->where('from_platform', true)
+                            ->orderBy('created_at', 'desc')
+                            ->first();
+            
+            if(!empty($lastRecord) && is_null($lastRecord->user_input_id)) {
+                $userInput = ChatUserInput::find($lastRecord->user_input_id);
+                if(!empty($userInput) && !is_null($userInput->attribute_id)) {
+                    $this->setUserAttribute($userInput->attribute_id, $this->user->id, $mesgText);
+                }
+            }
         }
 
+        DB::beginTransaction();
         try {
             $log = ProjectPageUserChat::create([
                 'content_id' => null,
@@ -101,6 +127,7 @@ class ChatBotProjectController extends Controller
                 'from_platform' => false,
                 'mesg' => $mesgText,
                 'mesg_id' => isset($input['entry'][0]['messaging'][0]['message']['mid']) ? $input['entry'][0]['messaging'][0]['message']['mid'] : '',
+                'project_page_user_id' => $this->user->id,
                 'is_send' => false,
             ]);
         } catch(\Exception $e) {
@@ -108,7 +135,8 @@ class ChatBotProjectController extends Controller
             return [
                 'status' => false,
                 'type' => 'um-record',
-                'mesg' => 'Failed to record mesg!'
+                'mesg' => 'Failed to record mesg!',
+                'debugMesg' => $e->getMessage()
             ];
         }
 
@@ -117,13 +145,41 @@ class ChatBotProjectController extends Controller
         if(empty($response)) {
             $response = $this->getDefault();
         }
+
+        $response['userid'] = $this->user->id;
+
         return $response;
     }
 
-    // public function setAttribute()
-    // {
+    public function setUserAttribute($attributeid, $userid, $value)
+    {
+        $attr = ProjectPageUserAttribute::where('attribute_id', $attributeid)->where('project_page_user_id', $userid)->first();
 
-    // }
+        if(empty($attr)) {
+            DB::beginTransaction();
+            try {
+                $attr = ProjectPageUserAttribute::create([
+                    'attribute_id' => $attributeid,
+                    'project_page_user_id' => $userid,
+                    'value' => ''
+                ]);
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw(new \Exception("Failed to create user attribute!"));
+            }
+            DB::commit();
+        }
+
+        DB::beginTransaction();
+        try {
+            $attr->value = $value;
+            $attr->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw(new \Exception("Failed to update user attribute!"));
+        }
+        DB::commit();
+    }
 
     // ai validation
     public function aiValidation($keyword='')
@@ -134,12 +190,25 @@ class ChatBotProjectController extends Controller
     public function getSection($section)
     {
         $section = ChatBlockSection::with([
-            'contents',
-            'contents.galleryList',
-            'contents.galleryList.buttons',
-            'contents.buttons',
-            'contents.quickReply',
-            'contents.userInput'
+            'contents' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.galleryList' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.galleryList.buttons' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.buttons' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.quickReply' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.userInput' => function($query) {
+                $query->limit(1);
+                $query->orderBy('order', 'ASC');
+            }
         ])->find($section);
         
 
@@ -155,16 +224,69 @@ class ChatBotProjectController extends Controller
         ];
     }
 
+    public function getResumeSection($section, $order) {
+        $section = ChatBlockSection::with([
+            'contents' => function($query) use ($order) {
+                $query->where('order', '>', $order);
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.galleryList' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.galleryList.buttons' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.buttons' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.quickReply' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.userInput' => function($query) {
+                $query->limit(1);
+                $query->orderBy('order', 'ASC');
+            }
+        ])->whereHas('contents', function($query) use ($order) {
+            $query->where('order', '>', $order);
+        })->find($section);
+
+        FacebookRequestLogs::create([
+            'data' => json_encode([
+                'section' => 'section: ',
+                'data' => $section
+            ])
+        ]);
+
+        return [
+            'status' => !empty($section),
+            'type' => '',
+            'data' => !empty($section) ? $this->contentParser($section->contents) : []
+        ];
+    }
+
     public function getDefault()
     {
         $block = ChatBlock::where('project_id', $this->projectid)->where('is_lock', true)->first();
         $section = ChatBlockSection::with([
-            'contents',
-            'contents.galleryList',
-            'contents.galleryList.buttons',
-            'contents.buttons',
-            'contents.quickReply',
-            'contents.userInput'
+            'contents' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.galleryList' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.galleryList.buttons' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.buttons' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.quickReply' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.userInput' => function($query) {
+                $query->limit(1);
+                $query->orderBy('order', 'ASC');
+            }
         ])->where('block_id', $block->id)->where('type', 2)->first();
         
 
@@ -193,36 +315,42 @@ class ChatBotProjectController extends Controller
 
         // parse content based on their content type
         foreach($contents as $content) {
+            $parsed = [];
+
             switch ($content->type) {
                 case 1:
-                    $res[] = $this->parseText($content);
+                    $parsed = $this->parseText($content);
                     break;
                 
                 case 2:
-                    $res[] = $this->parseTyping($content);
+                    $parsed = $this->parseTyping($content);
                     break;
                 
                 case 3:
                     $break = true;
-                    $res[] = $this->parseQuickReply($content);
+                    $parsed = $this->parseQuickReply($content);
                     break;
                 
                 case 4:
-
+                    $break = true;
+                    $parsed = $this->parseUserInput($content);
                     break;
                 
                 case 5:
-                    $res[] = $this->parseList($content);
+                    $parsed = $this->parseList($content);
                     break;
                 
                 case 6:
-                    $res[] = $this->parseGallery($content);
+                    $parsed = $this->parseGallery($content);
                     break;
                 
                 case 7:
-                    $res[] = $this->parseImage($content);
+                    $parsed = $this->parseImage($content);
                     break;
             }
+
+            $parsed['content_id'] = $content->id;
+            $res[] = $parsed;
 
             if($break) break;
         }
@@ -308,6 +436,30 @@ class ChatBotProjectController extends Controller
         }
 
         return $res;
+    }
+
+    public function parseUserInput($content)
+    {
+        if(empty($content->userInput) || is_null($content->userInput[0]) || empty($content->userInput[0]->question)) {
+            return [
+                'status' => false,
+                'mesg' => 'There is no userinput!',
+                'type' => 4,
+                'data' => []
+            ];
+        }
+
+        $res = [
+            "text" => $content->userInput[0]->question
+        ];
+
+        return [
+            'status' => true,
+            'mesg' => '',
+            'type' => 4,
+            'data' => $res,
+            'input_id' => $content->userInput[0]->id
+        ];
     }
 
     // parse list to messenger support format

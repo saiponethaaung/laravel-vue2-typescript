@@ -374,6 +374,7 @@ class CreateController extends Controller
                 'title' => '',
                 'attribute_id' => null,
                 'content_id' => $create->id,
+                'order' => 1,
                 'value' => ''
             ]);
         } catch (\Exception $e) {
@@ -425,6 +426,7 @@ class CreateController extends Controller
                 'title' => '',
                 'attribute_id' => null,
                 'content_id' => $request->contentId,
+                'order' => ChatQuickReply::where('content_id', $request->contentId)->count()+1,
                 'value' => ''
             ]);
         } catch (\Exception $e) {
@@ -478,6 +480,7 @@ class CreateController extends Controller
                 'question' => '',
                 'attribute_id' => null,
                 'content_id' => $create->id,
+                'order' => 1,
                 'validation' => null
             ]);
         } catch (\Exception $e) {
@@ -529,6 +532,7 @@ class CreateController extends Controller
                 'question' => '',
                 'attribute_id' => null,
                 'content_id' => $request->contentId,
+                'order' => ChatUserInput::where('content_id', $request->contentId)->count()+1,
                 'validation' => null
             ]);
         } catch (\Exception $e) {

@@ -8,9 +8,8 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
     private keyword: string = '';
     private saveToken: CancelTokenSource = Axios.CancelToken.source();
     private suggestion: Array<blockSuggestion> = [];
-    private saveBlock: boolean = false;
     private blockToken: CancelTokenSource = Axios.CancelToken.source();
-    private deleting: boolean = false;
+    private btnProcessing: boolean = false;
 
     constructor(
         private content: quickReplyContent,
@@ -72,12 +71,12 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         return this.suggestion;
     }
 
-    get isDeleting() : boolean {
-        return this.deleting;
+    get isBtnProcess() : boolean {
+        return this.btnProcessing;
     }
 
-    set isDeleting(status: boolean){
-        this.deleting = status;
+    set isBtnProcess(status: boolean){
+        this.btnProcessing = status;
     }
 
     async saveContent() {
@@ -122,7 +121,7 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         this.blockToken.cancel();
         this.blockToken = Axios.CancelToken.source();
 
-        this.saveBlock = true;
+        this.isBtnProcess = true;
 
         let data = new FormData();
         data.append('section', this.suggestion[block].contents[section].id.toString());
@@ -146,11 +145,11 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
             }
         });
 
-        this.saveBlock = false;
+        this.isBtnProcess = false;
     }
 
     async delButton(index: number) {
-        this.isDeleting = true;
+        this.isBtnProcess = true;
         await Axios({
             url: `${this.rootUrl}/${this.id}/block`,
             method: 'delete',
@@ -160,8 +159,8 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
             if(err.response) {
                 let mesg = this.globalHandler(err, 'Failed to delete a block!');
                 alert(mesg);
-                this.isDeleting = true;
             }
         });
+        this.isBtnProcess = false;
     }
 }

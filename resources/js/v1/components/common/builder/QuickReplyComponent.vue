@@ -17,6 +17,12 @@
                                         <div class="slbDel" @click="qr.delButton()">
                                             <i class="material-icons">delete</i>
                                         </div>
+                                        <template v-if="qr.isBtnProcess">
+                                            <div class="componentDeleting">
+                                                <div class="deletingContainer">
+                                                </div>
+                                            </div>
+                                        </template>
                                     </div>
                                 </template>
                                 <template v-else>
@@ -29,6 +35,12 @@
                                                     <div v-for="(s, sindex) in b.contents" :key="sindex" class="sugBlockSecTitle" @click="qr.addBlock(index, sindex)">{{ s.title }}</div>
                                                 </div>
                                             </div>
+                                            <template v-if="qr.isBtnProcess">
+                                                <div class="componentDeleting">
+                                                    <div class="deletingContainer">
+                                                    </div>
+                                                </div>
+                                            </template>
                                         </div>
                                     </template>
                                 </template>

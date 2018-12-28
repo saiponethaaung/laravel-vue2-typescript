@@ -11097,7 +11097,7 @@ a.text-dark:focus {
   height: 28px;
   border: 1px solid rgba(0, 0, 0, 0.21);
   border-radius: 5px;
-  padding: 0 10px;
+  padding: 0 18px;
   max-width: 100%;
   width: auto;
   display: inline-block;
@@ -11113,8 +11113,8 @@ a.text-dark:focus {
 .selectedLinkedBlock .slbDel {
   display: none;
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -2px;
+  right: -2px;
   z-index: 11;
   left: initial;
   width: 20px;
@@ -11132,6 +11132,10 @@ a.text-dark:focus {
 .selectedLinkedBlock .slbDel .material-icons {
   font-size: 14px;
   color: #aaaaaa;
+}
+
+.selectedLinkedBlock .componentDeleting {
+  border-radius: inherit;
 }
 
 .selectedLinkedBlock:hover .slbDel {

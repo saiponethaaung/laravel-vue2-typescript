@@ -28,11 +28,6 @@
                 <div class="addBtn" v-if="content.buttons.length<3 && !content.addingNewBtn" @click="content.addButton()">
                     <i class="material-icons">add</i>Add Button
                 </div>
-                <!-- <div class="buttonPopBox" v-if="content.showBtn">
-                    <div>
-                        asd
-                    </div>
-                </div> -->
             </div>
             <div v-if="content.isUpdating" class="loadingConV1">
                 <div class="loadingInnerConV1">

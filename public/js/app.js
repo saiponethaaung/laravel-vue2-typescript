@@ -41239,9 +41239,8 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
         this.keyword = '';
         this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
         this.suggestion = [];
-        this.saveBlock = false;
         this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-        this.deleting = false;
+        this.btnProcessing = false;
     }
     get id() {
         return this.content.id;
@@ -41282,11 +41281,11 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
     get blockList() {
         return this.suggestion;
     }
-    get isDeleting() {
-        return this.deleting;
+    get isBtnProcess() {
+        return this.btnProcessing;
     }
-    set isDeleting(status) {
-        this.deleting = status;
+    set isBtnProcess(status) {
+        this.btnProcessing = status;
     }
     saveContent() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -41328,7 +41327,7 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
         return __awaiter(this, void 0, void 0, function* () {
             this.blockToken.cancel();
             this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-            this.saveBlock = true;
+            this.isBtnProcess = true;
             let data = new FormData();
             data.append('section', this.suggestion[block].contents[section].id.toString());
             __WEBPACK_IMPORTED_MODULE_1_axios___default()({
@@ -41348,12 +41347,12 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
                     alert(mesg);
                 }
             });
-            this.saveBlock = false;
+            this.isBtnProcess = false;
         });
     }
     delButton(index) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.isDeleting = true;
+            this.isBtnProcess = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `${this.rootUrl}/${this.id}/block`,
                 method: 'delete',
@@ -41363,9 +41362,9 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
                 if (err.response) {
                     let mesg = this.globalHandler(err, 'Failed to delete a block!');
                     alert(mesg);
-                    this.isDeleting = true;
                 }
             });
+            this.isBtnProcess = false;
         });
     }
 }
@@ -41486,8 +41485,13 @@ var render = function() {
                                           [_vm._v("delete")]
                                         )
                                       ]
-                                    )
-                                  ]
+                                    ),
+                                    _vm._v(" "),
+                                    qr.isBtnProcess
+                                      ? [_vm._m(0, true)]
+                                      : _vm._e()
+                                  ],
+                                  2
                                 )
                               ]
                             : [
@@ -41524,56 +41528,65 @@ var render = function() {
                                       _c(
                                         "div",
                                         { staticClass: "sugContainer" },
-                                        _vm._l(qr.blockList, function(
-                                          b,
-                                          index
-                                        ) {
-                                          return _c(
-                                            "div",
-                                            {
-                                              key: index,
-                                              staticClass: "sugBlock"
-                                            },
-                                            [
-                                              _c(
-                                                "div",
-                                                {
-                                                  staticClass: "sugBlockTitle"
-                                                },
-                                                [_vm._v(_vm._s(b.title))]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "div",
-                                                { staticClass: "sugBlockSec" },
-                                                _vm._l(b.contents, function(
-                                                  s,
-                                                  sindex
-                                                ) {
-                                                  return _c(
-                                                    "div",
-                                                    {
-                                                      key: sindex,
-                                                      staticClass:
-                                                        "sugBlockSecTitle",
-                                                      on: {
-                                                        click: function(
-                                                          $event
-                                                        ) {
-                                                          qr.addBlock(
-                                                            index,
-                                                            sindex
-                                                          )
+                                        [
+                                          _vm._l(qr.blockList, function(
+                                            b,
+                                            index
+                                          ) {
+                                            return _c(
+                                              "div",
+                                              {
+                                                key: index,
+                                                staticClass: "sugBlock"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "sugBlockTitle"
+                                                  },
+                                                  [_vm._v(_vm._s(b.title))]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "sugBlockSec"
+                                                  },
+                                                  _vm._l(b.contents, function(
+                                                    s,
+                                                    sindex
+                                                  ) {
+                                                    return _c(
+                                                      "div",
+                                                      {
+                                                        key: sindex,
+                                                        staticClass:
+                                                          "sugBlockSecTitle",
+                                                        on: {
+                                                          click: function(
+                                                            $event
+                                                          ) {
+                                                            qr.addBlock(
+                                                              index,
+                                                              sindex
+                                                            )
+                                                          }
                                                         }
-                                                      }
-                                                    },
-                                                    [_vm._v(_vm._s(s.title))]
-                                                  )
-                                                })
-                                              )
-                                            ]
-                                          )
-                                        })
+                                                      },
+                                                      [_vm._v(_vm._s(s.title))]
+                                                    )
+                                                  })
+                                                )
+                                              ]
+                                            )
+                                          }),
+                                          _vm._v(" "),
+                                          qr.isBtnProcess
+                                            ? [_vm._m(1, true)]
+                                            : _vm._e()
+                                        ],
+                                        2
                                       )
                                     ]
                                   : _vm._e()
@@ -41582,7 +41595,7 @@ var render = function() {
                         2
                       ),
                       _vm._v(" "),
-                      _vm._m(0, true),
+                      _vm._m(2, true),
                       _vm._v(" "),
                       _c("div", [
                         _c("input", {
@@ -41659,7 +41672,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _vm.content.isChildDeleting === index
-                ? [_vm._m(1, true)]
+                ? [_vm._m(3, true)]
                 : _vm._e()
             ],
             2
@@ -41693,6 +41706,22 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "componentDeleting" }, [
+      _c("div", { staticClass: "deletingContainer" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "componentDeleting" }, [
+      _c("div", { staticClass: "deletingContainer" })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

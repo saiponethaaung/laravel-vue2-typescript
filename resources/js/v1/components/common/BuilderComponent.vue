@@ -1,6 +1,6 @@
 <template>
     <div class="contentRoot">
-        <div>
+        <div class="builderSectionInfo">
             <template v-if="section.lock">
                 <div>{{ section.title }}</div>
             </template>
@@ -12,17 +12,27 @@
             </template>
         </div>
         <div class="contentList">
-            <div v-for="(content, index) in contents" :key="index" class="conentItem">
+            <div v-for="(content, index) in contents" :key="index" class="conentItem" :class="{'deleting': content.isDeleting}">
                 <div class="optionSection">
                     <div class="deleteAction" @click="delItem(index)">
                         <i class="material-icons">delete</i>
                     </div>
                 </div>
                 <component :is="getComponent(content.type)" :content="content"></component>
+                <template v-if="content.isDeleting">
+                    <div class="componentDeleting">
+                        <div class="deletingContainer">
+                        </div>
+                    </div>
+                </template>
             </div>
         </div>
         <div v-for="i in creating" :key="i">
-            Loading...
+            <div class="creatingNewComponent">
+                <div class="loadingInnerConV1">
+                    <loading-component></loading-component>
+                </div>
+            </div>
         </div>
         <div class="contentBuilderWidget">
             <h5 class="contentActionMesg">Add Message</h5>
@@ -260,6 +270,7 @@ export default class BuilderComponent extends Vue {
 
     async delItem(index:number) {
         if(confirm('Are you sure you want to delete?')) {
+            this.contents[index].isDeleting = true;
             await Axios({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content/${this.contents[index].contentId}`,
                 method: 'delete'
@@ -269,6 +280,7 @@ export default class BuilderComponent extends Vue {
                 if(err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to delete message!');
                     alert(mesg);
+                    this.contents[index].isDeleting = false;
                 }
             });
         }

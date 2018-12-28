@@ -4,19 +4,20 @@ import Axios, { CancelTokenSource } from "axios";
 
 export default class QuickReplyItemModel extends AjaxErrorHandler {
 
-    private content: quickReplyContent;
-    private rootUrl: string;
     private show: boolean = false;
     private keyword: string = '';
     private saveToken: CancelTokenSource = Axios.CancelToken.source();
     private suggestion: Array<blockSuggestion> = [];
     private saveBlock: boolean = false;
     private blockToken: CancelTokenSource = Axios.CancelToken.source();
+    private deleting: boolean = false;
 
-    constructor(content: quickReplyContent, rootUrl: string) {
+    constructor(
+        private content: quickReplyContent,
+        private rootUrl: string,
+        private projectId: string
+    ) {
         super();
-        this.content = content;
-        this.rootUrl = rootUrl;
     }
 
     get id() : number {
@@ -71,6 +72,14 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         return this.suggestion;
     }
 
+    get isDeleting() : boolean {
+        return this.deleting;
+    }
+
+    set isDeleting(status: boolean){
+        this.deleting = status;
+    }
+
     async saveContent() {
         this.saveToken.cancel();
         this.saveToken = Axios.CancelToken.source();
@@ -97,7 +106,7 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
     }
 
     async loadSuggestion() {
-        let suggestion = await this.searchSections(this.blockKey);
+        let suggestion = await this.searchSections(this.blockKey, this.projectId);
 
         if(suggestion.type==='cancel') return;
 
@@ -141,6 +150,7 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
     }
 
     async delButton(index: number) {
+        this.isDeleting = true;
         await Axios({
             url: `${this.rootUrl}/${this.id}/block`,
             method: 'delete',
@@ -150,6 +160,7 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
             if(err.response) {
                 let mesg = this.globalHandler(err, 'Failed to delete a block!');
                 alert(mesg);
+                this.isDeleting = true;
             }
         });
     }

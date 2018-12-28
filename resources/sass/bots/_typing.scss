@@ -31,13 +31,22 @@
     font-weight: bold;
     cursor: pointer;
     position: relative;
+    .duInfo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .iconCon {
+            display: flex;
+            padding-left: 7px;
+        }
+    }
 }
 
 .dropDownSec {
     height: 125px;
     overflow: auto;
     background: #f7f6f6;
-    width: 65px;
+    width: 90px;
     position: absolute;
     top: 44px;
     right: 0px;

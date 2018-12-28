@@ -48,8 +48,14 @@
                         <i class="material-icons">delete</i>
                     </div>
                 </div>
+                <template v-if="content.isChildDeleting===index">
+                    <div class="componentDeleting">
+                        <div class="deletingContainer">
+                        </div>
+                    </div>
+                </template>
             </li>
-            <li>
+            <li v-if="content.item.length<11">
                 <div class="quickReplyCapsule qrAddMore" v-if="content.isCreating">
                     Creating...
                 </div>

@@ -357,7 +357,7 @@ class AjaxErrorHandler {
         }
         return mesg;
     }
-    searchSections(keyword) {
+    searchSections(keyword, projectid) {
         return __awaiter(this, void 0, void 0, function* () {
             if (undefined === keyword) {
                 keyword = "";
@@ -372,7 +372,7 @@ class AjaxErrorHandler {
                 data: []
             };
             yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
-                url: `/api/v1/chat-bot/blocks/search?keyword=${keyword}`,
+                url: `/api/v1/project/${projectid}/chat-bot/blocks/search?keyword=${keyword}`,
                 method: 'get',
                 cancelToken: this.searchToken.token
             }).then((res) => {
@@ -11682,6 +11682,7 @@ class ChatBlockContentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxError
     constructor(content) {
         super();
         this.updating = false;
+        this.deleting = false;
         this.content = {
             id: content.id,
             type: content.type,
@@ -11707,6 +11708,12 @@ class ChatBlockContentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxError
     }
     set isUpdating(status) {
         this.updating = status;
+    }
+    get isDeleting() {
+        return this.deleting;
+    }
+    set isDeleting(status) {
+        this.deleting = status;
     }
     get project() {
         return this.content.project;
@@ -23434,13 +23441,14 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConte
         this.quickReplyContent = [];
         this.creating = false;
         this.rootUrl = '';
+        this.delChild = -1;
         this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/quick-reply`;
         for (let i of content.content) {
             this.buildQuickReplyItem(i);
         }
     }
     buildQuickReplyItem(content) {
-        this.quickReplyContent.push(new __WEBPACK_IMPORTED_MODULE_1__QuickReplyItemModel__["a" /* default */](content, this.rootUrl));
+        this.quickReplyContent.push(new __WEBPACK_IMPORTED_MODULE_1__QuickReplyItemModel__["a" /* default */](content, this.rootUrl, this.project));
     }
     get item() {
         return this.quickReplyContent;
@@ -23453,6 +23461,12 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConte
     }
     set isCreating(status) {
         this.creating = status;
+    }
+    get isChildDeleting() {
+        return this.delChild;
+    }
+    set isChildDeleting(index) {
+        this.delChild = index;
     }
     createQuickReply() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -23471,6 +23485,7 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConte
     }
     delItem(index) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.isChildDeleting = index;
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `${this.rootUrl}/${this.item[index].id}`,
                 method: 'delete',
@@ -23482,6 +23497,7 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConte
                     alert(mesg);
                 }
             });
+            this.isChildDeleting = -1;
         });
     }
 }
@@ -23678,12 +23694,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__App_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue__ = __webpack_require__(119);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_LoadingComponent_vue__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_LoadingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_common_LoadingComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_common_builder_ButtonComponent_vue__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_common_builder_ButtonComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_common_builder_ButtonComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_axios__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -23707,6 +23725,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
+
 let eventHub = new __WEBPACK_IMPORTED_MODULE_1_vue__["default"]();
 window.fbSdkLoaded = false;
 function logoutResponseHandler(error) {
@@ -23719,11 +23738,11 @@ function logoutResponseHandler(error) {
         return Promise.reject(error);
     }
 }
-__WEBPACK_IMPORTED_MODULE_8_axios___default.a.interceptors.response.use(response => response, logoutResponseHandler);
+__WEBPACK_IMPORTED_MODULE_9_axios___default.a.interceptors.response.use(response => response, logoutResponseHandler);
 __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */].beforeEach((to, from, next) => __awaiter(this, void 0, void 0, function* () {
     if (__WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.token !== null) {
-        __WEBPACK_IMPORTED_MODULE_8_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.token}`;
-        yield __WEBPACK_IMPORTED_MODULE_8_axios___default()({
+        __WEBPACK_IMPORTED_MODULE_9_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.token}`;
+        yield __WEBPACK_IMPORTED_MODULE_9_axios___default()({
             url: '/api/v1/user'
         }).then((res) => {
             console.log('res', res);
@@ -23744,8 +23763,9 @@ __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */].beforeEach
 // Vue.prototype.$eventHub = new Vue();
 __WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('app', __WEBPACK_IMPORTED_MODULE_4__App_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('popup-component', __WEBPACK_IMPORTED_MODULE_5__components_common_PopupComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('builder-component', __WEBPACK_IMPORTED_MODULE_6__components_common_BuilderComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('button-component', __WEBPACK_IMPORTED_MODULE_7__components_common_builder_ButtonComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('loading-component', __WEBPACK_IMPORTED_MODULE_6__components_common_LoadingComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('builder-component', __WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('button-component', __WEBPACK_IMPORTED_MODULE_8__components_common_builder_ButtonComponent_vue___default.a);
 new __WEBPACK_IMPORTED_MODULE_1_vue__["default"]({
     router: __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */],
     store: __WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */],
@@ -39238,6 +39258,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     delItem(index) {
         return __awaiter(this, void 0, void 0, function* () {
             if (confirm('Are you sure you want to delete?')) {
+                this.contents[index].isDeleting = true;
                 yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                     url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content/${this.contents[index].contentId}`,
                     method: 'delete'
@@ -39247,6 +39268,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     if (err.response) {
                         let mesg = this.ajaxHandler.globalHandler(err, 'Failed to delete message!');
                         alert(mesg);
+                        this.contents[index].isDeleting = false;
                     }
                 });
             }
@@ -39552,7 +39574,14 @@ var render = function() {
       ),
       _vm._v(" "),
       _vm.content.isUpdating
-        ? _c("div", [_vm._v("\n            Updating...\n        ")])
+        ? _c("div", { staticClass: "loadingConV1" }, [
+            _c(
+              "div",
+              { staticClass: "loadingInnerConV1" },
+              [_c("loading-component")],
+              1
+            )
+          ])
         : _vm._e()
     ])
   ])
@@ -39702,7 +39731,22 @@ var render = function() {
           }
         },
         [
-          _c("div", [_vm._v(_vm._s(_vm.content.duration) + " sec")]),
+          _c("div", { staticClass: "duInfo" }, [
+            _c("span", [_vm._v(_vm._s(_vm.content.duration) + " sec")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconCon" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]),
           _vm._v(" "),
           _c(
             "div",
@@ -41182,16 +41226,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
-    constructor(content, rootUrl) {
+    constructor(content, rootUrl, projectId) {
         super();
+        this.content = content;
+        this.rootUrl = rootUrl;
+        this.projectId = projectId;
         this.show = false;
         this.keyword = '';
         this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
         this.suggestion = [];
         this.saveBlock = false;
         this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-        this.content = content;
-        this.rootUrl = rootUrl;
+        this.deleting = false;
     }
     get id() {
         return this.content.id;
@@ -41232,6 +41278,12 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
     get blockList() {
         return this.suggestion;
     }
+    get isDeleting() {
+        return this.deleting;
+    }
+    set isDeleting(status) {
+        this.deleting = status;
+    }
     saveContent() {
         return __awaiter(this, void 0, void 0, function* () {
             this.saveToken.cancel();
@@ -41258,7 +41310,7 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
     }
     loadSuggestion() {
         return __awaiter(this, void 0, void 0, function* () {
-            let suggestion = yield this.searchSections(this.blockKey);
+            let suggestion = yield this.searchSections(this.blockKey, this.projectId);
             if (suggestion.type === 'cancel')
                 return;
             if (suggestion.status === false) {
@@ -41297,6 +41349,7 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
     }
     delButton(index) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.isDeleting = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `${this.rootUrl}/${this.id}/block`,
                 method: 'delete',
@@ -41306,6 +41359,7 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
                 if (err.response) {
                     let mesg = this.globalHandler(err, 'Failed to delete a block!');
                     alert(mesg);
+                    this.isDeleting = true;
                 }
             });
         });
@@ -41329,205 +41383,60 @@ var render = function() {
       { ref: "dropdownMenu", staticClass: "quickReplyRootContainer" },
       [
         _vm._l(_vm.content.item, function(qr, index) {
-          return _c("li", { key: index }, [
-            _c("div", { staticClass: "quickReplyCapsule" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "quickReplyTitle",
-                  on: {
-                    click: function($event) {
-                      _vm.closeOtherSection(index)
-                      qr.canShow = !qr.canShow
+          return _c(
+            "li",
+            { key: index },
+            [
+              _c("div", { staticClass: "quickReplyCapsule" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "quickReplyTitle",
+                    on: {
+                      click: function($event) {
+                        _vm.closeOtherSection(index)
+                        qr.canShow = !qr.canShow
+                      }
                     }
-                  }
-                },
-                [_vm._v(_vm._s(qr.title ? qr.title : "Enter button name"))]
-              ),
-              _vm._v(" "),
-              qr.block.length > 0
-                ? _c(
-                    "div",
-                    {
-                      staticClass: "quickReplyValue",
-                      on: {
-                        click: function($event) {
-                          _vm.closeOtherSection(index)
-                          qr.canShow = !qr.canShow
-                        }
-                      }
-                    },
-                    [_vm._v(_vm._s(qr.block[0].title))]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "quickReplyInfoBox",
-                  class: { showInfoBox: qr.canShow }
-                },
-                [
-                  _c("div", { staticClass: "QRActionName" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: qr.title,
-                          expression: "qr.title"
-                        }
-                      ],
-                      attrs: { placeholder: "Title" },
-                      domProps: { value: qr.title },
-                      on: {
-                        blur: function($event) {
-                          qr.saveContent()
-                        },
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(qr, "title", $event.target.value)
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", [
-                    _c(
+                  },
+                  [_vm._v(_vm._s(qr.title ? qr.title : "Enter button name"))]
+                ),
+                _vm._v(" "),
+                qr.block.length > 0
+                  ? _c(
                       "div",
-                      [
-                        qr.block.length > 0
-                          ? [
-                              _c(
-                                "div",
-                                { staticClass: "selectedLinkedBlock" },
-                                [
-                                  _c("span", { staticClass: "slbText" }, [
-                                    _vm._v(_vm._s(qr.block[0].title))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "slbDel",
-                                      on: {
-                                        click: function($event) {
-                                          qr.delButton()
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c(
-                                        "i",
-                                        { staticClass: "material-icons" },
-                                        [_vm._v("delete")]
-                                      )
-                                    ]
-                                  )
-                                ]
-                              )
-                            ]
-                          : [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: qr.blockKey,
-                                    expression: "qr.blockKey"
-                                  }
-                                ],
-                                attrs: { placeholder: "Enter block name" },
-                                domProps: { value: qr.blockKey },
-                                on: {
-                                  keyup: function($event) {
-                                    qr.loadSuggestion()
-                                  },
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      qr,
-                                      "blockKey",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              qr.blockList.length > 0
-                                ? [
-                                    _c(
-                                      "div",
-                                      { staticClass: "sugContainer" },
-                                      _vm._l(qr.blockList, function(b, index) {
-                                        return _c(
-                                          "div",
-                                          {
-                                            key: index,
-                                            staticClass: "sugBlock"
-                                          },
-                                          [
-                                            _c(
-                                              "div",
-                                              { staticClass: "sugBlockTitle" },
-                                              [_vm._v(_vm._s(b.title))]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "div",
-                                              { staticClass: "sugBlockSec" },
-                                              _vm._l(b.contents, function(
-                                                s,
-                                                sindex
-                                              ) {
-                                                return _c(
-                                                  "div",
-                                                  {
-                                                    key: sindex,
-                                                    staticClass:
-                                                      "sugBlockSecTitle",
-                                                    on: {
-                                                      click: function($event) {
-                                                        qr.addBlock(
-                                                          index,
-                                                          sindex
-                                                        )
-                                                      }
-                                                    }
-                                                  },
-                                                  [_vm._v(_vm._s(s.title))]
-                                                )
-                                              })
-                                            )
-                                          ]
-                                        )
-                                      })
-                                    )
-                                  ]
-                                : _vm._e()
-                            ]
-                      ],
-                      2
-                    ),
-                    _vm._v(" "),
-                    _vm._m(0, true),
-                    _vm._v(" "),
-                    _c("div", [
+                      {
+                        staticClass: "quickReplyValue",
+                        on: {
+                          click: function($event) {
+                            _vm.closeOtherSection(index)
+                            qr.canShow = !qr.canShow
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(qr.block[0].title))]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "quickReplyInfoBox",
+                    class: { showInfoBox: qr.canShow }
+                  },
+                  [
+                    _c("div", { staticClass: "QRActionName" }, [
                       _c("input", {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: qr.attribute,
-                            expression: "qr.attribute"
+                            value: qr.title,
+                            expression: "qr.title"
                           }
                         ],
-                        attrs: { placeholder: "<Set attribute>" },
-                        domProps: { value: qr.attribute },
+                        attrs: { placeholder: "Title" },
+                        domProps: { value: qr.title },
                         on: {
                           blur: function($event) {
                             qr.saveContent()
@@ -41536,75 +41445,244 @@ var render = function() {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(qr, "attribute", $event.target.value)
+                            _vm.$set(qr, "title", $event.target.value)
                           }
                         }
                       })
                     ]),
                     _vm._v(" "),
                     _c("div", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: qr.value,
-                            expression: "qr.value"
-                          }
+                      _c(
+                        "div",
+                        [
+                          qr.block.length > 0
+                            ? [
+                                _c(
+                                  "div",
+                                  { staticClass: "selectedLinkedBlock" },
+                                  [
+                                    _c("span", { staticClass: "slbText" }, [
+                                      _vm._v(_vm._s(qr.block[0].title))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "slbDel",
+                                        on: {
+                                          click: function($event) {
+                                            qr.delButton()
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "i",
+                                          { staticClass: "material-icons" },
+                                          [_vm._v("delete")]
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ]
+                            : [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: qr.blockKey,
+                                      expression: "qr.blockKey"
+                                    }
+                                  ],
+                                  attrs: { placeholder: "Enter block name" },
+                                  domProps: { value: qr.blockKey },
+                                  on: {
+                                    keyup: function($event) {
+                                      qr.loadSuggestion()
+                                    },
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        qr,
+                                        "blockKey",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                qr.blockList.length > 0
+                                  ? [
+                                      _c(
+                                        "div",
+                                        { staticClass: "sugContainer" },
+                                        _vm._l(qr.blockList, function(
+                                          b,
+                                          index
+                                        ) {
+                                          return _c(
+                                            "div",
+                                            {
+                                              key: index,
+                                              staticClass: "sugBlock"
+                                            },
+                                            [
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass: "sugBlockTitle"
+                                                },
+                                                [_vm._v(_vm._s(b.title))]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                { staticClass: "sugBlockSec" },
+                                                _vm._l(b.contents, function(
+                                                  s,
+                                                  sindex
+                                                ) {
+                                                  return _c(
+                                                    "div",
+                                                    {
+                                                      key: sindex,
+                                                      staticClass:
+                                                        "sugBlockSecTitle",
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          qr.addBlock(
+                                                            index,
+                                                            sindex
+                                                          )
+                                                        }
+                                                      }
+                                                    },
+                                                    [_vm._v(_vm._s(s.title))]
+                                                  )
+                                                })
+                                              )
+                                            ]
+                                          )
+                                        })
+                                      )
+                                    ]
+                                  : _vm._e()
+                              ]
                         ],
-                        staticClass: "noMgb",
-                        attrs: { placeholder: "<Set value>" },
-                        domProps: { value: qr.value },
-                        on: {
-                          blur: function($event) {
-                            qr.saveContent()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                        2
+                      ),
+                      _vm._v(" "),
+                      _vm._m(0, true),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: qr.attribute,
+                              expression: "qr.attribute"
                             }
-                            _vm.$set(qr, "value", $event.target.value)
+                          ],
+                          attrs: { placeholder: "<Set attribute>" },
+                          domProps: { value: qr.attribute },
+                          on: {
+                            blur: function($event) {
+                              qr.saveContent()
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(qr, "attribute", $event.target.value)
+                            }
                           }
-                        }
-                      })
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: qr.value,
+                              expression: "qr.value"
+                            }
+                          ],
+                          staticClass: "noMgb",
+                          attrs: { placeholder: "<Set value>" },
+                          domProps: { value: qr.value },
+                          on: {
+                            blur: function($event) {
+                              qr.saveContent()
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(qr, "value", $event.target.value)
+                            }
+                          }
+                        })
+                      ])
                     ])
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "delIcon",
-                  on: {
-                    click: function($event) {
-                      _vm.content.delItem(index)
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "delIcon",
+                    on: {
+                      click: function($event) {
+                        _vm.content.delItem(index)
+                      }
                     }
-                  }
-                },
-                [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
-              )
-            ])
-          ])
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("delete")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _vm.content.isChildDeleting === index
+                ? [_vm._m(1, true)]
+                : _vm._e()
+            ],
+            2
+          )
         }),
         _vm._v(" "),
-        _c("li", [
-          _vm.content.isCreating
-            ? _c("div", { staticClass: "quickReplyCapsule qrAddMore" }, [
-                _vm._v("\n                Creating...\n            ")
-              ])
-            : _c(
-                "div",
-                {
-                  staticClass: "quickReplyCapsule qrAddMore",
-                  on: { click: _vm.createNewQuickReply }
-                },
-                [
-                  _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-                  _vm._v("Add Quick Reply\n            ")
-                ]
-              )
-        ])
+        _vm.content.item.length < 11
+          ? _c("li", [
+              _vm.content.isCreating
+                ? _c("div", { staticClass: "quickReplyCapsule qrAddMore" }, [
+                    _vm._v("\n                Creating...\n            ")
+                  ])
+                : _c(
+                    "div",
+                    {
+                      staticClass: "quickReplyCapsule qrAddMore",
+                      on: { click: _vm.createNewQuickReply }
+                    },
+                    [
+                      _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("add")
+                      ]),
+                      _vm._v("Add Quick Reply\n            ")
+                    ]
+                  )
+            ])
+          : _vm._e()
       ],
       2
     )
@@ -41617,6 +41695,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "attributeNotice" }, [
       _c("span", [_vm._v("Save reply as attribute:")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "componentDeleting" }, [
+      _c("div", { staticClass: "deletingContainer" })
     ])
   }
 ]
@@ -42208,6 +42294,7 @@ var render = function() {
     [
       _c(
         "div",
+        { staticClass: "builderSectionInfo" },
         [
           _vm.section.lock
             ? [_c("div", [_vm._v(_vm._s(_vm.section.title))])]
@@ -42261,7 +42348,11 @@ var render = function() {
         _vm._l(_vm.contents, function(content, index) {
           return _c(
             "div",
-            { key: index, staticClass: "conentItem" },
+            {
+              key: index,
+              staticClass: "conentItem",
+              class: { deleting: content.isDeleting }
+            },
             [
               _c("div", { staticClass: "optionSection" }, [
                 _c(
@@ -42285,15 +42376,26 @@ var render = function() {
               _c(_vm.getComponent(content.type), {
                 tag: "component",
                 attrs: { content: content }
-              })
+              }),
+              _vm._v(" "),
+              content.isDeleting ? [_vm._m(0, true)] : _vm._e()
             ],
-            1
+            2
           )
         })
       ),
       _vm._v(" "),
       _vm._l(_vm.creating, function(i) {
-        return _c("div", { key: i }, [_vm._v("\n        Loading...\n    ")])
+        return _c("div", { key: i }, [
+          _c("div", { staticClass: "creatingNewComponent" }, [
+            _c(
+              "div",
+              { staticClass: "loadingInnerConV1" },
+              [_c("loading-component")],
+              1
+            )
+          ])
+        ])
       }),
       _vm._v(" "),
       _c("div", { staticClass: "contentBuilderWidget" }, [
@@ -42405,7 +42507,7 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _vm._m(0)
+            _vm._m(1)
           ])
         ])
       ])
@@ -42414,6 +42516,14 @@ var render = function() {
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "componentDeleting" }, [
+      _c("div", { staticClass: "deletingContainer" })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -42535,7 +42645,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
     }
     loadSuggestion() {
         return __awaiter(this, void 0, void 0, function* () {
-            let suggestion = yield this.ajaxHandler.searchSections(this.blockKeyword);
+            let suggestion = yield this.ajaxHandler.searchSections(this.blockKeyword, this.projectid);
             if (suggestion.type === 'cancel')
                 return;
             if (suggestion.status === false) {
@@ -42644,6 +42754,9 @@ __decorate([
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], ButtonComponent.prototype, "rootUrl", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], ButtonComponent.prototype, "projectid", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('closeContent')
 ], ButtonComponent.prototype, "closeContent", null);
@@ -42956,6 +43069,143 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(132)
+/* template */
+var __vue_template__ = __webpack_require__(133)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/LoadingComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1397b91c", Component.options)
+  } else {
+    hotAPI.reload("data-v-1397b91c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 132 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+let LoadingComponent = class LoadingComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+};
+LoadingComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], LoadingComponent);
+/* harmony default export */ __webpack_exports__["default"] = (LoadingComponent);
+
+
+/***/ }),
+/* 133 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "svg",
+    {
+      staticClass: "lds-eclipse",
+      staticStyle: { background: "rgba(0, 0, 0, 0) none repeat scroll 0% 0%" },
+      attrs: {
+        stlyle:
+          "width: inherit; height: inherit;max-width: 100%;max-height: 100%;",
+        xmlns: "http://www.w3.org/2000/svg",
+        viewBox: "0 0 100 100",
+        preserveAspectRatio: "xMidYMid"
+      }
+    },
+    [
+      _c(
+        "path",
+        {
+          attrs: {
+            stroke: "none",
+            d: "M10 50A40 40 0 0 0 90 50A40 41 0 0 1 10 50",
+            fill: "#c238eb"
+          }
+        },
+        [
+          _c("animateTransform", {
+            attrs: {
+              attributeName: "transform",
+              type: "rotate",
+              calcMode: "linear",
+              values: "0 50 50.5;360 50 50.5",
+              keyTimes: "0;1",
+              dur: "1s",
+              begin: "0s",
+              repeatCount: "indefinite"
+            }
+          })
+        ],
+        1
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1397b91c", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

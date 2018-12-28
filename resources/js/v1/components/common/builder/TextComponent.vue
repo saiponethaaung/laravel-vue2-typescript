@@ -33,8 +33,10 @@
                     </div>
                 </div> -->
             </div>
-            <div v-if="content.isUpdating">
-                Updating...
+            <div v-if="content.isUpdating" class="loadingConV1">
+                <div class="loadingInnerConV1">
+                    <loading-component/>
+                </div>
             </div>
         </div>
     </div>

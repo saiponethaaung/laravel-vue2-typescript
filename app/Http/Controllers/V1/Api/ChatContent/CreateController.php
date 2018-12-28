@@ -419,6 +419,16 @@ class CreateController extends Controller
     {
         $quickReply = null;
 
+        $total = ChatQuickReply::where('content_id', $request->contentId)->count();
+
+        if($total>10) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Quick replay already created at max!'
+            ], 422);
+        }
+
         DB::beginTransaction();
 
         try {
@@ -426,7 +436,7 @@ class CreateController extends Controller
                 'title' => '',
                 'attribute_id' => null,
                 'content_id' => $request->contentId,
-                'order' => ChatQuickReply::where('content_id', $request->contentId)->count()+1,
+                'order' => $total+1,
                 'value' => ''
             ]);
         } catch (\Exception $e) {

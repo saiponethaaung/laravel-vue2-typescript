@@ -241,7 +241,7 @@ class ChatBotController extends Controller
         ]);
     }
 
-    public function serachSection(Request $request)
+    public function searchSection(Request $request)
     {
         $keyword = "";
         if(is_null($request->input('keyword'))==false && $request->input('keyword')) {
@@ -260,6 +260,7 @@ class ChatBotController extends Controller
                 $query->where('title', 'like', '%'.$keyword.'%');
             }
         });
+        $list->where(DB::raw('md5(project_id)'), $request->projectId);
         $list = $list->get();
 
         $res = [];

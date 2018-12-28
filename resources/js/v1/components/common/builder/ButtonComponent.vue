@@ -77,6 +77,7 @@ export default class ButtonComponent extends Vue {
     
     @Prop() button!: buttonContent;
     @Prop() rootUrl!: string;
+    @Prop() projectid!: string;
 
     private saveBlock: boolean = false;
     private deleteBlock: boolean = false;
@@ -105,7 +106,7 @@ export default class ButtonComponent extends Vue {
     }
 
     async loadSuggestion() {
-        let suggestion = await this.ajaxHandler.searchSections(this.blockKeyword);
+        let suggestion = await this.ajaxHandler.searchSections(this.blockKeyword, this.projectid);
 
         if(suggestion.type==='cancel') return;
 

@@ -6,7 +6,15 @@
                 <span>Show "Typing.." for at least</span>
             </div>
             <div class="typingDuration" ref="dropdownMenu" @click="showOption=!showOption">
-                <div>{{ content.duration }} sec</div>
+                <div class="duInfo">
+                    <span>{{ content.duration }} sec</span>
+                    <span class="iconCon">
+                        <i class="material-icons">
+                            <template v-if="showOption">expand_less</template>
+                            <template v-else>expand_more</template>
+                        </i>
+                    </span>
+                </div>
                 <div v-show="showOption" class="dropDownSec">
                     <ul>
                         <li v-for="i in 20" :key="i" :class="{'selected': i===content.duration}" @click="content.duration===i ? showOption=false :content.duration=i">{{ i }} sec</li>

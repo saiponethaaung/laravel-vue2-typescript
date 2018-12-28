@@ -4,6 +4,7 @@ import { BotContent } from "../configuration/interface";
 export default class ChatBlockContentModel extends AjaxErrorHandler {
     private content : BotContent;
     private updating: boolean = false;
+    private deleting: boolean = false;
 
     constructor(content: any) {
         super();
@@ -38,6 +39,14 @@ export default class ChatBlockContentModel extends AjaxErrorHandler {
 
     set isUpdating(status: boolean) {
         this.updating = status;
+    }
+
+    get isDeleting() : boolean {
+        return this.deleting;
+    }
+
+    set isDeleting(status: boolean) {
+        this.deleting = status;
     }
 
     get project(): string {

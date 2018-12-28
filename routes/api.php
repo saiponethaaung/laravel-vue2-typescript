@@ -34,8 +34,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::get('list', 'V1\\Api\\ProjectController@list')->name('chatbot.project.list');
     });
 
-    Route::get('chat-bot/blocks/search', 'V1\\Api\\ChatBotController@serachSection')->name('chatbot.section.serach');
-
+    
     Route::group(['prefix' => 'project/{projectId}', 'middleware' => 'verifyPorject'], function() {
         Route::get('/', 'V1\\Api\\ProjectController@projectInfo')->name('chatbot.project.info');
         Route::get('/pages', 'V1\\Api\\ProjectController@getPage')->name('chatbot.project.page');
@@ -43,9 +42,10 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::delete('/pages/link', 'V1\\Api\\ProjectController@unlinkProject')->name('chatbot.project.page.unlink');
         
         Route::group(['prefix' => 'chat-bot'], function() {
-
+            
             Route::post('block', 'V1\\Api\\ChatBotController@createBlock')->name('chatbot.block.create');
             Route::get('blocks', 'V1\\Api\\ChatBotController@getBlocks')->name('chatbot.blocks.get');
+            Route::get('blocks/search', 'V1\\Api\\ChatBotController@searchSection')->name('chatbot.section.serach');
 
 
             Route::group(['prefix' => 'block/{blockId}', 'middleware' => 'verifyChatBlock'], function() {

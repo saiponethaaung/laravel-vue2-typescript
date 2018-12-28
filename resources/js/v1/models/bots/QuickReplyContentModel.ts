@@ -8,6 +8,7 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
     private quickReplyContent: Array<QuickReplyItemModel> = [];
     private creating: boolean = false;
     private rootUrl: string = '';
+    private delChild: number = -1;
     
     constructor(content: any) {
         super(content);
@@ -18,7 +19,7 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
     }
 
     private buildQuickReplyItem(content: quickReplyContent) {
-        this.quickReplyContent.push(new QuickReplyItemModel(content, this.rootUrl));
+        this.quickReplyContent.push(new QuickReplyItemModel(content, this.rootUrl, this.project));
     }
 
     get item() : Array<QuickReplyItemModel> {
@@ -35,6 +36,14 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
 
     set isCreating(status: boolean) {
         this.creating = status;
+    }
+
+    get isChildDeleting() : number {
+        return this.delChild;
+    }
+
+    set isChildDeleting(index: number) {
+        this.delChild = index;
     }
 
     async createQuickReply() {
@@ -54,6 +63,7 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
     }
     
     async delItem(index: number) {
+        this.isChildDeleting = index;
         await Axios({
             url: `${this.rootUrl}/${this.item[index].id}`,
             method: 'delete',
@@ -65,5 +75,6 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
                 alert(mesg);
             }
         });
+        this.isChildDeleting = -1;
     }
 }

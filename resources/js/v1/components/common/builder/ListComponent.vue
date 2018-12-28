@@ -54,6 +54,7 @@
                             <button-component
                                 :rootUrl="`${content.url}/button`"
                                 :button="l.button"
+                                :projectid="content.project"
                                 v-if="l.btnEdit"
                                 v-on:closeContent="(status) => {
                                     if(status && l.btnEdit===true) l.btnEdit=false;
@@ -84,6 +85,7 @@
                     <button-component
                         :rootUrl="`${content.url}/button`"
                         :button="content.button"
+                        :projectid="content.project"
                         v-if="content.btnEdit"
                         v-on:closeContent="(status) => {
                             if(status && content.btnEdit===true) content.btnEdit=false;

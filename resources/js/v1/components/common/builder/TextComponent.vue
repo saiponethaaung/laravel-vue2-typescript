@@ -16,6 +16,7 @@
                     <button-component
                         :rootUrl="`${content.url}/button`"
                         :button="button"
+                        :projectid="content.project"
                         v-if="content.btnEditIndex===index"
                         v-on:closeContent="(status) => {
                             if(status && content.btnEditIndex===index) content.btnEditIndex=-1;

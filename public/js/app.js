@@ -39530,7 +39530,8 @@ var render = function() {
                   ? _c("button-component", {
                       attrs: {
                         rootUrl: _vm.content.url + "/button",
-                        button: button
+                        button: button,
+                        projectid: _vm.content.project
                       },
                       on: {
                         closeContent: function(status) {
@@ -40315,7 +40316,8 @@ var render = function() {
                           ? _c("button-component", {
                               attrs: {
                                 rootUrl: _vm.content.url + "/button",
-                                button: l.button
+                                button: l.button,
+                                projectid: _vm.content.project
                               },
                               on: {
                                 closeContent: function(status) {
@@ -40435,7 +40437,8 @@ var render = function() {
                     ? _c("button-component", {
                         attrs: {
                           rootUrl: _vm.content.url + "/button",
-                          button: _vm.content.button
+                          button: _vm.content.button,
+                          projectid: _vm.content.project
                         },
                         on: {
                           closeContent: function(status) {
@@ -40989,7 +40992,8 @@ var render = function() {
                             ? _c("button-component", {
                                 attrs: {
                                   rootUrl: _vm.content.url + "/button",
-                                  button: button
+                                  button: button,
+                                  projectid: _vm.content.project
                                 },
                                 on: {
                                   closeContent: function(status) {

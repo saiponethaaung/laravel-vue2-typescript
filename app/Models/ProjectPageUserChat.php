@@ -17,6 +17,7 @@ class ProjectPageUserChat extends Model
         'is_send',
         'quick_reply_id',
         'user_input_id',
-        'project_page_user_id'
+        'project_page_user_id',
+        'ignore'
     ];
 }

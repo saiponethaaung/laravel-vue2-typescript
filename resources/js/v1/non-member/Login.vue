@@ -41,7 +41,7 @@ export default class Login extends Vue {
         data.append('email', this.loginData.email);
         data.append('password', this.loginData.password);
 
-        Axios({
+        await Axios({
             url: "/api/user/login",
             data: data,
             method: "POST"

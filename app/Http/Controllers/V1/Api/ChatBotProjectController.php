@@ -39,9 +39,12 @@ class ChatBotProjectController extends Controller
     }
 
     // process input from messenger
-    public function process($input=null, $payload=false)
+    public function process($input=null, $payload=false, $welcome=false, $userid=null, $ignore=false)
     {
-        $userid = $input['entry'][0]['messaging'][0]['sender']['id']!==$this->projectPage->page_id ? $input['entry'][0]['messaging'][0]['sender']['id']: $input['entry'][0]['messaging'][0]['recipient']['id'];
+        $response = [];
+        if($welcome===false) {
+            $userid = $input['entry'][0]['messaging'][0]['sender']['id']!==$this->projectPage->page_id ? $input['entry'][0]['messaging'][0]['sender']['id']: $input['entry'][0]['messaging'][0]['recipient']['id'];
+        }
 
         $recordUser = $this->recordChatUser($userid);
     
@@ -49,107 +52,112 @@ class ChatBotProjectController extends Controller
             return $recordUser;
         }
         
-        $log;
-        $mesgText = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : '';
-        $postback = '';
-        $response = [];
-
-        if($payload) {
-            $mesgText = (String) $input['entry'][0]['messaging'][0]['postback']['title'];
-            $postback = $input['entry'][0]['messaging'][0]['postback']['payload'];
-            $py = explode('-', $input['entry'][0]['messaging'][0]['postback']['payload']);
-
-            if(isset($py[1])) {
-                $button = ChatButton::with('blocks')->find($py[1]);
-
-                if(!empty($button)) {
-
-                    if(!empty($button->blocks) && isset($button->blocks[0]) && !is_null($button->blocks[0]->section_id)) {
-
-                        $resContent = $this->getSection($button->blocks[0]->section_id);
-
-                        if($resContent['status']) {
-                            $response = $resContent;
-                        }
-
-                    }
-
-                }
-            }
-        } else if(isset($input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'])) {
-
-            $postback = $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'];
-            $qr = explode('-', $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload']);
-            $content = ChatBlockSectionContent::with('section')->find($qr[1]);
-
-            if(!empty($content)) {
-                $chatQuickReply = ChatQuickReply::with(['content', 'blocks'])->find($qr[2]);
-                if(!empty($chatQuickReply)) {
-
-                    if(!is_null($chatQuickReply->attribute_id) && $chatQuickReply->value) {
-                        $this->setUserAttribute($chatQuickReply->attribute_id, $this->user->id, $chatQuickReply->value);
-                    }
-
-                    if(!empty($chatQuickReply->blocks) && isset($chatQuickReply->blocks[0]) && !is_null($chatQuickReply->blocks[0]->section_id)) {
-                        $resContent = $this->getSection($chatQuickReply->blocks[0]->section_id);
-                        if($resContent['status']) {
-                            $response = $resContent;
-                        }
-                    } else {
-                        $resContent = $this->getResumeSection($chatQuickReply->content->section_id, $chatQuickReply->content->order);
-                        if($resContent['status']) {
-                            $response = $resContent;
-                        }
-                    }
-                }
-            }
+        if($welcome===false) {
+            $log;
+            $mesgText = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : '';
+            $postback = '';
             
+
+            if($payload) {
+                $mesgText = (String) $input['entry'][0]['messaging'][0]['postback']['title'];
+                $postback = $input['entry'][0]['messaging'][0]['postback']['payload'];
+                $py = explode('-', $input['entry'][0]['messaging'][0]['postback']['payload']);
+
+                if(isset($py[1])) {
+                    $button = ChatButton::with('blocks')->find($py[1]);
+
+                    if(!empty($button)) {
+
+                        if(!empty($button->blocks) && isset($button->blocks[0]) && !is_null($button->blocks[0]->section_id)) {
+
+                            $resContent = $this->getSection($button->blocks[0]->section_id);
+
+                            if($resContent['status']) {
+                                $response = $resContent;
+                            }
+
+                        }
+
+                    }
+                }
+            } else if(isset($input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'])) {
+
+                $postback = $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'];
+                $qr = explode('-', $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload']);
+                $content = ChatBlockSectionContent::with('section')->find($qr[1]);
+
+                if(!empty($content)) {
+                    $chatQuickReply = ChatQuickReply::with(['content', 'blocks'])->find($qr[2]);
+                    if(!empty($chatQuickReply)) {
+
+                        if(!is_null($chatQuickReply->attribute_id) && $chatQuickReply->value) {
+                            $this->setUserAttribute($chatQuickReply->attribute_id, $this->user->id, $chatQuickReply->value);
+                        }
+
+                        if(!empty($chatQuickReply->blocks) && isset($chatQuickReply->blocks[0]) && !is_null($chatQuickReply->blocks[0]->section_id)) {
+                            $resContent = $this->getSection($chatQuickReply->blocks[0]->section_id);
+                            if($resContent['status']) {
+                                $response = $resContent;
+                            }
+                        } else {
+                            $resContent = $this->getResumeSection($chatQuickReply->content->section_id, $chatQuickReply->content->order);
+                            if($resContent['status']) {
+                                $response = $resContent;
+                            }
+                        }
+                    }
+                }
+                
+            } else {
+                $lastRecord = ProjectPageUserChat::where('project_page_user_id', $this->user->id)
+                                ->where('is_send', true)
+                                ->where('from_platform', true)
+                                ->orderBy('created_at', 'desc')
+                                ->first();
+                
+                if(!empty($lastRecord) && !is_null($lastRecord->user_input_id)) {
+                    $userInput = ChatUserInput::find($lastRecord->user_input_id);
+                    if(!empty($userInput)) {
+                        if(!is_null($userInput->attribute_id)) {
+                            $this->setUserAttribute($userInput->attribute_id, $this->user->id, $mesgText);
+                        }
+
+                        $this->inputOrder = $userInput->order;
+        
+                        $resContent = $this->getResumeSection($userInput->content->section_id, ($userInput->content->order-1));
+                        if($resContent['status']) {
+                            $response = $resContent;
+                        }
+                    }
+                }
+            }
+
+            DB::beginTransaction();
+            try {
+                $log = ProjectPageUserChat::create([
+                    'content_id' => null,
+                    'post_back' => $postback,
+                    'from_platform' => false,
+                    'mesg' => $mesgText,
+                    'mesg_id' => isset($input['entry'][0]['messaging'][0]['message']['mid']) ? $input['entry'][0]['messaging'][0]['message']['mid'] : '',
+                    'project_page_user_id' => $this->user->id,
+                    'is_send' => false,
+                    'ignore' => $ignore
+                ]);
+            } catch(\Exception $e) {
+                DB::rollback();
+                return [
+                    'status' => false,
+                    'type' => 'um-record',
+                    'mesg' => 'Failed to record mesg!',
+                    'debugMesg' => $e->getMessage()
+                ];
+            }
+
+            DB::commit();
         } else {
-            $lastRecord = ProjectPageUserChat::where('project_page_user_id', $this->user->id)
-                            ->where('is_send', true)
-                            ->where('from_platform', true)
-                            ->orderBy('created_at', 'desc')
-                            ->first();
-            
-            if(!empty($lastRecord) && !is_null($lastRecord->user_input_id)) {
-                $userInput = ChatUserInput::find($lastRecord->user_input_id);
-                if(!empty($userInput)) {
-                    if(!is_null($userInput->attribute_id)) {
-                        $this->setUserAttribute($userInput->attribute_id, $this->user->id, $mesgText);
-                    }
-
-                    $this->inputOrder = $userInput->order;
-    
-                    $resContent = $this->getResumeSection($userInput->content->section_id, ($userInput->content->order-1));
-                    if($resContent['status']) {
-                        $response = $resContent;
-                    }
-                }
-            }
+            $response = $this->getWelcome();
         }
-
-        DB::beginTransaction();
-        try {
-            $log = ProjectPageUserChat::create([
-                'content_id' => null,
-                'post_back' => $postback,
-                'from_platform' => false,
-                'mesg' => $mesgText,
-                'mesg_id' => isset($input['entry'][0]['messaging'][0]['message']['mid']) ? $input['entry'][0]['messaging'][0]['message']['mid'] : '',
-                'project_page_user_id' => $this->user->id,
-                'is_send' => false,
-            ]);
-        } catch(\Exception $e) {
-            DB::rollback();
-            return [
-                'status' => false,
-                'type' => 'um-record',
-                'mesg' => 'Failed to record mesg!',
-                'debugMesg' => $e->getMessage()
-            ];
-        }
-
-        DB::commit();
 
         if(empty($response)) {
             $response = $this->getDefault();
@@ -274,6 +282,44 @@ class ChatBotProjectController extends Controller
             'status' => !empty($section),
             'type' => '',
             'data' => !empty($section) ? $this->contentParser($section->contents) : []
+        ];
+    }
+
+    public function getWelcome()
+    {
+        $block = ChatBlock::where('project_id', $this->projectid)->where('is_lock', true)->first();
+        $section = ChatBlockSection::with([
+            'contents' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.galleryList' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.galleryList.buttons' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.buttons' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.quickReply' => function($query) {
+                $query->orderBy('order', 'ASC');
+            },
+            'contents.userInput' => function($query) {
+                $query->orderBy('order', 'ASC');
+                $query->limit(1);
+            }
+        ])->where('block_id', $block->id)->where('type', 1)->first();
+        
+
+        FacebookRequestLogs::create([
+            'section' => 'section: ',
+            'data' => json_encode($section)
+        ]);
+
+        return [
+            'status' => true,
+            'type' => '',
+            'data' => $this->contentParser($section->contents)
         ];
     }
 

@@ -10499,6 +10499,61 @@ a.text-dark:focus {
           font-feature-settings: 'liga';
 }
 
+.projectList {
+  position: relative;
+}
+
+.popProjectList {
+  position: absolute;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  background: #ffffff;
+}
+
+.popProjectList a:first-child {
+  margin-top: 0 !important;
+}
+
+.headerConent {
+  text-align: right;
+}
+
+.testChatBotBtn {
+  height: 36px;
+  background: #72bb53;
+  color: #fff;
+  border: 1px solid #72bb53;
+  border-radius: 5px;
+  line-height: 36px;
+  margin-left: 15px;
+  cursor: pointer;
+  padding: 0 30px;
+}
+
+.headerButtonTypeOne {
+  height: 36px;
+  background: transparent;
+  color: #72bb53;
+  border: 1px solid #72bb53;
+  border-radius: 5px;
+  line-height: 36px;
+  margin-left: 15px;
+  cursor: pointer;
+  padding: 0 30px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.headerButtonTypeOne:hover {
+  color: #72bb53;
+  text-decoration: none;
+}
+
 #loginContent {
   width: 100vw;
   height: 100vh;
@@ -10619,6 +10674,7 @@ a.text-dark:focus {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;

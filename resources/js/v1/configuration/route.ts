@@ -11,6 +11,8 @@ import ProjectConfigrationComponent from '../components/ProjectConfigrationCompo
 import ChatBotComponent from '../components/chatbot/ContentComponent.vue';
 import ChatBotSidebar from '../components/chatbot/SidebarComponent.vue';
 
+import InboxPageComponent from '../components/inbox/InboxPageComponent.vue';
+
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -35,14 +37,24 @@ export default new VueRouter({
                     component: ChatBotComponent
                 },
                 {
+                    path: "inbox",
+                    component: InboxPageComponent,
+                    children: [
+                        {
+                            path: "/",
+                            name: "project.inbox"
+                        }
+                    ]
+                },
+                {
                     path: "configuration",
                     name: "project.configuration",
                     meta: {
                         sidebar: null
                     },
                     component: ProjectConfigrationComponent
-                }
+                },
             ]
-        }
+        },
     ]
 });

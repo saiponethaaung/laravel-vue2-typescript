@@ -9,6 +9,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Models\User;
 use App\Models\ProjectUser;
 use App\Models\ProjectPage;
 
@@ -48,6 +49,7 @@ class ProjectController extends Controller
             'name' => $project->project->name,
             'image' => '',
             'isOwner' => $project->user_type!==0 ? false : true,
+            'pageId' => config('facebook.defaultPageId'),
             'pageConnected' => false
         ];
 
@@ -64,6 +66,7 @@ class ProjectController extends Controller
                 ], 422);
             }
             
+            $res['pageId'] = $project->project->page->page_id;
             $res['pageConnected'] = true;
             $res['image'] = $pageInfo['data']['picture']['url'];
         }
@@ -342,5 +345,27 @@ class ProjectController extends Controller
             'code' => 200,
             'mesg' => 'Success'
         ]);
+    }
+
+    public function sendWelcome(Request $request)
+    {
+        $user = User::find(Auth::guard('api')->user()->id);
+        $user->project_id = $request->attributes->get('project')->id;
+        
+        DB::beginTransaction();
+        try {
+            $user->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to send a welcome message!',
+                'debugMesg' => $e->getMessage()
+            ]);
+        }
+        DB::commit();
+
+        
     }
 }

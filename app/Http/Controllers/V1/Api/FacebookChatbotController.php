@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\ProjectPage;
+use App\Models\ProjectPageUser;
 use App\Models\ProjectPageUserChat;
 use App\Models\FacebookRequestLogs;
 
@@ -53,13 +54,20 @@ class FacebookChatbotController extends Controller
             return null;
         }
 
-        $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
+        $projectPage = null;
+
+        if($input['entry'][0]['id']===config('facebook.defaultPageId')) {
+            // if(ProjectPageUser::)
+            $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
+        } else {
+            $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
+        }
 
         if(empty($projectPage) || is_null($projectPage->project_id)) {
             return null;
         }
         
-        $this->token = $projectPage->token;
+        $this->token = $projectPage->token ? $projectPage->token : config('facebook.defaultPageToken');
         $this->url = 'https://graph.facebook.com/v3.2/me/messages?access_token='.$this->token;
 
         try {

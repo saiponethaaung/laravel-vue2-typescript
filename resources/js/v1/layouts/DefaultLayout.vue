@@ -9,7 +9,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project.home', params: {projectid: $route.params.projectid}}">
+                    <router-link :to="{name: 'project.inbox', params: {projectid: $route.params.projectid}}">
                         <i class="material-icons">question_answer</i>
                         <span class="icon-label">Inbox</span>
                     </router-link>
@@ -51,27 +51,48 @@
             <section id="headerContent">
                 <div class="sidebar headerSidebar">
                     <div class="projectList">
-                        <div class="projectInfoContainer">
+                        <div class="projectInfoContainer" @click="projectOptions=!projectOptions">
                             <figure class="projectIconWrapper">
-                                <img :src="this.$store.state.projectInfo.image ? this.$store.state.projectInfo.image : '/images/sample/logo.png'" class="projectIcon"/>
+                                <img :src="$store.state.projectInfo.image ? $store.state.projectInfo.image : '/images/sample/logo.png'" class="projectIcon"/>
                             </figure>
                             <div class="projectInfo">
-                                <h4 class="projectName">{{ this.$store.state.projectInfo.name ? this.$store.state.projectInfo.name : '-' }}</h4>
+                                <h4 class="projectName">{{ $store.state.projectInfo.name ? $store.state.projectInfo.name : '-' }}</h4>
                                 <h6 class="projectVendor">powered by <a href="javascript:void(0);">Pixybot</a></h6>
                             </div>
                             <div class="projectNavControl">
-                                <i class="material-icons">arrow_drop_down</i>
+                                <i class="material-icons" v-if="projectOptions">arrow_drop_up</i>
+                                <i class="material-icons" v-else>arrow_drop_down</i>
                             </div>
                         </div>
+                        <template v-if="projectOptions">
+                            <div class="popProjectList">
+                                <router-link :to="{name: 'project.home', params: {projectid: project.id}}" class="projectInfoContainer" v-for="(project, index) in $store.state.projectList" v-bind:key="index">
+                                    <figure class="projectIconWrapper">
+                                        <img :src="project.image ? project.image : '/images/sample/logo.png'" class="projectIcon"/>
+                                    </figure>
+                                    <div class="projectInfo">
+                                        <h4 class="projectName">{{ project.name ? project.name : '-' }}</h4>
+                                    </div>
+                                </router-link>
+                            </div>
+                        </template>
                     </div>
                 </div>
                 <div class="headerConent">
                     <template v-if="$store.state.user.facebook_connected">
-                        Action
+                        <button type="button" class="headerButtonTypeOne">
+                            Activate Page
+                        </button>
                     </template>
                     <template v-else>
-                        <button v-if="$store.state.fbSdk" @click="fbLogin">Link a facebook account</button>
+                        <button v-if="$store.state.fbSdk" @click="fbLogin" type="button" class="headerButtonTypeOne">Connect facebook account</button>
                     </template>
+                    <button v-if="!testNow" @click="testChatBot()" type="button" class="testChatBotBtn">
+                        Test Now
+                    </button>
+                    <a v-else :href="'https://m.me/'+$store.state.projectInfo.pageId" target="_blank" class="headerButtonTypeOne">
+                        View on Messenger
+                    </a>
                 </div>
             </section>
             <section id="innnerContent">
@@ -108,13 +129,23 @@ export default class DefaultLayout extends Vue {
         'pages_show_list',
         'publish_pages',
         'read_page_mailboxes'
-    ]; 
+    ];
+
+    private projectOptions: boolean = false;
+    private testNow: boolean = false;
 
     get dynamicSidebar() {
         if(this.$route.meta === undefined || this.$route.meta.sidebar === undefined) {
             return null;    
         }
         return this.$route.meta.sidebar;
+    }
+
+    async testChatBot() {
+        this.testNow = true;
+        setTimeout(() => {
+            this.testNow = false;
+        }, 30000);
     }
 
     fbLogin() {

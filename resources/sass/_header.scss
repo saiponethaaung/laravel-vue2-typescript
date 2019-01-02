@@ -1,0 +1,52 @@
+.projectList {
+    position: relative;
+}
+
+.popProjectList {
+    position: absolute;
+    border: 1px solid $borderPrimary;
+    border-radius: 5px;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background: $primaryBackground;
+    a:first-child {
+        margin-top: 0!important;
+    }
+}
+
+.headerConent {
+    text-align: right;
+}
+
+.testChatBotBtn {
+    height: 36px;
+    background: $actionBtn1;
+    color: #fff;
+    border: 1px solid $actionBtn1;
+    border-radius: 5px;
+    line-height: 36px;
+    margin-left: 15px;
+    cursor: pointer;
+    padding: 0 30px;
+}
+
+.headerButtonTypeOne {
+    height: 36px;
+    background: transparent;
+    color: $actionBtn1;
+    border: 1px solid $actionBtn1;
+    border-radius: 5px;
+    line-height: 36px;
+    margin-left: 15px;
+    cursor: pointer;
+    padding: 0 30px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    &:hover {
+        color: $actionBtn1;
+        text-decoration: none;
+    }
+}

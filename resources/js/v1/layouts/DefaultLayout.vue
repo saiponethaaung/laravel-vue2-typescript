@@ -166,6 +166,10 @@ export default class DefaultLayout extends Vue {
     private projectOptions: boolean = false;
     private testNow: boolean = false;
 
+    mounted() {
+        this.initSendToMessenger();
+    }
+
     get dynamicSidebar() {
         if(this.$route.meta === undefined || this.$route.meta.sidebar === undefined) {
             return null;    

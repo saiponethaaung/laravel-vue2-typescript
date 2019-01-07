@@ -50,7 +50,11 @@ export default class App extends Vue {
                 status: true
             });
             
-            FB.AppEvents.logPageView();   
+            FB.AppEvents.logPageView();
+
+            FB.Event.subscribe('send_to_messenger', function(e: any) {
+                console.log("event send to messenger", e);
+            });
         };
         
         (function(d, s, id){

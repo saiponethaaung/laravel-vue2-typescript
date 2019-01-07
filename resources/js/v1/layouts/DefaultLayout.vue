@@ -102,6 +102,14 @@
                     </template>
                 </div>
                 <div class="bodyContent">
+                        <div class="fb-send-to-messenger" 
+                            messenger_app_id="1155102521322007" 
+                            page_id="2250742581846888" 
+                            data-ref="testing" 
+                            color="blue" 
+                            size="standard">
+                            Send to messenger
+                        </div>
                     <router-view></router-view>
                 </div>
             </section>
@@ -128,7 +136,31 @@ export default class DefaultLayout extends Vue {
         'manage_pages',
         'pages_show_list',
         'publish_pages',
-        'read_page_mailboxes'
+        'read_page_mailboxes',
+
+        // 'groups_access_member_info',
+        // 'publish_to_groups',
+        // 'user_age_range',
+        // 'user_birthday',
+        // 'user_events',
+        // 'user_friends',
+        // 'user_gender',
+        // 'user_hometown',
+        // 'user_likes',
+        // 'user_link',
+        // 'user_location',
+        // 'user_photos',
+        // 'user_posts',
+        // 'user_tagged_places',
+        // 'user_videos',
+        // 'ads_management',
+        // 'ads_read',
+        // 'business_management',
+        // 'leads_retrieval',
+        // 'pages_manage_cta',
+        // 'pages_manage_instant_articles',
+        // 'read_audience_network_insights',
+        // 'read_insights'
     ];
 
     private projectOptions: boolean = false;
@@ -146,6 +178,12 @@ export default class DefaultLayout extends Vue {
         setTimeout(() => {
             this.testNow = false;
         }, 30000);
+    }
+
+    @Watch('$store.state.fbSdk')
+    initSendToMessenger() {
+        if(!this.$store.state.fbSdk) return;
+        FB.XFBML.parse();
     }
 
     fbLogin() {

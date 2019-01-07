@@ -38237,6 +38237,9 @@ let App = class App extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
                 status: true
             });
             FB.AppEvents.logPageView();
+            FB.Event.subscribe('send_to_messenger', function (e) {
+                console.log("event send to messenger", e);
+            });
         };
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
@@ -38384,7 +38387,7 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
             'manage_pages',
             'pages_show_list',
             'publish_pages',
-            'read_page_mailboxes'
+            'read_page_mailboxes',
         ];
         this.projectOptions = false;
         this.testNow = false;
@@ -38402,6 +38405,11 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
                 this.testNow = false;
             }, 30000);
         });
+    }
+    initSendToMessenger() {
+        if (!this.$store.state.fbSdk)
+            return;
+        FB.XFBML.parse();
     }
     fbLogin() {
         FB.login((res) => {
@@ -38447,6 +38455,9 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         });
     }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$store.state.fbSdk')
+], DefaultLayout.prototype, "initSendToMessenger", null);
 DefaultLayout = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */]
 ], DefaultLayout);
@@ -38821,7 +38832,33 @@ var render = function() {
           2
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "bodyContent" }, [_c("router-view")], 1)
+        _c(
+          "div",
+          { staticClass: "bodyContent" },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "fb-send-to-messenger",
+                attrs: {
+                  messenger_app_id: "1155102521322007",
+                  page_id: "2250742581846888",
+                  "data-ref": "testing",
+                  color: "blue",
+                  size: "standard"
+                }
+              },
+              [
+                _vm._v(
+                  "\n                        Send to messenger\n                    "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("router-view")
+          ],
+          1
+        )
       ])
     ])
   ])

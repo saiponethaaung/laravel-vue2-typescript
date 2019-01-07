@@ -353,6 +353,7 @@ class ProjectController extends Controller
         $user->project_id = $request->attributes->get('project')->id;
         
         DB::beginTransaction();
+        
         try {
             $user->save();
         } catch (\Exception $e) {
@@ -364,6 +365,7 @@ class ProjectController extends Controller
                 'debugMesg' => $e->getMessage()
             ]);
         }
+
         DB::commit();
 
         

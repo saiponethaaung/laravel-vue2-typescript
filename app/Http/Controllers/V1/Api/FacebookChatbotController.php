@@ -42,7 +42,10 @@ class FacebookChatbotController extends Controller
         }
 
         FacebookRequestLogs::create([
-            'data' => 'success'
+            'data' => json_encode([
+                'status' => 'success',
+                'data' => $input
+            ])
         ]);
         
         return;

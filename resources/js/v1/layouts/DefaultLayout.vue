@@ -102,14 +102,14 @@
                             Test this bot
                             <div class="fb-send-to-messenger" 
                                 messenger_app_id="1155102521322007" 
-                                :page_id="$store.state.projectInfo.pageConnected ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId" 
-                                :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageConnected ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId}-${$store.state.user.facebook}`"
+                                :page_id="$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId" 
+                                :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId}-${$store.state.user.facebook}`"
                                 color="blue" 
                                 size="standard">
                                 Send to messenger
                             </div>
                         </div>
-                        <a v-if="testNow" :href="'https://m.me/'+($store.state.projectInfo.pageConnected ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId)" target="_blank" class="headerButtonTypeOne">
+                        <a v-if="testNow" :href="'https://m.me/'+($store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId)" target="_blank" class="headerButtonTypeOne">
                             View on Messenger
                         </a>
                     </template>

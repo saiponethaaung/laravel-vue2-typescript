@@ -38883,14 +38883,17 @@ var render = function() {
                               staticClass: "fb-send-to-messenger",
                               attrs: {
                                 messenger_app_id: "1155102521322007",
-                                page_id: _vm.$store.state.projectInfo
-                                  .pageConnected
-                                  ? _vm.$store.state.projectInfo.pageId
-                                  : _vm.$store.state.projectInfo.testingPageId,
+                                page_id:
+                                  _vm.$store.state.projectInfo.pageConnected &&
+                                  _vm.$store.state.projectInfo.publish
+                                    ? _vm.$store.state.projectInfo.pageId
+                                    : _vm.$store.state.projectInfo
+                                        .testingPageId,
                                 "data-ref":
                                   _vm.$store.state.projectInfo.id +
                                   "-" +
-                                  (_vm.$store.state.projectInfo.pageConnected
+                                  (_vm.$store.state.projectInfo.pageConnected &&
+                                  _vm.$store.state.projectInfo.publish
                                     ? _vm.$store.state.projectInfo.pageId
                                     : _vm.$store.state.projectInfo
                                         .testingPageId) +
@@ -38918,7 +38921,8 @@ var render = function() {
                           attrs: {
                             href:
                               "https://m.me/" +
-                              (_vm.$store.state.projectInfo.pageConnected
+                              (_vm.$store.state.projectInfo.pageConnected &&
+                              _vm.$store.state.projectInfo.publish
                                 ? _vm.$store.state.projectInfo.pageId
                                 : _vm.$store.state.projectInfo.testingPageId),
                             target: "_blank"

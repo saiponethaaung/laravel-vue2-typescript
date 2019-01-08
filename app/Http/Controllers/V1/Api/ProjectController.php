@@ -50,7 +50,9 @@ class ProjectController extends Controller
             'image' => '',
             'isOwner' => $project->user_type!==0 ? false : true,
             'pageId' => config('facebook.defaultPageId'),
-            'pageConnected' => false
+            'testingPageId' => config('facebook.defaultPageId'),
+            'pageConnected' => false,
+            'publish' => false
         ];
 
         if(is_null($project->project->page)==false) {
@@ -68,6 +70,7 @@ class ProjectController extends Controller
             
             $res['pageId'] = $project->project->page->page_id;
             $res['pageConnected'] = true;
+            $res['publish'] = $project->project->page->publish===1 ? true : false;
             $res['image'] = $pageInfo['data']['picture']['url'];
         }
 
@@ -216,6 +219,7 @@ class ProjectController extends Controller
         DB::beginTransaction();
         try {
             $projectPage->project_id = $request->attributes->get('project')->id;
+            $projectPage->publish = 0;
             $projectPage->save();
         } catch(\Exception $e) {
             // Rollback and send error on failed
@@ -229,11 +233,21 @@ class ProjectController extends Controller
 
         // commit changes
         DB::commit();
-
+        
         return response()->json([
             'status' => true,
             'code' => 200,
-            'mesg' => 'Success'
+            'mesg' => 'Success',
+            'data' => [
+                'id' => md5($projectPage->project_id),
+                'name' => $request->attributes->get('project')->name,
+                'image' => $pageInfo['data']['picture']['url'],
+                'isOwner' => true,
+                'pageId' => $projectPage->id,
+                'testingPageId' => config('facebook.defaultPageId'),
+                'pageConnected' => true,
+                'publish' => false
+            ]
         ]);
     }
 
@@ -325,6 +339,7 @@ class ProjectController extends Controller
         DB::beginTransaction();
         try {
             $projectPage->project_id = null;
+            $projectPage->publish = 0;
             $projectPage->save();
         } catch(\Exception $e) {
             // Rollback and send error on failed
@@ -343,7 +358,17 @@ class ProjectController extends Controller
         return response()->json([
             'status' => true,
             'code' => 200,
-            'mesg' => 'Success'
+            'mesg' => 'Success',
+            'data' => [
+                'id' => md5($projectPage->project_id),
+                'name' => $request->attributes->get('project')->name,
+                'image' => '',
+                'isOwner' => true,
+                'pageId' => config('facebook.defaultPageId'),
+                'testingPageId' => config('facebook.defaultPageId'),
+                'pageConnected' => false,
+                'punblish' => false
+            ]
         ]);
     }
 }

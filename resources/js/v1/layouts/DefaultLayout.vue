@@ -80,19 +80,39 @@
                 </div>
                 <div class="headerConent">
                     <template v-if="$store.state.user.facebook_connected">
-                        <button type="button" class="headerButtonTypeOne">
-                            Activate Page
-                        </button>
+                        <template v-if="undefined!==$store.state.projectInfo.pageConnected">
+                            <button type="button" class="headerButtonTypeOne" v-if="$store.state.projectInfo.pageConnected">
+                                <template v-if="$store.state.projectInfo.publish">
+                                    Deactivate Page
+                                </template>
+                                <template v-else>
+                                    Activate Page
+                                </template>
+                            </button>
+                            <router-link :to="{name: 'project.configuration', params: {projectid: $route.params.projectid}}" class="headerButtonTypeOne" v-else>
+                                Connect a page
+                            </router-link>
+                        </template>
                     </template>
                     <template v-else>
                         <button v-if="$store.state.fbSdk" @click="fbLogin" type="button" class="headerButtonTypeOne">Connect facebook account</button>
                     </template>
-                    <button v-if="!testNow" @click="testChatBot()" type="button" class="testChatBotBtn">
-                        Test Now
-                    </button>
-                    <a v-else :href="'https://m.me/'+$store.state.projectInfo.pageId" target="_blank" class="headerButtonTypeOne">
-                        View on Messenger
-                    </a>
+                    <template v-if="undefined!==$store.state.projectInfo.id">
+                        <div v-if="!testNow && canTest" type="button" class="testChatBotBtn" :class="{'hideTest': hideTest}">
+                            Test this bot
+                            <div class="fb-send-to-messenger" 
+                                messenger_app_id="1155102521322007" 
+                                :page_id="$store.state.projectInfo.pageConnected ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId" 
+                                :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageConnected ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId}-${$store.state.user.facebook}`"
+                                color="blue" 
+                                size="standard">
+                                Send to messenger
+                            </div>
+                        </div>
+                        <a v-if="testNow" :href="'https://m.me/'+($store.state.projectInfo.pageConnected ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId)" target="_blank" class="headerButtonTypeOne">
+                            View on Messenger
+                        </a>
+                    </template>
                 </div>
             </section>
             <section id="innnerContent">
@@ -102,16 +122,6 @@
                     </template>
                 </div>
                 <div class="bodyContent">
-                    <template v-if="undefined!==$store.state.projectInfo.id">
-                        <div class="fb-send-to-messenger" 
-                            messenger_app_id="1155102521322007" 
-                            :page_id="$store.state.projectInfo.pageId" 
-                            :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageId}-${$store.state.user.facebook}`"
-                            color="blue" 
-                            size="standard">
-                            Send to messenger
-                        </div>
-                    </template>
                     <router-view></router-view>
                 </div>
             </section>
@@ -166,10 +176,16 @@ export default class DefaultLayout extends Vue {
     ];
 
     private projectOptions: boolean = false;
+    private canTest: boolean = true;
     private testNow: boolean = false;
+    private hideTest: boolean = true;
 
     mounted() {
         this.initSendToMessenger();
+    }
+
+    beforeDestory() {
+        FB.Event.unsubscribe('send_to_messenger');
     }
 
     get dynamicSidebar() {
@@ -188,6 +204,17 @@ export default class DefaultLayout extends Vue {
 
     @Watch('$store.state.projectInfo', { immediate: true, deep: true })
     projectInfoChange() {
+        this.canTest = false;
+        setTimeout(() => {
+            this.canTest = true;
+            setTimeout(() => {
+                this.initSendToMessenger();
+            }, 1000);
+        }, 1000);
+    }
+
+    @Watch('testNow')
+    testNowChange() {
         setTimeout(() => {
             this.initSendToMessenger();
         }, 1000);
@@ -197,6 +224,23 @@ export default class DefaultLayout extends Vue {
     initSendToMessenger() {
         if(!this.$store.state.fbSdk) return;
         FB.XFBML.parse();
+    }
+
+    @Watch('$store.state.fbSdk', { immediate: true, deep: true })
+    sendToMessengerEvent() {
+        if(!this.$store.state.fbSdk) return;
+        FB.Event.subscribe('send_to_messenger', (e: any) => {
+            switch(e.event) {
+                case('rendered'):
+                    this.hideTest = false;
+                    break;
+
+                case('clicked'):
+                    this.hideTest = true;
+                    this.testChatBot();
+                    break;
+            }
+        });
     }
 
     fbLogin() {

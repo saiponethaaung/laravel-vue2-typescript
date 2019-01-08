@@ -22,6 +22,7 @@
 
 .testChatBotBtn {
     height: 36px;
+    display: inline-block;
     background: $actionBtn1;
     color: #fff;
     border: 1px solid $actionBtn1;
@@ -30,6 +31,14 @@
     margin-left: 15px;
     cursor: pointer;
     padding: 0 30px;
+    position: relative;
+    .fb-send-to-messenger {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0.00000001;
+        transform: scale(5, 5) translate(30%, 30%);
+    }
 }
 
 .headerButtonTypeOne {

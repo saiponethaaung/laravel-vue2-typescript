@@ -10524,6 +10524,7 @@ a.text-dark:focus {
 
 .testChatBotBtn {
   height: 36px;
+  display: inline-block;
   background: #72bb53;
   color: #fff;
   border: 1px solid #72bb53;
@@ -10532,6 +10533,16 @@ a.text-dark:focus {
   margin-left: 15px;
   cursor: pointer;
   padding: 0 30px;
+  position: relative;
+}
+
+.testChatBotBtn .fb-send-to-messenger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.00000001;
+  -webkit-transform: scale(5, 5) translate(30%, 30%);
+          transform: scale(5, 5) translate(30%, 30%);
 }
 
 .headerButtonTypeOne {

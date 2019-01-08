@@ -15,9 +15,9 @@
                                     <template v-if="p.currentProject">
                                         <button class="float-right" @click="disconnectPage(index)">Disconnect</button>
                                     </template>
-                                    <tempate v-else-if="p.connected">
+                                    <template v-else-if="p.connected">
                                         <span class="float-right">Connected</span>
-                                    </tempate>
+                                    </template>
                                     <template v-else-if="currentPage==-1">
                                         <button class="float-right" @click="connectPage(index)">Connect</button>
                                     </template>
@@ -109,6 +109,7 @@ export default class ProjectConfigrationComponent extends Vue {
         }).then((res) => {
             this.pages[index].connected = true;
             this.pages[index].currentProject = true;
+            this.$store.commit('setProjectInfo', { project: res.data.data});
         }).catch((err) => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to connect a page!');
@@ -129,6 +130,7 @@ export default class ProjectConfigrationComponent extends Vue {
         }).then((res) => {
             this.pages[index].connected = false;
             this.pages[index].currentProject = false;
+            this.$store.commit('setProjectInfo', { project: res.data.data});
         }).catch((err) => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to disconnect a page!');

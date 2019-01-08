@@ -10534,6 +10534,8 @@ a.text-dark:focus {
   cursor: pointer;
   padding: 0 30px;
   position: relative;
+  overflow: hidden;
+  top: 12px;
 }
 
 .testChatBotBtn .fb-send-to-messenger {

@@ -77,6 +77,9 @@ export default new Vuex.Store({
         },
         updateProjectList(state, { projects }) {
             state.projectList = projects;
+        },
+        setProjectPublishStatus(state, { status }) {
+            state.projectInfo.publish = status;
         }
     }
 } as StoreOptions<any>);

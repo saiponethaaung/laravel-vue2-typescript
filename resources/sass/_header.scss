@@ -32,6 +32,8 @@
     cursor: pointer;
     padding: 0 30px;
     position: relative;
+    overflow: hidden;
+    top: 12px;
     .fb-send-to-messenger {
         position: absolute;
         top: 0;

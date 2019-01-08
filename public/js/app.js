@@ -37187,6 +37187,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         },
         updateProjectList(state, { projects }) {
             state.projectList = projects;
+        },
+        setProjectPublishStatus(state, { status }) {
+            state.projectInfo.publish = status;
         }
     }
 }));
@@ -38392,6 +38395,7 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         this.canTest = true;
         this.testNow = false;
         this.hideTest = true;
+        this.updatingStatus = false;
     }
     mounted() {
         this.initSendToMessenger();
@@ -38419,13 +38423,13 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
             this.canTest = true;
             setTimeout(() => {
                 this.initSendToMessenger();
-            }, 1000);
-        }, 1000);
+            }, 500);
+        }, 500);
     }
     testNowChange() {
         setTimeout(() => {
             this.initSendToMessenger();
-        }, 1000);
+        }, 500);
     }
     initSendToMessenger() {
         if (!this.$store.state.fbSdk)
@@ -38488,6 +38492,23 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to access facebook!');
                 alert(mesg);
             });
+        });
+    }
+    changePublishStatus() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.updatingStatus = true;
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `/api/v1/project/${this.$route.params.projectid}/pages/change-publish-status`,
+                method: 'post'
+            }).then((res) => {
+                this.$store.commit('setProjectPublishStatus', { status: res.data.publishStatus });
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to change project publish status!');
+                    alert(mesg);
+                }
+            });
+            this.updatingStatus = false;
         });
     }
 };
@@ -38806,27 +38827,47 @@ var render = function() {
                   undefined !== _vm.$store.state.projectInfo.pageConnected
                     ? [
                         _vm.$store.state.projectInfo.pageConnected
-                          ? _c(
-                              "button",
-                              {
-                                staticClass: "headerButtonTypeOne",
-                                attrs: { type: "button" }
-                              },
-                              [
-                                _vm.$store.state.projectInfo.publish
-                                  ? [
+                          ? [
+                              _vm.updatingStatus
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass: "headerButtonTypeOne",
+                                      attrs: { type: "button" }
+                                    },
+                                    [
                                       _vm._v(
-                                        "\n                                Deactivate Page\n                            "
+                                        "\n                                Changing status\n                            "
                                       )
                                     ]
-                                  : [
-                                      _vm._v(
-                                        "\n                                Activate Page\n                            "
-                                      )
-                                    ]
-                              ],
-                              2
-                            )
+                                  )
+                                : _c(
+                                    "button",
+                                    {
+                                      staticClass: "headerButtonTypeOne",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.changePublishStatus()
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm.$store.state.projectInfo.publish
+                                        ? [
+                                            _vm._v(
+                                              "\n                                    Deactivate Page\n                                "
+                                            )
+                                          ]
+                                        : [
+                                            _vm._v(
+                                              "\n                                    Activate Page\n                                "
+                                            )
+                                          ]
+                                    ],
+                                    2
+                                  )
+                            ]
                           : _c(
                               "router-link",
                               {

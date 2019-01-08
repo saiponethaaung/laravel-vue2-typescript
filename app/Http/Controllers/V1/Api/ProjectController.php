@@ -371,4 +371,45 @@ class ProjectController extends Controller
             ]
         ]);
     }
+
+    public function changePublishStatusPage(Request $request)
+    {
+        $projectPage = ProjectPage::where('project_id', $request->attributes->get('project')->id)->first();
+
+        // Check if the project have a page linked or not
+        if(empty($projectPage)) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'This project didn\'t have a page linked! Refresh a page to get up to date data!',
+            ], 422);
+        }
+
+        // Change project page status
+        DB::beginTransaction();
+        try {
+            $projectPage->publish = $projectPage->publish===1 ? 0 : 1;
+            $projectPage->save();
+        } catch(\Exception $e) {
+            // Rollback and send error on failed
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to change publish status!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        // commit changes
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success',
+            'publishStatus' => $projectPage->publish===1
+        ]);
+    }
+
 }

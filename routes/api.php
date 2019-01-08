@@ -40,6 +40,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::get('/pages', 'V1\\Api\\ProjectController@getPage')->name('chatbot.project.page');
         Route::post('/pages/link', 'V1\\Api\\ProjectController@linkProject')->name('chatbot.project.page.link');
         Route::delete('/pages/link', 'V1\\Api\\ProjectController@unlinkProject')->name('chatbot.project.page.unlink');
+        Route::post('/pages/change-publish-status', 'V1\\Api\\ProjectController@changePublishStatusPage')->name('chatbot.project.page.publish.status');
         
         Route::group(['prefix' => 'chat-bot'], function() {
             

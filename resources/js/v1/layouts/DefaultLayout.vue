@@ -81,14 +81,19 @@
                 <div class="headerConent">
                     <template v-if="$store.state.user.facebook_connected">
                         <template v-if="undefined!==$store.state.projectInfo.pageConnected">
-                            <button type="button" class="headerButtonTypeOne" v-if="$store.state.projectInfo.pageConnected">
-                                <template v-if="$store.state.projectInfo.publish">
-                                    Deactivate Page
-                                </template>
-                                <template v-else>
-                                    Activate Page
-                                </template>
-                            </button>
+                            <template v-if="$store.state.projectInfo.pageConnected">
+                                <button type="button" class="headerButtonTypeOne" v-if="updatingStatus">
+                                    Changing status
+                                </button>
+                                <button type="button" class="headerButtonTypeOne" @click="changePublishStatus()" v-else>
+                                    <template v-if="$store.state.projectInfo.publish">
+                                        Deactivate Page
+                                    </template>
+                                    <template v-else>
+                                        Activate Page
+                                    </template>
+                                </button>
+                            </template>
                             <router-link :to="{name: 'project.configuration', params: {projectid: $route.params.projectid}}" class="headerButtonTypeOne" v-else>
                                 Connect a page
                             </router-link>
@@ -179,6 +184,7 @@ export default class DefaultLayout extends Vue {
     private canTest: boolean = true;
     private testNow: boolean = false;
     private hideTest: boolean = true;
+    private updatingStatus: boolean = false;
 
     mounted() {
         this.initSendToMessenger();
@@ -209,15 +215,15 @@ export default class DefaultLayout extends Vue {
             this.canTest = true;
             setTimeout(() => {
                 this.initSendToMessenger();
-            }, 1000);
-        }, 1000);
+            }, 500);
+        }, 500);
     }
 
     @Watch('testNow')
     testNowChange() {
         setTimeout(() => {
             this.initSendToMessenger();
-        }, 1000);
+        }, 500);
     }
 
     @Watch('$store.state.fbSdk', { immediate: true, deep: true })
@@ -289,6 +295,22 @@ export default class DefaultLayout extends Vue {
             let mesg = this.ajaxHandler.globalHandler(err, 'Failed to access facebook!');
             alert(mesg);
         });
+    }
+
+    async changePublishStatus() {
+        this.updatingStatus = true;
+        await Axios({
+            url: `/api/v1/project/${this.$route.params.projectid}/pages/change-publish-status`,
+            method: 'post'
+        }).then((res) => {
+            this.$store.commit('setProjectPublishStatus', { status: res.data.publishStatus});
+        }).catch((err) => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to change project publish status!');
+                alert(mesg);
+            }
+        });
+        this.updatingStatus = false;
     }
 }
 </script>

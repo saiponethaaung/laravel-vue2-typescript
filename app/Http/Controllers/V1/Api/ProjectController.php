@@ -346,28 +346,4 @@ class ProjectController extends Controller
             'mesg' => 'Success'
         ]);
     }
-
-    public function sendWelcome(Request $request)
-    {
-        $user = User::find(Auth::guard('api')->user()->id);
-        $user->project_id = $request->attributes->get('project')->id;
-        
-        DB::beginTransaction();
-        
-        try {
-            $user->save();
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json([
-                'status' => false,
-                'code' => 422,
-                'mesg' => 'Failed to send a welcome message!',
-                'debugMesg' => $e->getMessage()
-            ]);
-        }
-
-        DB::commit();
-
-        
-    }
 }

@@ -5,6 +5,9 @@ namespace App\Http\Controllers\V1\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use DB;
+
+use App\Models\Project;
 use App\Models\ProjectPage;
 use App\Models\ProjectPageUser;
 use App\Models\ProjectPageUserChat;
@@ -16,11 +19,16 @@ use App\Jobs\Facebook\Webhook\ProcessWebhook;
 
 class FacebookChatbotController extends Controller
 {
-    private $token = "EAAQaj0N2ahcBAK1DRSng7KgrBZAuLk1KZAioCAGcxd8YNZCTqg7LD4U9N30b9sVJRDexEXZCjlVhHwGpgBt6lIHjHUk0ToNQiZAR9GRlBo08SPtbepyUsW3iBJyfoPg0fMnYBJIJfxptN0hAPWxmKEyri7LrF9nYsQ8HujrISeClZAQoBDro8s";
+    private $token = '';
     private $url = '';
     
+    public function __construct() {
+        $this->token = config('facebook.defaultPageToken');
+    }
+
     public function index(Request $request)
     {
+        // Retrive raw input from messenger webhook
         $input = json_decode(file_get_contents('php://input'), true);
 
         if (isset($_GET['hub_verify_token'])) { 
@@ -35,7 +43,8 @@ class FacebookChatbotController extends Controller
 
         $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
 
-        if(!empty($projectPage) && is_null($projectPage->project_id)==false) {
+        // If page id is the default testing page or page from project page proceed to dispatching job
+        if($input['entry'][0]['id']==config('facebook.defaultPageId') || (!empty($projectPage) && is_null($projectPage->project_id)==false)) {
             ProcessWebhook::dispatch($input);
         } else {
             $this->sampleBot($input);
@@ -53,31 +62,78 @@ class FacebookChatbotController extends Controller
 
     public function processWebHook($input)
     {
+        // Check is the request is from page or not
         if($input['object']!=='page') {
             return null;
         }
 
+        $welcome = false;
+        $dev = false;
+        $projectId = null;
+        $pageId = null;
+        $userId = null;
         $projectPage = null;
 
-        if($input['entry'][0]['id']===config('facebook.defaultPageId')) {
-            // if(ProjectPageUser::)
-            $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
-        } else {
-            $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
-        }
+        // if message come from dashboard "Test this bot" button
+        if($input['entry'][0]['messaging'][0]['optin']) {
 
-        if(empty($projectPage) || is_null($projectPage->project_id)) {
-            return null;
+            // Enable welcome status and dev status
+            $welcome = true;
+            $$dev = true;
+
+            // Retrive project id, page id and user id
+            list($projectId, $pageId, $userId) = explode($input['entry'][0]['messaging'][0]['optin'], '-');
+
+            // Find Project
+            $project = Project::where(DB::raw('md5(id)'), $projectId)->first();
+            
+            if(empty($project)) {
+                // Log error if there is no project
+                FacebookRequestLogs::create([
+                    'data' => json_encode([
+                        'error' => true,
+                        'data' => 'Project ('.$projectId.') didn\'t exists!'
+                    ])
+                ]);
+                return null;
+            }
+
+            // If page is not from default testing page check project page
+            if($input['entry'][0]['id']!==config('facebook.defaultPageId')) {
+                $projectPage = ProjectPage::where('page_id', $pageId)->first();
+                
+                // Stop the process if project page didn't exists or project page is not linked with project
+                if(empty($projectPage) || is_null($projectPage->project_id)) {
+                    return null;
+                }
+                
+                // Change default token with page token
+                $this->token = $projectPage->token ? $projectPage->token : $this->token;
+            }
+        } else {
+
+            // If page is not from default testing page check project page
+            if($input['entry'][0]['id']!==config('facebook.defaultPageId')) {
+                $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
+            }
+
+            if(empty($projectPage) || is_null($projectPage->project_id)) {
+                return null;
+            }
+            
+            // Change default token with page token
+            $this->token = $projectPage->token ? $projectPage->token : $this->token;
+            $projectId = $projectPage->project_id;
         }
         
-        $this->token = $projectPage->token ? $projectPage->token : config('facebook.defaultPageToken');
         $this->url = 'https://graph.facebook.com/v3.2/me/messages?access_token='.$this->token;
 
         try {
-            if(is_null($projectPage->project_id)) {
+            // If project id is null send default mesg or proceed on parsing
+            if(is_null($projectId)) {
                 $this->sampleBot($input);
             } else {
-                $this->parseMessage($projectPage->project_id, $input);
+                $this->parseMessage($projectId, $input, $welcome, $dev);
             }
         } catch (\Exception $e) {
             FacebookRequestLogs::create([
@@ -89,7 +145,7 @@ class FacebookChatbotController extends Controller
         }
     }
 
-    public function parseMessage($projectId, $input) {
+    public function parseMessage($projectId, $input, $welcome=false, $dev=false) {
         
         $log = FacebookRequestLogs::create([
             'data' => json_encode([
@@ -113,10 +169,11 @@ class FacebookChatbotController extends Controller
             return;
         }
 
-        if (isset($input['entry'][0]['messaging'][0]['sender']['id'])) {
+        if (isset($input['entry'][0]['messaging'][0]['sender']['id']) || isset($input['entry'][0]['messaging'][0]['optin'])) {
             if(
                 isset($input['entry'][0]['messaging'][0]['message']['text']) ||
-                isset($input['entry'][0]['messaging'][0]['postback'])
+                isset($input['entry'][0]['messaging'][0]['postback']) ||
+                isset($input['entry'][0]['messaging'][0]['optin'])
             ) {
                 
                 $isPostBack = isset($input['entry'][0]['messaging'][0]['postback']);
@@ -148,7 +205,7 @@ class FacebookChatbotController extends Controller
 
                 try {
                     $project = new ChatBotProjectController($projectId);
-                    $messages = $project->process($input, $isPostBack);
+                    $messages = $project->process($input, $isPostBack, $welcome);
 
                     if($messages['status']===false) {
                         FacebookRequestLogs::create([
@@ -175,6 +232,17 @@ class FacebookChatbotController extends Controller
                     ]);
 
                     $break = false;
+
+                    if($dev) {
+                        array_unshift($messages, [
+                            'status' => true,
+                            'mesg' => '',
+                            'type' => 1,
+                            'data' => [
+                                'text' => 'New Dev section started'
+                            ]
+                        ]);
+                    }
                     
                     foreach($messages['data'] as $mesg) {
 

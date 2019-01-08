@@ -102,14 +102,16 @@
                     </template>
                 </div>
                 <div class="bodyContent">
+                    <template v-if="undefined!==$store.state.projectInfo.id">
                         <div class="fb-send-to-messenger" 
                             messenger_app_id="1155102521322007" 
                             page_id="2250742581846888" 
-                            data-ref="testing" 
+                            :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageId}-${$store.state.user.facebook}`"
                             color="blue" 
                             size="standard">
                             Send to messenger
                         </div>
+                    </template>
                     <router-view></router-view>
                 </div>
             </section>
@@ -184,7 +186,14 @@ export default class DefaultLayout extends Vue {
         }, 30000);
     }
 
-    @Watch('$store.state.fbSdk')
+    @Watch('$store.state.projectInfo', { immediate: true, deep: true })
+    projectInfoChange() {
+        setTimeout(() => {
+            this.initSendToMessenger();
+        }, 1000);
+    }
+
+    @Watch('$store.state.fbSdk', { immediate: true, deep: true })
     initSendToMessenger() {
         if(!this.$store.state.fbSdk) return;
         FB.XFBML.parse();

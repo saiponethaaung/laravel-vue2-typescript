@@ -38409,6 +38409,11 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
             }, 30000);
         });
     }
+    projectInfoChange() {
+        setTimeout(() => {
+            this.initSendToMessenger();
+        }, 1000);
+    }
     initSendToMessenger() {
         if (!this.$store.state.fbSdk)
             return;
@@ -38459,7 +38464,10 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$store.state.fbSdk')
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$store.state.projectInfo', { immediate: true, deep: true })
+], DefaultLayout.prototype, "projectInfoChange", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$store.state.fbSdk', { immediate: true, deep: true })
 ], DefaultLayout.prototype, "initSendToMessenger", null);
 DefaultLayout = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */]
@@ -38839,28 +38847,37 @@ var render = function() {
           "div",
           { staticClass: "bodyContent" },
           [
-            _c(
-              "div",
-              {
-                staticClass: "fb-send-to-messenger",
-                attrs: {
-                  messenger_app_id: "1155102521322007",
-                  page_id: "2250742581846888",
-                  "data-ref": "testing",
-                  color: "blue",
-                  size: "standard"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                        Send to messenger\n                    "
-                )
-              ]
-            ),
+            undefined !== _vm.$store.state.projectInfo.id
+              ? [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "fb-send-to-messenger",
+                      attrs: {
+                        messenger_app_id: "1155102521322007",
+                        page_id: "2250742581846888",
+                        "data-ref":
+                          _vm.$store.state.projectInfo.id +
+                          "-" +
+                          _vm.$store.state.projectInfo.pageId +
+                          "-" +
+                          _vm.$store.state.user.facebook,
+                        color: "blue",
+                        size: "standard"
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        Send to messenger\n                    "
+                      )
+                    ]
+                  )
+                ]
+              : _vm._e(),
             _vm._v(" "),
             _c("router-view")
           ],
-          1
+          2
         )
       ])
     ])

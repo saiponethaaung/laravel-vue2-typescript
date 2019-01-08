@@ -36,7 +36,7 @@ class UserController extends Controller
             $user['facebook_connected'] = false;
         }
 
-        unset($user['facebook']);
+        // unset($user['facebook']);
         unset($user['facebook_token']);
 
         return $user;

@@ -33,4 +33,9 @@ class User extends Authenticatable
         'created_at',
         'updated_at'
     ];
+
+    public function projectPage()
+    {
+        return $this->hasOne('App\Models\ProjecPageUser', 'user_id', 'id');
+    }
 }

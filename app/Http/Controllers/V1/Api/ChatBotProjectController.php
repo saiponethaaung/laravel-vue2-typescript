@@ -8,6 +8,7 @@ use Storage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectPage;
 use App\Models\ChatBlock;
@@ -47,7 +48,7 @@ class ChatBotProjectController extends Controller
             $userid = $userid!==$this->projectPage->page_id ? $input['entry'][0]['messaging'][0]['sender']['id']: $input['entry'][0]['messaging'][0]['recipient']['id'];
         }
 
-        $recordUser = $this->recordChatUser($userid);
+        $recordUser = $this->recordChatUser($userid, config('facebook.defaultProjectPage')===$input['entry'][0]['id']);
     
         if(!$recordUser['status']) {
             return $recordUser;
@@ -158,13 +159,7 @@ class ChatBotProjectController extends Controller
         } else {
             $response = $this->getWelcome();
         }
-
-        FacebookRequestLogs::create([
-            'data' => json_encode([
-                'section' => 'in process after get welcome'
-            ])
-        ]);
-
+        
         if(empty($response)) {
             $response = $this->getDefault();
         }
@@ -778,7 +773,7 @@ class ChatBotProjectController extends Controller
     }
 
     // record chat user
-    public function recordChatUser($userid)
+    public function recordChatUser($userid, $isTestPage=false)
     {
         $res = [
             'status' => true,
@@ -786,28 +781,32 @@ class ChatBotProjectController extends Controller
             'mesg' => 'success'
         ];
 
-        $this->user = ProjectPageUser::where('project_page_id', isset($this->projectPage->id) ? $this->projectPage->id : null)->where('fb_user_id', $userid)->first();
 
-        if(empty($this->user)) {
-            DB::beginTransaction();
-
-            try {
-                $this->user = ProjectPageUser::create([
-                    'project_page_id' => isset($this->projectPage->id) ? $this->projectPage->id : null,
-                    'fb_user_id' => $userid
-                ]);
-            } catch (\Exception $e) {
-                DB::rollback();
-                $res = [
-                    'status' => false,
-                    'type' => 'rcu-create',
-                    'mesg' => 'Failed to record chat user!'
-                ];
+        if($isTestPage) {
+            $this->user = ProjectPageUser::whereIsNull('project_page_id')->where('fb_user_id', $userid)->first();
+        } else {
+            $this->user = ProjectPageUser::where('project_page_id', $this->projectPage->id)->where('fb_user_id', $userid)->first();
+            if(empty($this->user)) {
+                DB::beginTransaction();
+    
+                try {
+                    $this->user = ProjectPageUser::create([
+                        'project_page_id' => $this->projectPage->id,
+                        'fb_user_id' => $userid
+                    ]);
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    $res = [
+                        'status' => false,
+                        'type' => 'rcu-create',
+                        'mesg' => 'Failed to record chat user!'
+                    ];
+                }
+    
+                DB::commit();
             }
-
-            DB::commit();
         }
-
+        
         return $res;
     }
 }

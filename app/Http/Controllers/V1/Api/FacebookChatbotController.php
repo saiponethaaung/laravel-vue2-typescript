@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use DB;
 
+use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectPage;
 use App\Models\ProjectPageUser;
@@ -83,18 +84,35 @@ class FacebookChatbotController extends Controller
         $userId = null;
         $projectPage = null;
 
+        $clientid = $input['entry'][0]['id']!==$input['entry'][0]['messaging'][0]['sender']['id'] ? $input['entry'][0]['messaging'][0]['sender']['id'] : $input['entry'][0]['messaging'][0]['recipient']['id'];
+
         // if message come from dashboard "Test this bot" button
         if($input['entry'][0]['messaging'][0]['optin']) {
 
             // Enable welcome status and dev status
             $welcome = true;
-            $$dev = true;
+            $dev = true;
 
             // Retrive project id, page id and user id
             list($projectId, $pageId, $userId) = explode('-', $input['entry'][0]['messaging'][0]['optin']['ref']);
 
+            $user = User::where('facebook', $userId)->first();
+
+            if(empty($user)) {
+                // Log error if there is no project
+                FacebookRequestLogs::create([
+                    'data' => json_encode([
+                        'error' => true,
+                        'data' => 'User with facebook id ('.$userId.') is not a user of platform!'
+                    ])
+                ]);
+                return null;
+            }
+
             // Find Project
-            $project = Project::where(DB::raw('md5(id)'), $projectId)->first();
+            $project = Project::where(DB::raw('md5(id)'), $projectId)->whereHas('user', function($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->first();
             
             if(empty($project)) {
                 // Log error if there is no project
@@ -102,6 +120,31 @@ class FacebookChatbotController extends Controller
                     'data' => json_encode([
                         'error' => true,
                         'data' => 'Project ('.$projectId.') didn\'t exists!'
+                    ])
+                ]);
+                return null;
+            }
+
+            try {
+                $user->project_id = $project->id;
+                $user->save();
+
+                $projectPageUser = ProjectPageUser::where('user_id', $user->id)->first();
+
+                if(empty($projectPageUser)) {
+                    ProjectPageUser::create([
+                        'project_page_id' => null,
+                        'fb_user_id' => $clientid,
+                        'user_id' => $user->id
+                    ]);
+                }
+            } catch (\Exception $e) {
+                // Log error if there is no project
+                FacebookRequestLogs::create([
+                    'data' => json_encode([
+                        'error' => true,
+                        'mesg' => 'Failed to assigned project to user!',
+                        'data' => $e->getMessage()
                     ])
                 ]);
                 return null;
@@ -126,15 +169,20 @@ class FacebookChatbotController extends Controller
             // If page is not from default testing page check project page
             if($input['entry'][0]['id']!==config('facebook.defaultPageId')) {
                 $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
+                if(empty($projectPage) || is_null($projectPage->project_id)) {
+                    return null;
+                }
+                
+                // Change default token with page token
+                $this->token = $projectPage->token ? $projectPage->token : $this->token;
+                $projectId = $projectPage->project_id;
+            } else {
+                $projectPageUser = ProjectPageUser::with('user')->where('fb_user_id', $clientid)->first();
+                if(empty($projectPageUser) || is_null($projectPageUser->user->project_id)) {
+                    return null;
+                }
+                $projectId = $projectPageUser->user->project_id;
             }
-
-            if(empty($projectPage) || is_null($projectPage->project_id)) {
-                return null;
-            }
-            
-            // Change default token with page token
-            $this->token = $projectPage->token ? $projectPage->token : $this->token;
-            $projectId = $projectPage->project_id;
         }
         
         $this->url = 'https://graph.facebook.com/v3.2/me/messages?access_token='.$this->token;
@@ -156,11 +204,13 @@ class FacebookChatbotController extends Controller
         }
     }
 
-    public function parseMessage($projectId, $input, $welcome=false, $dev=false) {
+    public function parseMessage($projectId, $input, $welcome=false, $dev=false)
+    {
         
         $log = FacebookRequestLogs::create([
             'data' => json_encode([
                 'isWelcome' => $welcome,
+                'isDev' => $dev,
                 'raw' => $input,
                 'get' => $_GET,
                 'post' => $_POST,
@@ -187,6 +237,10 @@ class FacebookChatbotController extends Controller
                 isset($input['entry'][0]['messaging'][0]['postback']) ||
                 isset($input['entry'][0]['messaging'][0]['optin'])
             ) {
+
+                if(!isset($input['entry'][0]['messaging'][0]['optin']) && $input['entry'][0]['id']==config('facebook.defaultPageId')) {
+
+                }
                 
                 $isPostBack = isset($input['entry'][0]['messaging'][0]['postback']);
 
@@ -238,10 +292,11 @@ class FacebookChatbotController extends Controller
                     $break = false;
 
                     if($dev) {
-                        array_unshift($messages, [
+                        array_unshift($messages['data'], [
                             'status' => true,
                             'mesg' => '',
                             'type' => 1,
+                            'content_id' => null,
                             'data' => [
                                 'text' => 'New Dev section started'
                             ]
@@ -260,7 +315,6 @@ class FacebookChatbotController extends Controller
 
                         $sleep = -1;
                         $skip = false;
-                        
 
                         $recordChat = [
                             'content_id' => $mesg['content_id'],

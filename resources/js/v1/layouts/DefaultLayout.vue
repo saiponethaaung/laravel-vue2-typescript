@@ -105,7 +105,7 @@
                     <template v-if="undefined!==$store.state.projectInfo.id">
                         <div class="fb-send-to-messenger" 
                             messenger_app_id="1155102521322007" 
-                            page_id="2250742581846888" 
+                            :page_id="$store.state.projectInfo.pageId" 
                             :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageId}-${$store.state.user.facebook}`"
                             color="blue" 
                             size="standard">

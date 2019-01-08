@@ -42,10 +42,12 @@ class FacebookChatbotController extends Controller
         }
 
         $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
+        $dispatch = false;
 
         // If page id is the default testing page or page from project page proceed to dispatching job
         if($input['entry'][0]['id']==config('facebook.defaultPageId') || (!empty($projectPage) && is_null($projectPage->project_id)==false)) {
             ProcessWebhook::dispatch($input);
+            $dispatch = true;
         } else {
             $this->sampleBot($input);
         }
@@ -53,6 +55,7 @@ class FacebookChatbotController extends Controller
         FacebookRequestLogs::create([
             'data' => json_encode([
                 'status' => 'success',
+                'dispatch' => $dispatch,
                 'data' => $input
             ])
         ]);
@@ -62,6 +65,12 @@ class FacebookChatbotController extends Controller
 
     public function processWebHook($input)
     {
+        FacebookRequestLogs::create([
+            'data' => json_encode([
+                'status' => 'working on dispatch',
+                'data' => $input
+            ])
+        ]);
         // Check is the request is from page or not
         if($input['object']!=='page') {
             return null;
@@ -82,7 +91,7 @@ class FacebookChatbotController extends Controller
             $$dev = true;
 
             // Retrive project id, page id and user id
-            list($projectId, $pageId, $userId) = explode($input['entry'][0]['messaging'][0]['optin'], '-');
+            list($projectId, $pageId, $userId) = explode('-', $input['entry'][0]['messaging'][0]['optin']['ref']);
 
             // Find Project
             $project = Project::where(DB::raw('md5(id)'), $projectId)->first();
@@ -97,6 +106,8 @@ class FacebookChatbotController extends Controller
                 ]);
                 return null;
             }
+
+            $projectId = $project->id;
 
             // If page is not from default testing page check project page
             if($input['entry'][0]['id']!==config('facebook.defaultPageId')) {
@@ -149,6 +160,7 @@ class FacebookChatbotController extends Controller
         
         $log = FacebookRequestLogs::create([
             'data' => json_encode([
+                'isWelcome' => $welcome,
                 'raw' => $input,
                 'get' => $_GET,
                 'post' => $_POST,
@@ -184,14 +196,6 @@ class FacebookChatbotController extends Controller
                     $log->save();
                     return;
                 }
-
-                $log = FacebookRequestLogs::create([
-                    'data' => json_encode([
-                        'raw' => $input,
-                        'get' => $_GET,
-                        'post' => $_POST,
-                    ])
-                ]);
 
                 if(isset($input['entry'][0]['messaging'][0]['postback'])) {
                     $log->is_payload = true;

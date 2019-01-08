@@ -42,8 +42,9 @@ class ChatBotProjectController extends Controller
     public function process($input=null, $payload=false, $welcome=false, $userid=null, $ignore=false)
     {
         $response = [];
+        $userid = isset($input['entry'][0]['messaging'][0]['sender']['id']) ? $input['entry'][0]['messaging'][0]['sender']['id'] : '';
         if($welcome===false) {
-            $userid = $input['entry'][0]['messaging'][0]['sender']['id']!==$this->projectPage->page_id ? $input['entry'][0]['messaging'][0]['sender']['id']: $input['entry'][0]['messaging'][0]['recipient']['id'];
+            $userid = $userid!==$this->projectPage->page_id ? $input['entry'][0]['messaging'][0]['sender']['id']: $input['entry'][0]['messaging'][0]['recipient']['id'];
         }
 
         $recordUser = $this->recordChatUser($userid);
@@ -56,7 +57,6 @@ class ChatBotProjectController extends Controller
             $log;
             $mesgText = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : '';
             $postback = '';
-            
 
             if($payload) {
                 $mesgText = (String) $input['entry'][0]['messaging'][0]['postback']['title'];
@@ -158,6 +158,12 @@ class ChatBotProjectController extends Controller
         } else {
             $response = $this->getWelcome();
         }
+
+        FacebookRequestLogs::create([
+            'data' => json_encode([
+                'section' => 'in process after get welcome'
+            ])
+        ]);
 
         if(empty($response)) {
             $response = $this->getDefault();
@@ -780,14 +786,14 @@ class ChatBotProjectController extends Controller
             'mesg' => 'success'
         ];
 
-        $this->user = ProjectPageUser::where('project_page_id', $this->projectPage->id)->where('fb_user_id', $userid)->first();
+        $this->user = ProjectPageUser::where('project_page_id', isset($this->projectPage->id) ? $this->projectPage->id : null)->where('fb_user_id', $userid)->first();
 
         if(empty($this->user)) {
             DB::beginTransaction();
 
             try {
                 $this->user = ProjectPageUser::create([
-                    'project_page_id' => $this->projectPage->id,
+                    'project_page_id' => isset($this->projectPage->id) ? $this->projectPage->id : null,
                     'fb_user_id' => $userid
                 ]);
             } catch (\Exception $e) {

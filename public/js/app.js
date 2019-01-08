@@ -31474,6 +31474,9 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_chatbot_SidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_chatbot_SidebarComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_inbox_InboxPageComponent_vue__ = __webpack_require__(75);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_inbox_InboxPageComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_inbox_InboxPageComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_inbox_InboxPageSidebarComponent_vue__ = __webpack_require__(137);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_inbox_InboxPageSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_inbox_InboxPageSidebarComponent_vue__);
+
 
 
 
@@ -31510,7 +31513,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
                     children: [
                         {
                             path: "/",
-                            name: "project.inbox"
+                            name: "project.inbox",
+                            meta: {
+                                sidebar: __WEBPACK_IMPORTED_MODULE_8__components_inbox_InboxPageSidebarComponent_vue___default.a
+                            }
                         }
                     ]
                 },
@@ -37091,9 +37097,35 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    Inbox Page\n")])
+  return _c(
+    "div",
+    { staticClass: "inheritHFW" },
+    [
+      undefined == _vm.$store.state.projectInfo.pageConnected
+        ? [_vm._v("\n        Loading...\n    ")]
+        : [
+            _vm.$store.state.projectInfo.pageConnected
+              ? [_vm._v("\n            Inbox Page\n        ")]
+              : [_vm._m(0)]
+          ]
+    ],
+    2
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "noContent" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("assignment")]),
+      _vm._v(" "),
+      _c("span", { attrs: { clss: "noContentInfo" } }, [
+        _vm._v("Connect a facebook page to access an inbox function.")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -43645,6 +43677,228 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(138)
+/* template */
+var __vue_template__ = __webpack_require__(139)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/inbox/InboxPageSidebarComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4506ce7a", Component.options)
+  } else {
+    hotAPI.reload("data-v-4506ce7a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 138 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.filters = [
+            {
+                key: 0,
+                value: 'Live'
+            },
+            {
+                key: 1,
+                value: 'Bot'
+            },
+        ];
+        this.selectedFilter = 0;
+        this.showFilter = false;
+    }
+};
+InboxPageSidebarComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], InboxPageSidebarComponent);
+/* harmony default export */ __webpack_exports__["default"] = (InboxPageSidebarComponent);
+
+
+/***/ }),
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      undefined == _vm.$store.state.projectInfo.pageConnected
+        ? [_vm._v("\n        Loading...\n    ")]
+        : [
+            _vm.$store.state.projectInfo.pageConnected
+              ? [
+                  _c("div", {}, [
+                    _c("div", { staticClass: "chatFilterList" }, [
+                      _c("div", { staticClass: "inboxOptionTitle" }, [
+                        _vm._v("Inbox:")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "inboxOptionSelector" }, [
+                        _c("div", { staticClass: "inboxSelectedOption" }, [
+                          _c(
+                            "span",
+                            { staticClass: "inboxSelectedOptionValue" },
+                            [
+                              _vm._v(
+                                _vm._s(_vm.filters[_vm.selectedFilter].value)
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "inboxFilterOptionIcon" }, [
+                            _c(
+                              "i",
+                              {
+                                staticClass: "material-icons",
+                                on: {
+                                  click: function($event) {
+                                    _vm.showFilter = !_vm.showFilter
+                                  }
+                                }
+                              },
+                              [
+                                _vm.showFilter
+                                  ? [
+                                      _vm._v(
+                                        "\n                                        arrow_drop_up\n                                    "
+                                      )
+                                    ]
+                                  : [
+                                      _vm._v(
+                                        "\n                                        arrow_drop_down\n                                    "
+                                      )
+                                    ]
+                              ],
+                              2
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _vm.showFilter
+                          ? _c("div", [
+                              _c(
+                                "ul",
+                                _vm._l(_vm.filters, function(filter, index) {
+                                  return _c(
+                                    "li",
+                                    {
+                                      key: index,
+                                      on: {
+                                        click: function($event) {
+                                          _vm.selectedFilter = index
+                                          _vm.showFilter = false
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                    " +
+                                          _vm._s(filter.value) +
+                                          "\n                                "
+                                      )
+                                    ]
+                                  )
+                                })
+                              )
+                            ])
+                          : _vm._e()
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ]),
+                  _vm._v(" "),
+                  _c("div", {})
+                ]
+              : _vm._e()
+          ]
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "chatFilterAction" }, [
+      _c("div", [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("label_important")])
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("star_border")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4506ce7a", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

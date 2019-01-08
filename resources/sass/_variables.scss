@@ -19,17 +19,20 @@ $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
 
+$color1: #c238eb;
+
 $secondaryText: #aaaaaa;
-$btnText1: #c238eb;
+$btnText1: $color1;
+$inboxSelected: $color1;
 
 $iconPrimary: #aaaaaa;
-$iconActive: #c238eb;
+$iconActive: $color1;
 $iconActiveBackground: #ffffff;
 $primaryBackground: #ffffff;
 $hoverBackground: #ebebeb;
 
 $borderPrimary: #ebebeb;
-$borderSecondary: #c238eb;
+$borderSecondary: $color1;
 
 $primaryChatBlock: #f7f6f6;
 

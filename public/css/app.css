@@ -12395,6 +12395,60 @@ a.text-dark:focus {
   width: 100%;
 }
 
+.chatFilterList {
+  height: 36px;
+  line-height: 36px;
+}
+
+.chatFilterList .inboxOptionTitle {
+  line-height: inherit;
+  font-weight: bold;
+  font-size: 18px;
+  float: left;
+  display: block;
+  padding-right: 5px;
+}
+
+.chatFilterList .inboxOptionSelector {
+  float: left;
+  display: block;
+  height: inherit;
+}
+
+.chatFilterList .inboxOptionSelector .inboxSelectedOption {
+  line-height: inherit;
+  height: inherit;
+}
+
+.chatFilterList .inboxOptionSelector .inboxSelectedOption .inboxSelectedOptionValue {
+  font-size: 18px;
+  color: #c238eb;
+  line-height: inherit;
+  height: inherit;
+  display: block;
+  float: left;
+}
+
+.chatFilterList .inboxOptionSelector .inboxSelectedOption .inboxFilterOptionIcon {
+  line-height: inherit;
+  height: inherit;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  float: left;
+}
+
+.chatFilterList .chatFilterAction {
+  float: right;
+  display: block;
+}
+
 .navbar-laravel {
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

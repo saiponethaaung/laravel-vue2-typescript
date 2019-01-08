@@ -122,6 +122,10 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
                 });
             });
         });
+
+        Route::group(['prefix' => 'chat'], function() {
+            Route::get('user', 'V1\\Api\\InboxController@getInboxList');
+        });
     });
 });
 

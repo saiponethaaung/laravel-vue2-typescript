@@ -12,6 +12,7 @@ import ChatBotComponent from '../components/chatbot/ContentComponent.vue';
 import ChatBotSidebar from '../components/chatbot/SidebarComponent.vue';
 
 import InboxPageComponent from '../components/inbox/InboxPageComponent.vue';
+import InboxPageSidebarComponent from '../components/inbox/InboxPageSidebarComponent.vue';
 
 Vue.use(VueRouter);
 
@@ -42,7 +43,10 @@ export default new VueRouter({
                     children: [
                         {
                             path: "/",
-                            name: "project.inbox"
+                            name: "project.inbox",
+                            meta: {
+                                sidebar: InboxPageSidebarComponent
+                            }
                         }
                     ]
                 },

@@ -113,3 +113,13 @@ export interface facebookPages {
     connected: boolean,
     currentProject: boolean
 }
+
+export interface inboxUserList {
+    id: number,
+    name: string,
+    urgent: boolean,
+    fav: boolean,
+    lastMesg: string,
+    lastMesgType: number,
+    image: string
+}

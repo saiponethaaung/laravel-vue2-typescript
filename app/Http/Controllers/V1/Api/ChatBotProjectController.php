@@ -48,7 +48,7 @@ class ChatBotProjectController extends Controller
             $userid = $userid!==$this->projectPage->page_id ? $input['entry'][0]['messaging'][0]['sender']['id']: $input['entry'][0]['messaging'][0]['recipient']['id'];
         }
 
-        $recordUser = $this->recordChatUser($userid, config('facebook.defaultProjectPage')===$input['entry'][0]['id']);
+        $recordUser = $this->recordChatUser($userid, config('facebook.defaultPageId')===$input['entry'][0]['id']);
     
         if(!$recordUser['status']) {
             return $recordUser;
@@ -781,9 +781,15 @@ class ChatBotProjectController extends Controller
             'mesg' => 'success'
         ];
 
-
         if($isTestPage) {
-            $this->user = ProjectPageUser::whereIsNull('project_page_id')->where('fb_user_id', $userid)->first();
+            $this->user = ProjectPageUser::whereNull('project_page_id')->where('fb_user_id', $userid)->first();
+            if(empty($this->user)) {
+                $res = [
+                    'status' => false,
+                    'type' => 'rcu-create',
+                    'mesg' => $userid.' did\'t exists!'
+                ];
+            }
         } else {
             $this->user = ProjectPageUser::where('project_page_id', $this->projectPage->id)->where('fb_user_id', $userid)->first();
             if(empty($this->user)) {

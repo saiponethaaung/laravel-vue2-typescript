@@ -87,7 +87,7 @@ class FacebookChatbotController extends Controller
         $clientid = $input['entry'][0]['id']!==$input['entry'][0]['messaging'][0]['sender']['id'] ? $input['entry'][0]['messaging'][0]['sender']['id'] : $input['entry'][0]['messaging'][0]['recipient']['id'];
 
         // if message come from dashboard "Test this bot" button
-        if($input['entry'][0]['messaging'][0]['optin']) {
+        if(isset($input['entry'][0]['messaging'][0]['optin'])) {
 
             // Enable welcome status and dev status
             $welcome = true;
@@ -169,10 +169,9 @@ class FacebookChatbotController extends Controller
             // If page is not from default testing page check project page
             if($input['entry'][0]['id']!==config('facebook.defaultPageId')) {
                 $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
-                if(empty($projectPage) || is_null($projectPage->project_id)) {
+                if(empty($projectPage) || is_null($projectPage->project_id) || $projectPage->publish!==1) {
                     return null;
                 }
-                
                 // Change default token with page token
                 $this->token = $projectPage->token ? $projectPage->token : $this->token;
                 $projectId = $projectPage->project_id;
@@ -181,6 +180,7 @@ class FacebookChatbotController extends Controller
                 if(empty($projectPageUser) || is_null($projectPageUser->user->project_id)) {
                     return null;
                 }
+               
                 $projectId = $projectPageUser->user->project_id;
             }
         }
@@ -206,7 +206,6 @@ class FacebookChatbotController extends Controller
 
     public function parseMessage($projectId, $input, $welcome=false, $dev=false)
     {
-        
         $log = FacebookRequestLogs::create([
             'data' => json_encode([
                 'isWelcome' => $welcome,

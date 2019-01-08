@@ -1,0 +1,44 @@
+.chatFilterList {
+    height: 36px;
+    line-height: 36px;
+    
+    .inboxOptionTitle {
+        line-height: inherit;
+        font-weight: bold;
+        font-size: 18px;
+        float: left;
+        display: block;
+        padding-right: 5px;
+    }
+    
+    .inboxOptionSelector {
+        float: left;
+        display: block;
+        height: inherit;
+        .inboxSelectedOption {
+            line-height: inherit;
+            height: inherit;
+            .inboxSelectedOptionValue {
+                font-size: 18px;
+                color: $inboxSelected;
+                line-height: inherit;
+                height: inherit;
+                display: block;
+                float: left;
+            }
+            .inboxFilterOptionIcon {
+                line-height: inherit;
+                height: inherit;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                float: left;
+            }
+        }
+    }
+    
+    .chatFilterAction {
+        float: right;
+        display: block;
+    }
+}

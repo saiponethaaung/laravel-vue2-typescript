@@ -20,4 +20,9 @@ class ProjectPageUser extends Model
     {
         return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
+
+    public function attributes()
+    {
+        return $this->hasMany('App\Models\ProjectPageUserAttribute', 'project_page_user_id', 'id');
+    }
 }

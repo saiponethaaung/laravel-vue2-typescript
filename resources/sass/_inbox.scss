@@ -1,6 +1,12 @@
+.chatSbHeaderOption {
+    display: block;
+    width: 100%;
+    height: $standardHeight;
+}
+
 .chatFilterList {
-    height: 36px;
-    line-height: 36px;
+    height: $standardHeight;
+    line-height: $standardHeight;
     
     .inboxOptionTitle {
         line-height: inherit;
@@ -33,12 +39,239 @@
                 align-items: center;
                 justify-content: center;
                 float: left;
+                cursor: pointer;
             }
         }
     }
-    
-    .chatFilterAction {
-        float: right;
-        display: block;
+}
+
+.chatFilterAction {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: $standardHeight;
+    div {
+        display: inherit;
+        .material-icons {
+            font-size: 18px;
+            cursor: pointer;
+        }
+    }
+    div:last-child {
+        padding-left: 5px;
+    }
+}
+
+.availableUserList {
+    width: calc(100% + 60px);
+    display: block;
+    margin-left: -30px;
+    .userBriefCon {
+        padding: 10px 30px;
+        display: flex;
+        position: relative;
+        &:hover,
+        &.selected {
+            background: $inboxHover;
+            .userBriefName {
+                color: $iconActive;
+            }
+        }
+
+        &.selected:after {
+            content: "";
+            height: 100%;
+            width: 8px;
+            background: $iconActive;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .userBriefImageCon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            float: left;
+            height: 47px;
+            &:hover {
+                cursor: pointer;
+            }
+            .userBriefImage {
+                width: 40px;
+                height: 40px;
+                border-radius: 100%;
+            }
+        }
+
+        .userBriefInfoCon {
+            width: calc(100% - 40px);
+            float: left;
+            height: 47px;
+            overflow: hidden;
+            .userBriefContentCon {
+                height: inherit;
+                padding-left: 8px;
+                padding-right: 15px;
+                width: calc(100% - 50px);
+                float: left;
+                &:hover {
+                    cursor: pointer;
+                }
+                .userBriefName {
+                    height: 20px;
+                    line-height: 20px;
+                    display: block;
+                    font-weight: bold;
+                    font-size: 14px;
+                }
+                .userBriefLastMesg {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: block;
+                    height: 18px;
+                    white-space: nowrap;
+                    width: 100%;
+                    font-size: 12px;
+                }
+            }
+
+            .userBriefActionCon {
+                display: inline-flex;
+                float: right;
+                height: inherit;
+                width: 50px;
+                justify-content: center;
+                align-items: center;
+                div {
+                    width: 50%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    .material-icons {
+                        font-size: 18px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}
+
+$attributePanelWidth: 336px;
+
+.chatInfoPanel {
+    width: calc(100% - #{$attributePanelWidth});
+    height: inherit;
+    overflow: auto;
+    float: left;
+    border-right: 1px solid $borderPrimary;
+
+    .chatHisCon {
+        height: calc(100% - 60px);
+        overflow: auto;
+        border-bottom: 1px solid $borderPrimary;
+    }
+
+    .chatInputCon{
+        height: 60px;
+        width: 100%;
+        .chatInputMesgBox {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: calc(100% - 65px);
+            height: 100%;
+            padding-left: 30px;
+            float: left;
+            input {
+                width: 100%;
+                border-radius: 5px;
+                padding: 3px 10px;
+                border: none;
+                &:focus {
+                    border: 1px solid #e2e2e2;
+                }
+            }
+        }
+        .chatInputEmoji {
+            display: flex;
+            float: right;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 65px;
+            i {
+                font-size: 30px;
+                color: $secondaryText;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.attributePanel {
+    width: $attributePanelWidth;
+    height: inherit;
+    overflow: auto;
+    float: left;
+    background: $secondaryBackground;
+    .attributeHeading {
+        padding: 15px 30px 5px;
+        .attributeOwnerName {
+            height: $standardHeight;
+            line-height: $standardHeight;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    }
+
+    .attributeTableRoot {
+        padding:  0 30px 15px 30px;
+    }
+
+    .attributeTable {
+        width: 100%;
+        margin-bottom: 15px;
+
+        tr {
+            border-bottom: 4px solid transparent;
+        }
+
+        thead {
+            .attrTitle,
+            .attrValue {
+                font-size: 14px;
+                color: $secondaryText;
+            }
+        }
+
+        .attrTitle,
+        .attrValue {
+            height: $tableStandardHeight;
+            line-height: $tableStandardHeight;
+            font-size: 12px;
+        }
+
+        tbody {
+            .attrTitleWrapper {
+                background: #fff;
+                border-radius: 5px;
+                height: 30px;
+                line-height: 30px;
+                padding: 0 7px;
+                display: inline-block;
+            }
+        }
+
+        .attrTitle {
+            width: 154px;
+        }
+
+        .attrValue {
+            width: calc(100% - 154px);
+        }
     }
 }

@@ -27,6 +27,8 @@ export default new Vuex.Store({
         projectInfo: {},
         projectList: [],
         fbSdk: false,
+        selectedInbox: -1,
+        inboxList: [],
     },
     mutations: {
         logout(state) {
@@ -80,6 +82,12 @@ export default new Vuex.Store({
         },
         setProjectPublishStatus(state, { status }) {
             state.projectInfo.publish = status;
+        },
+        updateSelectedInbox(state, { selected }) {
+            state.selectedInbox = selected;
+        },
+        updateInboxList(state, { inbox }) {
+            state.inboxList = inbox;
         }
     }
 } as StoreOptions<any>);

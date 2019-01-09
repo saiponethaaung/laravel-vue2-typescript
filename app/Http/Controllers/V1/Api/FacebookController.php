@@ -349,4 +349,62 @@ class FacebookController extends Controller
             'list' => $res
         ];
     }
+
+    public function getMessengerProfile($psid)
+    {
+        $graphObject = null;
+        try {
+            $graphObject = $this->fb->get('/'.$psid.'?first_name,last_name,profile_pic,locale,timezone,gender')->getGraphObject();
+        }catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'type' => 'expire',
+                'mesg' => $e->getMessage()
+            ];
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'type' => 'sdkerror',
+                'mesg' => $e->getMessage()
+            ];
+        }
+
+        return [
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success',
+            'data' => $graphObject->asArray()
+        ];
+    }
+
+    public function sendMessage($mesg)
+    {
+        $graphObject = null;
+        try {
+            $graphObject = $this->fb->post('/me/messages', $mesg)->getGraphObject();
+        }catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'type' => 'expire',
+                'mesg' => $e->getMessage()
+            ];
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'type' => 'sdkerror',
+                'mesg' => $e->getMessage()
+            ];
+        }
+
+        return [
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success',
+            'data' => $graphObject->asArray()
+        ];
+    }
 }

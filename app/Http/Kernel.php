@@ -63,7 +63,9 @@ class Kernel extends HttpKernel
         'verifyChatBlock' => \App\Http\Middleware\ValidateChatBlock::class,
         'verifyChatBlockSection' => \App\Http\Middleware\ValidateChatSection::class,
         'verifychatBlockSectionContent' => \App\Http\Middleware\ValidateChatContent::class,
-        'verifyPorject' => \App\Http\Middleware\Project\IsProjectValid::class
+        'verifyPorject' => \App\Http\Middleware\Project\IsProjectValid::class,
+        'verifyPorjectHasPage' => \App\Http\Middleware\Project\IsPageConnected::class,
+        'verifyPorjectPageUser' => \App\Http\Middleware\ValidatePageUser::class,
     ];
 
     /**

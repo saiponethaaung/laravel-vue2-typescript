@@ -5,8 +5,8 @@
         </template>
         <template v-else>
             <template v-if="$store.state.projectInfo.pageConnected">
-                <div class="">
-                    <div class="chatFilterList">
+                <div class="chatSbHeaderOption">
+                    <div class="chatFilterList float-left">
                         <div class="inboxOptionTitle">Inbox:</div>
                         <div class="inboxOptionSelector">
                             <div class="inboxSelectedOption">
@@ -32,9 +32,9 @@
                         </div>
                     </div>
 
-                    <div class="chatFilterAction">
+                    <div class="chatFilterAction float-right">
                         <div>
-                            <i class="material-icons">label_important</i>
+                            <i class="material-icons">label</i>
                         </div>
                         <div>
                             <i class="material-icons">star_border</i>
@@ -42,8 +42,27 @@
                     </div>
                 </div>
 
-                <div class="">
-                    
+                <div class="availableUserList">
+                    <div v-for="(user, index) in $store.state.inboxList" :key="index" class="userBriefCon" :class="{'selected': $store.state.selectedInbox===index}">
+                        <figure class="userBriefImageCon" @click="selectInbox(index)">
+                            <img :src="user.profile_pic ? user.profile_pic : 'http://localhost:8087/images/sample/logo.png'" class="userBriefImage"/>
+                        </figure>
+                        <div class="userBriefInfoCon">
+                            <div class="userBriefContentCon" @click="selectInbox(index)">
+                                <div class="userBriefName">{{ `${user.first_name} ${user.last_name}` }}</div>
+                                <div class="userBriefLastMesg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.</div>
+                            </div>
+                            <div class="userBriefActionCon">
+                                <div>
+                                    <i class="material-icons">label</i>
+                                </div>
+                                <div>
+                                    <i class="material-icons">star_border</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <template v-if="loadingInbox">Loading...</template>
                 </div>
             </template>
         </template>
@@ -51,11 +70,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Watch } from 'vue-property-decorator';
+import Axios,{ CancelTokenSource } from 'axios';
 
 @Component
 export default class InboxPageSidebarComponent extends Vue {
-
     private filters: any = [
         {
             key: 0,
@@ -67,7 +86,48 @@ export default class InboxPageSidebarComponent extends Vue {
         },
     ];
 
+    private pageId: any = "";
     private selectedFilter: number = 0;
     private showFilter: boolean = false;
+    private loadingInbox: boolean = false;
+    private loadInboxToken: CancelTokenSource = Axios.CancelToken.source();
+
+    private selectInbox(index: number) {
+        this.$store.commit('updateSelectedInbox', {
+            selected: index
+        });
+    }
+
+    @Watch('$store.state.projectInfo', { immediate: true, deep: true })
+    loadUserEvent() {
+
+        if(undefined==this.$store.state.projectInfo.pageId || this.pageId===this.$store.state.projectInfo.pageId) return;
+
+        if(this.pageId!==this.$store.state.projectInfo.pageId) {
+            this.pageId = this.$store.state.projectInfo.pageId;
+        }
+
+        this.loadUserList();
+
+    }
+    
+    async loadUserList() {
+        this.loadingInbox = true;
+        this.loadInboxToken.cancel();
+        this.loadInboxToken = Axios.CancelToken.source();
+
+        await Axios({
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user`,
+            cancelToken: this.loadInboxToken.token
+        }).then((res: any) => {
+            console.log("inbox res", res.data);
+            var inboxList = res.data.data;
+            this.$store.commit('updateInboxList', {
+                inbox: inboxList
+            });
+        });
+
+        this.loadingInbox = false;
+    }
 }
 </script>

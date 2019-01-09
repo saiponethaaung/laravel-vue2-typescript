@@ -13,4 +13,9 @@ class ProjectPageUserAttribute extends Model
         'value',
         'project_page_user_id'
     ];
+
+    public function attrValue()
+    {
+        return $this->hasOne('App\Models\ChatAttribute', 'id', 'attribute_id');
+    }
 }

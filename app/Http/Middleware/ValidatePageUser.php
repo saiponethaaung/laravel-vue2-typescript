@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Middleware\Project;
+namespace App\Http\Middleware;
 
 use Closure;
 
-use App\Models\ProjectPage;
+use App\Models\ProjectPageUser;
 
-class IsPageConnected
+class ValidatePageUser
 {
     /**
      * Handle an incoming request.
@@ -17,17 +17,17 @@ class IsPageConnected
      */
     public function handle($request, Closure $next)
     {
-        $projectPage = ProjectPage::where('project_id', $request->attributes->get('project')->id)->first();
+        $projectPageUser = ProjectPageUser::where('project_page_id', $request->attributes->get('project_page')->id)->find($request->pageUserId);
 
-        if(empty($projectPage)) {
+        if(empty($projectPageUser)) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'mesg' => 'Project is not connected to a facebook page!'
+                'mesg' => 'Invalid user!'
             ], 422);
         }
 
-        $request->attributes->set('project_page', $projectPage);
+        $request->attributes->set('project_page_user', $projectPageUser);
 
         return $next($request);
     }

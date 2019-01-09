@@ -20,6 +20,7 @@ $teal: #4dc0b5;
 $cyan: #6cb2eb;
 
 $color1: #c238eb;
+$color2: #f7f6f6;
 
 $secondaryText: #aaaaaa;
 $btnText1: $color1;
@@ -34,7 +35,9 @@ $hoverBackground: #ebebeb;
 $borderPrimary: #ebebeb;
 $borderSecondary: $color1;
 
-$primaryChatBlock: #f7f6f6;
+$primaryChatBlock: $color2;
+$inboxHover: $color2;
+$secondaryBackground: $color2;
 
 $actionBtn1: #72bb53;
 
@@ -44,3 +47,7 @@ $sidebarControlWidth: 352px;
 
 $porjectIconWidth: 34px;
 $porjectNavWidth: 20px;
+
+
+$standardHeight: 36px;
+$tableStandardHeight: 30px;

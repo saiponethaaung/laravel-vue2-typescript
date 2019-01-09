@@ -15,7 +15,12 @@ class CreateUserFavProjectPageUserTable extends Migration
     {
         Schema::create('user_fav_project_page_user', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('project_page_user_id')->nullable()->index();
+            $table->unsignedInteger('project_user_id')->nullable()->index();
             $table->timestamps();
+
+            $table->foreign('project_page_user_id')->references('id')->on('project_page_user')->onDelete('cascade');
+            $table->foreign('project_user_id')->references('id')->on('project_user')->onDelete('cascade');
         });
     }
 

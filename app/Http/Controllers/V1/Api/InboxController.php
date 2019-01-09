@@ -73,7 +73,7 @@ class InboxController extends Controller
         ]);
 
         if($send['status'] === false) {
-            return response()->json($send, $send['status']);
+            return response()->json($send, $send['code']);
         }
         
         return response()->json($send);

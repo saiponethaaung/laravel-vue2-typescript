@@ -56,6 +56,37 @@ class ChatBotProjectController extends Controller
 
         $this->user->updated_at = date("Y-m-d H:i:s");
         $this->user->save();
+
+        DB::beginTransaction();
+        try {
+            $log = ProjectPageUserChat::create([
+                'content_id' => null,
+                'post_back' => $postback,
+                'from_platform' => false,
+                'mesg' => $mesgText,
+                'mesg_id' => isset($input['entry'][0]['messaging'][0]['message']['mid']) ? $input['entry'][0]['messaging'][0]['message']['mid'] : '',
+                'project_page_user_id' => $this->user->id,
+                'is_send' => false,
+                'ignore' => $ignore
+            ]);
+        } catch(\Exception $e) {
+            DB::rollback();
+            return [
+                'status' => false,
+                'type' => 'um-record',
+                'mesg' => 'Failed to record mesg!',
+                'debugMesg' => $e->getMessage()
+            ];
+        }
+        DB::commit();
+
+        if($this->user->live_chat) {
+            return [
+                'status' => true,
+                'type' => '',
+                'data' => []
+            ];
+        }
         
         if($welcome===false) {
             $log;
@@ -135,30 +166,6 @@ class ChatBotProjectController extends Controller
                     }
                 }
             }
-
-            DB::beginTransaction();
-            try {
-                $log = ProjectPageUserChat::create([
-                    'content_id' => null,
-                    'post_back' => $postback,
-                    'from_platform' => false,
-                    'mesg' => $mesgText,
-                    'mesg_id' => isset($input['entry'][0]['messaging'][0]['message']['mid']) ? $input['entry'][0]['messaging'][0]['message']['mid'] : '',
-                    'project_page_user_id' => $this->user->id,
-                    'is_send' => false,
-                    'ignore' => $ignore
-                ]);
-            } catch(\Exception $e) {
-                DB::rollback();
-                return [
-                    'status' => false,
-                    'type' => 'um-record',
-                    'mesg' => 'Failed to record mesg!',
-                    'debugMesg' => $e->getMessage()
-                ];
-            }
-
-            DB::commit();
         } else {
             $response = $this->getWelcome();
         }

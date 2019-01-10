@@ -12621,6 +12621,7 @@ a.text-dark:focus {
   overflow: auto;
   border-bottom: 1px solid #ebebeb;
   padding: 15px 30px;
+  position: relative;
 }
 
 .chatInfoPanel .chatHisCon .chatContentCon {
@@ -12628,6 +12629,17 @@ a.text-dark:focus {
   display: -ms-flexbox;
   display: flex;
   margin-bottom: 20px;
+}
+
+.chatInfoPanel .chatHisCon .chatContentCon:last-child {
+  margin-bottom: 60px;
+}
+
+.chatInfoPanel .chatHisCon .chatContentCon.sender {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
 }
 
 .chatInfoPanel .chatHisCon .chatContentCon .chatImage {
@@ -12650,6 +12662,55 @@ a.text-dark:focus {
   background: #f7f6f6;
   padding: 10px 20px;
   border-radius: 20px;
+}
+
+.chatInfoPanel .chatHisCon .chatContentCon .chatContent .chatContentBody figure {
+  max-width: 100%;
+  margin: 0;
+}
+
+.chatInfoPanel .chatHisCon .chatContentCon .chatContent .chatContentBody figure img {
+  max-width: 100%;
+}
+
+.chatInfoPanel .chatHisCon .chatContentCon .chatContent .chatContentBody > figure {
+  padding: 15px 0;
+}
+
+.chatInfoPanel .chatHisCon .liveChatButton {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 3px 10px;
+  height: 30px;
+  font-size: 13px;
+  float: right;
+  border: 1px solid #72bb53;
+  border-radius: 5px;
+  position: fixed;
+  bottom: 70px;
+  right: 375px;
+  cursor: pointer;
+}
+
+.chatInfoPanel .chatHisCon .liveChatButton.startLiveChat {
+  background: #72bb53;
+  color: #fff;
+}
+
+.chatInfoPanel .chatHisCon .liveChatButton.stopLiveChat {
+  background: #fff;
+}
+
+.chatInfoPanel .chatHisCon .liveChatButton .material-icons {
+  font-size: 16px;
+  margin-right: 10px;
 }
 
 .chatInfoPanel .chatInputCon {

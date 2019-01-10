@@ -37098,11 +37098,13 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
         this.mesg = '';
         this.page = 1;
         this.mesgList = [];
+        this.firstLoad = true;
     }
     reloadMesg() {
         if (this.$store.state.selectedInbox === -1)
             return;
         this.mesgList = [];
+        this.firstLoad = true;
         this.loadMesg();
     }
     loadMesg() {
@@ -37162,6 +37164,63 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
         });
     }
     processContent(content, type) {
+        let res = '';
+        let jc = '';
+        switch (type) {
+            case (0):
+                res = content;
+                break;
+            case (1):
+                jc = JSON.parse(content);
+                if (undefined === jc.attachement) {
+                    res = jc.text;
+                }
+                break;
+            case (7):
+                jc = JSON.parse(content);
+                if (undefined !== jc.image) {
+                    res = `<figure><img src='${jc.image}'/></figure>`;
+                }
+                break;
+            default:
+                res = type + '/|\\' + content;
+                break;
+        }
+        return res;
+    }
+    startLiveChat() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var data = new FormData();
+            data.append('status', 'true');
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/live-chat`,
+                data: data,
+                method: 'post'
+            }).then((res) => {
+                this.$store.commit('updateInboxChatStatus', {
+                    index: this.$store.state.selectedInbox,
+                    status: true
+                });
+            }).catch((err) => {
+            });
+        });
+    }
+    stopLiveChat() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var data = new FormData();
+            data.append('status', 'false');
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/live-chat`,
+                data: data,
+                method: 'post'
+            }).then((res) => {
+                this.$store.commit('updateInboxChatStatus', {
+                    index: this.$store.state.selectedInbox,
+                    status: false
+                });
+            }).catch((err) => {
+            });
+        });
     }
 };
 __decorate([
@@ -37193,47 +37252,118 @@ var render = function() {
                   _vm.$store.state.selectedInbox > -1
                     ? [
                         _c("div", { staticClass: "chatInfoPanel" }, [
-                          _c(
-                            "div",
-                            { staticClass: "chatHisCon" },
-                            _vm._l(_vm.mesgList, function(mesg, index) {
-                              return _c(
-                                "div",
-                                {
-                                  key: index,
-                                  staticClass: "chatContentCon",
-                                  class: { sender: mesg.isSend }
-                                },
-                                [
-                                  _c("figure", { staticClass: "chatImage" }, [
-                                    _c("img", {
-                                      attrs: {
-                                        src: mesg.isSend
-                                          ? "http://localhost:8087/images/sample/logo.png"
-                                          : _vm.$store.state.inboxList[
-                                              _vm.$store.state.selectedInbox
-                                            ].profile_pic
-                                      }
-                                    })
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "chatContent" }, [
-                                    _c(
-                                      "div",
-                                      { staticClass: "chatContentBody" },
-                                      [
-                                        _vm._v(
-                                          "\n                                    " +
-                                            _vm._s(mesg.mesg) +
-                                            "\n                                "
+                          _c("div", { staticClass: "chatHisCon" }, [
+                            _c(
+                              "div",
+                              { staticClass: "chatHisRoot" },
+                              [
+                                _vm._l(_vm.mesgList, function(mesg, index) {
+                                  return [
+                                    mesg.contentType !== 2 &&
+                                    mesg.contentType !== 3
+                                      ? _c(
+                                          "div",
+                                          {
+                                            key: index,
+                                            staticClass: "chatContentCon",
+                                            class: { sender: mesg.isSend }
+                                          },
+                                          [
+                                            _c(
+                                              "figure",
+                                              { staticClass: "chatImage" },
+                                              [
+                                                _c("img", {
+                                                  attrs: {
+                                                    src: mesg.isSend
+                                                      ? "/images/sample/logo.png"
+                                                      : _vm.$store.state
+                                                          .inboxList[
+                                                          _vm.$store.state
+                                                            .selectedInbox
+                                                        ].profile_pic
+                                                  }
+                                                })
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              { staticClass: "chatContent" },
+                                              [
+                                                _c("div", {
+                                                  staticClass:
+                                                    "chatContentBody",
+                                                  domProps: {
+                                                    innerHTML: _vm._s(
+                                                      _vm.processContent(
+                                                        mesg.mesg,
+                                                        mesg.contentType
+                                                      )
+                                                    )
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          ]
                                         )
-                                      ]
-                                    )
-                                  ])
-                                ]
-                              )
-                            })
-                          ),
+                                      : _vm._e()
+                                  ]
+                                })
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "liveChatAction" }, [
+                              !_vm.$store.state.inboxList[
+                                _vm.$store.state.selectedInbox
+                              ].live_chat
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "liveChatButton startLiveChat",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.startLiveChat()
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "i",
+                                        { staticClass: "material-icons" },
+                                        [_vm._v("check")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("span", [_vm._v("Start a live chat")])
+                                    ]
+                                  )
+                                : _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "liveChatButton stopLiveChat",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.stopLiveChat()
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "i",
+                                        { staticClass: "material-icons" },
+                                        [_vm._v("question_answer")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("span", [_vm._v("Finish live chat")])
+                                    ]
+                                  )
+                            ])
+                          ]),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -37241,45 +37371,54 @@ var render = function() {
                             [
                               _vm.$store.state.projectInfo.publish
                                 ? [
-                                    _c(
-                                      "form",
-                                      {
-                                        staticClass: "chatInputMesgBox",
-                                        on: {
-                                          submit: function($event) {
-                                            $event.preventDefault()
-                                            _vm.sendReply()
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("input", {
-                                          directives: [
+                                    _vm.$store.state.inboxList[
+                                      _vm.$store.state.selectedInbox
+                                    ].live_chat
+                                      ? [
+                                          _c(
+                                            "form",
                                             {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: _vm.mesg,
-                                              expression: "mesg"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "text",
-                                            placeholder: "Send message..."
-                                          },
-                                          domProps: { value: _vm.mesg },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
+                                              staticClass: "chatInputMesgBox",
+                                              on: {
+                                                submit: function($event) {
+                                                  $event.preventDefault()
+                                                  _vm.sendReply()
+                                                }
                                               }
-                                              _vm.mesg = $event.target.value
-                                            }
-                                          }
-                                        })
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _vm._m(0)
+                                            },
+                                            [
+                                              _c("input", {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value: _vm.mesg,
+                                                    expression: "mesg"
+                                                  }
+                                                ],
+                                                attrs: {
+                                                  type: "text",
+                                                  placeholder: "Send message..."
+                                                },
+                                                domProps: { value: _vm.mesg },
+                                                on: {
+                                                  input: function($event) {
+                                                    if (
+                                                      $event.target.composing
+                                                    ) {
+                                                      return
+                                                    }
+                                                    _vm.mesg =
+                                                      $event.target.value
+                                                  }
+                                                }
+                                              })
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _vm._m(0)
+                                        ]
+                                      : [_vm._m(1), _vm._v(" "), _vm._m(2)]
                                   ]
                                 : [
                                     _c(
@@ -37315,10 +37454,10 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "attributeTableRoot" }, [
-                            _vm._m(1),
+                            _vm._m(3),
                             _vm._v(" "),
                             _c("table", { staticClass: "attributeTable" }, [
-                              _vm._m(2),
+                              _vm._m(4),
                               _vm._v(" "),
                               _c(
                                 "tbody",
@@ -37355,27 +37494,47 @@ var render = function() {
                                           ])
                                         }
                                       )
-                                    : [_vm._m(3)]
+                                    : [_vm._m(5)]
                                 ],
                                 2
                               )
                             ]),
                             _vm._v(" "),
-                            _vm._m(4)
+                            _vm._m(6)
                           ]),
                           _vm._v(" "),
                           _c("div", [_vm._v("Note")])
                         ])
                       ]
-                    : [_vm._m(5)]
+                    : [_vm._m(7)]
                 ]
-              : [_vm._m(6)]
+              : [_vm._m(8)]
           ]
     ],
     2
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "chatInputEmoji" }, [
+      _c("i", { staticClass: "material-icons" }, [
+        _vm._v("sentiment_satisfied")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "chatInputMesgBox" }, [
+      _c("input", {
+        attrs: { type: "text", placeholder: "Send message...", disabled: "" }
+      })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -37758,7 +37917,7 @@ var render = function() {
                                   attrs: {
                                     src: user.profile_pic
                                       ? user.profile_pic
-                                      : "http://localhost:8087/images/sample/logo.png"
+                                      : "/images/sample/logo.png"
                                   }
                                 })
                               ]
@@ -37947,6 +38106,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         },
         updateInboxList(state, { inbox }) {
             state.inboxList = inbox;
+        },
+        updateInboxChatStatus(state, { index, status }) {
+            state.inboxList[index].live_chat = status;
         }
     }
 }));

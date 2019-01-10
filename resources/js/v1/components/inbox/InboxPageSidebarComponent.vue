@@ -45,7 +45,7 @@
                 <div class="availableUserList">
                     <div v-for="(user, index) in $store.state.inboxList" :key="index" class="userBriefCon" :class="{'selected': $store.state.selectedInbox===index}">
                         <figure class="userBriefImageCon" @click="selectInbox(index)">
-                            <img :src="user.profile_pic ? user.profile_pic : 'http://localhost:8087/images/sample/logo.png'" class="userBriefImage"/>
+                            <img :src="user.profile_pic ? user.profile_pic : '/images/sample/logo.png'" class="userBriefImage"/>
                         </figure>
                         <div class="userBriefInfoCon">
                             <div class="userBriefContentCon" @click="selectInbox(index)">

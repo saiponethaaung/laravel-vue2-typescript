@@ -8,25 +8,47 @@
                 <template v-if="$store.state.selectedInbox>-1">
                     <div class="chatInfoPanel">
                         <div class="chatHisCon">
-                            <div v-for="(mesg, index) in mesgList" :key="index" class="chatContentCon" :class="{'sender': mesg.isSend}">
-                                <figure class="chatImage">
-                                    <img :src="mesg.isSend ? 'http://localhost:8087/images/sample/logo.png' : $store.state.inboxList[$store.state.selectedInbox].profile_pic"/>
-                                </figure>
-                                <div class="chatContent">
-                                    <div class="chatContentBody">
-                                        {{ mesg.mesg }}
+                            <div class="chatHisRoot">
+                                <template v-for="(mesg, index) in mesgList">
+                                    <div v-if="mesg.contentType!==2 && mesg.contentType!==3" :key="index" class="chatContentCon" :class="{'sender': mesg.isSend}">
+                                        <figure class="chatImage">
+                                            <img :src="mesg.isSend ? '/images/sample/logo.png' : $store.state.inboxList[$store.state.selectedInbox].profile_pic"/>
+                                        </figure>
+                                        <div class="chatContent">
+                                            <div class="chatContentBody" v-html="processContent(mesg.mesg, mesg.contentType)"></div>
+                                        </div>
                                     </div>
-                                </div>
+                                </template>
+                            </div>
+                            <div class="liveChatAction">
+                                <button class="liveChatButton startLiveChat" @click="startLiveChat()" type="button" v-if="!$store.state.inboxList[$store.state.selectedInbox].live_chat">
+                                    <i class="material-icons">check</i>
+                                    <span>Start a live chat</span>
+                                </button>
+                                <button class="liveChatButton stopLiveChat" @click="stopLiveChat()" type="button" v-else>
+                                    <i class="material-icons">question_answer</i>
+                                    <span>Finish live chat</span>
+                                </button>
                             </div>
                         </div>
                         <div class="chatInputCon">
                             <template v-if="$store.state.projectInfo.publish">
-                                <form class="chatInputMesgBox" @submit.prevent="sendReply()">
-                                    <input type="text" v-model="mesg" placeholder="Send message..."/>
-                                </form>
-                                <div class="chatInputEmoji">
-                                    <i class="material-icons">sentiment_satisfied</i>
-                                </div>
+                                <template v-if="$store.state.inboxList[$store.state.selectedInbox].live_chat">
+                                    <form class="chatInputMesgBox" @submit.prevent="sendReply()">
+                                        <input type="text" v-model="mesg" placeholder="Send message..."/>
+                                    </form>
+                                    <div class="chatInputEmoji">
+                                        <i class="material-icons">sentiment_satisfied</i>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div class="chatInputMesgBox">
+                                        <input type="text" placeholder="Send message..." disabled/>
+                                    </div>
+                                    <div class="chatInputEmoji">
+                                        <i class="material-icons">sentiment_satisfied</i>
+                                    </div>
+                                </template>
                             </template>
                             <template v-else>
                                 <div class="chatInputMesgBox">
@@ -127,11 +149,13 @@ export default class InboxPageComponent extends Vue {
     private mesg: string = '';
     private page: number = 1;
     private mesgList: any = [];
+    private firstLoad: boolean = true;
 
     @Watch('$store.state.selectedInbox')
     reloadMesg() {
         if(this.$store.state.selectedInbox===-1) return;
         this.mesgList = [];
+        this.firstLoad = true;
         this.loadMesg();
     }
 
@@ -193,6 +217,70 @@ export default class InboxPageComponent extends Vue {
     }
 
     processContent(content: string, type: number) {
+        let res: string = '';
+        let jc: any = '';
+
+        switch(type) {
+            case(0):
+                res = content;
+                break;
+
+            case(1):
+                jc = JSON.parse(content);
+                if(undefined===jc.attachement) {
+                    res = jc.text;
+                }
+                break;
+
+            case(7):
+                jc = JSON.parse(content);
+                if(undefined!==jc.image) {
+                    res = `<figure><img src='${jc.image}'/></figure>`
+                }
+                break;
+
+            default:
+                res = type+'/|\\'+content;
+                break;
+        }
+
+        return res;
+    }
+
+    async startLiveChat() {
+        var data = new FormData();
+        data.append('status', 'true');
+
+        await Axios({
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/live-chat`,
+            data: data,
+            method: 'post'
+        }).then((res) => {
+            this.$store.commit('updateInboxChatStatus', {
+                index: this.$store.state.selectedInbox,
+                status: true
+            });
+        }).catch((err) => {
+
+        });
+    }
+
+    async stopLiveChat() {
+        var data = new FormData();
+        data.append('status', 'false');
+
+        await Axios({
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/live-chat`,
+            data: data,
+            method: 'post'
+        }).then((res) => {
+            this.$store.commit('updateInboxChatStatus', {
+                index: this.$store.state.selectedInbox,
+                status: false
+            });
+        }).catch((err) => {
+
+        });
 
     }
 }

@@ -174,9 +174,17 @@ $attributePanelWidth: 336px;
         overflow: auto;
         border-bottom: 1px solid $borderPrimary;
         padding: 15px 30px;
+        position: relative;
+
         .chatContentCon {
             display: flex;
             margin-bottom: 20px;
+            &:last-child {
+                margin-bottom: 60px;
+            }
+            &.sender {
+                flex-direction: row-reverse;
+            }
             .chatImage {
                 width: 25px;
                 height: 25px;
@@ -193,7 +201,48 @@ $attributePanelWidth: 336px;
                     background: $primaryChatBackground;
                     padding: 10px 20px;
                     border-radius: 20px;
+                    figure {
+                        max-width: 100%;
+                        margin: 0;
+                        img {
+                            max-width: 100%;
+                        }
+                    }
+
+                    > figure {
+                        padding: 15px 0;
+                    }
                 }
+            }
+        }
+
+        .liveChatButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3px 10px;
+            height: 30px;
+            font-size: 13px;
+            float: right;
+            border: 1px solid $actionBtn1;
+            border-radius: 5px;
+            position: fixed;
+            bottom: 70px;
+            right: 375px;
+            cursor: pointer;
+
+            &.startLiveChat {
+                background: $actionBtn1;
+                color: #fff
+            }
+
+            &.stopLiveChat {
+                background: #fff;
+            }
+
+            .material-icons {
+                font-size: 16px;
+                margin-right:10px;
             }
         }
     }

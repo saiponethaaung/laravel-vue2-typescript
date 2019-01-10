@@ -128,6 +128,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
             Route::group(['prefix' => 'user/{pageUserId}', 'middleware' => 'verifyPorjectPageUser'], function() {
                 Route::get('load-new', 'V1\\Api\\InboxController@getNewMesg');
                 Route::get('load-mesg', 'V1\\Api\\InboxController@getMesg');
+                Route::post('live-chat', 'V1\\Api\\InboxController@changeLiveChatStatus');
                 Route::post('reply', 'V1\\Api\\InboxController@sendReply');
             });
         });

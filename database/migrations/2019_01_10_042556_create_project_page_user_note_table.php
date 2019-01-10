@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserFavProjectPageUserTable extends Migration
+class CreateProjectPageUserNoteTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateUserFavProjectPageUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_fav_project_page_user', function (Blueprint $table) {
+        Schema::create('project_page_user_note', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedBigInteger('project_page_user_id')->nullable()->index();
             $table->unsignedInteger('project_user_id')->nullable()->index();
+            $table->text('note');
             $table->timestamps();
 
             $table->foreign('project_page_user_id')->references('id')->on('project_page_user')->onDelete('cascade');
@@ -31,6 +32,6 @@ class CreateUserFavProjectPageUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_fav_project_page_user');
+        Schema::dropIfExists('project_page_user_note');
     }
 }

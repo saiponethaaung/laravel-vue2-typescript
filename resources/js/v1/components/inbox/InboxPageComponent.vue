@@ -155,7 +155,7 @@ export default class InboxPageComponent extends Vue {
 
     async checkNewMesg() {
         await Axios({
-            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/?last_id=${this.mesgList[this.mesgList.length-1].id}`,
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/load-new?last_id=${this.mesgList[this.mesgList.length-1].id}`,
             method: 'get'
         }).then((res) => {
             this.mesgList = [...this.mesgList, ...res.data.data];

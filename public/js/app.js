@@ -37125,7 +37125,7 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
     checkNewMesg() {
         return __awaiter(this, void 0, void 0, function* () {
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/?last_id=${this.mesgList[this.mesgList.length - 1].id}`,
+                url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/load-new?last_id=${this.mesgList[this.mesgList.length - 1].id}`,
                 method: 'get'
             }).then((res) => {
                 this.mesgList = [...this.mesgList, ...res.data.data];

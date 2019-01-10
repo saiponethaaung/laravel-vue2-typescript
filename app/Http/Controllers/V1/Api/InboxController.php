@@ -20,10 +20,14 @@ class InboxController extends Controller
 
     public function getInboxList(Request $request)
     {
-        $list = ProjectPageUser::with([
+        $list = ProjectPageUser::query();
+        $list->with([
             'attributes',
             'attributes.attrValue'
-        ])->where('project_page_id', $request->attributes->get('project_page')->id)->paginate(20);
+        ]);
+        $list->where('project_page_id', $request->attributes->get('project_page')->id);
+        $list->orderBy('updated_at', 'desc');
+        $list = $list->paginate(20);
         
         $fbc = new FacebookController($request->attributes->get('project_page')->token);
         
@@ -148,6 +152,39 @@ class InboxController extends Controller
 
         try {
             $request->attributes->get('project_page_user')->live_chat = $request->input('status')==='true' ? 1 : 0;
+            $request->attributes->get('project_page_user')->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to change live chat status!'
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
+        ]);
+    }
+
+    public function changeUrgentChatStatus(Request $request)
+    {
+        if(is_null($request->input('status')) || empty($request->input('status')) || !in_array($request->input('status'), ['true', 'false'])) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Action status is required!'
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('project_page_user')->urgent = $request->input('status')==='true' ? 1 : 0;
             $request->attributes->get('project_page_user')->save();
         } catch (\Exception $e) {
             DB::rollback();

@@ -34,7 +34,7 @@
 
                     <div class="chatFilterAction float-right">
                         <div>
-                            <i class="material-icons">label</i>
+                            <img :src="showUrgent ? '/images/icons/urgent_active.png' : '/images/icons/urgent.png' "/>
                         </div>
                         <div>
                             <i class="material-icons">star_border</i>
@@ -43,25 +43,27 @@
                 </div>
 
                 <div class="availableUserList">
-                    <div v-for="(user, index) in $store.state.inboxList" :key="index" class="userBriefCon" :class="{'selected': $store.state.selectedInbox===index}">
-                        <figure class="userBriefImageCon" @click="selectInbox(index)">
-                            <img :src="user.profile_pic ? user.profile_pic : '/images/sample/logo.png'" class="userBriefImage"/>
-                        </figure>
-                        <div class="userBriefInfoCon">
-                            <div class="userBriefContentCon" @click="selectInbox(index)">
-                                <div class="userBriefName">{{ `${user.first_name} ${user.last_name}` }}</div>
-                                <div class="userBriefLastMesg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.</div>
-                            </div>
-                            <div class="userBriefActionCon">
-                                <div>
-                                    <i class="material-icons">label</i>
+                    <template v-for="(user, index) in $store.state.inboxList">
+                        <div v-if="user.live_chat==filters[selectedFilter].state" :key="index" class="userBriefCon" :class="{'selected': $store.state.selectedInbox===index}">
+                            <figure class="userBriefImageCon" @click="selectInbox(index)">
+                                <img :src="user.profile_pic ? user.profile_pic : '/images/sample/logo.png'" class="userBriefImage"/>
+                            </figure>
+                            <div class="userBriefInfoCon">
+                                <div class="userBriefContentCon" @click="selectInbox(index)">
+                                    <div class="userBriefName">{{ `${user.first_name} ${user.last_name}` }}</div>
+                                    <div class="userBriefLastMesg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.</div>
                                 </div>
-                                <div>
-                                    <i class="material-icons">star_border</i>
+                                <div class="userBriefActionCon">
+                                    <div v-on:click="urgentStatus(index)">
+                                        <img :src="user.urgent ? '/images/icons/urgent_active.png' : '/images/icons/urgent.png' "/>
+                                    </div>
+                                    <div>
+                                        <i class="material-icons">star_border</i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </template>
                     <template v-if="loadingInbox">Loading...</template>
                 </div>
             </template>
@@ -78,10 +80,12 @@ export default class InboxPageSidebarComponent extends Vue {
     private filters: any = [
         {
             key: 0,
+            state: 1,
             value: 'Live'
         },
         {
             key: 1,
+            state: 0,
             value: 'Bot'
         },
     ];
@@ -90,6 +94,7 @@ export default class InboxPageSidebarComponent extends Vue {
     private selectedFilter: number = 0;
     private showFilter: boolean = false;
     private loadingInbox: boolean = false;
+    private showUrgent: boolean = false;
     private loadInboxToken: CancelTokenSource = Axios.CancelToken.source();
 
     mounted() {
@@ -137,6 +142,26 @@ export default class InboxPageSidebarComponent extends Vue {
         });
 
         this.loadingInbox = false;
+    }
+
+    async urgentStatus(index: number) {
+        var status = !this.$store.state.inboxList[index].urgent;
+
+        var data = new FormData();
+        data.append('status', status.toString());
+
+        await Axios({
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[index].id}/urgent`,
+            data: data,
+            method: 'post'
+        }).then((res) => {
+            this.$store.commit('updateInboxUrgentStatus', {
+                index: index,
+                status: status
+            });
+        }).catch((err) => {
+
+        });
     }
 }
 </script>

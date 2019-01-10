@@ -50,10 +50,20 @@
     align-items: center;
     justify-content: center;
     height: $standardHeight;
+    width: 50px;
     div {
-        display: inherit;
+        width: 50%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         .material-icons {
             font-size: 18px;
+            cursor: pointer;
+        }
+        img {
+            width: 16px;
+            height: 16px;
             cursor: pointer;
         }
     }
@@ -154,6 +164,11 @@
                         font-size: 18px;
                         cursor: pointer;
                     }
+                    img {
+                        width: 16px;
+                        height: 16px;
+                        cursor: pointer;
+                    }
                 }
             }
         }
@@ -230,6 +245,12 @@ $attributePanelWidth: 336px;
             bottom: 70px;
             right: 375px;
             cursor: pointer;
+
+            img {
+                width: 16px;
+                height: 16px;
+                margin-right: 10px;
+            }
 
             &.startLiveChat {
                 background: $actionBtn1;

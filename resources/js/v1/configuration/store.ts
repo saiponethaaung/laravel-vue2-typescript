@@ -91,6 +91,9 @@ export default new Vuex.Store({
         },
         updateInboxChatStatus(state, { index, status }) {
             state.inboxList[index].live_chat = status;
+        },
+        updateInboxUrgentStatus(state, { index, status }) {
+            state.inboxList[index].urgent = status;
         }
     }
 } as StoreOptions<any>);

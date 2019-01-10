@@ -12463,14 +12463,31 @@ a.text-dark:focus {
       -ms-flex-pack: center;
           justify-content: center;
   height: 36px;
+  width: 50px;
 }
 
 .chatFilterAction div {
-  display: inherit;
+  width: 50%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .chatFilterAction div .material-icons {
   font-size: 18px;
+  cursor: pointer;
+}
+
+.chatFilterAction div img {
+  width: 16px;
+  height: 16px;
   cursor: pointer;
 }
 
@@ -12608,6 +12625,12 @@ a.text-dark:focus {
   cursor: pointer;
 }
 
+.availableUserList .userBriefCon .userBriefInfoCon .userBriefActionCon div img {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
 .chatInfoPanel {
   width: calc(100% - 336px);
   height: inherit;
@@ -12697,6 +12720,12 @@ a.text-dark:focus {
   bottom: 70px;
   right: 375px;
   cursor: pointer;
+}
+
+.chatInfoPanel .chatHisCon .liveChatButton img {
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
 }
 
 .chatInfoPanel .chatHisCon .liveChatButton.startLiveChat {

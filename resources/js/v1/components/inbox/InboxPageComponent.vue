@@ -22,11 +22,11 @@
                             </div>
                             <div class="liveChatAction">
                                 <button class="liveChatButton startLiveChat" @click="startLiveChat()" type="button" v-if="!$store.state.inboxList[$store.state.selectedInbox].live_chat">
-                                    <i class="material-icons">check</i>
+                                    <img src="/images/icons/chat_icon.png"/>
                                     <span>Start a live chat</span>
                                 </button>
                                 <button class="liveChatButton stopLiveChat" @click="stopLiveChat()" type="button" v-else>
-                                    <i class="material-icons">question_answer</i>
+                                    <img src="/images/icons/chat_stop.png"/>
                                     <span>Finish live chat</span>
                                 </button>
                             </div>
@@ -119,7 +119,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div>Note</div>
+                        <!-- <div>Note</div> -->
                     </div>
                 </template>
                 <template v-else>
@@ -211,6 +211,11 @@ export default class InboxPageComponent extends Vue {
         }).then((res) => {
             this.mesg = '';
             this.mesgList.push(res.data.data);
+            if(this.mesgList.length===1) {
+                setTimeout(() => {
+                    this.checkNewMesg();
+                }, 5000);
+            }
         }).catch((err) => {
 
         });
@@ -229,6 +234,8 @@ export default class InboxPageComponent extends Vue {
                 jc = JSON.parse(content);
                 if(undefined===jc.attachement) {
                     res = jc.text;
+                } else {
+                    res = type+'/|\\'+content;
                 }
                 break;
 

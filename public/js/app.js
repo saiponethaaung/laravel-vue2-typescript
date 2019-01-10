@@ -37159,6 +37159,11 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
             }).then((res) => {
                 this.mesg = '';
                 this.mesgList.push(res.data.data);
+                if (this.mesgList.length === 1) {
+                    setTimeout(() => {
+                        this.checkNewMesg();
+                    }, 5000);
+                }
             }).catch((err) => {
             });
         });
@@ -37174,6 +37179,9 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                 jc = JSON.parse(content);
                 if (undefined === jc.attachement) {
                     res = jc.text;
+                }
+                else {
+                    res = type + '/|\\' + content;
                 }
                 break;
             case (7):
@@ -37331,11 +37339,11 @@ var render = function() {
                                       }
                                     },
                                     [
-                                      _c(
-                                        "i",
-                                        { staticClass: "material-icons" },
-                                        [_vm._v("check")]
-                                      ),
+                                      _c("img", {
+                                        attrs: {
+                                          src: "/images/icons/chat_icon.png"
+                                        }
+                                      }),
                                       _vm._v(" "),
                                       _c("span", [_vm._v("Start a live chat")])
                                     ]
@@ -37353,11 +37361,11 @@ var render = function() {
                                       }
                                     },
                                     [
-                                      _c(
-                                        "i",
-                                        { staticClass: "material-icons" },
-                                        [_vm._v("question_answer")]
-                                      ),
+                                      _c("img", {
+                                        attrs: {
+                                          src: "/images/icons/chat_stop.png"
+                                        }
+                                      }),
                                       _vm._v(" "),
                                       _c("span", [_vm._v("Finish live chat")])
                                     ]
@@ -37501,9 +37509,7 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _vm._m(6)
-                          ]),
-                          _vm._v(" "),
-                          _c("div", [_vm._v("Note")])
+                          ])
                         ])
                       ]
                     : [_vm._m(7)]
@@ -37727,10 +37733,12 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
         this.filters = [
             {
                 key: 0,
+                state: 1,
                 value: 'Live'
             },
             {
                 key: 1,
+                state: 0,
                 value: 'Bot'
             },
         ];
@@ -37738,6 +37746,7 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
         this.selectedFilter = 0;
         this.showFilter = false;
         this.loadingInbox = false;
+        this.showUrgent = false;
         this.loadInboxToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
     }
     mounted() {
@@ -37777,6 +37786,24 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
                 });
             });
             this.loadingInbox = false;
+        });
+    }
+    urgentStatus(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var status = !this.$store.state.inboxList[index].urgent;
+            var data = new FormData();
+            data.append('status', status.toString());
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[index].id}/urgent`,
+                data: data,
+                method: 'post'
+            }).then((res) => {
+                this.$store.commit('updateInboxUrgentStatus', {
+                    index: index,
+                    status: status
+                });
+            }).catch((err) => {
+            });
         });
     }
 };
@@ -37883,7 +37910,19 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(0)
+                    _c("div", { staticClass: "chatFilterAction float-right" }, [
+                      _c("div", [
+                        _c("img", {
+                          attrs: {
+                            src: _vm.showUrgent
+                              ? "/images/icons/urgent_active.png"
+                              : "/images/icons/urgent.png"
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(0)
+                    ])
                   ]),
                   _vm._v(" "),
                   _c(
@@ -37891,74 +37930,118 @@ var render = function() {
                     { staticClass: "availableUserList" },
                     [
                       _vm._l(_vm.$store.state.inboxList, function(user, index) {
-                        return _c(
-                          "div",
-                          {
-                            key: index,
-                            staticClass: "userBriefCon",
-                            class: {
-                              selected: _vm.$store.state.selectedInbox === index
-                            }
-                          },
-                          [
-                            _c(
-                              "figure",
-                              {
-                                staticClass: "userBriefImageCon",
-                                on: {
-                                  click: function($event) {
-                                    _vm.selectInbox(index)
-                                  }
-                                }
-                              },
-                              [
-                                _c("img", {
-                                  staticClass: "userBriefImage",
-                                  attrs: {
-                                    src: user.profile_pic
-                                      ? user.profile_pic
-                                      : "/images/sample/logo.png"
-                                  }
-                                })
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "userBriefInfoCon" }, [
-                              _c(
+                        return [
+                          user.live_chat ==
+                          _vm.filters[_vm.selectedFilter].state
+                            ? _c(
                                 "div",
                                 {
-                                  staticClass: "userBriefContentCon",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.selectInbox(index)
-                                    }
+                                  key: index,
+                                  staticClass: "userBriefCon",
+                                  class: {
+                                    selected:
+                                      _vm.$store.state.selectedInbox === index
                                   }
                                 },
                                 [
-                                  _c("div", { staticClass: "userBriefName" }, [
-                                    _vm._v(
-                                      _vm._s(
-                                        user.first_name + " " + user.last_name
-                                      )
-                                    )
-                                  ]),
+                                  _c(
+                                    "figure",
+                                    {
+                                      staticClass: "userBriefImageCon",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.selectInbox(index)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("img", {
+                                        staticClass: "userBriefImage",
+                                        attrs: {
+                                          src: user.profile_pic
+                                            ? user.profile_pic
+                                            : "/images/sample/logo.png"
+                                        }
+                                      })
+                                    ]
+                                  ),
                                   _vm._v(" "),
                                   _c(
                                     "div",
-                                    { staticClass: "userBriefLastMesg" },
+                                    { staticClass: "userBriefInfoCon" },
                                     [
-                                      _vm._v(
-                                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque."
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "userBriefContentCon",
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectInbox(index)
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "userBriefName" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  user.first_name +
+                                                    " " +
+                                                    user.last_name
+                                                )
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "userBriefLastMesg"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque."
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "userBriefActionCon" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.urgentStatus(index)
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _c("img", {
+                                                attrs: {
+                                                  src: user.urgent
+                                                    ? "/images/icons/urgent_active.png"
+                                                    : "/images/icons/urgent.png"
+                                                }
+                                              })
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _vm._m(1, true)
+                                        ]
                                       )
                                     ]
                                   )
                                 ]
-                              ),
-                              _vm._v(" "),
-                              _vm._m(1, true)
-                            ])
-                          ]
-                        )
+                              )
+                            : _vm._e()
+                        ]
                       }),
                       _vm._v(" "),
                       _vm.loadingInbox ? [_vm._v("Loading...")] : _vm._e()
@@ -37977,28 +38060,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "chatFilterAction float-right" }, [
-      _c("div", [
-        _c("i", { staticClass: "material-icons" }, [_vm._v("label")])
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c("i", { staticClass: "material-icons" }, [_vm._v("star_border")])
-      ])
+    return _c("div", [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("star_border")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "userBriefActionCon" }, [
-      _c("div", [
-        _c("i", { staticClass: "material-icons" }, [_vm._v("label")])
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c("i", { staticClass: "material-icons" }, [_vm._v("star_border")])
-      ])
+    return _c("div", [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("star_border")])
     ])
   }
 ]
@@ -38109,6 +38180,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         },
         updateInboxChatStatus(state, { index, status }) {
             state.inboxList[index].live_chat = status;
+        },
+        updateInboxUrgentStatus(state, { index, status }) {
+            state.inboxList[index].urgent = status;
         }
     }
 }));

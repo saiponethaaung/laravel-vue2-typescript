@@ -40,7 +40,7 @@ class ChatBotProjectController extends Controller
     }
 
     // process input from messenger
-    public function process($input=null, $payload=false, $welcome=false, $userid=null, $ignore=false)
+    public function process($input=null, $payload=false, $welcome=false, $userid=null, $ignore=false, $justRecord=false)
     {
         $response = [];
         $userid = isset($input['entry'][0]['messaging'][0]['sender']['id']) ? $input['entry'][0]['messaging'][0]['sender']['id'] : '';
@@ -56,6 +56,17 @@ class ChatBotProjectController extends Controller
 
         $this->user->updated_at = date("Y-m-d H:i:s");
         $this->user->save();
+
+        $log;
+        $postback = '';
+        $mesgText = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : '';
+
+        if($payload) {
+            $mesgText = (String) $input['entry'][0]['messaging'][0]['postback']['title'];
+            $postback = $input['entry'][0]['messaging'][0]['postback']['payload'];
+        } else if(isset($input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'])) {
+            $postback = $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'];
+        }
 
         DB::beginTransaction();
         try {
@@ -80,7 +91,7 @@ class ChatBotProjectController extends Controller
         }
         DB::commit();
 
-        if($this->user->live_chat) {
+        if($this->user->live_chat || $justRecord) {
             return [
                 'status' => true,
                 'type' => '',
@@ -89,13 +100,7 @@ class ChatBotProjectController extends Controller
         }
         
         if($welcome===false) {
-            $log;
-            $mesgText = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : '';
-            $postback = '';
-
             if($payload) {
-                $mesgText = (String) $input['entry'][0]['messaging'][0]['postback']['title'];
-                $postback = $input['entry'][0]['messaging'][0]['postback']['payload'];
                 $py = explode('-', $input['entry'][0]['messaging'][0]['postback']['payload']);
 
                 if(isset($py[1])) {
@@ -116,8 +121,6 @@ class ChatBotProjectController extends Controller
                     }
                 }
             } else if(isset($input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'])) {
-
-                $postback = $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'];
                 $qr = explode('-', $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload']);
                 $content = ChatBlockSectionContent::with('section')->find($qr[1]);
 

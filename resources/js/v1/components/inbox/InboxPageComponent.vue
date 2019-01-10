@@ -147,7 +147,7 @@ export default class InboxPageComponent extends Vue {
 
             setTimeout(() => {
                 this.checkNewMesg();
-            }, 15000);
+            }, 5000);
         }).catch((err) => {
 
         });
@@ -165,11 +165,11 @@ export default class InboxPageComponent extends Vue {
 
             setTimeout(() => {
                 this.checkNewMesg();
-            }, 15000);
+            }, 5000);
         }).catch((err) => {
             setTimeout(() => {
                 this.checkNewMesg();
-            }, 15000);
+            }, 5000);
         });
     }
     

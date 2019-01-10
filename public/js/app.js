@@ -37117,7 +37117,7 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                 });
                 setTimeout(() => {
                     this.checkNewMesg();
-                }, 15000);
+                }, 5000);
             }).catch((err) => {
             });
         });
@@ -37134,11 +37134,11 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                 });
                 setTimeout(() => {
                     this.checkNewMesg();
-                }, 15000);
+                }, 5000);
             }).catch((err) => {
                 setTimeout(() => {
                     this.checkNewMesg();
-                }, 15000);
+                }, 5000);
             });
         });
     }

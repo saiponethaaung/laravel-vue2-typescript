@@ -92,6 +92,15 @@ export default class InboxPageSidebarComponent extends Vue {
     private loadingInbox: boolean = false;
     private loadInboxToken: CancelTokenSource = Axios.CancelToken.source();
 
+    mounted() {
+        this.$store.commit('updateSelectedInbox', {
+            selected: -1
+        });
+        this.$store.commit('updateInboxList', {
+            inbox: []
+        });
+    }
+
     private selectInbox(index: number) {
         this.$store.commit('updateSelectedInbox', {
             selected: index

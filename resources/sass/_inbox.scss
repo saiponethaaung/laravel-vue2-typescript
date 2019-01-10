@@ -173,6 +173,29 @@ $attributePanelWidth: 336px;
         height: calc(100% - 60px);
         overflow: auto;
         border-bottom: 1px solid $borderPrimary;
+        padding: 15px 30px;
+        .chatContentCon {
+            display: flex;
+            margin-bottom: 20px;
+            .chatImage {
+                width: 25px;
+                height: 25px;
+                img {
+                    width: inherit;
+                    height: inherit;
+                    border-radius: 100%;
+                }
+            }
+            .chatContent {
+                max-width: calc(100% - 120px);
+                padding: 0 15px;
+                .chatContentBody {
+                    background: $primaryChatBackground;
+                    padding: 10px 20px;
+                    border-radius: 20px;
+                }
+            }
+        }
     }
 
     .chatInputCon{

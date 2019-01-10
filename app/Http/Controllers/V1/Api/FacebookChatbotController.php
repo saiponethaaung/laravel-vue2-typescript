@@ -319,10 +319,12 @@ class FacebookChatbotController extends Controller
                             'content_id' => $mesg['content_id'],
                             'post_back' => '',
                             'from_platform' => true,
-                            'mesg' => '',
+                            'mesg' => json_encode($mesg['data']),
                             'mesg_id' => '',
                             'project_page_user_id' => $messages['userid'],
                             'is_send' => true,
+                            'is_live' => false,
+                            'content_type' => $mesg['type']
                         ];
 
                         switch($mesg['type']) {

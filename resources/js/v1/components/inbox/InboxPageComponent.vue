@@ -8,7 +8,16 @@
                 <template v-if="$store.state.selectedInbox>-1">
                     <div class="chatInfoPanel">
                         <div class="chatHisCon">
-                            Reply content
+                            <div v-for="(mesg, index) in mesgList" :key="index" class="chatContentCon" :class="{'sender': mesg.isSend}">
+                                <figure class="chatImage">
+                                    <img :src="mesg.isSend ? 'http://localhost:8087/images/sample/logo.png' : $store.state.inboxList[$store.state.selectedInbox].profile_pic"/>
+                                </figure>
+                                <div class="chatContent">
+                                    <div class="chatContentBody">
+                                        {{ mesg.mesg }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="chatInputCon">
                             <template v-if="$store.state.projectInfo.publish">
@@ -116,7 +125,53 @@ import Axios from 'axios';
 export default class InboxPageComponent extends Vue {
 
     private mesg: string = '';
-    private mesgList: any = '';
+    private page: number = 1;
+    private mesgList: any = [];
+
+    @Watch('$store.state.selectedInbox')
+    reloadMesg() {
+        if(this.$store.state.selectedInbox===-1) return;
+        this.mesgList = [];
+        this.loadMesg();
+    }
+
+    async loadMesg() {
+        await Axios({
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/load-mesg`,
+            method: 'get'
+        }).then((res) => {
+            this.mesgList = res.data.data;
+            this.mesgList.sort((a:any, b:any) => {
+                return a.id>b.id;
+            });
+
+            setTimeout(() => {
+                this.checkNewMesg();
+            }, 15000);
+        }).catch((err) => {
+
+        });
+    }
+
+    async checkNewMesg() {
+        await Axios({
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/?last_id=${this.mesgList[this.mesgList.length-1].id}`,
+            method: 'get'
+        }).then((res) => {
+            this.mesgList = [...this.mesgList, ...res.data.data];
+            this.mesgList.sort((a:any, b:any) => {
+                return a.id>b.id;
+            });
+
+            setTimeout(() => {
+                this.checkNewMesg();
+            }, 15000);
+        }).catch((err) => {
+            setTimeout(() => {
+                this.checkNewMesg();
+            }, 15000);
+        });
+    }
     
     async sendReply() {
         if(this.mesg==='') return;
@@ -130,9 +185,14 @@ export default class InboxPageComponent extends Vue {
             method: 'post'
         }).then((res) => {
             this.mesg = '';
+            this.mesgList.push(res.data.data);
         }).catch((err) => {
 
         });
+    }
+
+    processContent(content: string, type: number) {
+
     }
 }
 </script>

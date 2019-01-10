@@ -53,6 +53,9 @@ class ChatBotProjectController extends Controller
         if(!$recordUser['status']) {
             return $recordUser;
         }
+
+        $this->user->updated_at = date("Y-m-d H:i:s");
+        $this->user->save();
         
         if($welcome===false) {
             $log;

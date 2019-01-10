@@ -126,8 +126,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::group(['prefix' => 'chat', 'middleware' => 'verifyPorjectHasPage'], function() {
             Route::get('user', 'V1\\Api\\InboxController@getInboxList');
             Route::group(['prefix' => 'user/{pageUserId}', 'middleware' => 'verifyPorjectPageUser'], function() {
-                Route::get('load-new', 'V1\\Api\\InboxController@sendReply');
-                Route::get('load-mesg', 'V1\\Api\\InboxController@sendReply');
+                Route::get('load-new', 'V1\\Api\\InboxController@getNewMesg');
+                Route::get('load-mesg', 'V1\\Api\\InboxController@getMesg');
                 Route::post('reply', 'V1\\Api\\InboxController@sendReply');
             });
         });

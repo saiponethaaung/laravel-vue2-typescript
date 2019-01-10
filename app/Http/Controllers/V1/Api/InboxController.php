@@ -6,11 +6,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\ProjectPageUser;
+use App\Models\ProjectPageUserChat;
 
 use App\Http\Controllers\V1\Api\FacebookController;
 
+use App\Traits\Format\ChatHistoryFormat;
+
 class InboxController extends Controller
 {
+    use ChatHistoryFormat;
+
     public function getInboxList(Request $request)
     {
         $list = ProjectPageUser::with([
@@ -75,7 +80,55 @@ class InboxController extends Controller
         if($send['status'] === false) {
             return response()->json($send, $send['code']);
         }
+
+        $response = ProjectPageUserChat::create([
+            'content_id' => null,
+            'post_back' => false,
+            'from_platform' => true,
+            'mesg' => $request->input('mesg'),
+            'mesg_id' => $send['data']['message_id'],
+            'project_page_user_id' => $request->attributes->get('project_page_user')->id,
+            'is_send' => true,
+            'is_live' => true,
+            'ignore' => false,
+            'content_type' => 0
+        ]);
         
-        return response()->json($send);
+        return response()->json([
+            $send,
+            'data' => $this->formatChat($response)
+        ]);
+    }
+
+    public function getMesg(Request $request)
+    {
+        $list = ProjectPageUserChat::where('project_page_user_id', $request->attributes->get('project_page_user')->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+        $res = [];
+
+        foreach($list as $chat) {
+            $res[] = $this->formatChat($chat);
+        }
+        return response()->json([
+            'data' => $res
+        ]);
+    }
+
+    public function getNewMesg(Request $request)
+    {
+        $list = ProjectPageUserChat::where('project_page_user_id', $request->attributes->get('project_page_user')->id)
+            ->where('id', '>', $request->input('last_id'))
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $res = [];
+
+        foreach($list as $chat) {
+            $res[] = $this->formatChat($chat);
+        }
+
+        return response()->json([
+            'data' => $res
+        ]);
     }
 }

@@ -37096,7 +37096,51 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
     constructor() {
         super(...arguments);
         this.mesg = '';
-        this.mesgList = '';
+        this.page = 1;
+        this.mesgList = [];
+    }
+    reloadMesg() {
+        if (this.$store.state.selectedInbox === -1)
+            return;
+        this.mesgList = [];
+        this.loadMesg();
+    }
+    loadMesg() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/load-mesg`,
+                method: 'get'
+            }).then((res) => {
+                this.mesgList = res.data.data;
+                this.mesgList.sort((a, b) => {
+                    return a.id > b.id;
+                });
+                setTimeout(() => {
+                    this.checkNewMesg();
+                }, 15000);
+            }).catch((err) => {
+            });
+        });
+    }
+    checkNewMesg() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/?last_id=${this.mesgList[this.mesgList.length - 1].id}`,
+                method: 'get'
+            }).then((res) => {
+                this.mesgList = [...this.mesgList, ...res.data.data];
+                this.mesgList.sort((a, b) => {
+                    return a.id > b.id;
+                });
+                setTimeout(() => {
+                    this.checkNewMesg();
+                }, 15000);
+            }).catch((err) => {
+                setTimeout(() => {
+                    this.checkNewMesg();
+                }, 15000);
+            });
+        });
     }
     sendReply() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -37110,11 +37154,17 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                 method: 'post'
             }).then((res) => {
                 this.mesg = '';
+                this.mesgList.push(res.data.data);
             }).catch((err) => {
             });
         });
     }
+    processContent(content, type) {
+    }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.selectedInbox')
+], InboxPageComponent.prototype, "reloadMesg", null);
 InboxPageComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
 ], InboxPageComponent);
@@ -37141,11 +37191,47 @@ var render = function() {
                   _vm.$store.state.selectedInbox > -1
                     ? [
                         _c("div", { staticClass: "chatInfoPanel" }, [
-                          _c("div", { staticClass: "chatHisCon" }, [
-                            _vm._v(
-                              "\n                        Reply content\n                    "
-                            )
-                          ]),
+                          _c(
+                            "div",
+                            { staticClass: "chatHisCon" },
+                            _vm._l(_vm.mesgList, function(mesg, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  staticClass: "chatContentCon",
+                                  class: { sender: mesg.isSend }
+                                },
+                                [
+                                  _c("figure", { staticClass: "chatImage" }, [
+                                    _c("img", {
+                                      attrs: {
+                                        src: mesg.isSend
+                                          ? "http://localhost:8087/images/sample/logo.png"
+                                          : _vm.$store.state.inboxList[
+                                              _vm.$store.state.selectedInbox
+                                            ].profile_pic
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "chatContent" }, [
+                                    _c(
+                                      "div",
+                                      { staticClass: "chatContentBody" },
+                                      [
+                                        _vm._v(
+                                          "\n                                    " +
+                                            _vm._s(mesg.mesg) +
+                                            "\n                                "
+                                        )
+                                      ]
+                                    )
+                                  ])
+                                ]
+                              )
+                            })
+                          ),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -37492,6 +37578,14 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
         this.showFilter = false;
         this.loadingInbox = false;
         this.loadInboxToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+    }
+    mounted() {
+        this.$store.commit('updateSelectedInbox', {
+            selected: -1
+        });
+        this.$store.commit('updateInboxList', {
+            inbox: []
+        });
     }
     selectInbox(index) {
         this.$store.commit('updateSelectedInbox', {

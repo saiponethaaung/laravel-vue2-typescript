@@ -37209,6 +37209,7 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                     index: this.$store.state.selectedInbox,
                     status: true
                 });
+                this.$store.state.chatFilter = 0;
             }).catch((err) => {
             });
         });
@@ -37226,6 +37227,7 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                     index: this.$store.state.selectedInbox,
                     status: false
                 });
+                this.$store.state.chatFilter = 1;
             }).catch((err) => {
             });
         });
@@ -37743,7 +37745,6 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
             },
         ];
         this.pageId = "";
-        this.selectedFilter = 0;
         this.showFilter = false;
         this.loadingInbox = false;
         this.showUrgent = false;
@@ -37845,7 +37846,9 @@ var render = function() {
                             { staticClass: "inboxSelectedOptionValue" },
                             [
                               _vm._v(
-                                _vm._s(_vm.filters[_vm.selectedFilter].value)
+                                _vm._s(
+                                  _vm.filters[_vm.$store.state.chatFilter].value
+                                )
                               )
                             ]
                           ),
@@ -37880,7 +37883,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _vm.showFilter
-                          ? _c("div", [
+                          ? _c("div", { staticClass: "inboxOptionsCon" }, [
                               _c(
                                 "ul",
                                 _vm._l(_vm.filters, function(filter, index) {
@@ -37890,7 +37893,8 @@ var render = function() {
                                       key: index,
                                       on: {
                                         click: function($event) {
-                                          _vm.selectedFilter = index
+                                          _vm.$store.state.chatFilter = index
+                                          _vm.$store.state.selectedInbox = -1
                                           _vm.showFilter = false
                                         }
                                       }
@@ -37932,7 +37936,7 @@ var render = function() {
                       _vm._l(_vm.$store.state.inboxList, function(user, index) {
                         return [
                           user.live_chat ==
-                          _vm.filters[_vm.selectedFilter].state
+                          _vm.filters[_vm.$store.state.chatFilter].state
                             ? _c(
                                 "div",
                                 {
@@ -38118,6 +38122,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         fbSdk: false,
         selectedInbox: -1,
         inboxList: [],
+        chatFilter: 0
     },
     mutations: {
         logout(state) {

@@ -10,7 +10,7 @@
                         <div class="inboxOptionTitle">Inbox:</div>
                         <div class="inboxOptionSelector">
                             <div class="inboxSelectedOption">
-                                <span class="inboxSelectedOptionValue">{{ filters[selectedFilter].value }}</span>
+                                <span class="inboxSelectedOptionValue">{{ filters[$store.state.chatFilter].value }}</span>
                                 <span class="inboxFilterOptionIcon">
                                     <i class="material-icons" @click="showFilter=!showFilter">
                                         <template v-if="showFilter">
@@ -22,9 +22,9 @@
                                     </i>
                                 </span>
                             </div>
-                            <div v-if="showFilter">
+                            <div class="inboxOptionsCon" v-if="showFilter">
                                 <ul>
-                                    <li v-for="(filter, index) in filters" :key="index" @click="selectedFilter=index;showFilter=false">
+                                    <li v-for="(filter, index) in filters" :key="index" @click="$store.state.chatFilter=index;$store.state.selectedInbox=-1;showFilter=false">
                                         {{ filter.value }}
                                     </li>
                                 </ul>
@@ -44,7 +44,7 @@
 
                 <div class="availableUserList">
                     <template v-for="(user, index) in $store.state.inboxList">
-                        <div v-if="user.live_chat==filters[selectedFilter].state" :key="index" class="userBriefCon" :class="{'selected': $store.state.selectedInbox===index}">
+                        <div v-if="user.live_chat==filters[$store.state.chatFilter].state" :key="index" class="userBriefCon" :class="{'selected': $store.state.selectedInbox===index}">
                             <figure class="userBriefImageCon" @click="selectInbox(index)">
                                 <img :src="user.profile_pic ? user.profile_pic : '/images/sample/logo.png'" class="userBriefImage"/>
                             </figure>
@@ -91,7 +91,6 @@ export default class InboxPageSidebarComponent extends Vue {
     ];
 
     private pageId: any = "";
-    private selectedFilter: number = 0;
     private showFilter: boolean = false;
     private loadingInbox: boolean = false;
     private showUrgent: boolean = false;

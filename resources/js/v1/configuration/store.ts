@@ -29,6 +29,7 @@ export default new Vuex.Store({
         fbSdk: false,
         selectedInbox: -1,
         inboxList: [],
+        chatFilter: 0
     },
     mutations: {
         logout(state) {

@@ -267,6 +267,7 @@ export default class InboxPageComponent extends Vue {
                 index: this.$store.state.selectedInbox,
                 status: true
             });
+            this.$store.state.chatFilter = 0;
         }).catch((err) => {
 
         });
@@ -285,6 +286,7 @@ export default class InboxPageComponent extends Vue {
                 index: this.$store.state.selectedInbox,
                 status: false
             });
+            this.$store.state.chatFilter = 1;
         }).catch((err) => {
 
         });

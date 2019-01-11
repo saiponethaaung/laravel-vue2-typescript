@@ -15,7 +15,10 @@
                                             <img :src="mesg.isSend ? '/images/sample/logo.png' : $store.state.inboxList[$store.state.selectedInbox].profile_pic"/>
                                         </figure>
                                         <div class="chatContent">
-                                            <template v-if="mesg.contentType===5">
+                                            <template v-if="mesg.contentType===1">
+                                                <text-template-component :content="JSON.parse(mesg.mesg)"></text-template-component>
+                                            </template>
+                                            <template v-else-if="mesg.contentType===5">
                                                 <list-template-component :content="JSON.parse(mesg.mesg)"></list-template-component>
                                             </template>
                                             <template v-else-if="mesg.contentType===6">
@@ -153,11 +156,13 @@ import Axios from 'axios';
 
 import GalleryTemplateComponent from './builder/GalleryTemplateComponent.vue';
 import ListTemplateComponent from './builder/ListTemplateComponent.vue';
+import TextTemplateComponent from './builder/TextTemplateComponent.vue';
 
 @Component({
     components: {
         GalleryTemplateComponent,
-        ListTemplateComponent
+        ListTemplateComponent,
+        TextTemplateComponent
     }
 })
 export default class InboxPageComponent extends Vue {

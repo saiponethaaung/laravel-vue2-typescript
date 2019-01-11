@@ -11526,6 +11526,11 @@ a:hover {
   position: relative;
 }
 
+.botTextComponent p {
+  margin: 0;
+  padding: 10px;
+}
+
 .textBody {
   resize: none;
   padding: 3px;
@@ -12728,6 +12733,7 @@ a:hover {
 
 .chatInfoPanel .chatHisCon .chatContentCon .chatContent .componentTypeOne {
   overflow: auto;
+  padding-bottom: 30px;
 }
 
 .chatInfoPanel .chatHisCon .chatContentCon .chatContent .chatContentBody {

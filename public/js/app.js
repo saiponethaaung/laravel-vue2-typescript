@@ -37080,6 +37080,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__builder_GalleryTemplateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__builder_GalleryTemplateComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__builder_TextTemplateComponent_vue__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__builder_TextTemplateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__builder_TextTemplateComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -37094,6 +37096,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -37250,7 +37253,8 @@ InboxPageComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {
             GalleryTemplateComponent: __WEBPACK_IMPORTED_MODULE_2__builder_GalleryTemplateComponent_vue___default.a,
-            ListTemplateComponent: __WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue___default.a
+            ListTemplateComponent: __WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue___default.a,
+            TextTemplateComponent: __WEBPACK_IMPORTED_MODULE_4__builder_TextTemplateComponent_vue___default.a
         }
     })
 ], InboxPageComponent);
@@ -37316,7 +37320,20 @@ var render = function() {
                                               "div",
                                               { staticClass: "chatContent" },
                                               [
-                                                mesg.contentType === 5
+                                                mesg.contentType === 1
+                                                  ? [
+                                                      _c(
+                                                        "text-template-component",
+                                                        {
+                                                          attrs: {
+                                                            content: JSON.parse(
+                                                              mesg.mesg
+                                                            )
+                                                          }
+                                                        }
+                                                      )
+                                                    ]
+                                                  : mesg.contentType === 5
                                                   ? [
                                                       _c(
                                                         "list-template-component",
@@ -45127,6 +45144,195 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-a4aec256", module.exports)
+  }
+}
+
+/***/ }),
+/* 146 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(147)
+/* template */
+var __vue_template__ = __webpack_require__(148)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/inbox/builder/TextTemplateComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-521cc9a6", Component.options)
+  } else {
+    hotAPI.reload("data-v-521cc9a6", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 147 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+let TextTemplateComponent = class TextTemplateComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], TextTemplateComponent.prototype, "content", void 0);
+TextTemplateComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], TextTemplateComponent);
+/* harmony default export */ __webpack_exports__["default"] = (TextTemplateComponent);
+
+
+/***/ }),
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      undefined == _vm.content.attachment
+        ? [
+            _c("div", { staticClass: "chatContentBody" }, [
+              _vm._v(_vm._s(_vm.content.text))
+            ])
+          ]
+        : [
+            undefined !== _vm.content.attachment.payload.buttons &&
+            undefined !== _vm.content.attachment.payload.buttons.length > 0
+              ? [
+                  _c("div", { staticClass: "componentTypeOne" }, [
+                    _c("div", { staticClass: "botTextComponent" }, [
+                      _c("p", [
+                        _vm._v(_vm._s(_vm.content.attachment.payload.text))
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "textBtn" },
+                        _vm._l(_vm.content.attachment.payload.buttons, function(
+                          button,
+                          index
+                        ) {
+                          return _c(
+                            "div",
+                            { key: index, staticClass: "addBtn btnCon" },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "buttonActionGroup",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.content.btnEditIndex = index
+                                    }
+                                  }
+                                },
+                                [
+                                  button.type === "postback"
+                                    ? [_vm._v(_vm._s(button.title))]
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  button.type === "web_url"
+                                    ? [
+                                        _c(
+                                          "a",
+                                          { attrs: { href: button.url } },
+                                          [_vm._v(_vm._s(button.title))]
+                                        )
+                                      ]
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  button.type === "phone_number"
+                                    ? [
+                                        _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              href: "tel:" + button.payload
+                                            }
+                                          },
+                                          [_vm._v(_vm._s(button.title))]
+                                        )
+                                      ]
+                                    : _vm._e()
+                                ],
+                                2
+                              )
+                            ]
+                          )
+                        })
+                      ),
+                      _vm._v(" "),
+                      _vm.content.isUpdating
+                        ? _c("div", { staticClass: "loadingConV1" }, [
+                            _c(
+                              "div",
+                              { staticClass: "loadingInnerConV1" },
+                              [_c("loading-component")],
+                              1
+                            )
+                          ])
+                        : _vm._e()
+                    ])
+                  ])
+                ]
+              : [
+                  _c("div", { staticClass: "chatContentBody" }, [
+                    _vm._v(_vm._s(_vm.content.attachment.payload.text))
+                  ])
+                ]
+          ]
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-521cc9a6", module.exports)
   }
 }
 

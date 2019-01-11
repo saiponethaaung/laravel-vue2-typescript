@@ -37076,6 +37076,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__builder_GalleryTemplateComponent_vue__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__builder_GalleryTemplateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__builder_GalleryTemplateComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -37090,6 +37094,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
+
 
 
 let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
@@ -37173,16 +37179,20 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
         let jc = '';
         switch (type) {
             case (0):
-                res = content;
+                res = `<div class="chatContentBody">${content}</div>`;
                 break;
             case (1):
                 jc = JSON.parse(content);
                 if (undefined === jc.attachement) {
-                    res = jc.text;
+                    res = `<div class="chatContentBody">${jc.text}</div>`;
                 }
                 else {
                     res = type + '/|\\' + content;
                 }
+                break;
+            case (4):
+                jc = JSON.parse(content);
+                res = `<div class="chatContentBody">${jc.text}</div>`;
                 break;
             case (7):
                 jc = JSON.parse(content);
@@ -37237,7 +37247,12 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.selectedInbox')
 ], InboxPageComponent.prototype, "reloadMesg", null);
 InboxPageComponent = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
+        components: {
+            GalleryTemplateComponent: __WEBPACK_IMPORTED_MODULE_2__builder_GalleryTemplateComponent_vue___default.a,
+            ListTemplateComponent: __WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue___default.a
+        }
+    })
 ], InboxPageComponent);
 /* harmony default export */ __webpack_exports__["default"] = (InboxPageComponent);
 
@@ -37301,19 +37316,46 @@ var render = function() {
                                               "div",
                                               { staticClass: "chatContent" },
                                               [
-                                                _c("div", {
-                                                  staticClass:
-                                                    "chatContentBody",
-                                                  domProps: {
-                                                    innerHTML: _vm._s(
-                                                      _vm.processContent(
-                                                        mesg.mesg,
-                                                        mesg.contentType
+                                                mesg.contentType === 5
+                                                  ? [
+                                                      _c(
+                                                        "list-template-component",
+                                                        {
+                                                          attrs: {
+                                                            content: JSON.parse(
+                                                              mesg.mesg
+                                                            )
+                                                          }
+                                                        }
                                                       )
-                                                    )
-                                                  }
-                                                })
-                                              ]
+                                                    ]
+                                                  : mesg.contentType === 6
+                                                  ? [
+                                                      _c(
+                                                        "gallery-template-component",
+                                                        {
+                                                          attrs: {
+                                                            content: JSON.parse(
+                                                              mesg.mesg
+                                                            )
+                                                          }
+                                                        }
+                                                      )
+                                                    ]
+                                                  : [
+                                                      _c("div", {
+                                                        domProps: {
+                                                          innerHTML: _vm._s(
+                                                            _vm.processContent(
+                                                              mesg.mesg,
+                                                              mesg.contentType
+                                                            )
+                                                          )
+                                                        }
+                                                      })
+                                                    ]
+                                              ],
+                                              2
                                             )
                                           ]
                                         )
@@ -37324,55 +37366,61 @@ var render = function() {
                               2
                             ),
                             _vm._v(" "),
-                            _c("div", { staticClass: "liveChatAction" }, [
-                              !_vm.$store.state.inboxList[
-                                _vm.$store.state.selectedInbox
-                              ].live_chat
-                                ? _c(
-                                    "button",
-                                    {
-                                      staticClass:
-                                        "liveChatButton startLiveChat",
-                                      attrs: { type: "button" },
-                                      on: {
-                                        click: function($event) {
-                                          _vm.startLiveChat()
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c("img", {
-                                        attrs: {
-                                          src: "/images/icons/chat_icon.png"
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("span", [_vm._v("Start a live chat")])
-                                    ]
-                                  )
-                                : _c(
-                                    "button",
-                                    {
-                                      staticClass:
-                                        "liveChatButton stopLiveChat",
-                                      attrs: { type: "button" },
-                                      on: {
-                                        click: function($event) {
-                                          _vm.stopLiveChat()
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c("img", {
-                                        attrs: {
-                                          src: "/images/icons/chat_stop.png"
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("span", [_vm._v("Finish live chat")])
-                                    ]
-                                  )
-                            ])
+                            _vm.$store.state.projectInfo.publish
+                              ? _c("div", { staticClass: "liveChatAction" }, [
+                                  !_vm.$store.state.inboxList[
+                                    _vm.$store.state.selectedInbox
+                                  ].live_chat
+                                    ? _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "liveChatButton startLiveChat",
+                                          attrs: { type: "button" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.startLiveChat()
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("img", {
+                                            attrs: {
+                                              src: "/images/icons/chat_icon.png"
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("span", [
+                                            _vm._v("Start a live chat")
+                                          ])
+                                        ]
+                                      )
+                                    : _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "liveChatButton stopLiveChat",
+                                          attrs: { type: "button" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.stopLiveChat()
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("img", {
+                                            attrs: {
+                                              src: "/images/icons/chat_stop.png"
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("span", [
+                                            _vm._v("Finish live chat")
+                                          ])
+                                        ]
+                                      )
+                                ])
+                              : _vm._e()
                           ]),
                           _vm._v(" "),
                           _c(
@@ -44643,6 +44691,444 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(141)
+/* template */
+var __vue_template__ = __webpack_require__(142)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/inbox/builder/GalleryTemplateComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c233451e", Component.options)
+  } else {
+    hotAPI.reload("data-v-c233451e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 141 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+let GalleryTemplateComponent = class GalleryTemplateComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], GalleryTemplateComponent.prototype, "content", void 0);
+GalleryTemplateComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], GalleryTemplateComponent);
+/* harmony default export */ __webpack_exports__["default"] = (GalleryTemplateComponent);
+
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "componentTypeOne" }, [
+    _c("div", { staticClass: "galleListComponentRoot" }, [
+      _c(
+        "ul",
+        { staticClass: "galleListRoot" },
+        _vm._l(_vm.content.attachment.payload.elements, function(galle, index) {
+          return _c("li", { key: index, staticClass: "galleListItem" }, [
+            _c("div", { staticClass: "chatGalleryContainer" }, [
+              galle.image_url
+                ? _c("figure", { staticClass: "chatGalleryImage" }, [
+                    _c("div", { staticClass: "imageCon" }, [
+                      _c("img", { attrs: { src: galle.image_url } })
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "chatGalleryContent" }, [
+                _c("div", [
+                  _c("div", { staticClass: "displayBox" }, [
+                    _vm._v(_vm._s(galle.title))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("div", { staticClass: "displayBox" }, [
+                    _vm._v(_vm._s(galle.subtitle))
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              undefined !== galle.buttons && galle.buttons.length > 0
+                ? _c(
+                    "div",
+                    { staticClass: "chatGalleryButtons" },
+                    _vm._l(galle.buttons, function(button, sindex) {
+                      return _c(
+                        "div",
+                        { key: sindex, staticClass: "addBtn btnCon" },
+                        [
+                          button.type === "postback"
+                            ? _c("div", { staticClass: "buttonActionGroup" }, [
+                                _c("div", { staticClass: "buttonName" }, [
+                                  _vm._v(_vm._s(button.title))
+                                ])
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          button.type === "web_url"
+                            ? _c(
+                                "a",
+                                {
+                                  staticClass: "buttonActionGroup",
+                                  attrs: { href: button.url }
+                                },
+                                [
+                                  _c("div", { staticClass: "buttonName" }, [
+                                    _vm._v(_vm._s(button.title))
+                                  ])
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          button.type === "phone_number"
+                            ? _c(
+                                "a",
+                                {
+                                  staticClass: "buttonActionGroup",
+                                  attrs: { href: "tel:" + button.payload }
+                                },
+                                [
+                                  _c("div", { staticClass: "buttonName" }, [
+                                    _vm._v(_vm._s(button.title))
+                                  ])
+                                ]
+                              )
+                            : _vm._e()
+                        ]
+                      )
+                    })
+                  )
+                : _vm._e()
+            ])
+          ])
+        })
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c233451e", module.exports)
+  }
+}
+
+/***/ }),
+/* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(144)
+/* template */
+var __vue_template__ = __webpack_require__(145)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/inbox/builder/ListTemplateComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a4aec256", Component.options)
+  } else {
+    hotAPI.reload("data-v-a4aec256", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 144 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+let ListTemplateComponent = class ListTemplateComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    mounted() {
+        console.log(this.content);
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], ListTemplateComponent.prototype, "content", void 0);
+ListTemplateComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], ListTemplateComponent);
+/* harmony default export */ __webpack_exports__["default"] = (ListTemplateComponent);
+
+
+/***/ }),
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "componentTypeOne" }, [
+    _c("div", { staticClass: "chatListComponentRoot" }, [
+      _c(
+        "ul",
+        { staticClass: "chatListRoot" },
+        [
+          _vm._l(_vm.content.attachment.payload.elements, function(
+            list,
+            index
+          ) {
+            return _c("li", { key: index, staticClass: "chatListItem" }, [
+              _c("div", { staticClass: "chatListContent" }, [
+                _c("div", { staticClass: "chatListInfo" }, [
+                  _c("div", { staticClass: "chatListInput" }, [
+                    _c("div", [
+                      _c("div", { staticClass: "listDisplayBox" }, [
+                        _vm._v(_vm._s(list.title))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("div", { staticClass: "listDisplayBox" }, [
+                        _vm._v(_vm._s(list.subtitle))
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  list.image_url
+                    ? _c("div", { staticClass: "chatListImage" }, [
+                        _c("figure", [
+                          _c("div", { staticClass: "listItemImageCon" }, [
+                            _c("img", { attrs: { src: list.image_url } })
+                          ])
+                        ])
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                undefined !== list.buttons && undefined !== list.buttons[0]
+                  ? _c(
+                      "div",
+                      { staticClass: "chatListButton listButtonDisplayBox" },
+                      [
+                        list.buttons[0].type === "postback"
+                          ? [_vm._v(_vm._s(list.buttons[0].title))]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        list.buttons[0].type === "web_url"
+                          ? [
+                              _c(
+                                "a",
+                                { attrs: { href: list.buttons[0].url } },
+                                [_vm._v(_vm._s(list.buttons[0].title))]
+                              )
+                            ]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        list.buttons[0].type === "phone_number"
+                          ? [
+                              _c(
+                                "a",
+                                {
+                                  attrs: {
+                                    href: "tel:" + list.buttons[0].payload
+                                  }
+                                },
+                                [_vm._v(_vm._s(list.buttons[0].title))]
+                              )
+                            ]
+                          : _vm._e()
+                      ],
+                      2
+                    )
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "clear" })
+            ])
+          }),
+          _vm._v(" "),
+          undefined !== _vm.content.attachment.payload.buttons &&
+          _vm.content.attachment.payload.buttons.length > 0
+            ? _c("li", { staticClass: "chatListRootButton addBtn" }, [
+                _c("div", { staticClass: "buttonActionGroup" }, [
+                  _c(
+                    "div",
+                    { staticClass: "buttonName" },
+                    [
+                      _vm.content.attachment.payload.buttons[0].type ===
+                      "postback"
+                        ? [
+                            _vm._v(
+                              _vm._s(
+                                _vm.content.attachment.payload.buttons[0].title
+                              )
+                            )
+                          ]
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.content.attachment.payload.buttons[0].type ===
+                      "web_url"
+                        ? [
+                            _c(
+                              "a",
+                              {
+                                attrs: {
+                                  href:
+                                    _vm.content.attachment.payload.buttons[0]
+                                      .url
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.content.attachment.payload.buttons[0]
+                                      .title
+                                  )
+                                )
+                              ]
+                            )
+                          ]
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.content.attachment.payload.buttons[0].type ===
+                      "phone_number"
+                        ? [
+                            _c(
+                              "a",
+                              {
+                                attrs: {
+                                  href:
+                                    "tel:" +
+                                    _vm.content.attachment.payload.buttons[0]
+                                      .payload
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.content.attachment.payload.buttons[0]
+                                      .title
+                                  )
+                                )
+                              ]
+                            )
+                          ]
+                        : _vm._e()
+                    ],
+                    2
+                  )
+                ])
+              ])
+            : _vm._e()
+        ],
+        2
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a4aec256", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

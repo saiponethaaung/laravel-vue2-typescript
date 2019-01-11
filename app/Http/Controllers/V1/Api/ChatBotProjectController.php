@@ -713,7 +713,7 @@ class ChatBotProjectController extends Controller
             'status' => true,
             'mesg' => '',
             'data' => $result,
-            'type' => 5
+            'type' => 6
         ];
     }
 

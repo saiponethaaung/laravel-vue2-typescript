@@ -10847,6 +10847,11 @@ a.text-dark:focus {
   color: #aaaaaa;
 }
 
+a,
+a:hover {
+  text-decoration: none;
+}
+
 .chatBotHeading {
   font-size: 18px;
   font-weight: bold;
@@ -11234,6 +11239,7 @@ a.text-dark:focus {
 
 .buttonActionGroup .buttonName {
   line-height: 8px;
+  color: #aaaaaa;
 }
 
 .buttonActionGroup .buttonActionName {
@@ -11642,6 +11648,7 @@ a.text-dark:focus {
 
 .chatListContent {
   display: inline-block;
+  width: 100%;
 }
 
 .chatListRoot {
@@ -11683,6 +11690,17 @@ a.text-dark:focus {
   -webkit-box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.07);
           box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.07);
   border: solid 1px rgba(0, 0, 0, 0.33) !important;
+}
+
+.chatListInput .listDisplayBox {
+  width: 100%;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  font-size: 12px;
+  padding: 3px 10px;
 }
 
 .chatListImage {
@@ -11944,6 +11962,7 @@ a.text-dark:focus {
   border-bottom: 1px solid #ebebeb;
 }
 
+.chatGalleryContent .displayBox,
 .chatGalleryContent input {
   width: 100%;
   margin-bottom: 5px;
@@ -11955,6 +11974,7 @@ a.text-dark:focus {
   padding: 3px 10px;
 }
 
+.chatGalleryContent .displayBox:focus,
 .chatGalleryContent input:focus {
   -webkit-box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.07);
           box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.07);
@@ -12001,6 +12021,10 @@ a.text-dark:focus {
 
 .chatListItemDelIcon {
   top: calc(50% - 10px);
+}
+
+.listButtonDisplayBox {
+  margin-left: 25px;
 }
 
 .quickReplyRoot {
@@ -12702,6 +12726,10 @@ a.text-dark:focus {
   padding: 0 15px;
 }
 
+.chatInfoPanel .chatHisCon .chatContentCon .chatContent .componentTypeOne {
+  overflow: auto;
+}
+
 .chatInfoPanel .chatHisCon .chatContentCon .chatContent .chatContentBody {
   background: #f7f6f6;
   padding: 10px 20px;
@@ -12719,6 +12747,11 @@ a.text-dark:focus {
 
 .chatInfoPanel .chatHisCon .chatContentCon .chatContent .chatContentBody > figure {
   padding: 15px 0;
+}
+
+.chatInfoPanel .chatHisCon .chatContentCon .chatContent img {
+  max-width: 100%;
+  border-radius: 5px;
 }
 
 .chatInfoPanel .chatHisCon .liveChatButton {

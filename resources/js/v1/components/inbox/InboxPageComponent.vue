@@ -15,12 +15,20 @@
                                             <img :src="mesg.isSend ? '/images/sample/logo.png' : $store.state.inboxList[$store.state.selectedInbox].profile_pic"/>
                                         </figure>
                                         <div class="chatContent">
-                                            <div class="chatContentBody" v-html="processContent(mesg.mesg, mesg.contentType)"></div>
+                                            <template v-if="mesg.contentType===5">
+                                                <list-template-component :content="JSON.parse(mesg.mesg)"></list-template-component>
+                                            </template>
+                                            <template v-else-if="mesg.contentType===6">
+                                                <gallery-template-component :content="JSON.parse(mesg.mesg)"></gallery-template-component>
+                                            </template>
+                                            <template v-else>
+                                                <div v-html="processContent(mesg.mesg, mesg.contentType)"></div>
+                                            </template>
                                         </div>
                                     </div>
                                 </template>
                             </div>
-                            <div class="liveChatAction">
+                            <div class="liveChatAction" v-if="$store.state.projectInfo.publish">
                                 <button class="liveChatButton startLiveChat" @click="startLiveChat()" type="button" v-if="!$store.state.inboxList[$store.state.selectedInbox].live_chat">
                                     <img src="/images/icons/chat_icon.png"/>
                                     <span>Start a live chat</span>
@@ -143,7 +151,15 @@
 import { Component, Watch, Vue } from 'vue-property-decorator';
 import Axios from 'axios';
 
-@Component
+import GalleryTemplateComponent from './builder/GalleryTemplateComponent.vue';
+import ListTemplateComponent from './builder/ListTemplateComponent.vue';
+
+@Component({
+    components: {
+        GalleryTemplateComponent,
+        ListTemplateComponent
+    }
+})
 export default class InboxPageComponent extends Vue {
 
     private mesg: string = '';
@@ -222,21 +238,26 @@ export default class InboxPageComponent extends Vue {
     }
 
     processContent(content: string, type: number) {
-        let res: string = '';
+        let res: any = '';
         let jc: any = '';
 
         switch(type) {
             case(0):
-                res = content;
+                res = `<div class="chatContentBody">${content}</div>`;
                 break;
 
             case(1):
                 jc = JSON.parse(content);
                 if(undefined===jc.attachement) {
-                    res = jc.text;
+                    res = `<div class="chatContentBody">${jc.text}</div>`;
                 } else {
                     res = type+'/|\\'+content;
                 }
+                break;
+
+            case(4):
+                jc = JSON.parse(content);
+                res = `<div class="chatContentBody">${jc.text}</div>`;
                 break;
 
             case(7):

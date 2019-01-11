@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware\Project;
 
+use Auth;
+
 use Closure;
+use App\Models\ProjectUser;
 
 class IsProjectMember
 {
@@ -15,6 +18,18 @@ class IsProjectMember
      */
     public function handle($request, Closure $next)
     {
+        $projectUser = ProjectUser::where('project_id', $request->attributes->get('project')->id)->where('user_id', Auth::guard('api')->user()->id)->first();
+        
+        if(empty($projectUser)) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'You are not a memeber of the project!'
+            ], 422);
+        }
+
+        $request->attributes->set('project_user', $projectUser);
+        
         return $next($request);
     }
 }

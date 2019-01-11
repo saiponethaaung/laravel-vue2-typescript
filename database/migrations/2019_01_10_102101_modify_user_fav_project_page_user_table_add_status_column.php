@@ -14,7 +14,7 @@ class ModifyUserFavProjectPageUserTableAddStatusColumn extends Migration
     public function up()
     {
         Schema::table('user_fav_project_page_user', function(Blueprint $table) {
-            $table->boolean('status')->after('project_user_id');
+            $table->boolean('status')->default(0)->after('project_user_id');
         });
     }
 

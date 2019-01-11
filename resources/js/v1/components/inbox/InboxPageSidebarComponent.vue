@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="chatFilterAction float-right">
-                        <div>
+                        <div @click="showUrgent=!showUrgent">
                             <img :src="showUrgent ? '/images/icons/urgent_active.png' : '/images/icons/urgent.png' "/>
                         </div>
                         <div>
@@ -111,6 +111,17 @@ export default class InboxPageSidebarComponent extends Vue {
         });
     }
 
+    @Watch('showUrgent')
+    reloadFilter() {
+        this.$store.commit('updateInboxList', {
+            inbox: []
+        });
+        this.$store.commit('updateSelectedInbox', {
+            selected: -1
+        });
+        this.loadUserList();
+    }
+
     @Watch('$store.state.projectInfo', { immediate: true, deep: true })
     loadUserEvent() {
 
@@ -130,7 +141,7 @@ export default class InboxPageSidebarComponent extends Vue {
         this.loadInboxToken = Axios.CancelToken.source();
 
         await Axios({
-            url: `/api/v1/project/${this.$route.params.projectid}/chat/user`,
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user?urgent=${this.showUrgent}`,
             cancelToken: this.loadInboxToken.token
         }).then((res: any) => {
             console.log("inbox res", res.data);

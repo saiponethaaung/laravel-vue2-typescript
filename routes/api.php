@@ -35,7 +35,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
     });
 
     
-    Route::group(['prefix' => 'project/{projectId}', 'middleware' => 'verifyPorject'], function() {
+    Route::group(['prefix' => 'project/{projectId}', 'middleware' => ['verifyProject', 'verifyProjectMember']], function() {
         Route::get('/', 'V1\\Api\\ProjectController@projectInfo')->name('chatbot.project.info');
         Route::get('/pages', 'V1\\Api\\ProjectController@getPage')->name('chatbot.project.page');
         Route::post('/pages/link', 'V1\\Api\\ProjectController@linkProject')->name('chatbot.project.page.link');
@@ -123,14 +123,15 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
             });
         });
 
-        Route::group(['prefix' => 'chat', 'middleware' => 'verifyPorjectHasPage'], function() {
+        Route::group(['prefix' => 'chat', 'middleware' => 'verifyProjectHasPage'], function() {
             Route::get('user', 'V1\\Api\\InboxController@getInboxList');
-            Route::group(['prefix' => 'user/{pageUserId}', 'middleware' => 'verifyPorjectPageUser'], function() {
+            Route::group(['prefix' => 'user/{pageUserId}', 'middleware' => 'verifyProjectPageUser'], function() {
                 Route::get('load-new', 'V1\\Api\\InboxController@getNewMesg');
                 Route::get('load-mesg', 'V1\\Api\\InboxController@getMesg');
                 Route::post('live-chat', 'V1\\Api\\InboxController@changeLiveChatStatus');
                 Route::post('urgent', 'V1\\Api\\InboxController@changeUrgentChatStatus');
                 Route::post('reply', 'V1\\Api\\InboxController@sendReply');
+                Route::post('fav', 'V1\\Api\\InboxController@favUser');
             });
         });
     });

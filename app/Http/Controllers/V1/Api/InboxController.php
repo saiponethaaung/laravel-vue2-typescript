@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\ProjectPageUser;
+use App\Models\ProjectPageUserFav;
 use App\Models\ProjectPageUserChat;
 
 use App\Http\Controllers\V1\Api\FacebookController;
@@ -23,9 +24,19 @@ class InboxController extends Controller
         $list = ProjectPageUser::query();
         $list->with([
             'attributes',
-            'attributes.attrValue'
+            'attributes.attrValue',
+            'chat' => function($query) {
+                $query->orderBy('created_at', 'desc');
+            },
+            'fav' => function($query) use ($request) {
+                $query->where('project_user_id', $request->attributes->get('project_user')->id);
+                $query->where('status', 1);
+            }
         ]);
         $list->where('project_page_id', $request->attributes->get('project_page')->id);
+        if(is_null($request->input('urgent'))===false && $request->input('urgent')=='true') {
+            $list->where('urgent', 1);
+        }
         $list->orderBy('updated_at', 'desc');
         $list = $list->paginate(20);
         
@@ -50,16 +61,18 @@ class InboxController extends Controller
             }
             
             $profile['data']['custom_attribute'] = $attributes;
+
+            $parsed = array_merge($profile['data'], $parsed->toArray());
+
+            $parsed->fav = is_null($parsed->fav);
             
-            // $res[] = $profile['data'];
-            $res[] = array_merge($profile['data'], $d->toArray());
+            $res[] = $parsed;
         }
         
         return response()->json([
             'status' => true,
             'code' => 200,
-            'data' => $res,
-            // 'raw' => $list
+            'data' => $res
         ]);
     }
 
@@ -200,7 +213,62 @@ class InboxController extends Controller
         return response()->json([
             'status' => true,
             'code' => 200,
-            'mesg' => 'success'
+            'mesg' => 'success' 
         ]);
+    }
+
+    public function favUser(Request $request)
+    {
+        if(is_null($request->input('status')) || empty($request->input('status')) || !in_array($request->input('status'), ['true', 'false'])) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Action status is required!'
+            ], 422);
+        }
+
+        $hasFav = ProjectPageUserFav::where('project_page_user_id', $request->attributes->get('project_page_user')->id)
+                ->where('project_user_id', $request->attributes->get('project_user')->id)
+                ->first();
+
+        if(empty($hasFav)) {
+            DB::beginTransaction();
+            
+            try {
+                $hasFav = ProjectPageUserFav::create([
+                    'project_page_user_id' => $request->attributes->get('project_page_user')->id,
+                    'project_user_id' => $request->attributes->get('project_user')->id,
+                    'status' => false
+                ]);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => 'Failed to check fav list!',
+                    'debugMesg' => $e->getMesg()
+                ], 422);
+            }
+
+            DB::commit();
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $hasFav->status = $request->input('status')==='true' ? 1 : 0;
+            $hasFav->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to change fav status!'
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json($hasFav);
     }
 }

@@ -37828,6 +37828,15 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
             selected: index
         });
     }
+    reloadFilter() {
+        this.$store.commit('updateInboxList', {
+            inbox: []
+        });
+        this.$store.commit('updateSelectedInbox', {
+            selected: -1
+        });
+        this.loadUserList();
+    }
     loadUserEvent() {
         if (undefined == this.$store.state.projectInfo.pageId || this.pageId === this.$store.state.projectInfo.pageId)
             return;
@@ -37842,7 +37851,7 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
             this.loadInboxToken.cancel();
             this.loadInboxToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/project/${this.$route.params.projectid}/chat/user`,
+                url: `/api/v1/project/${this.$route.params.projectid}/chat/user?urgent=${this.showUrgent}`,
                 cancelToken: this.loadInboxToken.token
             }).then((res) => {
                 console.log("inbox res", res.data);
@@ -37873,6 +37882,9 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
         });
     }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('showUrgent')
+], InboxPageSidebarComponent.prototype, "reloadFilter", null);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.projectInfo', { immediate: true, deep: true })
 ], InboxPageSidebarComponent.prototype, "loadUserEvent", null);
@@ -37980,15 +37992,25 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "chatFilterAction float-right" }, [
-                      _c("div", [
-                        _c("img", {
-                          attrs: {
-                            src: _vm.showUrgent
-                              ? "/images/icons/urgent_active.png"
-                              : "/images/icons/urgent.png"
+                      _c(
+                        "div",
+                        {
+                          on: {
+                            click: function($event) {
+                              _vm.showUrgent = !_vm.showUrgent
+                            }
                           }
-                        })
-                      ]),
+                        },
+                        [
+                          _c("img", {
+                            attrs: {
+                              src: _vm.showUrgent
+                                ? "/images/icons/urgent_active.png"
+                                : "/images/icons/urgent.png"
+                            }
+                          })
+                        ]
+                      ),
                       _vm._v(" "),
                       _vm._m(0)
                     ])

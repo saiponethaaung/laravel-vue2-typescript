@@ -25,4 +25,14 @@ class ProjectPageUser extends Model
     {
         return $this->hasMany('App\Models\ProjectPageUserAttribute', 'project_page_user_id', 'id');
     }
+
+    public function chat()
+    {
+        return $this->hasOne('App\Models\ProjectPageUserChat', 'project_page_user_id', 'id');
+    }
+
+    public function fav()
+    {
+        return $this->hasOne('App\Models\ProjectPageUserFav', 'project_page_user_id', 'id');
+    }
 }

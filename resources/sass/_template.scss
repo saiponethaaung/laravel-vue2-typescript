@@ -99,7 +99,7 @@
         }
         .projectIconWrapper {
             height: 34px;
-            width: $porjectIconWidth;
+            width: $ProjectIconWidth;
             margin: 0;
             .projectIcon {
                 height: inherit;
@@ -108,7 +108,7 @@
             }
         }
         .projectInfo {
-            width: calc(100% - #{$porjectIconWidth+$porjectNavWidth});
+            width: calc(100% - #{$ProjectIconWidth+$ProjectNavWidth});
             padding-left: 20px;
             .projectName {
                 font-weight: bold;
@@ -129,7 +129,7 @@
             }
         }
         .projectNavControl {
-            width: $porjectNavWidth;
+            width: $ProjectNavWidth;
         }
     }
     .headerConent {

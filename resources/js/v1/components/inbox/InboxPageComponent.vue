@@ -192,10 +192,8 @@ export default class InboxPageComponent extends Vue {
     private scrollCallback(a: any) {
         this.el = this.$el.querySelector('.chatHisRoot');
         
-        if(this.el.getBoundingClientRect().top>-100 && this.lastScroll<this.el.getBoundingClientRect().top) {
-            if(!this.prevLoading) {
-                this.loadMesg(true);
-            }
+        if(this.el.getBoundingClientRect().top>-100 && this.lastScroll<this.el.getBoundingClientRect().top && !this.prevLoading) {
+            this.loadMesg(true);
         }
         this.lastScroll = this.el.getBoundingClientRect().top;
     }

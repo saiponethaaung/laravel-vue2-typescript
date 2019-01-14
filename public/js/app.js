@@ -37124,10 +37124,8 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
     }
     scrollCallback(a) {
         this.el = this.$el.querySelector('.chatHisRoot');
-        if (this.el.getBoundingClientRect().top > -100 && this.lastScroll < this.el.getBoundingClientRect().top) {
-            if (!this.prevLoading) {
-                this.loadMesg(true);
-            }
+        if (this.el.getBoundingClientRect().top > -100 && this.lastScroll < this.el.getBoundingClientRect().top && !this.prevLoading) {
+            this.loadMesg(true);
         }
         this.lastScroll = this.el.getBoundingClientRect().top;
     }
@@ -38821,11 +38819,7 @@ var render = function() {
                                             {
                                               staticClass: "userBriefLastMesg"
                                             },
-                                            [
-                                              _vm._v(
-                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque."
-                                              )
-                                            ]
+                                            [_vm._v(_vm._s(user.last_mesg))]
                                           )
                                         ]
                                       ),

@@ -74,6 +74,42 @@ class InboxController extends Controller
             } else {
                 $parsed['fav'] = $parsed['fav']['status']===1;
             }
+
+            $parsed['last_mesg'] = 'This is last mesg';
+
+            if($parsed['chat']['is_send']) {
+                switch($parsed['chat']['content_type']) {
+                    case(1):
+                        $parsed['last_mesg'] = "You: send a text";
+                        break;
+                    
+                    case(2):
+                        $parsed['last_mesg'] = "You: send typing status";
+                        break;
+
+                    case(3):
+                        $parsed['last_mesg'] = "You: send quick reply";
+                        break;
+
+                    case(4):
+                        $parsed['last_mesg'] = "You: send user input";
+                        break;
+
+                    case(5):
+                        $parsed['last_mesg'] = "You: send list";
+                        break;
+
+                    case(6):
+                        $parsed['last_mesg'] = "You: send gallery";
+                        break;
+                    
+                    case(7):
+                        $parsed['last_mesg'] = "You: send image";
+                        break;
+                }
+            } else {
+                $parsed['last_mesg'] = $parsed['mesg'];
+            }
             
             $res[] = $parsed;
         }

@@ -56,7 +56,7 @@
                             <div class="userBriefInfoCon">
                                 <div class="userBriefContentCon" @click="selectInbox(index)">
                                     <div class="userBriefName">{{ `${user.first_name} ${user.last_name}` }}</div>
-                                    <div class="userBriefLastMesg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.</div>
+                                    <div class="userBriefLastMesg">{{ user.last_mesg }}</div>
                                 </div>
                                 <div class="userBriefActionCon">
                                     <div @click="urgentStatus(index)">

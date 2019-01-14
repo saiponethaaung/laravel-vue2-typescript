@@ -12921,6 +12921,65 @@ a:hover {
   color: #c238eb;
 }
 
+.avaFilterList {
+  padding: 0;
+  list-style: none;
+}
+
+.avaFilterList .avaFilterListType .avaFilterListTypeHeading {
+  line-height: 30px;
+  height: 30px;
+  font-size: 14px;
+  margin: 0;
+}
+
+.avaFilterList .avaFilterList .aflHeading {
+  line-height: 30px;
+  height: 30px;
+  font-size: 14px;
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  color: #aaaaaa;
+}
+
+.avaFilterList .avaFilterList .aflHeading .material-icons {
+  margin-right: 5px;
+}
+
+.avaFilterList .avaFilterList .avaFilterOptionList {
+  list-style: none;
+  padding-left: 20px;
+  color: #aaaaaa;
+}
+
+.avaFilterList .avaFilterList .avaFilterOptionList .avafolChild {
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.avaFilterList .avaFilterList .avaFilterOptionList .avafolChild .material-icons {
+  margin-right: 5px;
+  font-size: 20px;
+}
+
 .navbar-laravel {
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

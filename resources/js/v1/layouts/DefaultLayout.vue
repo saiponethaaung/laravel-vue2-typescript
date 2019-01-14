@@ -15,7 +15,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project.home', params: {projectid: $route.params.projectid}}">
+                    <router-link :to="{name: 'project.users', params: {projectid: $route.params.projectid}}">
                         <i class="material-icons">supervisor_account</i>
                         <span class="icon-label">Users</span>
                     </router-link>
@@ -154,7 +154,9 @@ export default class DefaultLayout extends Vue {
         'pages_show_list',
         'publish_pages',
         'read_page_mailboxes',
-
+        'pages_user_locale',
+        'pages_user_timezone',
+        'pages_user_gender',
         // 'groups_access_member_info',
         // 'publish_to_groups',
         // 'user_age_range',

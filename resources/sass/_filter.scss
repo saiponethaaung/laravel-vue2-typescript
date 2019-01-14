@@ -1,0 +1,44 @@
+.avaFilterList {
+    padding: 0;
+    list-style: none;
+    .avaFilterListType {
+        .avaFilterListTypeHeading {
+            line-height: $secondStandardHeight;
+            height: $secondStandardHeight;
+            font-size: 14px;
+            margin: 0;
+        }
+    }
+    .avaFilterList {
+        .aflHeading {
+            line-height: $secondStandardHeight;
+            height: $secondStandardHeight;
+            font-size: 14px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            color: $secondaryText;
+            .material-icons {
+                margin-right: 5px;
+            }
+        }
+        .avaFilterOptionList {
+            list-style: none;
+            padding-left: 20px;
+            color: $secondaryText;
+            .avafolChild {
+                font-size: 12px;
+                height: $secondStandardHeight;
+                line-height: $secondStandardHeight;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                .material-icons {
+                    margin-right: 5px;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}

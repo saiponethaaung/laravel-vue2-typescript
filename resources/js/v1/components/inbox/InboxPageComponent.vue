@@ -7,8 +7,11 @@
             <template v-if="$store.state.projectInfo.pageConnected">
                 <template v-if="$store.state.selectedInbox>-1">
                     <div class="chatInfoPanel">
-                        <div class="chatHisCon">
-                            <div class="chatHisRoot">
+                        <div class="chatHisCon" v-on:scroll="scrollCallback()">
+                            <div class="chatHisRoot" ref="chatBox">
+                                <template v-if="prevLoading">
+                                    Loading...
+                                </template>
                                 <template v-for="(mesg, index) in mesgList">
                                     <div v-if="mesg.contentType!==2 && mesg.contentType!==3" :key="index" class="chatContentCon" :class="{'sender': mesg.isSend}">
                                         <figure class="chatImage">
@@ -171,31 +174,81 @@ export default class InboxPageComponent extends Vue {
     private page: number = 1;
     private mesgList: any = [];
     private firstLoad: boolean = true;
-
+    private el: any = null;
+    private prevLoading: boolean = false;
+    
     @Watch('$store.state.selectedInbox')
     reloadMesg() {
         if(this.$store.state.selectedInbox===-1) return;
+        setTimeout(() => {
+            this.el = this.$refs.mesgBox;
+        }, 3000);
         this.mesgList = [];
         this.firstLoad = true;
-        this.loadMesg();
+        this.loadMesg(false);
     }
 
-    async loadMesg() {
+    private scrollCallback(a: any) {
+        this.el = this.$el.querySelector('.chatHisRoot');
+        if(Math.abs(this.el.getBoundingClientRect().top)<100) {
+            if(!this.prevLoading) {
+                this.loadMesg(true);
+            }
+        }
+    }
+
+    async loadMesg(prev: boolean) {
+        let prevId: (number|boolean) = false;
+
+        if(prev) {
+            this.prevLoading = true;
+            prevId = this.mesgList[0].id;
+        }
+
+
         await Axios({
-            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/load-mesg`,
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/load-mesg?prev=${prevId.toString()}`,
             method: 'get'
         }).then((res) => {
-            this.mesgList = res.data.data;
+            this.mesgList = [...res.data.data, ...this.mesgList];
             this.mesgList.sort((a:any, b:any) => {
                 return a.id>b.id;
             });
 
-            setTimeout(() => {
-                this.checkNewMesg();
-            }, 5000);
-        }).catch((err) => {
+            this.getUnique();
 
+            if(this.firstLoad) {
+                setTimeout(() => {
+                    this.firstLoad = false;
+                    this.el = this.$el.querySelector('.chatHisRoot');
+                    var el: any = this.$el.querySelector('.chatHisCon');
+                    el.scrollTop = this.el.getBoundingClientRect().height;
+                }, 1000);
+                setTimeout(() => {
+                    this.checkNewMesg();
+                }, 5000);
+            }
+
+            if(prev) {
+                this.prevLoading = false;
+            }
+        }).catch((err) => {
+            if(prev) {
+                this.prevLoading = false;
+            }
         });
+    }
+
+    private getUnique() {
+        var uniques: any = [];
+        var itemsFound: any = {};
+        for(var i = 0, l = this.mesgList.length; i < l; i++) {
+            var stringified: any = JSON.stringify(this.mesgList[i]);
+            if(itemsFound[stringified]) { continue; }
+            uniques.push(this.mesgList[i]);
+            itemsFound[stringified] = true;
+        }
+        this.mesgList = uniques;
     }
 
     async checkNewMesg() {

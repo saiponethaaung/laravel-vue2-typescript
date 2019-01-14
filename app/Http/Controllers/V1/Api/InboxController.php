@@ -37,6 +37,11 @@ class InboxController extends Controller
         if(is_null($request->input('urgent'))===false && $request->input('urgent')=='true') {
             $list->where('urgent', 1);
         }
+        if(is_null($request->input('fav'))===false && $request->input('fav')=='true') {
+            $list->whereHas('fav', function($query) {
+                $query->where('status', 1);
+            });
+        }
         $list->orderBy('updated_at', 'desc');
         $list = $list->paginate(20);
         
@@ -62,9 +67,13 @@ class InboxController extends Controller
             
             $profile['data']['custom_attribute'] = $attributes;
 
-            $parsed = array_merge($profile['data'], $parsed->toArray());
+            $parsed = array_merge($profile['data'], $d->toArray());
 
-            $parsed->fav = is_null($parsed->fav);
+            if(is_null($parsed['fav'])) {
+                $parsed['fav'] = false;
+            } else {
+                $parsed['fav'] = $parsed['fav']['status']===1;
+            }
             
             $res[] = $parsed;
         }
@@ -121,9 +130,13 @@ class InboxController extends Controller
 
     public function getMesg(Request $request)
     {
-        $list = ProjectPageUserChat::where('project_page_user_id', $request->attributes->get('project_page_user')->id)
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $list = ProjectPageUserChat::query();
+        $list->where('project_page_user_id', $request->attributes->get('project_page_user')->id);
+        $list->orderBy('created_at', 'desc');
+        if($request->input('prev') && $request->input('prev')!='false') {
+            $list->where('id', '<', $request->input('prev'));
+        }
+        $list = $list->paginate(20);
         $res = [];
 
         foreach($list as $chat) {

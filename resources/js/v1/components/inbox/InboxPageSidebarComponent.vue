@@ -36,8 +36,13 @@
                         <div @click="showUrgent=!showUrgent">
                             <img :src="showUrgent ? '/images/icons/urgent_active.png' : '/images/icons/urgent.png' "/>
                         </div>
-                        <div>
-                            <i class="material-icons">star_border</i>
+                        <div @click="showFav=!showFav">
+                            <template v-if="showFav">
+                                <i class="material-icons activeFav">star</i>
+                            </template>
+                            <template v-else>
+                                <i class="material-icons">star_border</i>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -54,11 +59,16 @@
                                     <div class="userBriefLastMesg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.</div>
                                 </div>
                                 <div class="userBriefActionCon">
-                                    <div v-on:click="urgentStatus(index)">
+                                    <div @click="urgentStatus(index)">
                                         <img :src="user.urgent ? '/images/icons/urgent_active.png' : '/images/icons/urgent.png' "/>
                                     </div>
-                                    <div>
-                                        <i class="material-icons">star_border</i>
+                                    <div @click="favStatus(index)">
+                                        <template v-if="user.fav">
+                                            <i class="material-icons activeFav">star</i>
+                                        </template>
+                                        <template v-else>
+                                            <i class="material-icons">star_border</i>
+                                        </template>
                                     </div>
                                 </div>
                             </div>
@@ -94,6 +104,7 @@ export default class InboxPageSidebarComponent extends Vue {
     private showFilter: boolean = false;
     private loadingInbox: boolean = false;
     private showUrgent: boolean = false;
+    private showFav: boolean = false;
     private loadInboxToken: CancelTokenSource = Axios.CancelToken.source();
 
     mounted() {
@@ -112,6 +123,7 @@ export default class InboxPageSidebarComponent extends Vue {
     }
 
     @Watch('showUrgent')
+    @Watch('showFav')
     reloadFilter() {
         this.$store.commit('updateInboxList', {
             inbox: []
@@ -141,7 +153,7 @@ export default class InboxPageSidebarComponent extends Vue {
         this.loadInboxToken = Axios.CancelToken.source();
 
         await Axios({
-            url: `/api/v1/project/${this.$route.params.projectid}/chat/user?urgent=${this.showUrgent}`,
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user?urgent=${this.showUrgent}&fav=${this.showFav}`,
             cancelToken: this.loadInboxToken.token
         }).then((res: any) => {
             console.log("inbox res", res.data);
@@ -169,6 +181,23 @@ export default class InboxPageSidebarComponent extends Vue {
                 index: index,
                 status: status
             });
+        }).catch((err) => {
+
+        });
+    }
+
+    async favStatus(index: number) {
+        var status = !this.$store.state.inboxList[index].fav;
+
+        var data = new FormData();
+        data.append('status', status.toString());
+
+        await Axios({
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[index].id}/fav`,
+            data: data,
+            method: 'post'
+        }).then((res) => {
+            this.$store.state.inboxList[index].fav = status;
         }).catch((err) => {
 
         });

@@ -176,6 +176,7 @@ export default class InboxPageComponent extends Vue {
     private firstLoad: boolean = true;
     private el: any = null;
     private prevLoading: boolean = false;
+    private lastScroll: number = 0;
     
     @Watch('$store.state.selectedInbox')
     reloadMesg() {
@@ -190,11 +191,13 @@ export default class InboxPageComponent extends Vue {
 
     private scrollCallback(a: any) {
         this.el = this.$el.querySelector('.chatHisRoot');
-        if(Math.abs(this.el.getBoundingClientRect().top)<100) {
+        
+        if(this.el.getBoundingClientRect().top>-100 && this.lastScroll<this.el.getBoundingClientRect().top) {
             if(!this.prevLoading) {
                 this.loadMesg(true);
             }
         }
+        this.lastScroll = this.el.getBoundingClientRect().top;
     }
 
     async loadMesg(prev: boolean) {

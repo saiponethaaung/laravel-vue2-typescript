@@ -37110,6 +37110,7 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
         this.firstLoad = true;
         this.el = null;
         this.prevLoading = false;
+        this.lastScroll = 0;
     }
     reloadMesg() {
         if (this.$store.state.selectedInbox === -1)
@@ -37123,11 +37124,12 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
     }
     scrollCallback(a) {
         this.el = this.$el.querySelector('.chatHisRoot');
-        if (Math.abs(this.el.getBoundingClientRect().top) < 100) {
+        if (this.el.getBoundingClientRect().top > -100 && this.lastScroll < this.el.getBoundingClientRect().top) {
             if (!this.prevLoading) {
                 this.loadMesg(true);
             }
         }
+        this.lastScroll = this.el.getBoundingClientRect().top;
     }
     loadMesg(prev) {
         return __awaiter(this, void 0, void 0, function* () {

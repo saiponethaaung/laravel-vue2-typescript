@@ -80,35 +80,35 @@ class InboxController extends Controller
             if($parsed['chat']['is_send']) {
                 switch($parsed['chat']['content_type']) {
                     case(1):
-                        $parsed['last_mesg'] = "You: send a text";
+                        $parsed['last_mesg'] = "Admin: send a text";
                         break;
                     
                     case(2):
-                        $parsed['last_mesg'] = "You: send typing status";
+                        $parsed['last_mesg'] = "Admin: send typing status";
                         break;
 
                     case(3):
-                        $parsed['last_mesg'] = "You: send quick reply";
+                        $parsed['last_mesg'] = "Admin: send quick reply";
                         break;
 
                     case(4):
-                        $parsed['last_mesg'] = "You: send user input";
+                        $parsed['last_mesg'] = "Admin: send user input";
                         break;
 
                     case(5):
-                        $parsed['last_mesg'] = "You: send list";
+                        $parsed['last_mesg'] = "Admin: send list";
                         break;
 
                     case(6):
-                        $parsed['last_mesg'] = "You: send gallery";
+                        $parsed['last_mesg'] = "Admin: send gallery";
                         break;
                     
                     case(7):
-                        $parsed['last_mesg'] = "You: send image";
+                        $parsed['last_mesg'] = "Admin: send image";
                         break;
                 }
             } else {
-                $parsed['last_mesg'] = $parsed['mesg'];
+                $parsed['last_mesg'] = $pasred['user']['first_name'].': '.$parsed['mesg'];
             }
             
             $res[] = $parsed;

@@ -108,7 +108,7 @@ class InboxController extends Controller
                         break;
                 }
             } else {
-                $parsed['last_mesg'] = $pasred['user']['first_name'].': '.$parsed['mesg'];
+                $parsed['last_mesg'] = $parsed['user']['first_name'].': '.$parsed['mesg'];
             }
             
             $res[] = $parsed;

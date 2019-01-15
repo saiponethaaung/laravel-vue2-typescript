@@ -31484,6 +31484,9 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_user_UserListSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_user_UserListSidebarComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_user_SegmentListComponent_vue__ = __webpack_require__(100);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_user_SegmentListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_user_SegmentListComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListSidebarComponent_vue__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListSidebarComponent_vue__);
+
 
 
 
@@ -31548,6 +31551,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
                             path: "segments",
                             name: "project.users.segments",
                             component: __WEBPACK_IMPORTED_MODULE_12__components_user_SegmentListComponent_vue___default.a,
+                            meta: {
+                                sidebar: __WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListSidebarComponent_vue___default.a
+                            }
                         }
                     ]
                 },
@@ -39018,10 +39024,6 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(93)
-}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(95)
@@ -39030,7 +39032,7 @@ var __vue_template__ = __webpack_require__(96)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -39065,61 +39067,89 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(94);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(9)("49fee6ff", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-18fbfbda\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./UserListComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-18fbfbda\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./UserListComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(8)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 93 */,
+/* 94 */,
 /* 95 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_users_UserListModel__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
 
 let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.userLoading = false;
+        this.userList = [];
+    }
+    mounted() {
+    }
+    loadUser() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let filter = '';
+            if (this.$store.state.userFilter.length > 0) {
+                for (let i2 of this.$store.state.userFilter[0].child) {
+                    filter += `user[${i2.key}][key]=${i2.key}&`;
+                    for (let i3 of i2.value) {
+                        if (!i3.checked)
+                            continue;
+                        filter += `user[${i2.key}][value][]=${i3.value}&`;
+                    }
+                }
+                for (let i2 of this.$store.state.userFilter[1].child) {
+                    filter += `custom[${i2.key}][key]=${i2.key}&`;
+                    for (let i3 of i2.value) {
+                        if (!i3.checked)
+                            continue;
+                        filter += `custom[${i2.key}][value][]=${i3.value}&`;
+                    }
+                }
+                for (let i2 of this.$store.state.userFilter[2].child) {
+                    filter += `system[${i2.key}][key]=${i2.key}&`;
+                    for (let i3 of i2.value) {
+                        if (!i3.checked)
+                            continue;
+                        filter += `system[${i2.key}][value][]=${i3.value}&`;
+                    }
+                }
+            }
+            this.userLoading = true;
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/users?${filter}`,
+                method: 'get'
+            }).then((res) => {
+                this.userList = [];
+                for (let i of res.data.data) {
+                    this.userList.push(new __WEBPACK_IMPORTED_MODULE_1__models_users_UserListModel__["a" /* default */](i));
+                }
+            }).catch((err) => {
+            });
+            this.userLoading = false;
+        });
+    }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.prevUserFilter', { immediate: true })
+], UserListComponent.prototype, "loadUser", null);
 UserListComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
 ], UserListComponent);
@@ -39134,9 +39164,137 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    User List component\n")])
+  return _c("div", { staticClass: "userListRoot" }, [
+    _c("h5", { staticClass: "headingOne" }, [_vm._v("Showing all users")]),
+    _vm._v(" "),
+    _c("table", { staticClass: "userListTable" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        [
+          _vm.userLoading
+            ? [_vm._m(1)]
+            : _vm._l(_vm.userList, function(user, index) {
+                return _c("tr", { key: index }, [
+                  _c("td", [
+                    _c(
+                      "i",
+                      {
+                        staticClass: "material-icons",
+                        on: {
+                          click: function($event) {
+                            user.checked = !user.checked
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          _vm._s(
+                            user.checked
+                              ? "check_box"
+                              : "check_box_outline_blank"
+                          )
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(user.name) +
+                        "\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(user.gender) +
+                        "\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(user.age) +
+                        "\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(user.lastSeen) +
+                        "\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(user.signup) +
+                        "\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\n                        Session\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Edit")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Mesg")])
+                ])
+              })
+        ],
+        2
+      )
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [
+          _c("i", { staticClass: "material-icons" }, [
+            _vm._v("check_box_outline_blank")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("th", [_vm._v("\n                    Name\n                ")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("\n                    Gender\n                ")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("\n                    Age\n                ")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("\n                    Last Seen\n                ")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("\n                    Signed up\n                ")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("\n                    Session\n                ")]),
+        _vm._v(" "),
+        _c("th", { attrs: { colspan: "2" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { colspan: "9" } }, [_vm._v("Loading...")])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -39200,18 +39358,98 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
 
 let UserListSidebarComponent = class UserListSidebarComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
         this.showFilter = false;
-        // private filters: any = 
+    }
+    mounted() {
+        this.loadUserFilter();
+    }
+    get hasCheck() {
+        let status = false;
+        for (let i of this.$store.state.userFilter) {
+            for (let i2 of i.child) {
+                for (let i3 of i2.value) {
+                    if (!i3.checked)
+                        continue;
+                    status = true;
+                    break;
+                }
+                if (status)
+                    break;
+            }
+            if (status)
+                break;
+        }
+        return status;
+    }
+    removeAllChecked() {
+        let status = false;
+        for (let i in this.$store.state.userFilter) {
+            for (let i2 in this.$store.state.userFilter[i].child) {
+                for (let i3 in this.$store.state.userFilter[i].child[i2].value) {
+                    this.$store.state.userFilter[i].child[i2].value[i3].checked = false;
+                }
+            }
+        }
+        this.$store.state.prevUserFilter = '';
+    }
+    applyFilters() {
+        this.$store.state.prevUserFilter = JSON.stringify(this.$store.state.userFilter);
+    }
+    loadUserFilter() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (undefined === this.$store.state.projectInfo.id)
+                return;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/users/attributes`,
+                method: 'get'
+            }).then((res) => {
+                let data = [];
+                for (let i of res.data.data) {
+                    let parsed = i;
+                    for (let i2 in parsed.child) {
+                        parsed.child[i2].open = false;
+                        for (let i3 in parsed.child[i2].value) {
+                            parsed.child[i2].value[i3].checked = false;
+                        }
+                    }
+                    data.push(parsed);
+                }
+                console.log('res', data);
+                this.$store.state.userFilter = data;
+            }).catch((err) => {
+            });
+        });
+    }
+    checkHasChecked(index, index2) {
+        let status = false;
+        for (let i of this.$store.state.userFilter[index].child[index2].value) {
+            if (!i.checked)
+                continue;
+            status = true;
+            break;
+        }
+        return status;
     }
 };
 UserListSidebarComponent = __decorate([
@@ -39229,85 +39467,124 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "chatSbHeaderOption" }, [
-      _c("div", { staticClass: "chatFilterList float-left" }, [
-        _c("div", { staticClass: "inboxOptionTitle" }, [_vm._v("User:")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "inboxOptionSelector" }, [
-          _c("div", { staticClass: "inboxSelectedOption" }, [
-            _c("span", { staticClass: "inboxSelectedOptionValue" }, [
-              _vm._v("Accounts")
+    _c(
+      "div",
+      { staticClass: "chatSbHeaderOption" },
+      [
+        _c("div", { staticClass: "chatFilterList float-left" }, [
+          _c("div", { staticClass: "inboxOptionTitle" }, [_vm._v("User:")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "inboxOptionSelector" }, [
+            _c("div", { staticClass: "inboxSelectedOption" }, [
+              _c("span", { staticClass: "inboxSelectedOptionValue" }, [
+                _vm._v("Accounts")
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "inboxFilterOptionIcon" }, [
+                _c(
+                  "i",
+                  {
+                    staticClass: "material-icons",
+                    on: {
+                      click: function($event) {
+                        _vm.showFilter = !_vm.showFilter
+                      }
+                    }
+                  },
+                  [
+                    _vm.showFilter
+                      ? [
+                          _vm._v(
+                            "\n                                arrow_drop_up\n                            "
+                          )
+                        ]
+                      : [
+                          _vm._v(
+                            "\n                                arrow_drop_down\n                            "
+                          )
+                        ]
+                  ],
+                  2
+                )
+              ])
             ]),
             _vm._v(" "),
-            _c("span", { staticClass: "inboxFilterOptionIcon" }, [
-              _c(
-                "i",
-                {
-                  staticClass: "material-icons",
-                  on: {
-                    click: function($event) {
-                      _vm.showFilter = !_vm.showFilter
-                    }
-                  }
-                },
-                [
-                  _vm.showFilter
-                    ? [
-                        _vm._v(
-                          "\n                                arrow_drop_up\n                            "
+            _vm.showFilter
+              ? _c("div", { staticClass: "inboxOptionsCon" }, [
+                  _c("ul", [
+                    _c(
+                      "li",
+                      [
+                        _c(
+                          "router-link",
+                          { attrs: { to: { name: "project.users" } } },
+                          [
+                            _vm._v(
+                              "\n                                Accounts\n                            "
+                            )
+                          ]
                         )
-                      ]
-                    : [
-                        _vm._v(
-                          "\n                                arrow_drop_down\n                            "
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "li",
+                      [
+                        _c(
+                          "router-link",
+                          { attrs: { to: { name: "project.users.segments" } } },
+                          [
+                            _vm._v(
+                              "\n                                Segments\n                            "
+                            )
+                          ]
                         )
-                      ]
-                ],
-                2
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _vm.showFilter
-            ? _c("div", { staticClass: "inboxOptionsCon" }, [
-                _c("ul", [
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "project.users" } } },
-                        [
-                          _vm._v(
-                            "\n                                Accounts\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "project.users.segments" } } },
-                        [
-                          _vm._v(
-                            "\n                                Segments\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  )
+                      ],
+                      1
+                    )
+                  ])
                 ])
-              ])
-            : _vm._e()
-        ])
-      ])
-    ]),
+              : _vm._e()
+          ])
+        ]),
+        _vm._v(" "),
+        _vm.hasCheck
+          ? [
+              _vm.$store.state.prevUserFilter === "" ||
+              _vm.$store.state.prevUserFilter !==
+                JSON.stringify(_vm.$store.state.userFilter)
+                ? [
+                    _c(
+                      "span",
+                      {
+                        on: {
+                          click: function($event) {
+                            _vm.applyFilters()
+                          }
+                        }
+                      },
+                      [_vm._v("Apply Filters")]
+                    )
+                  ]
+                : [
+                    _c(
+                      "span",
+                      {
+                        on: {
+                          click: function($event) {
+                            _vm.removeAllChecked()
+                          }
+                        }
+                      },
+                      [_vm._v("Remove Filters")]
+                    )
+                  ]
+            ]
+          : _vm._e()
+      ],
+      2
+    ),
     _vm._v(" "),
     _c(
       "ul",
@@ -39324,31 +39601,32 @@ var render = function() {
             _vm._l(type.child, function(attribute, aindex) {
               return _c(
                 "li",
-                { key: aindex, staticClass: "avaFilterListItem" },
+                {
+                  key: aindex,
+                  staticClass: "avaFilterListItem",
+                  class: { hasChecked: _vm.checkHasChecked(index, aindex) }
+                },
                 [
-                  _c("h5", { staticClass: "aflHeading" }, [
-                    _c(
-                      "i",
-                      {
-                        staticClass: "material-icons",
-                        on: {
-                          click: function($event) {
-                            attribute.open = !attribute.open
-                          }
+                  _c(
+                    "h5",
+                    {
+                      staticClass: "aflHeading",
+                      on: {
+                        click: function($event) {
+                          attribute.open = !attribute.open
                         }
-                      },
-                      [
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "material-icons" }, [
                         _vm._v(
                           _vm._s(attribute.open ? "expand_less" : "expand_more")
                         )
-                      ]
-                    ),
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(attribute.name) +
-                        "\n                    "
-                    )
-                  ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(_vm._s(attribute.name))])
+                    ]
+                  ),
                   _vm._v(" "),
                   _c(
                     "ul",
@@ -39366,28 +39644,26 @@ var render = function() {
                     _vm._l(attribute.value, function(value, vindex) {
                       return _c(
                         "li",
-                        { key: vindex, staticClass: "avafolChild" },
+                        {
+                          key: vindex,
+                          staticClass: "avafolChild",
+                          class: { selected: value.checked },
+                          on: {
+                            click: function($event) {
+                              value.checked = !value.checked
+                            }
+                          }
+                        },
                         [
-                          _c(
-                            "i",
-                            {
-                              staticClass: "material-icons",
-                              on: {
-                                click: function($event) {
-                                  value.checked = !value.checked
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  value.checked
-                                    ? "check_box"
-                                    : "check_box_outline_blank"
-                                )
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v(
+                              _vm._s(
+                                value.checked
+                                  ? "check_box"
+                                  : "check_box_outline_blank"
                               )
-                            ]
-                          ),
+                            )
+                          ]),
                           _vm._v(" "),
                           _c("span", [_vm._v(_vm._s(value.value))])
                         ]
@@ -39583,98 +39859,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         selectedInbox: -1,
         inboxList: [],
         chatFilter: 0,
-        userFilter: [
-            {
-                name: "User Attributes",
-                child: [
-                    {
-                        name: "Gender",
-                        open: false,
-                        value: [
-                            {
-                                value: "Male",
-                                checked: false
-                            },
-                            {
-                                value: "Female",
-                                checked: false
-                            },
-                        ]
-                    }
-                ]
-            },
-            {
-                name: "System Attributes",
-                child: [
-                    {
-                        name: "Signed up",
-                        open: false,
-                        value: [
-                            {
-                                value: "24 hrs ago",
-                                checked: false
-                            },
-                            {
-                                value: "1 week ago",
-                                checked: false
-                            },
-                            {
-                                value: "1 month ago",
-                                checked: false
-                            },
-                            {
-                                value: "3 months ago",
-                                checked: false
-                            },
-                        ]
-                    },
-                    {
-                        name: "Last Seen",
-                        open: false,
-                        value: [
-                            {
-                                value: "24 hrs ago",
-                                checked: false
-                            },
-                            {
-                                value: "1 week ago",
-                                checked: false
-                            },
-                            {
-                                value: "1 month ago",
-                                checked: false
-                            },
-                            {
-                                value: "3 months ago",
-                                checked: false
-                            },
-                        ]
-                    },
-                    {
-                        name: "Last Engaged",
-                        open: false,
-                        value: [
-                            {
-                                value: "24 hrs ago",
-                                checked: false
-                            },
-                            {
-                                value: "1 week ago",
-                                checked: false
-                            },
-                            {
-                                value: "1 month ago",
-                                checked: false
-                            },
-                            {
-                                value: "3 months ago",
-                                checked: false
-                            },
-                        ]
-                    },
-                ]
-            }
-        ],
+        userFilter: [],
+        prevUserFilter: '',
     },
     mutations: {
         logout(state) {
@@ -40940,9 +41126,6 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
             'pages_show_list',
             'publish_pages',
             'read_page_mailboxes',
-            'pages_user_locale',
-            'pages_user_timezone',
-            'pages_user_gender',
         ];
         this.projectOptions = false;
         this.canTest = true;
@@ -46198,6 +46381,233 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(165)
+/* template */
+var __vue_template__ = __webpack_require__(166)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/user/SegmentListSidebarComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-46c3e01e", Component.options)
+  } else {
+    hotAPI.reload("data-v-46c3e01e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 165 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(1);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+let SegmentListSidebarComponent = class SegmentListSidebarComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.showFilter = false;
+        // private filters: any = 
+    }
+};
+SegmentListSidebarComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], SegmentListSidebarComponent);
+/* harmony default export */ __webpack_exports__["default"] = (SegmentListSidebarComponent);
+
+
+/***/ }),
+/* 166 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "chatSbHeaderOption" }, [
+      _c("div", { staticClass: "chatFilterList float-left" }, [
+        _c("div", { staticClass: "inboxOptionTitle" }, [_vm._v("User:")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "inboxOptionSelector" }, [
+          _c("div", { staticClass: "inboxSelectedOption" }, [
+            _c("span", { staticClass: "inboxSelectedOptionValue" }, [
+              _vm._v("Segments")
+            ]),
+            _vm._v(" "),
+            _c("span", { staticClass: "inboxFilterOptionIcon" }, [
+              _c(
+                "i",
+                {
+                  staticClass: "material-icons",
+                  on: {
+                    click: function($event) {
+                      _vm.showFilter = !_vm.showFilter
+                    }
+                  }
+                },
+                [
+                  _vm.showFilter
+                    ? [
+                        _vm._v(
+                          "\n                                arrow_drop_up\n                            "
+                        )
+                      ]
+                    : [
+                        _vm._v(
+                          "\n                                arrow_drop_down\n                            "
+                        )
+                      ]
+                ],
+                2
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.showFilter
+            ? _c("div", { staticClass: "inboxOptionsCon" }, [
+                _c("ul", [
+                  _c(
+                    "li",
+                    [
+                      _c(
+                        "router-link",
+                        { attrs: { to: { name: "project.users" } } },
+                        [
+                          _vm._v(
+                            "\n                                Accounts\n                            "
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    [
+                      _c(
+                        "router-link",
+                        { attrs: { to: { name: "project.users.segments" } } },
+                        [
+                          _vm._v(
+                            "\n                                Segments\n                            "
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                ])
+              ])
+            : _vm._e()
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-46c3e01e", module.exports)
+  }
+}
+
+/***/ }),
+/* 167 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+
+class UserListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(user) {
+        super();
+        this.isChecked = false;
+        this.user = user;
+    }
+    get id() {
+        return this.user.id;
+    }
+    get name() {
+        return this.user.name;
+    }
+    get gender() {
+        return this.user.gender;
+    }
+    get age() {
+        return this.user.age;
+    }
+    get parsedAge() {
+        return this.age > 0 ? this.age.toString() : "-";
+    }
+    get lastSeen() {
+        return this.user.lastSeen;
+    }
+    get signup() {
+        return this.user.signup;
+    }
+    get checked() {
+        return this.isChecked;
+    }
+    set checked(status) {
+        this.isChecked = status;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = UserListModel;
+
+
 
 /***/ })
 /******/ ]);

@@ -10852,6 +10852,12 @@ a:hover {
   text-decoration: none;
 }
 
+.headingOne {
+  font-size: 18px;
+  height: 36px;
+  line-height: 36px;
+}
+
 .chatBotHeading {
   font-size: 18px;
   font-weight: bold;
@@ -12948,6 +12954,7 @@ a:hover {
       -ms-flex-pack: start;
           justify-content: flex-start;
   color: #aaaaaa;
+  cursor: pointer;
 }
 
 .avaFilterList .avaFilterList .aflHeading .material-icons {
@@ -12973,11 +12980,28 @@ a:hover {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+  cursor: pointer;
 }
 
 .avaFilterList .avaFilterList .avaFilterOptionList .avafolChild .material-icons {
   margin-right: 5px;
   font-size: 20px;
+}
+
+.avaFilterList .avaFilterList .avaFilterOptionList .avafolChild.selected {
+  color: #c238eb;
+}
+
+.avaFilterList .avaFilterList .avaFilterListItem.hasChecked .aflHeading span {
+  color: #000;
+}
+
+.userListRoot {
+  padding: 15px 30px;
+}
+
+.userListTable {
+  width: 100%;
 }
 
 .navbar-laravel {

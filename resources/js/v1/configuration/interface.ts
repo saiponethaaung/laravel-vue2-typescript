@@ -123,3 +123,18 @@ export interface inboxUserList {
     lastMesgType: number,
     image: string
 }
+
+export interface attributeType {
+    name: string,
+    child: Array<any>
+}
+
+export interface userList {
+    id: number,
+    name: string,
+    gender: string,
+    age: number,
+    lastSeen: string,
+    signup: string,
+    attributes: Array<any>
+}

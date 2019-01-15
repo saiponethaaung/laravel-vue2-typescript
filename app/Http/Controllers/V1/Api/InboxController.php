@@ -159,6 +159,8 @@ class InboxController extends Controller
         ]);
         
         return response()->json([
+            'status' => true,
+            'code' => 200,
             $send,
             'data' => $this->formatChat($response)
         ]);
@@ -179,6 +181,8 @@ class InboxController extends Controller
             $res[] = $this->formatChat($chat);
         }
         return response()->json([
+            'status' => true,
+            'code' => true,
             'data' => $res
         ]);
     }
@@ -196,6 +200,8 @@ class InboxController extends Controller
         }
 
         return response()->json([
+            'status' => true,
+            'code' => 200,
             'data' => $res
         ]);
     }
@@ -318,6 +324,11 @@ class InboxController extends Controller
 
         DB::commit();
 
-        return response()->json($hasFav);
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success',
+            'dummy' => $hasFav
+        ]);
     }
 }

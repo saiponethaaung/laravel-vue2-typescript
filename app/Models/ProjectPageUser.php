@@ -16,6 +16,11 @@ class ProjectPageUser extends Model
         'urgent'
     ];
 
+    public function projectPage()
+    {
+        return $this->hasOne('App\Models\ProjectPage', 'id', 'project_page_id');
+    }
+
     public function user()
     {
         return $this->hasOne('App\Models\User', 'id', 'user_id');

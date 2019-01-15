@@ -14,6 +14,11 @@ class ProjectPageUserAttribute extends Model
         'project_page_user_id'
     ];
 
+    public function user()
+    {
+        return $this->hasOne('App\Models\ProjectPageUser', 'id', 'project_page_user_id');
+    }
+
     public function attrValue()
     {
         return $this->hasOne('App\Models\ChatAttribute', 'id', 'attribute_id');

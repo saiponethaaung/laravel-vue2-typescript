@@ -19,6 +19,7 @@ import InboxPageSidebarComponent from '../components/inbox/InboxPageSidebarCompo
 import UserListComponent from '../components/user/UserListComponent.vue';
 import UserListSidebarComponent from '../components/user/UserListSidebarComponent.vue';
 import UserSegmentListComponent from '../components/user/SegmentListComponent.vue';
+import UserSegmentListSidebarComponent from '../components/user/SegmentListSidebarComponent.vue';
 
 Vue.use(VueRouter);
 
@@ -72,9 +73,9 @@ export default new VueRouter({
                             path: "segments",
                             name: "project.users.segments",
                             component: UserSegmentListComponent,
-                            // meta: {
-                            //     sidebar: UserListComponent
-                            // }
+                            meta: {
+                                sidebar: UserSegmentListSidebarComponent
+                            }
                         }
                     ]
                 },

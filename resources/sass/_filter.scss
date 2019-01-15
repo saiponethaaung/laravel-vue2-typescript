@@ -19,6 +19,7 @@
             align-items: center;
             justify-content: flex-start;
             color: $secondaryText;
+            cursor: pointer;
             .material-icons {
                 margin-right: 5px;
             }
@@ -34,9 +35,21 @@
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
+                cursor: pointer;
                 .material-icons {
                     margin-right: 5px;
                     font-size: 20px;
+                }
+                &.selected {
+                    color: $inboxSelected;
+                }
+            }
+        }
+
+        .avaFilterListItem.hasChecked {
+            .aflHeading {
+                span {
+                    color: #000;
                 }
             }
         }

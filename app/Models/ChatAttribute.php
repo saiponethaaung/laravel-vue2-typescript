@@ -11,4 +11,8 @@ class ChatAttribute extends Model
     protected $fillable = [
         'attribute'
     ];
+
+    public function chatValue() {
+        return $this->hasMany('App\Models\ProjectPageUserAttribute', 'attribute_id', 'id');
+    }
 }

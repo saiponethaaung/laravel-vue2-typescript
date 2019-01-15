@@ -124,9 +124,6 @@ class FacebookController extends Controller
             'pages_show_list' => 'Pages show list (pages_show_list) permission is need to be granted in order to show list of available to link with chatbot!',
             'publish_pages' => 'Publish pages(publish_pages) permission is need to be granted in order to send private message to a comment!',
             'read_page_mailboxes' => 'Read page mailboxes (read_page_mailboxes) permission is need to be granted in order to link chat bot to your page and retrive message history in our applicatin to perform live chat!',
-            'pages_user_locale' => 'coming soon',
-            'pages_user_timezone' => 'coming soon',
-            'pages_user_gender' => 'coming soon',
             // 'groups_access_member_info' => 'coming soon',
             // 'publish_to_groups' => 'coming soon',
             // 'user_age_range' => 'coming soon',
@@ -357,7 +354,7 @@ class FacebookController extends Controller
     {
         $graphObject = null;
         try {
-            $graphObject = $this->fb->get('/'.$psid.'?first_name,last_name,profile_pic,locale,timezone,gender')->getGraphObject();
+            $graphObject = $this->fb->get('/'.$psid.'?fields=first_name,last_name,profile_pic,locale,timezone,gender')->getGraphObject();
         }catch(\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,

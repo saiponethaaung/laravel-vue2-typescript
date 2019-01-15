@@ -135,8 +135,9 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
             });
         });
 
-        Route::group(['prefix' => 'users'], function() {
-            // Route::get('attributes');
+        Route::group(['prefix' => 'users', 'middleware' => 'verifyProjectHasPage'], function() {
+            Route::get('/', 'V1\\Api\\ChatUserController@getUserList');
+            Route::get('attributes', 'V1\\Api\\ChatUserController@getFilterAttributes');
         });
     });
 });

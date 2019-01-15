@@ -33,20 +33,28 @@
                     </div>
                 </div>
             </div>
+            <template v-if="hasCheck">
+                <template v-if="$store.state.prevUserFilter==='' || $store.state.prevUserFilter!==JSON.stringify($store.state.userFilter)">
+                    <span @click="applyFilters()">Apply Filters</span>
+                </template>
+                <template v-else>
+                    <span @click="removeAllChecked()">Remove Filters</span>
+                </template>
+            </template>
         </div>
 
         <ul class="avaFilterList">
             <li v-for="(type, index) in $store.state.userFilter" :key="index" class="avaFilterListType">
                 <h5 class="avaFilterListTypeHeading">{{ type.name }}</h5>
                 <ul class="avaFilterList">
-                    <li v-for="(attribute, aindex) in type.child" :key="aindex" class="avaFilterListItem">
-                        <h5 class="aflHeading">
-                            <i class="material-icons" @click="attribute.open=!attribute.open">{{ attribute.open ? 'expand_less' : 'expand_more'}}</i>
-                            {{ attribute.name }}
+                    <li v-for="(attribute, aindex) in type.child" :key="aindex" class="avaFilterListItem" :class="{'hasChecked': checkHasChecked(index, aindex)}">
+                        <h5 class="aflHeading" @click="attribute.open=!attribute.open">
+                            <i class="material-icons">{{ attribute.open ? 'expand_less' : 'expand_more'}}</i>
+                            <span>{{ attribute.name }}</span>
                         </h5>
                         <ul class="avaFilterOptionList" v-show="attribute.open">
-                            <li v-for="(value, vindex) in attribute.value" :key="vindex" class="avafolChild">
-                                <i class="material-icons" @click="value.checked=!value.checked">{{ value.checked ? 'check_box' : 'check_box_outline_blank' }}</i>
+                            <li v-for="(value, vindex) in attribute.value" :key="vindex" class="avafolChild" @click="value.checked=!value.checked" :class="{'selected': value.checked}">
+                                <i class="material-icons">{{ value.checked ? 'check_box' : 'check_box_outline_blank' }}</i>
                                 <span>{{ value.value }}</span>
                             </li>
                         </ul>
@@ -59,10 +67,88 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import Axios from 'axios';
 
 @Component
 export default class UserListSidebarComponent extends Vue {
     private showFilter: boolean = false;
-    // private filters: any = 
+
+    mounted() {
+        this.loadUserFilter();
+    }
+
+    get hasCheck() : boolean {
+        let status = false;
+
+        for(let i of this.$store.state.userFilter) {
+            for(let i2 of i.child) {
+                for(let i3 of i2.value) {
+                    if(!i3.checked) continue;
+                    status = true;
+                    break;
+                }
+                if(status) break;
+            }
+            if(status) break;
+        }
+
+        return status;
+    }
+
+    removeAllChecked() {
+        let status = false;
+
+        for(let i in this.$store.state.userFilter) {
+            for(let i2 in this.$store.state.userFilter[i].child) {
+                for(let i3 in this.$store.state.userFilter[i].child[i2].value) {
+                    this.$store.state.userFilter[i].child[i2].value[i3].checked = false;
+                }
+            }
+        }
+
+        this.$store.state.prevUserFilter = '';
+    }
+
+    applyFilters() {
+        this.$store.state.prevUserFilter=JSON.stringify(this.$store.state.userFilter);
+    }
+    
+    async loadUserFilter() {
+        if(undefined===this.$store.state.projectInfo.id) return;
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/users/attributes`,
+            method: 'get'
+        }).then((res) => {
+            let data: any = [];
+            for(let i of res.data.data) {
+                let parsed: any = i;
+                for(let i2 in parsed.child) {
+                    parsed.child[i2].open = false;
+                    for(let i3 in parsed.child[i2].value) {
+                        parsed.child[i2].value[i3].checked = false;
+                    }
+                }
+                data.push(parsed);
+            }
+            console.log('res' , data);
+            this.$store.state.userFilter = data;
+        }).catch((err) => {
+
+        });
+    }
+
+    private checkHasChecked(index: number, index2: number)
+    {
+        let status = false;
+
+        for(let i of this.$store.state.userFilter[index].child[index2].value) {
+            if(!i.checked) continue;
+            status = true;
+            break;
+        }
+
+        return status;
+    }
 }
 </script>

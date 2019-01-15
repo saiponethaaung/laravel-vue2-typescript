@@ -134,6 +134,10 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
                 Route::post('fav', 'V1\\Api\\InboxController@favUser');
             });
         });
+
+        Route::group(['prefix' => 'users'], function() {
+            // Route::get('attributes');
+        });
     });
 });
 

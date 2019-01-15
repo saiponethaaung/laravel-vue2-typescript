@@ -148,6 +148,7 @@ export default class SidebarComponent extends Vue {
     }
 
     async loadBlocks() {
+        if(undefined===this.$store.state.projectInfo.id) return;
         this.blockLoading = true;
 
         await Axios({

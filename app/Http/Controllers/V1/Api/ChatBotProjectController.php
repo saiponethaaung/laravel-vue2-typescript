@@ -831,7 +831,7 @@ class ChatBotProjectController extends Controller
 
             try {
                 $fbc = new FacebookController($this->projectPage->token);
-                $profile = $fbc->getMessengerProfile($d->fb_user_id);
+                $profile = $fbc->getMessengerProfile($this->user->fb_user_id);
                 if($profile['status']) {
                     $this->user->first_name = $profile['data']['first_name'];
                     $this->user->last_name = $profile['data']['last_name'];

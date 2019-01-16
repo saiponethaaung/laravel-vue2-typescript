@@ -26,6 +26,8 @@ use App\Models\ProjectPageUser;
 use App\Models\ProjectPageUserChat;
 use App\Models\ProjectPageUserAttribute;
 
+use App\Http\Controllers\V1\Api\FacebookController;
+
 class ChatBotProjectController extends Controller
 {
     protected $projectid;
@@ -824,6 +826,26 @@ class ChatBotProjectController extends Controller
     
                 DB::commit();
             }
+            
+            DB::beginTransaction();
+
+            try {
+                $fbc = new FacebookController($this->projectPage->token);
+                $profile = $fbc->getMessengerProfile($d->fb_user_id);
+                if($profile['status']) {
+                    $this->user->first_name = $profile['data']['first_name'];
+                    $this->user->last_name = $profile['data']['last_name'];
+                    $this->user->gender = isset($profile['deta']['gender']) ? $profile['data']['gender'] : null;
+                    $this->user->locale = isset($profile['deta']['locale']) ? $profile['data']['locale'] : null;
+                    $this->user->timezone = isset($profile['deta']['timezone']) ? $profile['data']['timezone'] : null;
+                    $this->user->image = isset($profile['deta']['profile_pic']) ? $profile['data']['profile_pic'] : null;
+                    $this->user->save();
+                }
+            } catch (\Exception $e) {
+                DB::rollback();
+            }
+
+            DB::commit();
         }
         
         return $res;

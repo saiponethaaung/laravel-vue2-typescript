@@ -40,7 +40,8 @@
                 </li>
                 <li>
                     <a href="javascript:void(0);" @click="$store.commit('logout')">
-                        Logout
+                        <i class="material-icons">exit_to_app</i>
+                        <span class="icon-label">Logout</span>
                     </a>
                 </li>
             </ul>

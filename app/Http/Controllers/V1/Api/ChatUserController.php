@@ -171,6 +171,7 @@ class ChatUserController extends Controller
         $dateOffset = strtotime(date("Y-m-d H:i:s"));
         $dateOffset = strtotime("-30 day", $dateOffset);
         return [
+            'fbraw' => $facebookData,
             'id' => $user->id,
             'name' => $facebookData['first_name'].' '.$facebookData['last_name'],
             'gender' => isset($facebook['gender']) ? $facebook['gender'] : '-',

@@ -835,10 +835,10 @@ class ChatBotProjectController extends Controller
                 if($profile['status']) {
                     $this->user->first_name = $profile['data']['first_name'];
                     $this->user->last_name = $profile['data']['last_name'];
-                    $this->user->gender = isset($profile['deta']['gender']) ? $profile['data']['gender'] : null;
-                    $this->user->locale = isset($profile['deta']['locale']) ? $profile['data']['locale'] : null;
-                    $this->user->timezone = isset($profile['deta']['timezone']) ? $profile['data']['timezone'] : null;
-                    $this->user->image = isset($profile['deta']['profile_pic']) ? $profile['data']['profile_pic'] : null;
+                    $this->user->gender = isset($profile['data']['gender']) ? $profile['data']['gender'] : null;
+                    $this->user->locale = isset($profile['data']['locale']) ? $profile['data']['locale'] : null;
+                    $this->user->timezone = isset($profile['data']['timezone']) ? $profile['data']['timezone'] : null;
+                    $this->user->image = isset($profile['data']['profile_pic']) ? $profile['data']['profile_pic'] : null;
                     $this->user->save();
                 }
             } catch (\Exception $e) {

@@ -134,6 +134,7 @@ export interface userList {
     name: string,
     gender: string,
     age: number,
+    lastEngaged: string,
     lastSeen: string,
     signup: string,
     attributes: Array<any>

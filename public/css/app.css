@@ -13004,6 +13004,120 @@ a:hover {
   width: 100%;
 }
 
+.messengerIcon {
+  width: 20px;
+  height: 20px;
+  -webkit-filter: grayscale(1);
+          filter: grayscale(1);
+}
+
+.messengerIcon:hover {
+  -webkit-filter: grayscale(0);
+          filter: grayscale(0);
+}
+
+.userFilterHeading {
+  font-size: 18px;
+  min-height: 36px;
+  line-height: 36px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.userFilterHeading .headingTitle {
+  margin-right: 10px;
+}
+
+.listFilterCon {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  float: left;
+  margin: 5px 5px 5px 0;
+  height: 26px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: #c238eb;
+  color: #fff;
+  padding: 0 10px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.listFilterCon .filterValue {
+  font-size: 12px;
+  font-weight: bold;
+  padding-left: 3px;
+  padding-right: 5px;
+}
+
+.listFilterCon .filterRemoveCheck {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  cursor: pointer;
+}
+
+.listFilterCon .filterRemoveCheck .material-icons {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+}
+
+.userListControlCon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.userListControlCon .userListFilterCon {
+  width: 100%;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.userListControlCon .userListOptionCon .uloButton {
+  font-size: 14px;
+  height: 36px;
+  line-height: 36px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: none;
+  background: transparent;
+  color: #aaaaaa;
+  cursor: pointer;
+}
+
+.userListControlCon .userListOptionCon .uloButton .material-icons {
+  font-size: 15px;
+  margin-right: 8px;
+}
+
 .navbar-laravel {
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

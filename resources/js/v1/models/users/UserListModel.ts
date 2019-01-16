@@ -31,6 +31,10 @@ export default class UserListModel extends AjaxErrorHandler{
         return this.age>0 ? this.age.toString() : "-";
     }
 
+    get lastEngaged() : string {
+        return this.user.lastEngaged;
+    }
+
     get lastSeen() : string {
         return this.user.lastSeen;
     }

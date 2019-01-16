@@ -5,3 +5,85 @@
 .userListTable {
     width: 100%;
 }
+
+.messengerIcon {
+    width: 20px;
+    height: 20px;
+    filter: grayscale(1);
+    &:hover {
+        filter: grayscale(0);
+    }
+}
+
+.userFilterHeading {
+    font-size: 18px;
+    min-height: $standardHeight;
+    line-height: $standardHeight;
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    .headingTitle {
+        margin-right: 10px;
+    }
+}
+
+.listFilterCon {
+    display: inline-flex;
+    float: left;
+    margin: 5px 5px 5px 0;
+    height: 26px;
+    align-items: center;
+    justify-content: center;
+    background: $iconActive;
+    color: #fff;
+    padding: 0 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    .filterValue {
+        font-size: 12px;
+        font-weight: bold;
+        padding-left: 3px;
+        padding-right: 5px;
+    }
+    .filterRemoveCheck {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        .material-icons {
+            font-size: 16px;
+            height: 16px;
+            width: 16px;
+        }
+    }
+}
+
+.userListControlCon {
+    display: flex;
+
+    .userListFilterCon {
+        width: 100%;
+        flex: 1;
+    }
+    
+    .userListOptionCon {
+        .uloButton {
+            font-size: 14px;
+            height: $standardHeight;
+            line-height: $standardHeight;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: $secondaryText;
+            cursor: pointer;
+
+            .material-icons {
+                font-size: 15px;
+                margin-right: 8px;
+            }
+        }
+    }
+}

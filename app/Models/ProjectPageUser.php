@@ -19,7 +19,8 @@ class ProjectPageUser extends Model
         'gender',
         'locale',
         'timezone',
-        'image'
+        'image',
+        'seen_at'
     ];
 
     public function projectPage()

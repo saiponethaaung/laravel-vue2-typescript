@@ -1,6 +1,45 @@
 <template>
     <div class="userListRoot">
-        <h5 class="headingOne">Showing all users</h5>
+        <div class="userListControlCon">
+            <div class="userListFilterCon">
+                <template v-if="hasCheck">
+                    <h5 class="userFilterHeading">
+                        <span class="headingTitle">Filters Applied</span>
+                        <template v-for="(type, tindex) in JSON.parse($store.state.prevUserFilter)">
+                            <template v-for="(attribute, aindex) in type.child">
+                                <template v-for="(value, index) in attribute.value">
+                                    <div :key="`${tindex}-${aindex}-${index}`" v-if="value.checked" class="listFilterCon">
+                                        <span class="filterKey">{{ attribute.name }}:</span>
+                                        <span class="filterValue">{{ value.value }}</span>
+                                        <span class="filterRemoveCheck"
+                                            @click="
+                                                $store.state.userFilter[tindex].child[aindex].value[index].checked=false;
+                                                $store.state.prevUserFilter=JSON.stringify($store.state.userFilter);
+                                            "
+                                        >
+                                            <i class="material-icons">clear</i>
+                                        </span>
+                                    </div>
+                                </template>
+                            </template>
+                        </template>
+                    </h5>
+                </template>
+                <template v-else>
+                    <h5 class="headingOne">Showing all users</h5>
+                </template>
+            </div>
+            <div class="userListOptionCon">
+                <button class="uloButton">
+                    <i class="material-icons">group_add</i>
+                    <span>Save to segment</span>
+                </button>
+                <button class="uloButton">
+                    <i class="material-icons">exit_to_app</i>
+                    <span>export</span>
+                </button>
+            </div>
+        </div>
         <table class="userListTable">
             <thead>
                 <tr>
@@ -15,6 +54,9 @@
                     </th>
                     <th>
                         Age
+                    </th>
+                    <th>
+                        Last Engaged
                     </th>
                     <th>
                         Last Seen
@@ -49,6 +91,9 @@
                             {{ user.age }}
                         </td>
                         <td>
+                            {{ user.lastEngaged }}
+                        </td>
+                        <td>
                             {{ user.lastSeen }}
                         </td>
                         <td>
@@ -57,8 +102,14 @@
                         <td>
                             Session
                         </td>
-                        <td>Edit</td>
-                        <td>Mesg</td>
+                        <td>
+                            <i class="material-icons">create</i>
+                        </td>
+                        <td>
+                            <a :href="'https://m.me/'+user.fbid" target="_blank">
+                                <img src="/images/icons/messenger.png" class="messengerIcon"/>
+                            </a>
+                        </td>
                     </tr>
                 </template>
             </tbody>
@@ -77,6 +128,26 @@ export default class UserListComponent extends Vue {
     private userList: Array<UserListModel> = [];
 
     mounted() {
+    }
+
+    get hasCheck() : boolean {
+        let status = false;
+
+        if(this.$store.state.prevUserFilter!=='') {
+            for(let i of JSON.parse(this.$store.state.prevUserFilter)) {
+                for(let i2 of i.child) {
+                    for(let i3 of i2.value) {
+                        if(!i3.checked) continue;
+                        status = true;
+                        break;
+                    }
+                    if(status) break;
+                }
+                if(status) break;
+            }
+        }
+
+        return status;
     }
 
     @Watch('$store.state.prevUserFilter', { immediate: true })
@@ -102,7 +173,8 @@ export default class UserListComponent extends Vue {
                 filter += `system[${i2.key}][key]=${i2.key}&`;
                 for(let i3 of i2.value) {
                     if(!i3.checked) continue;
-                    filter += `system[${i2.key}][value][]=${i3.value}&`;
+                    filter += `system[${i2.key}][value]=${i3.value}&`;
+                    break;
                 }
             }
         } 

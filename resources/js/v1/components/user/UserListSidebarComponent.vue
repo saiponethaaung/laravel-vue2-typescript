@@ -33,8 +33,8 @@
                     </div>
                 </div>
             </div>
-            <template v-if="hasCheck">
-                <template v-if="$store.state.prevUserFilter==='' || $store.state.prevUserFilter!==JSON.stringify($store.state.userFilter)">
+            <template v-if="hasCheck || ($store.state.prevUserFilter!=='' && $store.state.prevUserFilter!=JSON.stringify($store.state.userFilter))">
+                <template v-if="$store.state.prevUserFilter!=JSON.stringify($store.state.userFilter)">
                     <span @click="applyFilters()">Apply Filters</span>
                 </template>
                 <template v-else>
@@ -53,7 +53,7 @@
                             <span>{{ attribute.name }}</span>
                         </h5>
                         <ul class="avaFilterOptionList" v-show="attribute.open">
-                            <li v-for="(value, vindex) in attribute.value" :key="vindex" class="avafolChild" @click="value.checked=!value.checked" :class="{'selected': value.checked}">
+                            <li v-for="(value, vindex) in attribute.value" :key="vindex" class="avafolChild" @click="checkFilter(index, aindex, vindex)" :class="{'selected': value.checked}">
                                 <i class="material-icons">{{ value.checked ? 'check_box' : 'check_box_outline_blank' }}</i>
                                 <span>{{ value.value }}</span>
                             </li>
@@ -149,6 +149,19 @@ export default class UserListSidebarComponent extends Vue {
         }
 
         return status;
+    }
+
+    private checkFilter(tindex: number, aindex: number, index: any) {
+        if(this.$store.state.userFilter[tindex].single) {
+            if(!this.$store.state.userFilter[tindex].child[aindex].value[index].checked) {
+                for(let i in this.$store.state.userFilter[tindex].child[aindex].value) {
+                    if(i===index) continue;
+                    this.$store.state.userFilter[tindex].child[aindex].value[i].checked = false;
+                }
+            }
+        }
+        
+        this.$store.state.userFilter[tindex].child[aindex].value[index].checked = !this.$store.state.userFilter[tindex].child[aindex].value[index].checked;
     }
 }
 </script>

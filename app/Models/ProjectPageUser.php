@@ -13,7 +13,13 @@ class ProjectPageUser extends Model
         'fb_user_id',
         'live_chat',
         'user_id',
-        'urgent'
+        'urgent',
+        'first_name',
+        'last_name',
+        'gender',
+        'locale',
+        'timezone',
+        'image'
     ];
 
     public function projectPage()

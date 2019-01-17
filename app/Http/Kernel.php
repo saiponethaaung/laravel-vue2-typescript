@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'verifyProjectHasPage' => \App\Http\Middleware\Project\IsPageConnected::class,
         'verifyProjectMember' => \App\Http\Middleware\Project\IsProjectMember::class,
         'verifyProjectPageUser' => \App\Http\Middleware\ValidatePageUser::class,
+        'verifyProjectPageUserAttribute' => \App\Http\Middleware\ValidateChatUserAttribute::class,
     ];
 
     /**

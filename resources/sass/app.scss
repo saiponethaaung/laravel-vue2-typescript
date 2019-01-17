@@ -19,6 +19,16 @@
 @import 'inbox';
 @import 'filter';
 @import 'user';
+@import 'popFixedContainer';
+
+@font-face {
+  font-family: 'project-font';
+  src: url('./fonts/Rubik-Regular.ttf') format('truetype');
+}
+
+*:not(.material-icons) {
+  font-family: 'project-font';
+}
 
 .navbar-laravel {
   background-color: #fff;

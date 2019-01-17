@@ -13000,8 +13000,86 @@ a:hover {
   padding: 15px 30px;
 }
 
+.filterButton {
+  height: 36px;
+  line-height: 36px;
+  font-size: 14px;
+  float: right;
+  cursor: pointer;
+}
+
 .userListTable {
   width: 100%;
+}
+
+.userListTable .ultDateColumn {
+  width: 110px;
+}
+
+.userListTable .utlSessinColumn {
+  width: 80px;
+}
+
+.userListTable .utlCheckColumn {
+  width: 50px;
+}
+
+.userListTable .ultWrapper {
+  height: 36px;
+  line-height: 36px;
+  font-size: 14px;
+}
+
+.userListTable .ultChecker {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.userListTable .ultChecker .material-icons {
+  color: #c0c0c0;
+  cursor: pointer;
+}
+
+.userListTable .ultChecker.ultChecked .material-icons {
+  color: #c238eb;
+}
+
+.userListTable .iconCenter {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.userListTable .iconCenter a {
+  width: 20px;
+  height: 20px;
+}
+
+.userListTable .iconCenter a .messengerIcon {
+  float: left;
+}
+
+.userListTable .ultEditIcon {
+  font-size: 20px;
+  color: #aaaaaa;
+  cursor: pointer;
+}
+
+.userListTable .utlIconColumn {
+  width: 32px;
 }
 
 .messengerIcon {
@@ -13116,6 +13194,162 @@ a:hover {
 .userListControlCon .userListOptionCon .uloButton .material-icons {
   font-size: 15px;
   margin-right: 8px;
+}
+
+.floatingLoading {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 111;
+  top: 0;
+  left: 0;
+}
+
+.popFixedContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 111;
+}
+
+.popFixedCenter {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.userAttributePop {
+  height: 90vh;
+  background: #fff;
+  max-height: 550px;
+  width: 500px;
+  border-radius: 5px;
+}
+
+.userAttributePop .uaBodyCon {
+  height: calc(100% - 60px);
+  overflow: auto;
+  padding: 20px;
+}
+
+.userAttributePop .uaBodyCon .uaTitle {
+  margin-bottom: 20px;
+}
+
+.userAttributePop .uaBodyCon .uaTable {
+  padding: 0 15px;
+  margin-bottom: 20px;
+}
+
+.userAttributePop .uaBodyCon table {
+  width: 100%;
+}
+
+.userAttributePop .uaBodyCon table td,
+.userAttributePop .uaBodyCon table th {
+  width: 50%;
+  height: 36px;
+  line-height: 36px;
+}
+
+.userAttributePop .uaBodyCon table .attrTitle,
+.userAttributePop .uaBodyCon table .attrValue {
+  position: relative;
+}
+
+.userAttributePop .uaBodyCon table .attrTitle input,
+.userAttributePop .uaBodyCon table .attrValue input {
+  border: none;
+}
+
+.userAttributePop .uaBodyCon table .attrTitle input.newAttribute,
+.userAttributePop .uaBodyCon table .attrTitle input:focus,
+.userAttributePop .uaBodyCon table .attrValue input.newAttribute,
+.userAttributePop .uaBodyCon table .attrValue input:focus {
+  border: 1px solid #ebebeb;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 5px;
+  padding: 0 10px;
+}
+
+.userAttributePop .uaBodyCon table .attrDel {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 5px;
+  right: -28px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: 1px solid #ebebeb;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.userAttributePop .uaBodyCon table .attrDel .material-icons {
+  font-size: 20px;
+}
+
+.userAttributePop .uaBodyCon table .attrRow:hover .attrDel {
+  visibility: visible;
+  opacity: 1;
+}
+
+.userAttributePop .uaFooterCon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 60px;
+  border-top: 1px solid #ebebeb;
+  padding: 0 15px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.userAttributePop .uaFooterCon button {
+  margin: 0;
+}
+
+@font-face {
+  font-family: 'project-font';
+  src: url(/fonts/Rubik-Regular.ttf?6c980940392587c8d7d325c07965ebda) format("truetype");
+}
+
+*:not(.material-icons) {
+  font-family: 'project-font';
 }
 
 .navbar-laravel {

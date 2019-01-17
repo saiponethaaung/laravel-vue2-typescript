@@ -24,6 +24,15 @@ class ChatUserController extends Controller
                 });
             });
         }]);
+        
+        $attributes->whereHas('chatValue', function($query) use ($request) {
+            $query->whereHas('user', function($query) use ($request){
+                $query->whereHas('projectPage', function($query) use ($request) {
+                    $query->where('id', $request->attributes->get('project_page')->id);
+                    $query->where('project_id', $request->attributes->get('project')->id);
+                });
+            });
+        });
 
         $attributes = $attributes->get();
     
@@ -244,5 +253,183 @@ class ChatUserController extends Controller
         }
 
         return is_null($offset) ? date("Y-m-d H:i:s", $date) : date("Y-m-d H:i:s", strtotime($offset, $date));
+    }
+
+    public function getUserAttributes(Request $request)
+    {
+        $attributes = ProjectPageUserAttribute::with('attrValue')
+                        ->where('project_page_user_id', $request->attributes->get('project_page_user')->id)
+                        ->get();
+
+        $res = [];
+
+        foreach($attributes as $attribute) {
+            $res[] = [
+                'id' => $attribute->id,
+                'name' => is_null($attribute->attrValue) ? '' : $attribute->attrValue->attribute,
+                'value' => $attribute->value
+            ];
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $res
+        ]);
+    }
+
+    public function createUserAttributes(Request $request)
+    {
+        $attribute = null;
+        DB::beginTransaction();
+
+        try {
+            $attribute = ProjectPageUserAttribute::create([
+                'value' => '',
+                'project_page_user_id' => $request->attributes->get('project_page_user')->id
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to create user attribute!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        $res= [
+            'id' => $attribute->id,
+            'name' => '',
+            'value' => ''
+        ];
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $res
+        ]);
+    }
+
+    public function deleteUserAttribute(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('project_page_user_attribute')->delete();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to delete user attribute!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
+        ]);
+    }
+
+    public function updateUserAttributeName(Request $request)
+    {
+        if(is_null($request->input('name')) || empty($request->input('name'))) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Attribute name cannot be empty!'
+            ], 422);
+        }
+
+        $chatAttribute = ChatAttribute::where(
+            DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $request->input('name').'%'
+        )->first();
+
+        if(empty($chatAttribute)) {
+            DB::beginTransaction();
+
+            try {
+                $chatAttribute = ChatAttribute::create([
+                    'attribute' => $request->input('name')
+                ]);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => 'Failed to update attribute name!',
+                    'debugMesg' => $e->getMessage()
+                ], 422);
+            }
+
+            DB::commit();
+        }
+        
+        if($request->attributes->get('project_page_user_attribute')->attribute_id!==$chatAttribute->id) {
+            DB::beginTransaction();
+
+            try {
+                $request->attributes->get('project_page_user_attribute')->attribute_id = $chatAttribute->id;
+                $request->attributes->get('project_page_user_attribute')->save();
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => 'Failed to update attribute name!',
+                    'debugMesg' => $e->getMessage()
+                ], 422);
+            }
+
+            DB::commit();
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
+        ]);
+    }
+    
+    public function updateUserAttributeValue(Request $request)
+    {
+        if(is_null($request->input('value')) || empty($request->input('value'))) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Attribute value cannot be empty!'
+            ], 422);
+        }
+
+       
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('project_page_user_attribute')->value = $request->input('value');
+            $request->attributes->get('project_page_user_attribute')->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update attribute value!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
+        ]);
+        
     }
 }

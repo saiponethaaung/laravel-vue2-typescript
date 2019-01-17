@@ -1,0 +1,110 @@
+.floatingLoading {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: rgba(0,0,0,0.6);
+    z-index: 111;
+    top: 0;
+    left: 0;
+}
+
+.popFixedContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.1);
+    z-index: 111;
+}
+
+.popFixedCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+$userPopFooter: 60px;
+.userAttributePop {
+    height: 90vh;
+    background: #fff;
+    max-height: 550px;
+    width: 500px;
+    border-radius: 5px;
+    .uaBodyCon {
+        height: calc(100% - #{$userPopFooter});
+        overflow: auto;
+        padding: 20px;
+        .uaTitle {
+            margin-bottom: 20px;
+        }
+        .uaTable {
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            td,th {
+                width: 50%;
+                height: $standardHeight;
+                line-height: $standardHeight;
+            }
+            .attrTitle,
+            .attrValue {
+                position: relative;
+                input {
+                    border: none;
+                    &.newAttribute,
+                    &:focus {
+                        border: 1px solid $borderPrimary;
+                        height: 36px;
+                        line-height: 36px;
+                        border-radius: 5px;
+                        padding: 0 10px;
+                    }
+                }
+            }
+
+            .attrDel {
+                visibility: hidden;
+                opacity: 0;
+                position: absolute;
+                top: 5px;
+                right: -28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid $borderPrimary;
+                width: 30px;
+                height: 30px;
+                border-radius: 5px;
+                cursor: pointer;
+                .material-icons {
+                    font-size: 20px;
+                }
+            }
+
+            .attrRow:hover {
+                .attrDel {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+    .uaFooterCon {
+        display: flex;
+        align-items: center;
+        height: $userPopFooter;
+        border-top: 1px solid $borderPrimary;
+        padding: 0 15px;
+        justify-content: space-between;
+        button {
+            margin: 0;
+        }
+    }
+}

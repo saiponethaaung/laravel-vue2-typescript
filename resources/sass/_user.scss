@@ -2,8 +2,76 @@
     padding: 15px $standardContentPadding;
 }
 
+.filterButton {
+    height: $standardHeight;
+    line-height: $standardHeight;
+    font-size: 14px;
+    float: right;
+    cursor: pointer;
+}
+
 .userListTable {
     width: 100%;
+    .ultDateColumn {
+        width: 110px;
+    }
+
+    .utlSessinColumn {
+        width: 80px;
+    }
+
+    // .utlGenderColumn {
+    //     width: 80px;
+    // }
+
+    .utlCheckColumn {
+        width: 50px;
+    }
+
+    .ultWrapper {
+        height: $standardHeight;
+        line-height: $standardHeight;
+        font-size: 14px;
+    }
+
+    .ultChecker {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .material-icons {
+            color: $filterCheckBoxUnchecked;
+            cursor: pointer;
+        }
+        
+        &.ultChecked {
+            .material-icons {
+                color: $filterCheckBoxChecked;
+            }
+        }
+    }
+
+    .iconCenter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        a {
+            width: 20px;
+            height: 20px;
+            .messengerIcon {
+                float: left;
+            }
+        }
+    }
+
+    .ultEditIcon {
+        font-size: 20px;
+        color: $iconPrimary;
+        cursor: pointer;
+    }
+
+    .utlIconColumn {
+        width: 32px;
+    }
 }
 
 .messengerIcon {

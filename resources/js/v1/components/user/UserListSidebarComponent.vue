@@ -35,10 +35,10 @@
             </div>
             <template v-if="hasCheck || ($store.state.prevUserFilter!=='' && $store.state.prevUserFilter!=JSON.stringify($store.state.userFilter))">
                 <template v-if="$store.state.prevUserFilter!=JSON.stringify($store.state.userFilter)">
-                    <span @click="applyFilters()">Apply Filters</span>
+                    <span @click="applyFilters()" class="filterButton">Apply Filters</span>
                 </template>
                 <template v-else>
-                    <span @click="removeAllChecked()">Remove Filters</span>
+                    <span @click="removeAllChecked()" class="filterButton">Remove Filters</span>
                 </template>
             </template>
         </div>

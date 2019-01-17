@@ -35818,10 +35818,6 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(60)
-}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(63)
@@ -35830,7 +35826,7 @@ var __vue_template__ = __webpack_require__(64)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -35865,46 +35861,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(61);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(11)("e00bbb86", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7ce5c505\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ProjectRootComponent.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7ce5c505\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ProjectRootComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(10)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.floatingLoading {\n  position: fixed;\n  width: 100vw;\n  height: 100vh;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  color: #fff;\n  background: rgba(0, 0, 0, 0.6);\n  z-index: 11;\n  top: 0;\n  left: 0;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 60 */,
+/* 61 */,
 /* 62 */
 /***/ (function(module, exports) {
 
@@ -39098,8 +39056,33 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
         super(...arguments);
         this.userLoading = false;
         this.userList = [];
+        this.editIndex = -1;
     }
     mounted() {
+    }
+    get allChecked() {
+        let status = false;
+        if (this.userList.length > 0) {
+            let checked = 0;
+            for (let i of this.userList) {
+                if (i.checked)
+                    checked++;
+            }
+            status = this.userList.length === checked;
+        }
+        return status;
+    }
+    get generateExportLink() {
+        let status = false;
+        if (this.userList.length > 0) {
+            for (let i of this.userList) {
+                if (i.checked) {
+                    status = true;
+                    break;
+                }
+            }
+        }
+        return status;
     }
     get hasCheck() {
         let status = false;
@@ -39123,6 +39106,7 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
     }
     loadUser() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.editIndex = -1;
             let filter = '';
             if (this.$store.state.userFilter.length > 0) {
                 for (let i2 of this.$store.state.userFilter[0].child) {
@@ -39158,11 +39142,64 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
             }).then((res) => {
                 this.userList = [];
                 for (let i of res.data.data) {
-                    this.userList.push(new __WEBPACK_IMPORTED_MODULE_1__models_users_UserListModel__["a" /* default */](i));
+                    this.userList.push(new __WEBPACK_IMPORTED_MODULE_1__models_users_UserListModel__["a" /* default */](i, this.$store.state.projectInfo.id));
                 }
             }).catch((err) => {
             });
             this.userLoading = false;
+        });
+    }
+    toggleAll() {
+        let status = !this.allChecked;
+        for (let i in this.userList) {
+            this.userList[i].checked = status;
+        }
+    }
+    openAttributePop(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.editIndex = index;
+            // Load user attribute if it's not yet loaded
+            if (!this.userList[index].isAttrLoad) {
+                let loadAttribute = yield this.userList[index].loadAttribute();
+                // alert an error if the process failed
+                if (!loadAttribute.status) {
+                    alert(loadAttribute.mesg);
+                }
+            }
+        });
+    }
+    updateAttributeName(user, attribute) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let update = yield this.userList[user].attributes[attribute].updateAttributeName();
+            if (!update['status']) {
+                alert(update['mesg']);
+            }
+        });
+    }
+    updateAttributeValue(user, attribute) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let update = yield this.userList[user].attributes[attribute].updateAttributeValue();
+            if (!update['status']) {
+                alert(update['mesg']);
+            }
+        });
+    }
+    createNewAttribute(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let create = yield this.userList[user].createAttribute();
+            if (!create['status']) {
+                alert(create['mesg']);
+            }
+        });
+    }
+    deleteAttribute(user, attribute) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to delete this attribute?")) {
+                let create = yield this.userList[user].deleteAttribute(attribute);
+                if (!create['status']) {
+                    alert(create['mesg']);
+                }
+            }
         });
     }
 };
@@ -39181,12 +39218,29 @@ UserListComponent = __decorate([
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AttributeModel__ = __webpack_require__(166);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
 
 class UserListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
-    constructor(user) {
+    constructor(user, projectId) {
         super();
-        this.isChecked = false;
         this.user = user;
+        this.projectId = projectId;
+        this.isChecked = false;
+        this.isAttributeLoad = false;
+        this.userAttributes = [];
+        this.creatingAttr = 0;
     }
     get id() {
         return this.user.id;
@@ -39217,6 +39271,88 @@ class UserListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
     }
     set checked(status) {
         this.isChecked = status;
+    }
+    get creating() {
+        return this.creatingAttr;
+    }
+    set creating(count) {
+        this.creatingAttr = count;
+    }
+    get isAttrLoad() {
+        return this.isAttributeLoad;
+    }
+    set isAttrLoad(status) {
+        this.isAttributeLoad = status;
+    }
+    get attributes() {
+        return this.userAttributes;
+    }
+    loadAttribute() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = {
+                'status': true,
+                'mesg': 'success'
+            };
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/users/${this.id}/attributes`,
+                method: 'get'
+            }).then(res => {
+                console.log('attribute', res.data);
+                for (let i of res.data.data) {
+                    this.userAttributes.push(new __WEBPACK_IMPORTED_MODULE_2__AttributeModel__["a" /* default */](i, this.projectId, this.id));
+                }
+                this.isAttrLoad = true;
+            }).catch(err => {
+                if (err.response) {
+                    result['status'] = false;
+                    result['mesg'] = this.globalHandler(err, 'Failed to load user attribute!');
+                }
+            });
+            return result;
+        });
+    }
+    createAttribute() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = {
+                'status': true,
+                'mesg': 'success'
+            };
+            this.creating++;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/users/${this.id}/attributes`,
+                method: 'post'
+            }).then(res => {
+                this.userAttributes.push(new __WEBPACK_IMPORTED_MODULE_2__AttributeModel__["a" /* default */](res.data.data, this.projectId, this.id));
+                this.isAttrLoad = true;
+            }).catch(err => {
+                if (err.response) {
+                    result['status'] = false;
+                    result['mesg'] = this.globalHandler(err, 'Failed create new attribute!');
+                }
+            });
+            this.creating--;
+            return result;
+        });
+    }
+    deleteAttribute(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = {
+                'status': true,
+                'mesg': 'success'
+            };
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/users/${this.id}/attributes/${this.userAttributes[index].id}`,
+                method: 'delete'
+            }).then(res => {
+                this.userAttributes.splice(index, 1);
+            }).catch(err => {
+                if (err.response) {
+                    result['status'] = false;
+                    result['mesg'] = this.globalHandler(err, 'Failed create new attribute!');
+                }
+            });
+            return result;
+        });
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = UserListModel;
@@ -39334,117 +39470,426 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("table", { staticClass: "userListTable" }, [
-      _vm._m(1),
+      _c("thead", [
+        _c("tr", [
+          _c("th", { staticClass: "utlCheckColumn" }, [
+            _c(
+              "div",
+              {
+                staticClass: "ultWrapper ultChecker",
+                class: { ultChecked: _vm.allChecked }
+              },
+              [
+                _c(
+                  "i",
+                  {
+                    staticClass: "material-icons",
+                    on: {
+                      click: function($event) {
+                        _vm.toggleAll()
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm.allChecked ? "check_box" : "check_box_outline_blank"
+                      )
+                    )
+                  ]
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _vm._m(2),
+          _vm._v(" "),
+          _vm._m(3),
+          _vm._v(" "),
+          _vm._m(4),
+          _vm._v(" "),
+          _vm._m(5),
+          _vm._v(" "),
+          _vm._m(6),
+          _vm._v(" "),
+          _vm._m(7),
+          _vm._v(" "),
+          _c("th", { attrs: { colspan: "2" } })
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "tbody",
         [
           _vm.userLoading
-            ? [_vm._m(2)]
+            ? [_vm._m(8)]
             : _vm._l(_vm.userList, function(user, index) {
                 return _c("tr", { key: index }, [
-                  _c("td", [
+                  _c("td", { staticClass: "utlCheckColumn" }, [
                     _c(
-                      "i",
+                      "div",
                       {
-                        staticClass: "material-icons",
-                        on: {
-                          click: function($event) {
-                            user.checked = !user.checked
-                          }
-                        }
+                        staticClass: "ultWrapper ultChecker",
+                        class: { ultChecked: user.checked }
                       },
                       [
-                        _vm._v(
-                          _vm._s(
-                            user.checked
-                              ? "check_box"
-                              : "check_box_outline_blank"
-                          )
+                        _c(
+                          "i",
+                          {
+                            staticClass: "material-icons",
+                            on: {
+                              click: function($event) {
+                                user.checked = !user.checked
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                user.checked
+                                  ? "check_box"
+                                  : "check_box_outline_blank"
+                              )
+                            )
+                          ]
                         )
                       ]
                     )
                   ]),
                   _vm._v(" "),
                   _c("td", [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(user.name) +
-                        "\n                    "
-                    )
+                    _c("div", { staticClass: "ultWrapper" }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(user.name) +
+                          "\n                        "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "utlGenderColumn" }, [
+                    _c("div", { staticClass: "ultWrapper" }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(user.gender) +
+                          "\n                        "
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("td", [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(user.gender) +
-                        "\n                    "
-                    )
+                    _c("div", { staticClass: "ultWrapper" }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(user.age > 0 ? user.age : "-") +
+                          "\n                        "
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(user.age) +
-                        "\n                    "
-                    )
+                  _c("td", { staticClass: "ultDateColumn" }, [
+                    _c("div", { staticClass: "ultWrapper" }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(user.lastEngaged) +
+                          "\n                        "
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(user.lastEngaged) +
-                        "\n                    "
-                    )
+                  _c("td", { staticClass: "ultDateColumn" }, [
+                    _c("div", { staticClass: "ultWrapper" }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(user.lastSeen) +
+                          "\n                        "
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(user.lastSeen) +
-                        "\n                    "
-                    )
+                  _c("td", { staticClass: "ultDateColumn" }, [
+                    _c("div", { staticClass: "ultWrapper" }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(user.signup) +
+                          "\n                        "
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(user.signup) +
-                        "\n                    "
-                    )
+                  _vm._m(9, true),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "utlIconColumn" }, [
+                    _c("div", { staticClass: "ultWrapper iconCenter" }, [
+                      _c(
+                        "i",
+                        {
+                          staticClass: "material-icons ultEditIcon",
+                          on: {
+                            click: function($event) {
+                              _vm.openAttributePop(index)
+                            }
+                          }
+                        },
+                        [_vm._v("create")]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      "\n                        Session\n                    "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(3, true),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "a",
-                      {
-                        attrs: {
-                          href: "https://m.me/" + user.fbid,
-                          target: "_blank"
-                        }
-                      },
-                      [
-                        _c("img", {
-                          staticClass: "messengerIcon",
-                          attrs: { src: "/images/icons/messenger.png" }
-                        })
-                      ]
-                    )
+                  _c("td", { staticClass: "utlIconColumn" }, [
+                    _c("div", { staticClass: "ultWrapper iconCenter" }, [
+                      _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: "https://m.me/" + user.fbid,
+                            target: "_blank"
+                          }
+                        },
+                        [
+                          _c("img", {
+                            staticClass: "messengerIcon",
+                            attrs: { src: "/images/icons/messenger.png" }
+                          })
+                        ]
+                      )
+                    ])
                   ])
                 ])
               })
         ],
         2
       )
-    ])
+    ]),
+    _vm._v(" "),
+    _vm.editIndex > -1
+      ? _c("div", { staticClass: "popFixedContainer popFixedCenter" }, [
+          _c("div", { staticClass: "userAttributePop" }, [
+            _c("div", { staticClass: "uaBodyCon" }, [
+              _c("h5", { staticClass: "uaTitle" }, [
+                _vm._v(_vm._s(_vm.userList[_vm.editIndex].name))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "uaTable" }, [
+                _c("table", { staticClass: "attributeTable" }, [
+                  _vm._m(10),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    [
+                      _vm.userList[_vm.editIndex].isAttrLoad
+                        ? [
+                            _vm.userList[_vm.editIndex].attributes.length > 0
+                              ? _vm._l(
+                                  _vm.userList[_vm.editIndex].attributes,
+                                  function(attribute, index) {
+                                    return _c(
+                                      "tr",
+                                      { key: index, staticClass: "attrRow" },
+                                      [
+                                        _c("td", { staticClass: "attrTitle" }, [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: attribute.name,
+                                                expression: "attribute.name"
+                                              }
+                                            ],
+                                            class: {
+                                              newAttribute:
+                                                attribute.name === ""
+                                            },
+                                            attrs: { type: "text" },
+                                            domProps: { value: attribute.name },
+                                            on: {
+                                              blur: function($event) {
+                                                _vm.updateAttributeName(
+                                                  _vm.editIndex,
+                                                  index
+                                                )
+                                              },
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  attribute,
+                                                  "name",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", { staticClass: "attrValue" }, [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: attribute.value,
+                                                expression: "attribute.value"
+                                              }
+                                            ],
+                                            class: {
+                                              newAttribute:
+                                                attribute.value === ""
+                                            },
+                                            attrs: { type: "text" },
+                                            domProps: {
+                                              value: attribute.value
+                                            },
+                                            on: {
+                                              blur: function($event) {
+                                                _vm.updateAttributeValue(
+                                                  _vm.editIndex,
+                                                  index
+                                                )
+                                              },
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  attribute,
+                                                  "value",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "button",
+                                            {
+                                              staticClass: "attrDel",
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.deleteAttribute(
+                                                    _vm.editIndex,
+                                                    index
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "i",
+                                                {
+                                                  staticClass: "material-icons"
+                                                },
+                                                [_vm._v("delete")]
+                                              )
+                                            ]
+                                          )
+                                        ])
+                                      ]
+                                    )
+                                  }
+                                )
+                              : [_vm._m(11)]
+                          ]
+                        : [_vm._m(12)],
+                      _vm._v(" "),
+                      _vm.userList[_vm.editIndex].creating > 0
+                        ? _c("tr", [
+                            _c("td", { attrs: { colspan: "2" } }, [
+                              _vm._v("Creating...")
+                            ])
+                          ])
+                        : _vm._e()
+                    ],
+                    2
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "uaTable" }, [
+                _c("table", { staticClass: "attributeTable" }, [
+                  _vm._m(13),
+                  _vm._v(" "),
+                  _c("tbody", [
+                    _c("tr", [
+                      _c("td", { staticClass: "attrTitle" }, [
+                        _vm._v("Gender")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "attrValue" }, [
+                        _vm._v(_vm._s(_vm.userList[_vm.editIndex].gender))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("td", { staticClass: "attrTitle" }, [
+                        _vm._v("Last Engaged")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "attrValue" }, [
+                        _vm._v(_vm._s(_vm.userList[_vm.editIndex].lastEngaged))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("td", { staticClass: "attrTitle" }, [
+                        _vm._v("Last Seen")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "attrValue" }, [
+                        _vm._v(_vm._s(_vm.userList[_vm.editIndex].lastSeen))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("td", { staticClass: "attrTitle" }, [
+                        _vm._v("Signed up")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "attrValue" }, [
+                        _vm._v(_vm._s(_vm.userList[_vm.editIndex].signup))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(14)
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "uaFooterCon" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "headerButtonTypeOne",
+                  on: {
+                    click: function($event) {
+                      _vm.createNewAttribute(_vm.editIndex)
+                    }
+                  }
+                },
+                [_vm._v("+ Add")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "headerButtonTypeOne",
+                  on: {
+                    click: function($event) {
+                      _vm.editIndex = -1
+                    }
+                  }
+                },
+                [_vm._v("Close")]
+              )
+            ])
+          ])
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -39470,31 +39915,69 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [
-          _c("i", { staticClass: "material-icons" }, [
-            _vm._v("check_box_outline_blank")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("th", [_vm._v("\n                    Name\n                ")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("\n                    Gender\n                ")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("\n                    Age\n                ")]),
-        _vm._v(" "),
-        _c("th", [
-          _vm._v("\n                    Last Engaged\n                ")
-        ]),
-        _vm._v(" "),
-        _c("th", [_vm._v("\n                    Last Seen\n                ")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("\n                    Signed up\n                ")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("\n                    Session\n                ")]),
-        _vm._v(" "),
-        _c("th", { attrs: { colspan: "2" } })
+    return _c("th", [
+      _c("div", { staticClass: "ultWrapper" }, [
+        _vm._v("\n                        Name\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { staticClass: "utlGenderColumn" }, [
+      _c("div", { staticClass: "ultWrapper" }, [
+        _vm._v("\n                        Gender\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [
+      _c("div", { staticClass: "ultWrapper" }, [
+        _vm._v("\n                        Age\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { staticClass: "ultDateColumn" }, [
+      _c("div", { staticClass: "ultWrapper" }, [
+        _vm._v("\n                        Last Engaged\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { staticClass: "ultDateColumn" }, [
+      _c("div", { staticClass: "ultWrapper" }, [
+        _vm._v("\n                        Last Seen\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { staticClass: "ultDateColumn" }, [
+      _c("div", { staticClass: "ultWrapper" }, [
+        _vm._v("\n                        Signed up\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { staticClass: "utlSessinColumn" }, [
+      _c("div", { staticClass: "ultWrapper" }, [
+        _vm._v("\n                        Session\n                    ")
       ])
     ])
   },
@@ -39510,8 +39993,62 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("create")])
+    return _c("td", { staticClass: "utlSessinColumn" }, [
+      _c("div", { staticClass: "ultWrapper" }, [
+        _vm._v(
+          "\n                            Session\n                        "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticClass: "attrTitle" }, [_vm._v("custom attribues")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "attrValue" }, [_vm._v("value")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("There is no attribute!")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("Loading...")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticClass: "attrTitle" }, [_vm._v("system attribues")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "attrValue" }, [_vm._v("value")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "attrTitle" }, [_vm._v("Session")]),
+      _vm._v(" "),
+      _c("td", { staticClass: "attrValue" }, [_vm._v("1")])
     ])
   }
 ]
@@ -39792,6 +40329,7 @@ var render = function() {
                     _c(
                       "span",
                       {
+                        staticClass: "filterButton",
                         on: {
                           click: function($event) {
                             _vm.applyFilters()
@@ -39805,6 +40343,7 @@ var render = function() {
                     _c(
                       "span",
                       {
+                        staticClass: "filterButton",
                         on: {
                           click: function($event) {
                             _vm.removeAllChecked()
@@ -46795,6 +47334,113 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+class AttributeModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(attribute, projectId, userId) {
+        super();
+        this.attribute = attribute;
+        this.projectId = projectId;
+        this.userId = userId;
+        this.nameUpdateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.valueUpdateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+    }
+    get id() {
+        return this.attribute.id;
+    }
+    get name() {
+        return this.attribute.name;
+    }
+    set name(name) {
+        this.attribute.name = name;
+    }
+    get value() {
+        return this.attribute.value;
+    }
+    set value(value) {
+        this.attribute.value = value;
+    }
+    updateAttributeName() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.nameUpdateToken.cancel();
+            this.nameUpdateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            let result = {
+                'status': true,
+                'mesg': 'success'
+            };
+            let data = new FormData();
+            data.append('name', this.attribute.name);
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/users/${this.userId}/attributes/${this.attribute.id}/name`,
+                method: 'post',
+                data: data,
+                cancelToken: this.nameUpdateToken.token
+            }).then(res => {
+                console.log('attribute', res.data);
+            }).catch(err => {
+                if (err.response) {
+                    result['status'] = false;
+                    result['mesg'] = this.globalHandler(err, 'Failed to update attribute name!');
+                }
+            });
+            return result;
+        });
+    }
+    updateAttributeValue() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.valueUpdateToken.cancel();
+            this.valueUpdateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            let result = {
+                'status': true,
+                'mesg': 'success'
+            };
+            let data = new FormData();
+            data.append('value', this.attribute.value);
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/users/${this.userId}/attributes/${this.attribute.id}/value`,
+                method: 'post',
+                data: data,
+                cancelToken: this.valueUpdateToken.token
+            }).then(res => {
+                console.log('attribute', res.data);
+            }).catch(err => {
+                if (err.response) {
+                    result['status'] = false;
+                    result['mesg'] = this.globalHandler(err, 'Failed to update attribute value!');
+                }
+            });
+            return result;
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AttributeModel;
+
+
 
 /***/ })
 /******/ ]);

@@ -129,7 +129,7 @@ export interface attributeType {
     child: Array<any>
 }
 
-export interface userList {
+export interface user {
     id: number,
     name: string,
     gender: string,
@@ -137,5 +137,15 @@ export interface userList {
     lastEngaged: string,
     lastSeen: string,
     signup: string,
-    attributes: Array<any>
+}
+
+export interface attribute {
+    id: number,
+    name: string,
+    value: string
+}
+
+export interface axiosDefaultResponse {
+    status: boolean,
+    mesg: string
 }

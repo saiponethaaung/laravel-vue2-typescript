@@ -43,29 +43,45 @@
         <table class="userListTable">
             <thead>
                 <tr>
-                    <th>
-                        <i class="material-icons">check_box_outline_blank</i>
+                    <th class="utlCheckColumn">
+                        <div class="ultWrapper ultChecker" :class="{'ultChecked': allChecked}">
+                            <i class="material-icons" @click="toggleAll()">{{ allChecked ? 'check_box' : 'check_box_outline_blank' }}</i>
+                        </div>
                     </th>
                     <th>
-                        Name
+                        <div class="ultWrapper">
+                            Name
+                        </div>
+                    </th>
+                    <th class="utlGenderColumn">
+                        <div class="ultWrapper">
+                            Gender
+                        </div>
                     </th>
                     <th>
-                        Gender
+                        <div class="ultWrapper">
+                            Age
+                        </div>
                     </th>
-                    <th>
-                        Age
+                    <th class="ultDateColumn">
+                        <div class="ultWrapper">
+                            Last Engaged
+                        </div>
                     </th>
-                    <th>
-                        Last Engaged
+                    <th class="ultDateColumn">
+                        <div class="ultWrapper">
+                            Last Seen
+                        </div>
                     </th>
-                    <th>
-                        Last Seen
+                    <th class="ultDateColumn">
+                        <div class="ultWrapper">
+                            Signed up
+                        </div>
                     </th>
-                    <th>
-                        Signed up
-                    </th>
-                    <th>
-                        Session
+                    <th class="utlSessinColumn">
+                        <div class="ultWrapper">
+                            Session
+                        </div>
                     </th>
                     <th colspan="2"></th>
                 </tr>
@@ -78,42 +94,146 @@
                 </template>
                 <template v-else>
                     <tr v-for="(user, index) in userList" :key="index">
-                        <td>
-                            <i class="material-icons" @click="user.checked=!user.checked">{{ user.checked ? 'check_box' : 'check_box_outline_blank' }}</i>
+                        <td class="utlCheckColumn">
+                            <div class="ultWrapper ultChecker" :class="{'ultChecked': user.checked}">
+                                <i class="material-icons" @click="user.checked=!user.checked">{{ user.checked ? 'check_box' : 'check_box_outline_blank' }}</i>
+                            </div>
                         </td>
                         <td>
-                            {{ user.name }}
+                            <div class="ultWrapper">
+                                {{ user.name }}
+                            </div>
+                        </td>
+                        <td class="utlGenderColumn">
+                            <div class="ultWrapper">
+                                {{ user.gender }}
+                            </div>
                         </td>
                         <td>
-                            {{ user.gender }}
+                            <div class="ultWrapper">
+                                {{ user.age>0 ? user.age : "-" }}
+                            </div>
                         </td>
-                        <td>
-                            {{ user.age }}
+                        <td class="ultDateColumn">
+                            <div class="ultWrapper">
+                                {{ user.lastEngaged }}
+                            </div>
                         </td>
-                        <td>
-                            {{ user.lastEngaged }}
+                        <td class="ultDateColumn">
+                            <div class="ultWrapper">
+                                {{ user.lastSeen }}
+                            </div>
                         </td>
-                        <td>
-                            {{ user.lastSeen }}
+                        <td class="ultDateColumn">
+                            <div class="ultWrapper">
+                                {{ user.signup }}
+                            </div>
                         </td>
-                        <td>
-                            {{ user.signup }}
+                        <td class="utlSessinColumn">
+                            <div class="ultWrapper">
+                                Session
+                            </div>
                         </td>
-                        <td>
-                            Session
+                        <td class="utlIconColumn">
+                            <div class="ultWrapper iconCenter">
+                                <i class="material-icons ultEditIcon" @click="openAttributePop(index)">create</i>
+                            </div>
                         </td>
-                        <td>
-                            <i class="material-icons">create</i>
-                        </td>
-                        <td>
-                            <a :href="'https://m.me/'+user.fbid" target="_blank">
-                                <img src="/images/icons/messenger.png" class="messengerIcon"/>
-                            </a>
+                        <td class="utlIconColumn">
+                            <div class="ultWrapper iconCenter">
+                                <a :href="'https://m.me/'+user.fbid" target="_blank">
+                                    <img src="/images/icons/messenger.png" class="messengerIcon"/>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 </template>
             </tbody>
         </table>
+        <div class="popFixedContainer popFixedCenter" v-if="editIndex>-1">
+            <div class="userAttributePop">
+                <div class="uaBodyCon">
+                    <h5 class="uaTitle">{{ userList[editIndex].name }}</h5>
+                    <div class="uaTable">
+                        <table class="attributeTable">
+                            <thead>
+                                <tr>
+                                    <th class="attrTitle">custom attribues</th>
+                                    <th class="attrValue">value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template v-if="userList[editIndex].isAttrLoad">
+                                    <template v-if="userList[editIndex].attributes.length>0">
+                                        <tr v-for="(attribute, index) in userList[editIndex].attributes" :key="index" class="attrRow">
+                                            <!-- <td class="attrTitle">{{ attribute.name }}</td> -->
+                                            <td class="attrTitle">
+                                                <input type="text" :class="{'newAttribute': attribute.name===''}" v-model="attribute.name" v-on:blur="updateAttributeName(editIndex, index)"/>
+                                            </td>
+                                            <td class="attrValue">
+                                                <input type="text" :class="{'newAttribute': attribute.value===''}" v-model="attribute.value"  v-on:blur="updateAttributeValue(editIndex, index)"/>
+                                                <button @click="deleteAttribute(editIndex, index)" class="attrDel">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                    <template v-else>
+                                        <tr>
+                                            <td colspan="2">There is no attribute!</td>
+                                        </tr>
+                                    </template>
+                                </template>
+                                <template v-else>
+                                    <tr>
+                                        <td colspan="2">Loading...</td>
+                                    </tr>
+                                </template>
+                                <tr v-if="userList[editIndex].creating>0">
+                                    <td colspan="2">Creating...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="uaTable">
+                        <table class="attributeTable">
+                            <thead>
+                                <tr>
+                                    <th class="attrTitle">system attribues</th>
+                                    <th class="attrValue">value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="attrTitle">Gender</td>
+                                    <td class="attrValue">{{ userList[editIndex].gender }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="attrTitle">Last Engaged</td>
+                                    <td class="attrValue">{{ userList[editIndex].lastEngaged }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="attrTitle">Last Seen</td>
+                                    <td class="attrValue">{{ userList[editIndex].lastSeen }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="attrTitle">Signed up</td>
+                                    <td class="attrValue">{{ userList[editIndex].signup }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="attrTitle">Session</td>
+                                    <td class="attrValue">1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="uaFooterCon">
+                    <button class="headerButtonTypeOne" @click="createNewAttribute(editIndex)">+ Add</button>
+                    <button class="headerButtonTypeOne" @click="editIndex=-1">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -126,8 +246,35 @@ import Axios from 'axios';
 export default class UserListComponent extends Vue {
     private userLoading: boolean = false;
     private userList: Array<UserListModel> = [];
+    private editIndex: number = -1;
 
     mounted() {
+    }
+
+    get allChecked() : boolean{
+        let status = false;
+        if(this.userList.length>0) {
+            let checked = 0;
+            for(let i of this.userList) {
+                if(i.checked) checked++;
+            }
+
+            status = this.userList.length===checked;
+        }
+        return status;
+    }
+
+    get generateExportLink() : boolean{
+        let status = false;
+        if(this.userList.length>0) {
+            for(let i of this.userList) {
+                if(i.checked) {
+                    status = true;
+                    break;
+                }
+            }
+        }
+        return status;
     }
 
     get hasCheck() : boolean {
@@ -152,6 +299,7 @@ export default class UserListComponent extends Vue {
 
     @Watch('$store.state.prevUserFilter', { immediate: true })
     private async loadUser() {
+        this.editIndex = -1;
         let filter = '';
         
         if(this.$store.state.userFilter.length>0) {
@@ -187,7 +335,7 @@ export default class UserListComponent extends Vue {
         }).then((res: any) => {
             this.userList = [];
             for(let i of res.data.data) {
-                this.userList.push(new UserListModel(i));
+                this.userList.push(new UserListModel(i, this.$store.state.projectInfo.id));
             }
         }).catch((err: any) => {
 
@@ -195,5 +343,61 @@ export default class UserListComponent extends Vue {
 
         this.userLoading = false;
     }
+
+    private toggleAll() {
+        let status = !this.allChecked;
+
+        for(let i in this.userList) {
+            this.userList[i].checked = status;
+        }
+    }
+
+    private async openAttributePop(index: number) {
+        this.editIndex = index;
+
+        // Load user attribute if it's not yet loaded
+        if(!this.userList[index].isAttrLoad) {
+            let loadAttribute = await this.userList[index].loadAttribute();
+            // alert an error if the process failed
+            if(!loadAttribute.status) {
+                alert(loadAttribute.mesg);
+            }
+        }
+    }
+
+    private async updateAttributeName(user: number, attribute: number) {
+        let update = await this.userList[user].attributes[attribute].updateAttributeName();
+        
+        if(!update['status']) {
+            alert(update['mesg']);
+        }
+    }
+
+    private async updateAttributeValue(user: number, attribute: number) {
+        let update = await this.userList[user].attributes[attribute].updateAttributeValue();
+        
+        if(!update['status']) {
+            alert(update['mesg']);
+        }
+    }
+
+    private async createNewAttribute(user: number) {
+        let create = await this.userList[user].createAttribute();
+
+        if(!create['status']) {
+            alert(create['mesg']);
+        }
+    }
+
+    private async deleteAttribute(user: number, attribute: number) {
+        if(confirm("Are you sure you want to delete this attribute?")) {
+            let create = await this.userList[user].deleteAttribute(attribute);
+
+            if(!create['status']) {
+                alert(create['mesg']);
+            }
+        }
+    }
+
 }
 </script>

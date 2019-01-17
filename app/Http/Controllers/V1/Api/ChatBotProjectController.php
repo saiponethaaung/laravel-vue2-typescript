@@ -813,7 +813,8 @@ class ChatBotProjectController extends Controller
                 try {
                     $this->user = ProjectPageUser::create([
                         'project_page_id' => $this->projectPage->id,
-                        'fb_user_id' => $userid
+                        'fb_user_id' => $userid,
+                        'seen_at' => date("Y-m-d H:i:s")
                     ]);
                 } catch (\Exception $e) {
                     DB::rollback();

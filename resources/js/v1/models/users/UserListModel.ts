@@ -1,14 +1,20 @@
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
-import { userList } from "../../configuration/interface";
+import { user } from "../../configuration/interface";
+import Axios from "axios";
+import AttributeModel from "./AttributeModel";
 
 export default class UserListModel extends AjaxErrorHandler{
 
-    private user: userList;
     private isChecked: boolean = false;
+    private isAttributeLoad: boolean = false;
+    private userAttributes: Array<AttributeModel> = [];
+    private creatingAttr: number = 0;
 
-    constructor(user: userList) {
+    constructor(
+        private user: user,
+        private projectId: string
+    ) {
         super();
-        this.user = user;
     }
 
     get id() : number {
@@ -49,5 +55,97 @@ export default class UserListModel extends AjaxErrorHandler{
 
     set checked(status: boolean) {
         this.isChecked = status;
+    }
+
+    get creating() : number {
+        return this.creatingAttr;
+    }
+
+    set creating(count: number) {
+        this.creatingAttr = count;
+    }
+
+    get isAttrLoad() : boolean {
+        return this.isAttributeLoad;
+    }
+
+    set isAttrLoad(status: boolean) {
+        this.isAttributeLoad = status;
+    }
+
+    get attributes() : Array<AttributeModel> {
+        return this.userAttributes;
+    }
+
+    public async loadAttribute() {
+        let result = {
+            'status': true,
+            'mesg': 'success'
+        };
+
+        await Axios({
+            url: `/api/v1/project/${this.projectId}/users/${this.id}/attributes`,
+            method: 'get'
+        }).then(res => {
+            console.log('attribute', res.data);
+            for(let i of res.data.data) {
+                this.userAttributes.push(new AttributeModel(i, this.projectId, this.id));
+            }
+            this.isAttrLoad = true;
+        }).catch(err => {
+            if(err.response) {
+                result['status'] = false;
+                result['mesg'] = this.globalHandler(err, 'Failed to load user attribute!');
+            }
+        });
+
+        return result;
+    }
+
+    public async createAttribute() {
+        let result = {
+            'status': true,
+            'mesg': 'success'
+        };
+
+        this.creating++;
+
+        await Axios({
+            url: `/api/v1/project/${this.projectId}/users/${this.id}/attributes`,
+            method: 'post'
+        }).then(res => {
+            this.userAttributes.push(new AttributeModel(res.data.data, this.projectId, this.id));
+            this.isAttrLoad = true;
+        }).catch(err => {
+            if(err.response) {
+                result['status'] = false;
+                result['mesg'] = this.globalHandler(err, 'Failed create new attribute!');
+            }
+        });
+
+        this.creating--;
+
+        return result;
+    }
+
+    public async deleteAttribute(index: number) {
+        let result = {
+            'status': true,
+            'mesg': 'success'
+        };
+
+        await Axios({
+            url: `/api/v1/project/${this.projectId}/users/${this.id}/attributes/${this.userAttributes[index].id}`,
+            method: 'delete'
+        }).then(res => {
+            this.userAttributes.splice(index, 1);
+        }).catch(err => {
+            if(err.response) {
+                result['status'] = false;
+                result['mesg'] = this.globalHandler(err, 'Failed create new attribute!');
+            }
+        });
+
+        return result;
     }
 }

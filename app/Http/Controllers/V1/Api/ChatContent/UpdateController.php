@@ -401,7 +401,9 @@ class UpdateController extends Controller
         try {
             
             if($input['attribute']) {
-                $attr = ChatAttribute::where('attribute', $input['attribute'])->first();
+                $attr = ChatAttribute::where(
+                    DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $input['attribute'].'%'
+                )->first();
 
                 if(empty($attr)) {
                     $attr = ChatAttribute::create([
@@ -503,7 +505,9 @@ class UpdateController extends Controller
         try {
             
             if($input['attribute']) {
-                $attr = ChatAttribute::where('attribute', $input['attribute'])->first();
+                $attr = ChatAttribute::where(
+                    DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $input['attribute'].'%'
+                )->first();
 
                 if(empty($attr)) {
                     $attr = ChatAttribute::create([

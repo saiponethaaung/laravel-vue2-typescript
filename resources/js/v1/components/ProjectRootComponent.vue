@@ -50,19 +50,3 @@ export default class ProjectRootComponent extends Vue {
     }
 }
 </script>
-
-<style lang="scss">
-    .floatingLoading {
-        position: fixed;
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        background: rgba(0,0,0,0.6);
-        z-index: 11;
-        top: 0;
-        left: 0;
-    }
-</style>

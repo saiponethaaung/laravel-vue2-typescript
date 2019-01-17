@@ -138,6 +138,15 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::group(['prefix' => 'users', 'middleware' => 'verifyProjectHasPage'], function() {
             Route::get('/', 'V1\\Api\\ChatUserController@getUserList');
             Route::get('attributes', 'V1\\Api\\ChatUserController@getFilterAttributes');
+            Route::group(['prefix' => '{pageUserId}', 'middleware' => 'verifyProjectPageUser'], function() {
+                Route::get('attributes', 'V1\\Api\\ChatUserController@getUserAttributes');
+                Route::post('attributes', 'V1\\Api\\ChatUserController@createUserAttributes');
+                Route::group(['prefix' => 'attributes/{attributeId}', 'middleware' => 'verifyProjectPageUserAttribute'], function() {
+                    Route::delete('/', 'V1\\Api\\ChatUserController@deleteUserAttribute');
+                    Route::post('name', 'V1\\Api\\ChatUserController@updateUserAttributeName');
+                    Route::post('value', 'V1\\Api\\ChatUserController@updateUserAttributeValue');
+                });
+            });
         });
     });
 });

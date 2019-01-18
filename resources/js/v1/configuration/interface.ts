@@ -149,3 +149,16 @@ export interface axiosDefaultResponse {
     status: boolean,
     mesg: string
 }
+
+export interface attributeFilter {
+    id: number,
+    option: number,
+    type: number,
+    name: string,
+    value: string,
+    condi: number,
+    systemAttribute: number,
+    systemAttributeValue: number,
+    userAttribute: number,
+    userAttributeValue: number
+}

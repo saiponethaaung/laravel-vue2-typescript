@@ -35,6 +35,9 @@ $userPopFooter: 60px;
     max-height: 550px;
     width: 500px;
     border-radius: 5px;
+    &.filterAttribute {
+        width: 700px;
+    }
     .uaBodyCon {
         height: calc(100% - #{$userPopFooter});
         overflow: auto;

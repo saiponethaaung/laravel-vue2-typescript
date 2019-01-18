@@ -12932,14 +12932,14 @@ a:hover {
   list-style: none;
 }
 
-.avaFilterList .avaFilterListType .avaFilterListTypeHeading {
+.avaFilterListType .avaFilterListTypeHeading {
   line-height: 30px;
   height: 30px;
   font-size: 14px;
   margin: 0;
 }
 
-.avaFilterList .avaFilterList .aflHeading {
+.avaFilterList .aflHeading {
   line-height: 30px;
   height: 30px;
   font-size: 14px;
@@ -12957,17 +12957,17 @@ a:hover {
   cursor: pointer;
 }
 
-.avaFilterList .avaFilterList .aflHeading .material-icons {
+.avaFilterList .aflHeading .material-icons {
   margin-right: 5px;
 }
 
-.avaFilterList .avaFilterList .avaFilterOptionList {
+.avaFilterList .avaFilterOptionList {
   list-style: none;
   padding-left: 20px;
   color: #aaaaaa;
 }
 
-.avaFilterList .avaFilterList .avaFilterOptionList .avafolChild {
+.avaFilterList .avaFilterOptionList .avafolChild {
   font-size: 12px;
   height: 30px;
   line-height: 30px;
@@ -12983,17 +12983,167 @@ a:hover {
   cursor: pointer;
 }
 
-.avaFilterList .avaFilterList .avaFilterOptionList .avafolChild .material-icons {
+.avaFilterList .avaFilterOptionList .avafolChild .material-icons {
   margin-right: 5px;
   font-size: 20px;
 }
 
-.avaFilterList .avaFilterList .avaFilterOptionList .avafolChild.selected {
+.avaFilterList .avaFilterOptionList .avafolChild.selected {
   color: #c238eb;
 }
 
-.avaFilterList .avaFilterList .avaFilterListItem.hasChecked .aflHeading span {
+.avaFilterList .avaFilterListItem.hasChecked .aflHeading span {
   color: #000;
+}
+
+.attributeSelectorList {
+  padding-right: 75px;
+  position: relative;
+}
+
+.addMoreFilterButton {
+  position: absolute;
+  bottom: 2px;
+  right: 40px;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #ebebeb;
+  border-radius: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.addMoreFilterButton .material-icons {
+  font-size: 18px;
+}
+
+.attributeSelectorRoot {
+  position: relative;
+}
+
+.attributeSelectorRoot .attributeSelectorCondi {
+  width: 35px;
+  height: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: absolute;
+  top: 0;
+  right: -40px;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+.attributeSelectorRoot .attributeSelectorCondi .sddListCon {
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.attributeSelectorBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+.attributeSelectorBox > div {
+  width: 100%;
+}
+
+.attrSelector {
+  border: 1px solid #ebebeb;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.attrSelector:first-child {
+  border-left: transparent;
+}
+
+.attrSelector:last-child {
+  border-right: transparent;
+}
+
+.sddListCon {
+  position: relative;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.sddListCon .sddList {
+  list-style: none;
+  border: 1px solid #ebebeb;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ffffff;
+  z-index: 11;
+  padding: 0;
+  min-width: 100%;
+  max-width: 300px;
+}
+
+.sddListCon .sddList li {
+  cursor: pointer;
+  padding: 5px;
+  white-space: nowrap;
+}
+
+.sddListCon .sddList li:hover {
+  background: #ebebeb;
+}
+
+.attributeSelector {
+  position: relative;
+}
+
+.deleteAttribute {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: -75px;
+  width: 30px;
+  height: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: 1px solid #ebebeb;
+  background: #ffffff;
+  border-radius: 5px;
+}
+
+.deleteAttribute .material-icons {
+  font-size: 18px;
+  color: #aaaaaa;
 }
 
 .userListRoot {
@@ -13087,6 +13237,7 @@ a:hover {
   height: 20px;
   -webkit-filter: grayscale(1);
           filter: grayscale(1);
+  cursor: pointer;
 }
 
 .messengerIcon:hover {
@@ -13244,6 +13395,10 @@ a:hover {
   max-height: 550px;
   width: 500px;
   border-radius: 5px;
+}
+
+.userAttributePop.filterAttribute {
+  width: 700px;
 }
 
 .userAttributePop .uaBodyCon {

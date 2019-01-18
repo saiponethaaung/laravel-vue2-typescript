@@ -34,6 +34,25 @@
                 </div>
             </div>
         </div>
+        <ul class="avaFilterList">
+            <li class="avaFilterListItem hasChecked">
+                <h5 class="aflHeading" @click="showSegments=!showSegments">
+                    <i class="material-icons">{{ showSegments ? 'expand_less' : 'expand_more'}}</i>
+                    <span>Custom Segments</span>
+                </h5>
+                <ul class="avaFilterOptionList" v-show="showSegments">
+                    <template v-if="$store.state.segments.length>0">
+                        <li v-for="(value, vindex) in $store.state.segments" :key="vindex" class="avafolChild" :class="{'selected': value.checked}">
+                            <i class="material-icons">{{ value.checked ? 'check_box' : 'check_box_outline_blank' }}</i>
+                            <span>{{ value.value }}</span>
+                        </li>
+                    </template>
+                    <template v-else>
+                        <li>There is no segements!</li>
+                    </template>
+                </ul>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -43,6 +62,7 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class SegmentListSidebarComponent extends Vue {
     private showFilter: boolean = false;
+    private showSegments: boolean = true;
     // private filters: any = 
 }
 </script>

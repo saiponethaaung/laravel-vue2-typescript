@@ -1,57 +1,181 @@
 .avaFilterList {
     padding: 0;
     list-style: none;
-    .avaFilterListType {
-        .avaFilterListTypeHeading {
-            line-height: $secondStandardHeight;
-            height: $secondStandardHeight;
-            font-size: 14px;
-            margin: 0;
+}
+
+.avaFilterListType {
+    .avaFilterListTypeHeading {
+        line-height: $secondStandardHeight;
+        height: $secondStandardHeight;
+        font-size: 14px;
+        margin: 0;
+    }
+}
+
+.avaFilterList {
+    .aflHeading {
+        line-height: $secondStandardHeight;
+        height: $secondStandardHeight;
+        font-size: 14px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        color: $secondaryText;
+        cursor: pointer;
+        .material-icons {
+            margin-right: 5px;
         }
     }
-    .avaFilterList {
-        .aflHeading {
-            line-height: $secondStandardHeight;
+    .avaFilterOptionList {
+        list-style: none;
+        padding-left: 20px;
+        color: $secondaryText;
+        .avafolChild {
+            font-size: 12px;
             height: $secondStandardHeight;
-            font-size: 14px;
-            margin: 0;
+            line-height: $secondStandardHeight;
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            color: $secondaryText;
             cursor: pointer;
             .material-icons {
                 margin-right: 5px;
+                font-size: 20px;
+            }
+            &.selected {
+                color: $inboxSelected;
             }
         }
-        .avaFilterOptionList {
-            list-style: none;
-            padding-left: 20px;
-            color: $secondaryText;
-            .avafolChild {
-                font-size: 12px;
-                height: $secondStandardHeight;
-                line-height: $secondStandardHeight;
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                cursor: pointer;
-                .material-icons {
-                    margin-right: 5px;
-                    font-size: 20px;
-                }
-                &.selected {
-                    color: $inboxSelected;
-                }
-            }
-        }
+    }
 
-        .avaFilterListItem.hasChecked {
-            .aflHeading {
-                span {
-                    color: #000;
-                }
+    .avaFilterListItem.hasChecked {
+        .aflHeading {
+            span {
+                color: #000;
             }
         }
+    }
+}
+
+.attributeSelectorList {
+    padding-right: 75px;
+    position: relative;
+}
+
+.addMoreFilterButton {
+    position: absolute;
+    bottom: 2px;
+    right: 40px;
+    width: 25px;
+    height: 25px;
+    border: 1px solid $borderPrimary;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    cursor: pointer;
+    .material-icons {
+        font-size: 18px;
+    }
+}
+
+.attributeSelectorRoot {
+    position: relative;
+    .attributeSelectorCondi {
+        width: 35px;
+        height: 30px;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        right: -40px;
+        border: 1px solid $borderPrimary;
+        border-radius: 5px;
+        line-height: 30px;
+        cursor: pointer;
+        .sddListCon {
+            padding: 0;
+            width: 100%;
+            text-align: center
+        }
+    }
+}
+
+.attributeSelectorBox {
+    display: flex;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid $borderPrimary;
+    border-radius: 5px;
+    font-size: 13px;
+    margin-bottom: 15px;
+    &>div {
+        width: 100%;
+    }
+}
+
+.attrSelector {
+    border: 1px solid $borderPrimary;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    &:first-child {
+        border-left: transparent;
+    }
+    &:last-child {
+        border-right: transparent;
+    }
+}
+
+
+.sddListCon {
+    position: relative;
+    padding: 0 10px;
+    cursor: pointer;
+    .sddList {
+        list-style: none;
+        border: 1px solid $borderPrimary;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: $primaryBackground;
+        z-index: 11;
+        padding: 0;
+        min-width: 100%;
+        max-width: 300px;
+        li {
+            cursor: pointer;
+            padding: 5px;
+            white-space: nowrap;
+            &:hover {
+                background: $hoverBackground;
+            }
+        }
+    }
+}
+
+.attributeSelector {
+    position: relative;
+}
+
+.deleteAttribute {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: -75px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $borderPrimary;
+    background: $primaryBackground;
+    border-radius: 5px;
+    .material-icons {
+        font-size: 18px;
+        color: $iconPrimary;
     }
 }

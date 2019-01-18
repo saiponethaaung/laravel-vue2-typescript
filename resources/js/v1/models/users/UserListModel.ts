@@ -148,4 +148,27 @@ export default class UserListModel extends AjaxErrorHandler{
 
         return result;
     }
+
+    public async enabledLiveChat() {
+        let result = {
+            'status': true,
+            'mesg': 'success'
+        };
+
+        let data = new FormData();
+        data.append('status', 'true');
+
+        await Axios({
+            url: `/api/v1/project/${this.projectId}/chat/user/${this.id}/live-chat`,
+            data: data,
+            method: 'post'
+        }).catch((err) => {
+            if(err.response) {
+                result['status'] = false;
+                result['mesg'] = this.globalHandler(err, 'Failed create new attribute!');
+            }
+        });
+
+        return result;
+    }
 }

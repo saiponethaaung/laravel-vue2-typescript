@@ -40,15 +40,26 @@
                     <i class="material-icons">{{ showSegments ? 'expand_less' : 'expand_more'}}</i>
                     <span>Custom Segments</span>
                 </h5>
-                <ul class="avaFilterOptionList" v-show="showSegments">
-                    <template v-if="$store.state.segments.length>0">
-                        <li v-for="(value, vindex) in $store.state.segments" :key="vindex" class="avafolChild" :class="{'selected': value.checked}">
-                            <i class="material-icons">{{ value.checked ? 'check_box' : 'check_box_outline_blank' }}</i>
-                            <span>{{ value.value }}</span>
-                        </li>
-                    </template>
-                    <template v-else>
-                        <li>There is no segements!</li>
+                <ul class="segmentList" v-show="showSegments">
+                    <template v-if="undefined !== segmentList">
+                        <template v-if="segmentList.loading">
+                            <li>Loading...</li>
+                        </template>
+                        <template v-else>
+                            <template v-if="segmentList.segments.length>0">
+                                <li class="segmentListItem" v-for="(segment, vindex) in segmentList.segments" :key="vindex" :class="{'selectedSegment': $store.state.selectedSegment===segment.id}">
+                                    <div class="segmentListName" @click="$store.state.selectedSegment=segment.id">{{ segment.name }}</div>
+                                    <!-- <div calss="segmentActionIcon">
+                                        <div>Edit</div>
+                                        <div>Remove</div>
+                                        <div>Sort</div>
+                                    </div> -->
+                                </li>
+                            </template>
+                            <template v-else>
+                                <li>There is no segments!</li>
+                            </template>
+                        </template>
                     </template>
                 </ul>
             </li>
@@ -57,12 +68,34 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import Axios,{ CancelTokenSource } from 'axios';
+import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
+import SegmentListModel from '../../models/SegmentListModel';
 
 @Component
 export default class SegmentListSidebarComponent extends Vue {
     private showFilter: boolean = false;
     private showSegments: boolean = true;
+
+    private segmentList: SegmentListModel = new SegmentListModel();
     // private filters: any = 
+
+    @Watch('$store.state.projectInfo', { immediate: true })
+    async initSegment() {
+        if(undefined === this.$store.state.projectInfo.id) return;
+
+        this.segmentList.setProjectId = this.$store.state.projectInfo.id;
+
+        let loadSegment: any = await this.segmentList.loadSegment();
+
+        if(!loadSegment['status']) {
+            alert(loadSegment['mesg']);
+        }
+    }
+
+    beforeDestory() {
+        this.segmentList.cancelLoading();
+    }
 }
 </script>

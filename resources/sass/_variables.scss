@@ -22,21 +22,26 @@ $cyan: #6cb2eb;
 $color1: #c238eb;
 $color2: #f7f6f6;
 $color3: #c0c0c0;
+$color4: #aaaaaa;
+$color5: #ebebeb;
+$color6: #ffffff;
+$color7: #72bb53;
 
-$secondaryText: #aaaaaa;
+$secondaryText: $color4;
+$secondaryHoverText: $color1;
 $btnText1: $color1;
 $inboxSelected: $color1;
 
-$iconPrimary: #aaaaaa;
+$iconPrimary: $color4;
 $iconActive: $color1;
-$iconActiveBackground: #ffffff;
-$primaryBackground: #ffffff;
-$hoverBackground: #ebebeb;
+$iconActiveBackground: $color6;
+$primaryBackground: $color6;
+$hoverBackground: $color5;
 
 $filterCheckBoxUnchecked: $color3;
 $filterCheckBoxChecked: $color1;
 
-$borderPrimary: #ebebeb;
+$borderPrimary: $color5;
 $borderSecondary: $color1;
 
 $primaryChatBlock: $color2;
@@ -45,7 +50,7 @@ $secondaryChatBackground: $color2;
 $inboxHover: $color2;
 $secondaryBackground: $color2;
 
-$actionBtn1: #72bb53;
+$actionBtn1: $color7;
 
 $sidebarWidth: 72px;
 $headerHeight: 72px;

@@ -12,10 +12,16 @@
             </div>
             <div class="attrSelector attrSelName">
                 <template v-if="attribute.option === 1">
-                    User attribute
+                    <div class="optionSpinner">
+                        <spinner-drop-down-component
+                            :options="userAttribute"
+                            :selectedKey="attribute.user"
+                            v-model="attribute.user"
+                        ></spinner-drop-down-component>
+                    </div>
                 </template>
                 <template v-else-if="attribute.option === 2">
-                    Attribute List
+                    <input placeholder="Attribute name" v-model="attribute.name" class="attrSelInput"/>
                 </template>
                 <template v-else-if="attribute.option === 3">
                     <div class="optionSpinner">
@@ -38,10 +44,16 @@
             </div>
             <div class="attrSelector attrSelValue">
                 <template v-if="attribute.option === 1">
-                    User attribute
+                    <div class="optionSpinner">
+                        <spinner-drop-down-component
+                            :options="userAttributeValue"
+                            :selectedKey="attribute.userValue"
+                            v-model="attribute.userValue"
+                        ></spinner-drop-down-component>
+                    </div>
                 </template>
                 <template v-else-if="attribute.option === 2">
-                    value
+                    <input placeholder="Attribute value" v-model="attribute.value" class="attrSelInput"/>
                 </template>
                 <template v-else-if="attribute.option === 3">
                     <div class="optionSpinner">
@@ -121,6 +133,13 @@ export default class AttributeSelectorComponent extends Vue {
         }
     ];
 
+    private userAttribute: any = [
+        {
+            key: 1,
+            value: "Gender",
+        },
+    ];
+
     private systemAttributeValue: any = [
         {
             key: 1,
@@ -138,6 +157,17 @@ export default class AttributeSelectorComponent extends Vue {
             key: 4,
             value: "3 months ago",
         },
+    ];
+
+    private userAttributeValue: any = [
+        {
+            key: 1,
+            value: "Male",
+        },
+        {
+            key: 2,
+            value: "Female",
+        }
     ];
 
     get filterType() : Array<any> {

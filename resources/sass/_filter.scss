@@ -112,6 +112,7 @@
     border-radius: 5px;
     font-size: 13px;
     margin-bottom: 15px;
+    flex: 1 1 0px;
     &>div {
         width: 100%;
     }
@@ -121,11 +122,16 @@
     border: 1px solid $borderPrimary;
     border-top-color: transparent;
     border-bottom-color: transparent;
+    display: flex;
+    flex: 1 1 0px;
     &:first-child {
         border-left: transparent;
     }
     &:last-child {
         border-right: transparent;
+    }
+    .optionSpinner {
+        width: 100%;
     }
 }
 
@@ -178,4 +184,8 @@
         font-size: 18px;
         color: $iconPrimary;
     }
+}
+
+.attrSelInput {
+
 }

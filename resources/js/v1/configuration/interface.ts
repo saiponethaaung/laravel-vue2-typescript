@@ -162,3 +162,8 @@ export interface attributeFilter {
     userAttribute: number,
     userAttributeValue: number
 }
+
+export interface segment {
+    id: number,
+    name: string
+}

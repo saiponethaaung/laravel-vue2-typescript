@@ -138,6 +138,12 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::group(['prefix' => 'users', 'middleware' => 'verifyProjectHasPage'], function() {
             Route::get('/', 'V1\\Api\\ChatUserController@getUserList');
             Route::get('attributes', 'V1\\Api\\ChatUserController@getFilterAttributes');
+
+            Route::group(['prefix' => 'segments'], function() {
+                Route::get('/', 'V1\\Api\\SegmentController@getList');
+                Route::post('/', 'V1\\Api\\SegmentController@createSegment');
+            });
+
             Route::group(['prefix' => '{pageUserId}', 'middleware' => 'verifyProjectPageUser'], function() {
                 Route::get('attributes', 'V1\\Api\\ChatUserController@getUserAttributes');
                 Route::post('attributes', 'V1\\Api\\ChatUserController@createUserAttributes');

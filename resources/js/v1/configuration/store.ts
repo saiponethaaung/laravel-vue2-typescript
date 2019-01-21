@@ -32,8 +32,7 @@ export default new Vuex.Store({
         chatFilter: 0,
         userFilter: [],
         prevUserFilter: '',
-        segments: [],
-        selectedSegment: -1
+        selectedSegment: 0
     },
     mutations: {
         logout(state) {

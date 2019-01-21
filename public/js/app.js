@@ -40433,6 +40433,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 
 
 
@@ -40440,13 +40448,23 @@ let UserSegmentListComponent = class UserSegmentListComponent extends __WEBPACK_
     constructor() {
         super(...arguments);
         this.createSegment = false;
-        this.filterSegment = new __WEBPACK_IMPORTED_MODULE_2__models_AttributeFilterListModel__["a" /* default */](false, []);
+        this.filterSegment = new __WEBPACK_IMPORTED_MODULE_2__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
     }
     mounted() {
         this.addNewFitler();
     }
     addNewFitler() {
         this.filterSegment.createNewAttributeFilter();
+    }
+    createNewSegment() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let createSegment = yield this.filterSegment.createSegment();
+            if (!createSegment['status']) {
+                alert(createSegment['mesg']);
+                return;
+            }
+            this.createSegment = false;
+        });
     }
 };
 UserSegmentListComponent = __decorate([
@@ -40564,6 +40582,12 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
                 value: "Last Engaged",
             }
         ];
+        this.userAttribute = [
+            {
+                key: 1,
+                value: "Gender",
+            },
+        ];
         this.systemAttributeValue = [
             {
                 key: 1,
@@ -40581,6 +40605,16 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
                 key: 4,
                 value: "3 months ago",
             },
+        ];
+        this.userAttributeValue = [
+            {
+                key: 1,
+                value: "Male",
+            },
+            {
+                key: 2,
+                value: "Female",
+            }
         ];
     }
     get filterType() {
@@ -40846,9 +40880,52 @@ var render = function() {
         { staticClass: "attrSelector attrSelName" },
         [
           _vm.attribute.option === 1
-            ? [_vm._v("\n                User attribute\n            ")]
+            ? [
+                _c(
+                  "div",
+                  { staticClass: "optionSpinner" },
+                  [
+                    _c("spinner-drop-down-component", {
+                      attrs: {
+                        options: _vm.userAttribute,
+                        selectedKey: _vm.attribute.user
+                      },
+                      model: {
+                        value: _vm.attribute.user,
+                        callback: function($$v) {
+                          _vm.$set(_vm.attribute, "user", $$v)
+                        },
+                        expression: "attribute.user"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ]
             : _vm.attribute.option === 2
-            ? [_vm._v("\n                Attribute List\n            ")]
+            ? [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.attribute.name,
+                      expression: "attribute.name"
+                    }
+                  ],
+                  staticClass: "attrSelInput",
+                  attrs: { placeholder: "Attribute name" },
+                  domProps: { value: _vm.attribute.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.attribute, "name", $event.target.value)
+                    }
+                  }
+                })
+              ]
             : _vm.attribute.option === 3
             ? [
                 _c(
@@ -40905,9 +40982,52 @@ var render = function() {
         { staticClass: "attrSelector attrSelValue" },
         [
           _vm.attribute.option === 1
-            ? [_vm._v("\n                User attribute\n            ")]
+            ? [
+                _c(
+                  "div",
+                  { staticClass: "optionSpinner" },
+                  [
+                    _c("spinner-drop-down-component", {
+                      attrs: {
+                        options: _vm.userAttributeValue,
+                        selectedKey: _vm.attribute.userValue
+                      },
+                      model: {
+                        value: _vm.attribute.userValue,
+                        callback: function($$v) {
+                          _vm.$set(_vm.attribute, "userValue", $$v)
+                        },
+                        expression: "attribute.userValue"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ]
             : _vm.attribute.option === 2
-            ? [_vm._v("\n                value\n            ")]
+            ? [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.attribute.value,
+                      expression: "attribute.value"
+                    }
+                  ],
+                  staticClass: "attrSelInput",
+                  attrs: { placeholder: "Attribute value" },
+                  domProps: { value: _vm.attribute.value },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.attribute, "value", $event.target.value)
+                    }
+                  }
+                })
+              ]
             : _vm.attribute.option === 3
             ? [
                 _c(
@@ -40978,12 +41098,26 @@ if (false) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__AttributeFilterModel__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
 
 
 class AttributeFilterListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
-    constructor(existing, attributeFilters) {
+    constructor(existing, projectId, attributeFilters) {
         super();
         this.existing = existing;
+        this.projectId = projectId;
+        this.segmentName = '';
+        this.creating = false;
         this.attributesList = [];
         for (let attributeFilter of attributeFilters) {
             this.buildAttributesFilter(attributeFilter);
@@ -40996,7 +41130,7 @@ class AttributeFilterListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxEr
         this.buildAttributesFilter({
             id: -1,
             name: '',
-            option: 0,
+            option: 2,
             type: 0,
             value: '',
             condi: 1,
@@ -41011,6 +41145,51 @@ class AttributeFilterListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxEr
     }
     set attributes(attributesList) {
         this.attributesList = attributesList;
+    }
+    get name() {
+        return this.segmentName;
+    }
+    set name(name) {
+        this.segmentName = name;
+    }
+    createSegment() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'Success'
+            };
+            let data = new FormData();
+            data.append('name', this.segmentName);
+            for (let i in this.attributes) {
+                if (this.attributes[i].type === 2 && (this.attributes[i].name == '' || this.attributes[i].value == ''))
+                    continue;
+                data.append(`filters[${i}][option]`, this.attributes[i].option.toString());
+                data.append(`filters[${i}][type]`, this.attributes[i].type.toString());
+                data.append(`filters[${i}][name]`, this.attributes[i].name);
+                data.append(`filters[${i}][value]`, this.attributes[i].value);
+                data.append(`filters[${i}][condi]`, this.attributes[i].condi.toString());
+                data.append(`filters[${i}][systemAttribute]`, this.attributes[i].system.toString());
+                data.append(`filters[${i}][systemAttributeValue]`, this.attributes[i].systemValue.toString());
+                data.append(`filters[${i}][userAttribute]`, this.attributes[i].user.toString());
+                data.append(`filters[${i}][userAttributeValue]`, this.attributes[i].userValue.toString());
+            }
+            this.creating = true;
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `/api/v1/project/${this.projectId}/users/segments`,
+                method: 'post',
+                data: data
+            }).then(res => {
+                this.segmentName = '';
+                this.attributes = [];
+                this.createNewAttributeFilter();
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to create a segment!');
+                }
+            });
+            return res;
+        });
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = AttributeFilterListModel;
@@ -41071,6 +41250,18 @@ class AttributeFilterModel {
     set systemValue(value) {
         this.attributeData.systemAttributeValue = value;
     }
+    get user() {
+        return this.attributeData.userAttribute;
+    }
+    set user(user) {
+        this.attributeData.userAttribute = user;
+    }
+    get userValue() {
+        return this.attributeData.userAttributeValue;
+    }
+    set userValue(value) {
+        this.attributeData.userAttributeValue = value;
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = AttributeFilterModel;
 
@@ -41126,6 +41317,27 @@ var render = function() {
               _c("h5", { staticClass: "uaTitle" }, [
                 _vm._v("Create new segment")
               ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterSegment.name,
+                    expression: "filterSegment.name"
+                  }
+                ],
+                attrs: { type: "text" },
+                domProps: { value: _vm.filterSegment.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.filterSegment, "name", $event.target.value)
+                  }
+                }
+              }),
               _vm._v(" "),
               _c(
                 "div",
@@ -41210,9 +41422,18 @@ var render = function() {
                 [_vm._v("Cancel")]
               ),
               _vm._v(" "),
-              _c("button", { staticClass: "headerButtonTypeOne" }, [
-                _vm._v("Create")
-              ])
+              _c(
+                "button",
+                {
+                  staticClass: "headerButtonTypeOne",
+                  on: {
+                    click: function($event) {
+                      _vm.createNewSegment()
+                    }
+                  }
+                },
+                [_vm._v("Create")]
+              )
             ])
           ])
         ])
@@ -41304,21 +41525,49 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_SegmentListModel__ = __webpack_require__(175);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
 
 let SegmentListSidebarComponent = class SegmentListSidebarComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
         this.showFilter = false;
         this.showSegments = true;
-        // private filters: any = 
+        this.segmentList = new __WEBPACK_IMPORTED_MODULE_1__models_SegmentListModel__["a" /* default */]();
+    }
+    // private filters: any = 
+    initSegment() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (undefined === this.$store.state.projectInfo.id)
+                return;
+            this.segmentList.setProjectId = this.$store.state.projectInfo.id;
+            let loadSegment = yield this.segmentList.loadSegment();
+            if (!loadSegment['status']) {
+                alert(loadSegment['mesg']);
+            }
+        });
+    }
+    beforeDestory() {
+        this.segmentList.cancelLoading();
     }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.projectInfo', { immediate: true })
+], SegmentListSidebarComponent.prototype, "initSegment", null);
 SegmentListSidebarComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
 ], SegmentListSidebarComponent);
@@ -41446,34 +41695,51 @@ var render = function() {
                 expression: "showSegments"
               }
             ],
-            staticClass: "avaFilterOptionList"
+            staticClass: "segmentList"
           },
           [
-            _vm.$store.state.segments.length > 0
-              ? _vm._l(_vm.$store.state.segments, function(value, vindex) {
-                  return _c(
-                    "li",
-                    {
-                      key: vindex,
-                      staticClass: "avafolChild",
-                      class: { selected: value.checked }
-                    },
-                    [
-                      _c("i", { staticClass: "material-icons" }, [
-                        _vm._v(
-                          _vm._s(
-                            value.checked
-                              ? "check_box"
-                              : "check_box_outline_blank"
-                          )
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("span", [_vm._v(_vm._s(value.value))])
-                    ]
-                  )
-                })
-              : [_c("li", [_vm._v("There is no segements!")])]
+            undefined !== _vm.segmentList
+              ? [
+                  _vm.segmentList.loading
+                    ? [_c("li", [_vm._v("Loading...")])]
+                    : [
+                        _vm.segmentList.segments.length > 0
+                          ? _vm._l(_vm.segmentList.segments, function(
+                              segment,
+                              vindex
+                            ) {
+                              return _c(
+                                "li",
+                                {
+                                  key: vindex,
+                                  staticClass: "segmentListItem",
+                                  class: {
+                                    selectedSegment:
+                                      _vm.$store.state.selectedSegment ===
+                                      segment.id
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "segmentListName",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.$store.state.selectedSegment =
+                                            segment.id
+                                        }
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(segment.name))]
+                                  )
+                                ]
+                              )
+                            })
+                          : [_c("li", [_vm._v("There is no segments!")])]
+                      ]
+                ]
+              : _vm._e()
           ],
           2
         )
@@ -41530,8 +41796,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         chatFilter: 0,
         userFilter: [],
         prevUserFilter: '',
-        segments: [],
-        selectedSegment: -1
+        selectedSegment: 0
     },
     mutations: {
         logout(state) {
@@ -48401,6 +48666,138 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__SegmentModel__ = __webpack_require__(176);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+class SegmentListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor() {
+        super();
+        this.isLoading = false;
+        this.loadToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.segmentModels = [];
+        this.projectId = "";
+    }
+    set setProjectId(projectId) {
+        this.projectId = projectId;
+    }
+    get loading() {
+        return this.isLoading;
+    }
+    set loading(status) {
+        this.isLoading = status;
+    }
+    get segments() {
+        return this.segmentModels;
+    }
+    set segments(segmentModel) {
+        this.segmentModels = segmentModel;
+    }
+    loadSegment() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            this.loading = true;
+            this.loadToken.cancel();
+            this.loadToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.segments = [];
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/users/segments`,
+                method: 'get',
+                cancelToken: this.loadToken.token
+            }).then(res => {
+                for (let i of res.data.data) {
+                    this.segments.push(new __WEBPACK_IMPORTED_MODULE_2__SegmentModel__["a" /* default */](i, this.projectId));
+                }
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to load segment list!');
+                }
+            });
+            this.loading = false;
+            return res;
+        });
+    }
+    cancelLoading() {
+        this.loadToken.cancel();
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = SegmentListModel;
+
+
+
+/***/ }),
+/* 176 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(segment, projectId) {
+        super();
+        this.segment = segment;
+        this.projectId = projectId;
+        this.firstLoad = false;
+    }
+    get id() {
+        return this.segment.id;
+    }
+    get name() {
+        return this.segment.name;
+    }
+    set name(name) {
+        this.segment.name = name;
+    }
+    loadAttributes() {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+    loadCount() {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = SegmentModel;
+
+
 
 /***/ })
 /******/ ]);

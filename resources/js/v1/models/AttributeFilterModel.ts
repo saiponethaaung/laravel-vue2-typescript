@@ -66,4 +66,20 @@ export default class AttributeFilterModel {
     set systemValue(value: number) {
         this.attributeData.systemAttributeValue = value;
     }
+
+    get user() : number {
+        return this.attributeData.userAttribute;
+    }
+
+    set user(user: number) {
+        this.attributeData.userAttribute = user;
+    }
+
+    get userValue() : number {
+        return this.attributeData.userAttributeValue;
+    }
+
+    set userValue(value: number) {
+        this.attributeData.userAttributeValue = value;
+    }
 }

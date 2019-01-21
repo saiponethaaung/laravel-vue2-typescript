@@ -46,6 +46,7 @@
             <div class="userAttributePop filterAttribute">
                 <div class="uaBodyCon">
                     <h5 class="uaTitle">Create new segment</h5>
+                    <input type="text" v-model="filterSegment.name"/>
                     <div class="attributeSelectorList">
                         <template v-for="(attribute, index) in filterSegment.attributes">
                             <div class="attributeSelector" :key="index">
@@ -65,7 +66,7 @@
                 </div>
                 <div class="uaFooterCon">
                     <button class="headerButtonTypeOne" @click="createSegment=false">Cancel</button>
-                    <button class="headerButtonTypeOne">Create</button>
+                    <button class="headerButtonTypeOne" @click="createNewSegment()">Create</button>
                 </div>
             </div>
         </div>
@@ -85,7 +86,7 @@ import AttributeFilterListModel from '../../models/AttributeFilterListModel';
 })
 export default class UserSegmentListComponent extends Vue {
     private createSegment: boolean = false;
-    private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(false, []);
+    private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(false, this.$store.state.projectInfo.id, []);
     
     mounted() {
         this.addNewFitler();
@@ -93,6 +94,17 @@ export default class UserSegmentListComponent extends Vue {
 
     private addNewFitler() {
         this.filterSegment.createNewAttributeFilter();
+    }
+
+    private async createNewSegment() {
+        let createSegment = await this.filterSegment.createSegment();
+
+        if(!createSegment['status']) {
+            alert(createSegment['mesg']);
+            return;
+        }
+
+        this.createSegment = false;
     }
 }
 </script>

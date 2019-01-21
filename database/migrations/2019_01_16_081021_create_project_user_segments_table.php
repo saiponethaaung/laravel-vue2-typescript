@@ -14,9 +14,8 @@ class CreateProjectUserSegmentsTable extends Migration
     public function up()
     {
         Schema::create('project_user_segments', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name');
-            $table->text('filters')->nullable();
             $table->unsignedInteger('project_user_id')->nullable()->index();
             $table->timestamps();
 

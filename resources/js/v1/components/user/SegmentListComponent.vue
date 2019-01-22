@@ -34,19 +34,26 @@
                     <span>export</span>
                 </button>
             </div>
-            <template v-if="$store.state.selectedSegment>-1">
-                <div>Segment selected</div>
-            </template>
-            <template v-else>
-                <div>Select a segment</div>
-            </template>
         </div>
+
+        <template v-if="$store.state.selectedSegment>0">
+            <div>Segment selected</div>
+        </template>
+        <template v-else>
+            <div class="noContent">
+                <i class="material-icons">supervisor_account</i>
+                <span clss="noContentInfo">Select a segment to view reachable users</span>
+            </div>
+        </template>
 
         <div class="popFixedContainer popFixedCenter" v-if="createSegment">
             <div class="userAttributePop filterAttribute">
                 <div class="uaBodyCon">
                     <h5 class="uaTitle">Create new segment</h5>
-                    <input type="text" v-model="filterSegment.name"/>
+                    <div class="segmentTitleCon">
+                        <label class="segmentTitleLabel">Segment Name:</label>
+                        <input class="segmentTitleInput" type="text" placeholder="Segment name" v-model="filterSegment.name"/>
+                    </div>
                     <div class="attributeSelectorList">
                         <template v-for="(attribute, index) in filterSegment.attributes">
                             <div class="attributeSelector" :key="index">
@@ -76,14 +83,9 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import AttributeSelectorComponent from '../common/AttributeSelectorComponent.vue';
 import AttributeFilterListModel from '../../models/AttributeFilterListModel';
 
-@Component({
-    components: {
-        AttributeSelectorComponent
-    }
-})
+@Component
 export default class UserSegmentListComponent extends Vue {
     private createSegment: boolean = false;
     private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(false, this.$store.state.projectInfo.id, []);

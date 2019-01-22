@@ -142,6 +142,16 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
             Route::group(['prefix' => 'segments'], function() {
                 Route::get('/', 'V1\\Api\\SegmentController@getList');
                 Route::post('/', 'V1\\Api\\SegmentController@createSegment');
+                Route::post('/user-filter', 'V1\\Api\\SegmentController@createSegmentFromUserFilter');
+                Route::group(['prefix' => '{segmentId}', 'middleware' => 'verifySegment'], function() {
+                    Route::put('/', 'V1\\Api\\SegmentController@updateSegment');
+                    Route::delete('/', 'V1\\Api\\SegmentController@deleteSegment');
+                    Route::post('filters', 'V1\\Api\\SegmentController@createSingleFilter');
+                    Route::get('filters', 'V1\\Api\\SegmentController@getFilters');
+                    Route::group(['prefix' => 'filters/{filterId}', 'middleware' => 'verifySegmentFilter'], function() {
+                        Route::delete('/', 'V1\\Api\\SegmentController@deleteFilter');
+                    });
+                });
             });
 
             Route::group(['prefix' => '{pageUserId}', 'middleware' => 'verifyProjectPageUser'], function() {

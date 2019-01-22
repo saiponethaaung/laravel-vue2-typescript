@@ -1,5 +1,10 @@
 .userListRoot {
     padding: 15px $standardContentPadding;
+    height: 100%;
+    overflow: auto;
+    .noContent {
+        height: calc(100% - 41px);
+    }
 }
 
 .filterButton {
@@ -20,10 +25,6 @@
         width: 80px;
     }
 
-    // .utlGenderColumn {
-    //     width: 80px;
-    // }
-
     .utlCheckColumn {
         width: 50px;
     }
@@ -35,9 +36,7 @@
     }
 
     .ultChecker {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @extend %flexJCenter;
         .material-icons {
             color: $filterCheckBoxUnchecked;
             cursor: pointer;
@@ -51,9 +50,7 @@
     }
 
     .iconCenter {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @extend %flexJCenter;
         a {
             width: 20px;
             height: 20px;
@@ -85,11 +82,10 @@
 }
 
 .userFilterHeading {
+    @extend %inlineFlexCenter;
     font-size: 18px;
     min-height: $standardHeight;
     line-height: $standardHeight;
-    display: inline-flex;
-    align-items: center;
     flex-wrap: wrap;
     margin-bottom: 20px;
     .headingTitle {
@@ -98,12 +94,10 @@
 }
 
 .listFilterCon {
-    display: inline-flex;
+    @extend %inlineFlexJCenter;
     float: left;
     margin: 5px 5px 5px 0;
     height: 26px;
-    align-items: center;
-    justify-content: center;
     background: $iconActive;
     color: #fff;
     padding: 0 10px;
@@ -116,9 +110,7 @@
         padding-right: 5px;
     }
     .filterRemoveCheck {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @extend %flexJCenter;
         cursor: pointer;
         .material-icons {
             font-size: 16px;
@@ -137,13 +129,12 @@
     }
     
     .userListOptionCon {
+        display: block;
         .uloButton {
+            @extend %inlineFlexCenter;
             font-size: 14px;
             height: $standardHeight;
             line-height: $standardHeight;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
             border: none;
             background: transparent;
             color: $secondaryText;
@@ -162,10 +153,10 @@
     padding: 0;
     list-style: none;
     .segmentListItem {
+        @extend %flexCenter;
+        position: relative;
         height: 50px;
         background: $secondaryBackground;
-        display: flex;
-        align-items: center;
         padding: 0 10px;
         border-radius: 5px;
         margin-bottom: 10px;
@@ -177,12 +168,77 @@
             line-height: $secondStandardHeight;
             color: $secondaryText;
         }
+        
+        .segmentActionIcon {
+            @extend %flexJCenter;
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+            top: 0;
+            right: 0;
+            height: 100%;
+            background: $secondaryBackground;
+            .saiWrapper {
+                @extend %inlineFlexJCenter;
+                height: 100%;
+                .material-icons {
+                    font-size: 18px;
+                    color: $iconPrimary;
+                }
+            }
+        }
+
         &.selectedSegment,
         &:hover {
             .segmentListName {
                 color: $secondaryHoverText;
                 font-weight: bold;
             }
+            .segmentActionIcon {
+                visibility: visible;
+                opacity: 1;
+            }
         }
     }
+}
+
+.segmentTitleCon {
+    @extend %flexCenter;
+    height: $secondStandardHeight;
+    line-height: $secondStandardHeight;
+    font-size: 13px;
+    margin-bottom: 15px;
+    
+    .segmentTitleLabel {
+        margin: 0;
+        padding: 0;
+    }
+
+    .segmentTitleInput {
+        height: 100%;
+        margin-left: 10px;
+        border: 1px solid $borderPrimary;
+        border-radius: 5px;
+        padding: 0 5px;
+    }
+}
+
+.assignListRoot {
+    margin: 0;
+    padding: 0;
+}
+
+.assignList {
+    @extend %flexCenter;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    height: $standardHeight;
+    line-height: $standardHeight;
+    background: $primaryChatBackground;
+    border: 1px solid $borderPrimary;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 13px;
+    cursor: pointer;
 }

@@ -187,16 +187,6 @@ class ChatUserController extends Controller
             $users->where('seen_at', '>=', $this->durationOffsetParser($request->input('system')['lastseen']['value']));
         }
 
-        // $users->whereHas('attributes', function($query) use ($request, $uc) {
-        //     foreach($request->input('custom') as $custom) {
-        //         if(!isset($custom['value'])) continue;
-        //         $uc[] = $custom;
-        //         $query->where(function($query) use ($custom) {
-        //             $query->where('attribute_id', $custom['key']);
-        //             $query->whereIn('value', $custom['value']);
-        //         });
-        //     }
-        // });
         $users = $users->paginate(50);
 
         $res = [];
@@ -210,7 +200,6 @@ class ChatUserController extends Controller
         return response()->json([
             'status' => true,
             'code' => 200,
-            'input' => $request->input(),
             'data' => $res,
         ]);
     }
@@ -431,5 +420,10 @@ class ChatUserController extends Controller
             'mesg' => 'success'
         ]);
         
+    }
+
+    public function addUserToSegment(Request $request)
+    {
+
     }
 }

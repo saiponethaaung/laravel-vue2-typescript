@@ -47,13 +47,19 @@
                         </template>
                         <template v-else>
                             <template v-if="segmentList.segments.length>0">
-                                <li class="segmentListItem" v-for="(segment, vindex) in segmentList.segments" :key="vindex" :class="{'selectedSegment': $store.state.selectedSegment===segment.id}">
+                                <li class="segmentListItem" v-for="(segment, index) in segmentList.segments" :key="index" :class="{'selectedSegment': $store.state.selectedSegment===segment.id}">
                                     <div class="segmentListName" @click="$store.state.selectedSegment=segment.id">{{ segment.name }}</div>
-                                    <!-- <div calss="segmentActionIcon">
-                                        <div>Edit</div>
-                                        <div>Remove</div>
-                                        <div>Sort</div>
-                                    </div> -->
+                                    <div class="segmentActionIcon">
+                                        <div class="saiWrapper" @click="openSegmentEdit(index)">
+                                            <i class="material-icons">create</i>
+                                        </div>
+                                        <div class="saiWrapper" @click="deleteSegment(index)">
+                                            <i class="material-icons">delete</i>
+                                        </div>
+                                        <div class="saiWrapper">
+                                            <i class="material-icons">more_vert</i>
+                                        </div>
+                                    </div>
                                 </li>
                             </template>
                             <template v-else>
@@ -64,6 +70,45 @@
                 </ul>
             </li>
         </ul>
+        <div class="popFixedContainer popFixedCenter" v-if="editSegment>-1">
+            <div class="userAttributePop filterAttribute">
+                <div class="uaBodyCon">
+                    <h5 class="uaTitle">Edit Segment</h5>
+                    <div class="segmentTitleCon">
+                        <label class="segmentTitleLabel">Segment Name:</label>
+                        <input class="segmentTitleInput" type="text" placeholder="Segment name" v-model="segmentList.segments[editSegment].name"/>
+                    </div>
+                    <template v-if="segmentList.segments[editSegment].isAttrLoading">
+                        Loading...
+                    </template>
+                    <template v-else>
+                        <div class="attributeSelectorList">
+                            <template v-for="(attribute, index) in segmentList.segments[editSegment].attributes">
+                                <div class="attributeSelector" :key="index">
+                                    <attribute-selector-component
+                                        :attribute="attribute"
+                                        :canCondition="(segmentList.segments[editSegment].attributes.length-1)>index"
+                                    ></attribute-selector-component>
+                                    <button v-if="segmentList.segments[editSegment].attributes.length>1" class="deleteAttribute" @click="deleteFilter(index)">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </template>
+                            <div @click="creatNewFilter()" class="addMoreFilterButton" v-if="!segmentList.segments[editSegment].isAttrCreating">
+                                <i class="material-icons">add</i>
+                            </div>
+                            <template v-if="segmentList.segments[editSegment].isAttrCreating">
+                                Creating...
+                            </template>
+                        </div>
+                    </template>
+                </div>
+                <div class="uaFooterCon">
+                    <button class="headerButtonTypeOne" @click="editSegment=-1">Cancel</button>
+                    <button class="headerButtonTypeOne" @click="updateSegment()" :disabled="segmentList.segments[editSegment].isAttrLoading">Update</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -77,9 +122,9 @@ import SegmentListModel from '../../models/SegmentListModel';
 export default class SegmentListSidebarComponent extends Vue {
     private showFilter: boolean = false;
     private showSegments: boolean = true;
+    private editSegment: number = -1;
 
     private segmentList: SegmentListModel = new SegmentListModel();
-    // private filters: any = 
 
     @Watch('$store.state.projectInfo', { immediate: true })
     async initSegment() {
@@ -91,6 +136,56 @@ export default class SegmentListSidebarComponent extends Vue {
 
         if(!loadSegment['status']) {
             alert(loadSegment['mesg']);
+        }
+    }
+
+    private async openSegmentEdit(index: number) {
+        this.editSegment = index;
+        if(!this.segmentList.segments[index].isAttrLoaded) {
+            let loadAttributes = await this.segmentList.segments[index].loadAttributes();
+            if(!loadAttributes.status) {
+                alert(loadAttributes.mesg);
+            }
+        }
+    }
+    
+    private async creatNewFilter() {
+        let newFilter = await this.segmentList.segments[this.editSegment].createNewAttribute();
+        if(!newFilter.status) {
+            alert(newFilter.mesg);
+        }
+    }
+
+    private async deleteFilter(index: number) {
+        if(confirm('Are you sure you want to delete this filter condition?')) {
+            let deleteFilter = await this.segmentList.segments[this.editSegment].deleteFilter(index);
+
+            if(!deleteFilter.status) {
+                alert(deleteFilter.mesg);
+            }
+        }
+    }
+
+    private async updateSegment() {
+        let updateSegment = await this.segmentList.segments[this.editSegment].updateSegment();
+
+        if(!updateSegment.status) {
+            alert(updateSegment.mesg);
+        }
+    }
+
+    private async deleteSegment(index: number) {
+        if(confirm('Are you sure you want to delete this segment?')) {
+            let delId = this.segmentList.segments[index].id;
+            let deleteSegment = await this.segmentList.deleteSegment(index);
+
+            if(!deleteSegment.status) {
+                alert(deleteSegment.mesg);
+            } else {
+                if(this.$store.state.selectedSegment===delId) {
+                    this.$store.state.selectedSegment = 0;
+                }
+            }
         }
     }
 

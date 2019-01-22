@@ -30,7 +30,7 @@
                 </template>
             </div>
             <div class="userListOptionCon">
-                <button class="uloButton">
+                <button class="uloButton" @click="assignSegment=true">
                     <i class="material-icons">group_add</i>
                     <span>Save to segment</span>
                 </button>
@@ -40,10 +40,27 @@
                 </button>
             </div>
         </div>
+        
         <user-table-component
             :userList='userList'
             :userLoading='userLoading'
         ></user-table-component>
+
+        <div class="popFixedContainer popFixedCenter" v-if="assignSegment">
+            <div class="userAttributePop saveToSegmentPop">
+                <div class="uaBodyCon">
+                    <h5 class="uaTitle">Save filter as a Segment</h5>
+                    <div class="segmentTitleCon">
+                        <label class="segmentTitleLabel">Segment Name:</label>
+                        <input class="segmentTitleInput" type="text" placeholder="Segment name" v-model="segmentName"/>
+                    </div>
+                </div>
+                <div class="uaFooterCon">
+                    <button class="headerButtonTypeOne" @click="assignSegment=false">Cancel</button>
+                    <button class="headerButtonTypeOne" @click="createSegment()" :disabled="segmentList.loading || segmentName===''">Create</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -52,6 +69,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import UserListModel from '../../models/users/UserListModel';
 import Axios from 'axios';
 import UserTableComponent from './UserTableComponent.vue';
+import SegmentListModel from '../../models/SegmentListModel';
 
 @Component({
     components: {
@@ -61,8 +79,21 @@ import UserTableComponent from './UserTableComponent.vue';
 export default class UserListComponent extends Vue {
     private userList: Array<UserListModel> = [];
     private userLoading: boolean = false;
+    private assignSegment: boolean = false;
+    private segmentList: SegmentListModel = new SegmentListModel();
+    private segmentName: string = '';
 
-    mounted() {
+    @Watch('$store.state.projectInfo', { immediate: true })
+    async initSegment() {
+        if(undefined === this.$store.state.projectInfo.id) return;
+
+        this.segmentList.setProjectId = this.$store.state.projectInfo.id;
+
+        let loadSegment: any = await this.segmentList.loadSegment();
+
+        if(!loadSegment['status']) {
+            alert(loadSegment['mesg']);
+        }
     }
 
     get generateExportLink() : boolean{
@@ -125,7 +156,7 @@ export default class UserListComponent extends Vue {
                     break;
                 }
             }
-        } 
+        }
 
         this.userLoading = true;
 
@@ -142,6 +173,52 @@ export default class UserListComponent extends Vue {
         });
 
         this.userLoading = false;
+    }
+
+    async createSegment() {
+        if(this.segmentName==='') {
+            alert('Segment name is required!');
+            return;
+        }
+
+        let data = new FormData();
+        data.append('name', this.segmentName);
+
+        if(this.$store.state.userFilter.length>0) {
+            for(let i2 of this.$store.state.userFilter[0].child) {
+                data.append(`filters[${i2.key}][key]`, i2.key);
+                for(let i3 in i2.value) {
+                    if(!i2.value[i3].checked) continue;
+                    data.append(`filters[${i2.key}][value][${i3}]`, i2.value[i3].value);
+                }
+            }
+
+            for(let i2 of this.$store.state.userFilter[1].child) {
+                data.append(`filters[${i2.key}][key]`, i2.key);
+                for(let i3 in i2.value) {
+                    if(!i2.value[i3].checked) continue;
+                    data.append(`filters[${i2.key}][value][${i3}]`, i2.value[i3].value);
+                }
+            }
+           
+            for(let i2 of this.$store.state.userFilter[2].child) {
+                data.append(`filters[${i2.key}][key]`, i2.key);
+                for(let i3 in i2.value) {
+                    if(!i2.value[i3].checked) continue;
+                    data.append(`filters[${i2.key}][value][${i3}]`, i2.value[i3].value);
+                }
+            }
+        }
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/users/segments/user-filter`,
+            data: data,
+            method: 'post'
+        }).then(res => {
+
+        }).catch(err => {
+
+        });
     }
 }
 </script>

@@ -21,6 +21,9 @@ import UserListSidebarComponent from '../components/user/UserListSidebarComponen
 import UserSegmentListComponent from '../components/user/SegmentListComponent.vue';
 import UserSegmentListSidebarComponent from '../components/user/SegmentListSidebarComponent.vue';
 
+import BroadcastComponent from '../components/broadcast/BroadcastComponent.vue';
+import BroadcastSidebarComponent from '../components/broadcast/BroadcastSidebarComponent.vue';
+
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -78,6 +81,14 @@ export default new VueRouter({
                             }
                         }
                     ]
+                },
+                {
+                    path: "broadcast",
+                    name: "project.broadcast",
+                    component: BroadcastComponent,
+                    meta: {
+                        sidebar: BroadcastSidebarComponent
+                    }
                 },
                 {
                     path: "configuration",

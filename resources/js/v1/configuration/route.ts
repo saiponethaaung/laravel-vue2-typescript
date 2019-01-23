@@ -23,6 +23,7 @@ import UserSegmentListSidebarComponent from '../components/user/SegmentListSideb
 
 import BroadcastComponent from '../components/broadcast/BroadcastComponent.vue';
 import BroadcastSidebarComponent from '../components/broadcast/BroadcastSidebarComponent.vue';
+import sendNow from '../components/broadcast/sendNow.vue';
 
 Vue.use(VueRouter);
 
@@ -84,11 +85,25 @@ export default new VueRouter({
                 },
                 {
                     path: "broadcast",
-                    name: "project.broadcast",
-                    component: BroadcastComponent,
-                    meta: {
-                        sidebar: BroadcastSidebarComponent
-                    }
+                    component: RouterViewComponent,
+                    children: [
+                        {
+                            path: "/",
+                            name: "project.broadcast",
+                            component: BroadcastComponent,
+                            meta: {
+                                sidebar: BroadcastSidebarComponent
+                            }
+                        },
+                        {
+                            path: "send",
+                            name: "project.broadcast.sendnow",
+                            component: sendNow,
+                            meta: {
+                                sidebar: BroadcastSidebarComponent
+                            }
+                        }
+                    ]
                 },
                 {
                     path: "configuration",

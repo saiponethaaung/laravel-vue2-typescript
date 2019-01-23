@@ -1,0 +1,73 @@
+.btnClick {
+    cursor: pointer;
+    height: 40px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $primaryChatBlock;
+    border-radius: 5px;
+    margin: 5px;
+    color: #aaaaaa;
+}
+
+.iconAlign {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.userTable {
+    width: 100%;
+    .utColumn {
+        width: 120px;
+    }
+    .utColumnOption {
+        width: 100px;
+    }
+}
+
+.bgSend {
+    height: 150px;
+    background: #f7f6f6;
+}
+
+.btnSub {
+    width: 200px;
+    cursor: pointer;
+    height: 40px;
+    align-items: center;
+    border-radius: 5px;
+    padding: 8px;
+    margin: 10px;
+    background: $primaryChatBlock;
+    .iconSub {
+        float: right;
+    }
+}
+
+.align {
+    float: left;
+    margin: 10px;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.textArea {
+    width: 260px;
+    height: 334px;
+    background: #f7f6f6;
+    margin: 7px;
+}
+
+.textBox {
+    width: 228px;
+    height: 270px;
+    background: #ffffff;
+    margin: 7px;
+}
+
+.outerDisplay {
+    display: flex;
+}

@@ -21,7 +21,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project.home', params: {projectid: $route.params.projectid}}">
+                    <router-link :to="{name: 'project.broadcast', params: {projectid: $route.params.projectid}}">
                         <i class="material-icons">volume_up</i>
                         <span class="icon-label">Broadcast</span>
                     </router-link>

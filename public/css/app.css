@@ -13593,6 +13593,93 @@ a:hover {
   margin: 0;
 }
 
+.btnClick {
+  cursor: pointer;
+  height: 40px;
+  font-size: 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: #f7f6f6;
+  border-radius: 5px;
+  margin: 5px;
+  color: #aaaaaa;
+}
+
+.iconAlign {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.userTable {
+  width: 100%;
+}
+
+.userTable .utColumn {
+  width: 120px;
+}
+
+.userTable .utColumnOption {
+  width: 100px;
+}
+
+.bgSend {
+  height: 150px;
+  background: #f7f6f6;
+}
+
+.btnSub {
+  width: 200px;
+  cursor: pointer;
+  height: 40px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 5px;
+  padding: 8px;
+  margin: 10px;
+  background: #f7f6f6;
+}
+
+.btnSub .iconSub {
+  float: right;
+}
+
+.align {
+  float: left;
+  margin: 10px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.textArea {
+  width: 260px;
+  height: 334px;
+  background: #f7f6f6;
+  margin: 7px;
+}
+
+.textBox {
+  width: 228px;
+  height: 270px;
+  background: #ffffff;
+  margin: 7px;
+}
+
+.outerDisplay {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 @font-face {
   font-family: 'project-font';
   src: url(/fonts/Rubik-Regular.ttf?6c980940392587c8d7d325c07965ebda) format("truetype");

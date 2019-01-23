@@ -21,6 +21,11 @@ import UserListSidebarComponent from '../components/user/UserListSidebarComponen
 import UserSegmentListComponent from '../components/user/SegmentListComponent.vue';
 import UserSegmentListSidebarComponent from '../components/user/SegmentListSidebarComponent.vue';
 
+import BroadcastComponent from '../components/broadcast/BroadcastComponent.vue';
+import BroadcastSidebarComponent from '../components/broadcast/BroadcastSidebarComponent.vue';
+import sendNow from '../components/broadcast/sendNow.vue';
+import BroadcastScheduleComponent from '../components/broadcast/BroadcastScheduleComponent.vue';
+
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -75,6 +80,36 @@ export default new VueRouter({
                             component: UserSegmentListComponent,
                             meta: {
                                 sidebar: UserSegmentListSidebarComponent
+                            }
+                        }
+                    ]
+                },
+                {
+                    path: "broadcast",
+                    component: RouterViewComponent,
+                    children: [
+                        {
+                            path: "/",
+                            name: "project.broadcast",
+                            component: BroadcastComponent,
+                            meta: {
+                                sidebar: BroadcastSidebarComponent
+                            }
+                        },
+                        {
+                            path: "send",
+                            name: "project.broadcast.sendnow",
+                            component: sendNow,
+                            meta: {
+                                sidebar: BroadcastSidebarComponent
+                            }
+                        },
+                        {
+                            path: "schedule/:scheduleid",
+                            name: "project.broadcast.schedule",
+                            component: BroadcastScheduleComponent,
+                            meta: {
+                                sidebar: BroadcastSidebarComponent
                             }
                         }
                     ]

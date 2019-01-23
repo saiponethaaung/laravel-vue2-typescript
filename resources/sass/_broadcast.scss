@@ -54,20 +54,53 @@
     width: 100%;
 }
 
-.textArea {
-    width: 260px;
-    height: 334px;
-    background: #f7f6f6;
-    margin: 7px;
-}
-
-.textBox {
-    width: 228px;
-    height: 270px;
-    background: #ffffff;
-    margin: 7px;
-}
-
 .outerDisplay {
     display: flex;
+}
+
+.dropDownList {
+    height: 125px;
+    overflow: auto;
+    background: #f7f6f6;
+    width: 200px;
+    top: 44px;
+    right: 0px;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    padding-left: 5px;
+    z-index: 11;
+    margin: 10px;
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.label {
+    font-size: 9px;
+    height: 40px;
+    align-items: center;
+    border-radius: 5px;
+    padding: 8px;
+    margin: 8px;
+    color: #aaaaaa;
+}
+
+.link {
+    color: #1d68a7;
+}
+
+.link:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.textAlign {
+    margin: 10px;
+}
+
+.addBtn {
+    margin: 10px;
+    color: #aaaaaa;
 }

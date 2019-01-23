@@ -49330,6 +49330,8 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -49338,10 +49340,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
+
 let sendNow = class sendNow extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
+    constructor() {
+        super(...arguments);
+        this.showOption1 = false;
+        this.showOption2 = false;
+        this.showOption3 = false;
+        this.showOption4 = false;
+    }
 };
 sendNow = __decorate([
-    __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */]
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */])({
+        components: {
+            BuilderComponentMock: __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default.a
+        }
+    })
 ], sendNow);
 /* harmony default export */ __webpack_exports__["default"] = (sendNow);
 
@@ -49355,15 +49369,203 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
+    _c("div", { staticClass: "outerDisplay" }, [
+      _c(
+        "div",
+        {
+          on: {
+            click: function($event) {
+              _vm.showOption1 = !_vm.showOption1
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "btnSub" }, [
+            _c("span", [_vm._v("Choose Message Type")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption1
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.showOption1,
+                  expression: "showOption1"
+                }
+              ],
+              staticClass: "dropDownList"
+            },
+            [_vm._m(0)]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm._m(1)
+    ]),
     _vm._v(" "),
-    _vm._m(1),
+    _c("div", { staticClass: "outerDisplay" }, [
+      _c(
+        "div",
+        {
+          on: {
+            click: function($event) {
+              _vm.showOption2 = !_vm.showOption2
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "btnSub" }, [
+            _c("span", [_vm._v("Segment")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption2
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.showOption2,
+                  expression: "showOption2"
+                }
+              ],
+              staticClass: "dropDownList"
+            },
+            [_vm._m(2)]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "div",
+          {
+            staticClass: "btnSub",
+            on: {
+              click: function($event) {
+                _vm.showOption3 = !_vm.showOption3
+              }
+            }
+          },
+          [
+            _c("span", [_vm._v("is")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption3
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showOption3,
+                expression: "showOption3"
+              }
+            ],
+            staticClass: "dropDownList"
+          },
+          [_vm._m(3)]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "div",
+          {
+            staticClass: "btnSub",
+            on: {
+              click: function($event) {
+                _vm.showOption4 = !_vm.showOption4
+              }
+            }
+          },
+          [
+            _c("span", [_vm._v("Select segment")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption4
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showOption4,
+                expression: "showOption4"
+              }
+            ],
+            staticClass: "dropDownList"
+          },
+          [_vm._m(4)]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(5)
+    ]),
+    _vm._v(" "),
+    _vm._m(6),
     _vm._v(" "),
     _c("div", [
       _c(
         "div",
         [
-          _c("builder-component", {
+          _c("builder-component-mock", {
             staticClass: "fullWidth",
             attrs: { value: [], section: 0 }
           })
@@ -49378,34 +49580,27 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "outerDisplay" }, [
-      _c("div", { staticClass: "btnSub" }, [
-        _c("span", [_vm._v("Segment")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "iconSub" }, [
-          _c("i", { staticClass: "material-icons" }, [_vm._v("expand_more")])
-        ])
+    return _c("ul", [
+      _c("li", [_vm._v("1")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("2")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("3")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "label" }, [
+      _c("span", [
+        _vm._v(
+          "Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy."
+        )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "btnSub" }, [
-        _c("span", [_vm._v("is")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "iconSub" }, [
-          _c("i", { staticClass: "material-icons" }, [_vm._v("expand_more")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "btnSub" }, [
-        _c("span", [_vm._v("Select segment")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "iconSub" }, [
-          _c("i", { staticClass: "material-icons" }, [_vm._v("expand_more")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "btnClick" }, [
-        _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-        _vm._v("Add More\n        ")
+      _c("span", { staticClass: "link" }, [
+        _vm._v("subscription messaging policy.")
       ])
     ])
   },
@@ -49413,10 +49608,53 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "textArea" }, [
-        _c("div", { staticClass: "textBox" })
-      ])
+    return _c("ul", [
+      _c("li", [_vm._v("1")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("2")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("3")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", [
+      _c("li", [_vm._v("1")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("2")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("3")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", [
+      _c("li", [_vm._v("1")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("2")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("3")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "addBtn" }, [
+      _c("i", { staticClass: "material-icons iconAlign" }, [_vm._v("add")]),
+      _vm._v("Add More\n        ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "textAlign" }, [
+      _c("span", [_vm._v("You have 4 users based on your filters. ")])
     ])
   }
 ]
@@ -49426,6 +49664,603 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-3a6885ad", module.exports)
+  }
+}
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(190)
+/* template */
+var __vue_template__ = __webpack_require__(191)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/BuilderComponentMock.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3ae8eac6", Component.options)
+  } else {
+    hotAPI.reload("data-v-3ae8eac6", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 190 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__builder_TextComponent_vue__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__builder_TextComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__builder_TextComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__builder_TypingComponent_vue__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__builder_TypingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__builder_TypingComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__builder_ListComponent_vue__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__builder_ListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__builder_ListComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__builder_GalleryComponent_vue__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__builder_GalleryComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__builder_GalleryComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__builder_UserInputComponent_vue__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__builder_UserInputComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__builder_UserInputComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__builder_ImageComponent_vue__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__builder_ImageComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__builder_ImageComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__models_bots_TextContentModel__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__models_bots_TypingContentModel__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__models_bots_ListContentModel__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__models_bots_GalleryContentModel__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__models_bots_QuickReplyContentModel__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__models_bots_UserInputContentModel__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__models_bots_ImageContentModel__ = __webpack_require__(22);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.contents = [];
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__["a" /* default */]();
+        this.creating = 0;
+        this.sectionToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+    }
+    mounted() {
+        for (let i in this.value) {
+            this.buildConetnt(this.value[i]);
+        }
+    }
+    addText() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.appendComponent({
+                name: 'Text section',
+                type: 1
+            });
+        });
+    }
+    addTyping() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.appendComponent({
+                name: 'Typing section',
+                type: 2
+            });
+        });
+    }
+    addQuickReply() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.appendComponent({
+                name: 'Quick Reply section',
+                type: 3
+            });
+        });
+    }
+    addUserInput() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.appendComponent({
+                name: 'User Input section',
+                type: 4
+            });
+        });
+    }
+    addList() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.appendComponent({
+                name: 'List section',
+                type: 5
+            });
+        });
+    }
+    addGallery() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.appendComponent({
+                name: 'Gallery section',
+                type: 6
+            });
+        });
+    }
+    addImage() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.appendComponent({
+                name: 'Image section',
+                type: 7
+            });
+        });
+    }
+    appendComponent(content) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.buildConetnt(content);
+        });
+    }
+    buildConetnt(value) {
+        switch (value.type) {
+            case (1):
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_10__models_bots_TextContentModel__["a" /* default */]({
+                    id: 0,
+                    type: value.type,
+                    block: 0,
+                    section: 0,
+                    project: 0,
+                    content: {
+                        text: "",
+                        button: []
+                    }
+                }));
+                break;
+            case (2):
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_11__models_bots_TypingContentModel__["a" /* default */]({
+                    id: 0,
+                    type: value.type,
+                    block: 0,
+                    section: 0,
+                    project: 0,
+                    content: {
+                        duration: "1"
+                    }
+                }));
+                break;
+            case (3):
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_14__models_bots_QuickReplyContentModel__["a" /* default */]({
+                    id: 0,
+                    type: value.type,
+                    block: 0,
+                    section: 0,
+                    project: 0,
+                    content: []
+                }));
+                break;
+            case (4):
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_15__models_bots_UserInputContentModel__["a" /* default */]({
+                    id: 0,
+                    type: value.type,
+                    block: 0,
+                    section: 0,
+                    project: 0,
+                    content: []
+                }));
+                break;
+            case (5):
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_12__models_bots_ListContentModel__["a" /* default */]({
+                    id: 0,
+                    type: value.type,
+                    block: 0,
+                    section: 0,
+                    project: 0,
+                    content: {
+                        content: [],
+                        button: []
+                    }
+                }));
+                break;
+            case (6):
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_13__models_bots_GalleryContentModel__["a" /* default */]({
+                    id: 0,
+                    type: value.type,
+                    block: 0,
+                    section: 0,
+                    project: 0,
+                    content: []
+                }));
+                break;
+            case (7):
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_16__models_bots_ImageContentModel__["a" /* default */]({
+                    id: 0,
+                    type: value.type,
+                    block: 0,
+                    section: 0,
+                    project: 0,
+                    content: {
+                        image: ""
+                    }
+                }));
+                break;
+        }
+    }
+    getComponent(type) {
+        let component = null;
+        switch (type) {
+            case (1):
+                component = __WEBPACK_IMPORTED_MODULE_3__builder_TextComponent_vue___default.a;
+                break;
+            case (2):
+                component = __WEBPACK_IMPORTED_MODULE_4__builder_TypingComponent_vue___default.a;
+                break;
+            case (3):
+                component = __WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue___default.a;
+                break;
+            case (4):
+                component = __WEBPACK_IMPORTED_MODULE_8__builder_UserInputComponent_vue___default.a;
+                break;
+            case (5):
+                component = __WEBPACK_IMPORTED_MODULE_5__builder_ListComponent_vue___default.a;
+                break;
+            case (6):
+                component = __WEBPACK_IMPORTED_MODULE_6__builder_GalleryComponent_vue___default.a;
+                break;
+            case (7):
+                component = __WEBPACK_IMPORTED_MODULE_9__builder_ImageComponent_vue___default.a;
+                break;
+        }
+        return component;
+    }
+    delItem(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.contents.splice(index, 1);
+        });
+    }
+    updateSection() {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+    delSection() {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: Array,
+        default: []
+    })
+], BuilderComponent.prototype, "value", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], BuilderComponent.prototype, "section", void 0);
+BuilderComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
+        components: {
+            TextComponent: __WEBPACK_IMPORTED_MODULE_3__builder_TextComponent_vue___default.a,
+            TypingComponent: __WEBPACK_IMPORTED_MODULE_4__builder_TypingComponent_vue___default.a,
+            ListComponent: __WEBPACK_IMPORTED_MODULE_5__builder_ListComponent_vue___default.a,
+            GalleryComponent: __WEBPACK_IMPORTED_MODULE_6__builder_GalleryComponent_vue___default.a,
+            QuickReplyComponent: __WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue___default.a,
+            UserInputComponent: __WEBPACK_IMPORTED_MODULE_8__builder_UserInputComponent_vue___default.a,
+            ImageComponent: __WEBPACK_IMPORTED_MODULE_9__builder_ImageComponent_vue___default.a
+        }
+    })
+], BuilderComponent);
+/* harmony default export */ __webpack_exports__["default"] = (BuilderComponent);
+
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "contentRoot" },
+    [
+      _c(
+        "div",
+        { staticClass: "builderSectionInfo" },
+        [
+          _vm.section.lock
+            ? [_c("div", [_vm._v(_vm._s(_vm.section.title))])]
+            : [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.section.title,
+                      expression: "section.title"
+                    }
+                  ],
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.section.title },
+                  on: {
+                    blur: _vm.updateSection,
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.section, "title", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "deleteAction",
+                    on: {
+                      click: function($event) {
+                        _vm.delSection()
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("delete")
+                    ])
+                  ]
+                )
+              ]
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "contentList" },
+        _vm._l(_vm.contents, function(content, index) {
+          return _c(
+            "div",
+            {
+              key: index,
+              staticClass: "conentItem",
+              class: { deleting: content.isDeleting }
+            },
+            [
+              _c("div", { staticClass: "optionSection" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "deleteAction",
+                    on: {
+                      click: function($event) {
+                        _vm.delItem(index)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("delete")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(_vm.getComponent(content.type), {
+                tag: "component",
+                attrs: { content: content }
+              }),
+              _vm._v(" "),
+              content.isDeleting ? [_vm._m(0, true)] : _vm._e()
+            ],
+            2
+          )
+        })
+      ),
+      _vm._v(" "),
+      _vm._l(_vm.creating, function(i) {
+        return _c("div", { key: i }, [
+          _c("div", { staticClass: "creatingNewComponent" }, [
+            _c(
+              "div",
+              { staticClass: "loadingInnerConV1" },
+              [_c("loading-component")],
+              1
+            )
+          ])
+        ])
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "contentBuilderWidget" }, [
+        _c("h5", { staticClass: "contentActionMesg" }, [_vm._v("Add Message")]),
+        _vm._v(" "),
+        _c("div", [
+          _c("ul", { staticClass: "contentActionRoot" }, [
+            _c(
+              "li",
+              { staticClass: "contentActionList", on: { click: _vm.addText } },
+              [
+                _c("i", { staticClass: "material-icons" }, [
+                  _vm._v("speaker_notes")
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "contentActionName" }, [
+                  _vm._v("Text")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                staticClass: "contentActionList",
+                on: { click: _vm.addTyping }
+              },
+              [
+                _c("i", { staticClass: "material-icons" }, [
+                  _vm._v("speaker_notes")
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "contentActionName" }, [
+                  _vm._v("Typing")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                staticClass: "contentActionList",
+                on: { click: _vm.addQuickReply }
+              },
+              [
+                _c("i", { staticClass: "material-icons" }, [_vm._v("reply")]),
+                _vm._v(" "),
+                _c("span", { staticClass: "contentActionName" }, [
+                  _vm._v("Quick Reply")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                staticClass: "contentActionList",
+                on: { click: _vm.addUserInput }
+              },
+              [
+                _c("i", { staticClass: "material-icons" }, [_vm._v("textsms")]),
+                _vm._v(" "),
+                _c("span", { staticClass: "contentActionName" }, [
+                  _vm._v("User Input")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              { staticClass: "contentActionList", on: { click: _vm.addList } },
+              [
+                _c("i", { staticClass: "material-icons" }, [_vm._v("list")]),
+                _vm._v(" "),
+                _c("span", { staticClass: "contentActionName" }, [
+                  _vm._v("List")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                staticClass: "contentActionList",
+                on: { click: _vm.addGallery }
+              },
+              [
+                _c("i", { staticClass: "material-icons" }, [
+                  _vm._v("add_to_photos")
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "contentActionName" }, [
+                  _vm._v("Gallery")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              { staticClass: "contentActionList", on: { click: _vm.addImage } },
+              [
+                _c("i", { staticClass: "material-icons" }, [
+                  _vm._v("insert_photo")
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "contentActionName" }, [
+                  _vm._v("Image")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _vm._m(1)
+          ])
+        ])
+      ])
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "componentDeleting" }, [
+      _c("div", { staticClass: "deletingContainer" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "contentActionList" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("stars")]),
+      _vm._v(" "),
+      _c("span", { staticClass: "contentActionName" }, [_vm._v("Plugins")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3ae8eac6", module.exports)
   }
 }
 

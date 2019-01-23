@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ChatAttribute;
 use App\Models\ProjectPageUser;
 use App\Models\ProjectPageUserAttribute;
+use App\Models\SegmentFilter;
 
 class ChatUserController extends Controller
 {
@@ -244,6 +245,30 @@ class ChatUserController extends Controller
         return is_null($offset) ? date("Y-m-d H:i:s", $date) : date("Y-m-d H:i:s", strtotime($offset, $date));
     }
 
+    public function getDurationOffset($duration) {
+        $date = strtotime(date("Y-m-d H:i:s"));
+        $offset = null;
+        switch($duration) {
+            case("1"):
+                $offset = "-1 day";
+                break;
+
+            case("2"):
+                $offset = "-7 day";
+                break;
+
+            case("3"):
+                $offset = "-1 month";
+                break;
+           
+            case("4"):
+                $offset = "-3 month";
+                break;
+        }
+
+        return is_null($offset) ? date("Y-m-d H:i:s", $date) : date("Y-m-d H:i:s", strtotime($offset, $date));
+    }
+
     public function getUserAttributes(Request $request)
     {
         $attributes = ProjectPageUserAttribute::with('attrValue')
@@ -422,8 +447,130 @@ class ChatUserController extends Controller
         
     }
 
-    public function addUserToSegment(Request $request)
+    public function getUsersBySegment(Request $request)
     {
+        $filterList = [];
+        $users = ProjectPageUser::query();
 
+        if(isset($request->input('user')['gender']['value'])) {
+            $users->whereIn('gender', $request->input('user')['gender']['value']);
+        }
+
+        $users->whereHas('projectPage', function($query) use ($request) {
+            $query->where('id', $request->attributes->get('project_page')->id);
+            $query->where('project_id', $request->attributes->get('project')->id);
+        });
+        
+        $segmentFilters = SegmentFilter::with('attribute')->where('project_user_segments_id', $request->attributes->get('segment')->id)->get();
+
+        if(!empty($segmentFilters)) {
+            foreach($segmentFilters as $key => $value) {
+                $whereCondi = 'where';
+                
+                if($key>0 && $segmentFilters[$key-1]->chain_condition==2) {
+                    $whereCondi = 'orWhere';
+                }
+
+                $condi = $value['condition']===2 ? '=' : '!=';
+
+                
+                switch($value['filter_type']) {
+                    case(1):
+                        switch($value['user_attribute_type']) {
+                            case(1):
+                                $fValue = $value['user_attribute_value']==1 ? 'male' : 'female';
+                                $filterList[] = [
+                                    'key' => 'Gender',
+                                    'value' => ucfirst($fValue)
+                                ];
+                                $users->$whereCondi('gender', $condi, $fValue);
+                                break;
+                        }
+                        break;
+                    
+                    case(2):
+                        $whereCondi = 'whereHas';
+                        
+                        if($key>0 && $segmentFilters[$key-1]->chain_condition==2) {
+                            $whereCondi = 'orWhereHas';
+                        }
+
+                        if(empty($value->chat_attribute_value)) continue;
+                        
+                        $filterList[] = [
+                            'key' => $value->attribute->attribute,
+                            'value' => $value->chat_attribute_value
+                        ];
+
+                        $users->$whereCondi('attributes', function($query) use ($value) {
+                            $query->where('attribute_id', $value->chat_attribute_id);
+                            $query->where('value', $value->chat_attribute_value);
+                        });
+                        break;
+                    
+                    case(3):
+                        $condi = $value['condition']===2 ? '>=' : '<';
+                        $section = 'created_at';
+                        $fValueKey = 'Signed up';
+                        
+                        switch($value->system_attribute_type) {
+                            case(2):
+                                $fValueKey = 'Last Seen';
+                                $section = 'seen_at';
+                                break;
+                                
+                                case(3):
+                                $fValueKey = 'Last Engaged';
+                                $section = 'updated_at';
+                                break;
+                        }
+
+                        switch($value->system_attribute_value) {
+                            case("1"):
+                                $fValue = '24 hrs ago';
+                                break;
+
+                            case("2"):
+                                $fValue = '1 week ago';
+                                break;
+
+                            case("3"):
+                                $fValue = '1 month ago';
+                                break;
+
+                            case("4"):
+                                $fValue = '3 months ago';
+                                break;
+                        }
+
+                        $filterList[] = [
+                            'key' => $fValueKey,
+                            'value' => $fValue
+                        ];
+
+                        $users->$whereCondi($section, $condi, $this->getDurationOffset($value->system_attribute_value));
+                        break;
+                }
+            }
+        }
+
+        $users = $users->paginate(50);
+
+        $res = [];
+
+        $fbc = new FacebookController($request->attributes->get('project_page')->token);
+        
+        foreach($users as $user) {
+            $res[] = $this->buildUser($user);
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => [
+                'user' => $res,
+                'filters' => $filterList
+            ]
+        ]);
     }
 }

@@ -70,6 +70,7 @@ import UserListModel from '../../models/users/UserListModel';
 import Axios from 'axios';
 import UserTableComponent from './UserTableComponent.vue';
 import SegmentListModel from '../../models/SegmentListModel';
+import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 
 @Component({
     components: {
@@ -82,6 +83,7 @@ export default class UserListComponent extends Vue {
     private assignSegment: boolean = false;
     private segmentList: SegmentListModel = new SegmentListModel();
     private segmentName: string = '';
+    private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
 
     @Watch('$store.state.projectInfo', { immediate: true })
     async initSegment() {
@@ -184,28 +186,32 @@ export default class UserListComponent extends Vue {
         let data = new FormData();
         data.append('name', this.segmentName);
 
-        if(this.$store.state.userFilter.length>0) {
-            for(let i2 of this.$store.state.userFilter[0].child) {
-                data.append(`filters[${i2.key}][key]`, i2.key);
-                for(let i3 in i2.value) {
-                    if(!i2.value[i3].checked) continue;
-                    data.append(`filters[${i2.key}][value][${i3}]`, i2.value[i3].value);
-                }
-            }
+        if(this.$store.state.prevUserFilte!=='') {
+            let filters = JSON.parse(this.$store.state.prevUserFilter);
 
-            for(let i2 of this.$store.state.userFilter[1].child) {
-                data.append(`filters[${i2.key}][key]`, i2.key);
-                for(let i3 in i2.value) {
-                    if(!i2.value[i3].checked) continue;
-                    data.append(`filters[${i2.key}][value][${i3}]`, i2.value[i3].value);
+            if(filters.length>0) {
+                for(let i2 of filters[0].child) {
+                    data.append(`filters[${i2.key}][key]`, i2.key);
+                    for(let i3 in i2.value) {
+                        if(!i2.value[i3].checked) continue;
+                        data.append(`filters[${i2.key}][value][${i3}]`, i2.value[i3].value);
+                    }
                 }
-            }
-           
-            for(let i2 of this.$store.state.userFilter[2].child) {
-                data.append(`filters[${i2.key}][key]`, i2.key);
-                for(let i3 in i2.value) {
-                    if(!i2.value[i3].checked) continue;
-                    data.append(`filters[${i2.key}][value][${i3}]`, i2.value[i3].value);
+
+                for(let i2 of filters[1].child) {
+                    data.append(`filters[${i2.key}][key]`, i2.key);
+                    for(let i3 in i2.value) {
+                        if(!i2.value[i3].checked) continue;
+                        data.append(`filters[${i2.key}][value][${i3}]`, i2.value[i3].value);
+                    }
+                }
+            
+                for(let i2 of filters[2].child) {
+                    data.append(`filters[${i2.key}][key]`, i2.key);
+                    for(let i3 in i2.value) {
+                        if(!i2.value[i3].checked) continue;
+                        data.append(`filters[${i2.key}][value][${i3}]`, i2.value[i3].value);
+                    }
                 }
             }
         }
@@ -215,9 +221,13 @@ export default class UserListComponent extends Vue {
             data: data,
             method: 'post'
         }).then(res => {
-
+            this.assignSegment = false;
+            this.segmentName = '';
         }).catch(err => {
-
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create segment!');
+                alert(mesg);
+            }
         });
     }
 }

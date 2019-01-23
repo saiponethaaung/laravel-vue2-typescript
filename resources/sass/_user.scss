@@ -118,6 +118,11 @@
             width: 16px;
         }
     }
+
+    &.segmentSection {
+        background: $secondaryBackground;
+        color: $defaultText;
+    }
 }
 
 .userListControlCon {
@@ -193,6 +198,7 @@
             .segmentListName {
                 color: $secondaryHoverText;
                 font-weight: bold;
+                width: 100%;
             }
             .segmentActionIcon {
                 visibility: visible;

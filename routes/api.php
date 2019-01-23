@@ -146,6 +146,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
                 Route::group(['prefix' => '{segmentId}', 'middleware' => 'verifySegment'], function() {
                     Route::put('/', 'V1\\Api\\SegmentController@updateSegment');
                     Route::delete('/', 'V1\\Api\\SegmentController@deleteSegment');
+                    Route::get('users', 'V1\\Api\\ChatUserController@getUsersBySegment');
                     Route::post('filters', 'V1\\Api\\SegmentController@createSingleFilter');
                     Route::get('filters', 'V1\\Api\\SegmentController@getFilters');
                     Route::group(['prefix' => 'filters/{filterId}', 'middleware' => 'verifySegmentFilter'], function() {

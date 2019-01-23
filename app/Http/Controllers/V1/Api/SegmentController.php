@@ -255,33 +255,57 @@ class SegmentController extends Controller
             ]);
             if(is_array($input['filters']) && !empty($input['filters'])) {
                 foreach($input['filters'] as $filter) {
-                    $newFilter = new SegmentFilter();
-                    $newFilter->condition = 1;
-                    $newFilter->chain_condition = 1;
+                    if(!isset($filter['value']) || count($filter['value'])===0) continue;
+                    foreach($filter['value'] as $value) {
+                        $newFilter = new SegmentFilter();
+                        $newFilter->condition = 2;
+                        $newFilter->chain_condition = count($filter['value'])===1 ? 1 : 2;
+
+                        if(strtolower($filter['key'])==='gender') {
+                            $newFilter->filter_type = 1;
+                            $newFilter->user_attribute_type = 1;
+                            $newFilter->user_attribute_value = strtolower($value)==='male' ? 1 : 2;
+                        } else if(in_array(strtolower($filter['key']), ['signup', 'lastseen', 'lastengaged'])) {
+                            $newFilter->filter_type = 3;
+                            $newFilter->system_attribute_type = 1;
+                            
+                            switch(strtolower($filter['key'])) {
+                                case('lastseen'):
+                                    $newFilter->system_attribute_type = 2;
+                                    break;
+
+                                case('lastengaged'):
+                                    $newFilter->system_attribute_type = 3;
+                                    break;
+                            }
+
+                            $newFilter->system_attribute_value = 1;
+                            switch($value) {
+                                case("24 hrs ago"):
+                                    $newFilter->system_attribute_value = 1;
+                                    break;
                     
-                    // switch($filter['option']) {
-                    //     case("1"):
-                    //         $newFilter->filter_type = $filter['option'];
-                    //         $newFilter->user_attribute_type = $filter['userAttribute'];
-                    //         $newFilter->user_attribute_value = $filter['userAttributeValue'];
-                    //         break;
+                                case("1 week ago"):
+                                    $newFilter->system_attribute_value = 2;
+                                    break;
                     
-                    //     case("2"):
-                    //         $attributeId = $this->getChatAttribute($filter['name']);
-                    //         $newFilter->filter_type = $filter['option'];
-                    //         $newFilter->chat_attribute_id = $attributeId;
-                    //         $newFilter->chat_attribute_value = $filter['value'];
-                    //         break;
-                    
-                    //     case("3"):
-                    //         $newFilter->filter_type = $filter['option'];
-                    //         $newFilter->system_attribute_type = $filter['systemAttribute'];
-                    //         $newFilter->system_attribute_value = $filter['systemAttributeValue'];
-                    //         break;
-                    // }
-                    
-                    // $newFilter->project_user_segments_id = $segment->id;
-                    // $newFilter->save();
+                                case("1 month ago"):
+                                    $newFilter->system_attribute_value = 3;
+                                    break;
+                            
+                                case("3 months ago"):
+                                    $newFilter->system_attribute_value = 4;
+                                    break;
+                            }
+                        } else {
+                            $newFilter->filter_type = 2;
+                            $newFilter->chat_attribute_id = $filter['key'];
+                            $newFilter->chat_attribute_value = $value;
+                        }
+                        
+                        $newFilter->project_user_segments_id = $segment->id;
+                        $newFilter->save();
+                    }
                 }
             }
         } catch (\Exception $e) {

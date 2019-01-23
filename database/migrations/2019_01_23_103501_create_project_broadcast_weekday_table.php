@@ -15,8 +15,11 @@ class CreateProjectBroadcastWeekdayTable extends Migration
     {
         Schema::create('project_broadcast_weekday', function (Blueprint $table) {
             $table->increments('id');
+            // id from project_broadcast
             $table->unsignedBigInteger('project_broadcast_id')->nullable()->index();
+            // for day 1:Mon, 2:Tue, 3:Wed, 4:Thu, 5:Fri, 6:Sat, 7:Sun
             $table->unsignedInteger('days')->default(0);
+            // to enable and disable a schedule for day
             $table->boolean('status')->default(true);
             $table->timestamps();
 

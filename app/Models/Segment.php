@@ -14,6 +14,16 @@ class Segment extends Model
         'project_id'
     ];
 
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($segment) {
+            foreach($segment->filters as $filters) {
+                $filters->delete();
+            }
+        });
+    }
+
     public function filters()
     {
         return $this->hasMany('App\Models\SegmentFilter', 'project_user_segments_id', 'id');

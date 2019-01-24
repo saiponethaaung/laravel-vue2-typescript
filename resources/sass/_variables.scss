@@ -26,7 +26,9 @@ $color4: #aaaaaa;
 $color5: #ebebeb;
 $color6: #ffffff;
 $color7: #72bb53;
+$color8: #000000;
 
+$defaultText: $color8;
 $secondaryText: $color4;
 $secondaryHoverText: $color1;
 $btnText1: $color1;
@@ -65,3 +67,23 @@ $secondStandardHeight: 30px;
 $tableStandardHeight: 30px;
 
 $standardContentPadding: 30px;
+
+%flexCenter {
+    display: flex;
+    align-items: center;
+}
+
+%flexJCenter {
+    @extend %flexCenter;
+    justify-content: center;
+}
+
+%inlineFlexCenter {
+    display: inline-flex;
+    align-items: center;
+}
+
+%inlineFlexJCenter {
+    @extend %inlineFlexCenter;
+    justify-content: center;
+}

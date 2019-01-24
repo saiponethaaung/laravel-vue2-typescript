@@ -66,6 +66,27 @@ export default class SegmentListModel extends AjaxErrorHandler {
         return res;
     }
 
+    async deleteSegment(index: number) {
+        let res = {
+            status: true,
+            mesg: 'success'
+        };
+
+        await Axios({
+            url: `/api/v1/project/${this.projectId}/users/segments/${this.segments[index].id}`,
+            method: 'delete'
+        }).then(res => {
+            this.segments.splice(index, 1);
+        }).catch(err => {
+            if(err.response) {
+                res.status = false;
+                res.mesg = this.globalHandler(err, 'Failed to delete segment!');
+            }
+        });
+
+        return res;
+    }
+
     cancelLoading() {
         this.loadToken.cancel();
     }

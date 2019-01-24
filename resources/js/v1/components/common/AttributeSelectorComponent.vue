@@ -182,25 +182,25 @@ export default class AttributeSelectorComponent extends Vue {
             }
         ];
 
-        if(this.attribute.option === 2) {
-            res = [
-                ...res,
-                ...[
-                    {
-                        key: 3,
-                        value: 'start with'
-                    },
-                    {
-                        key: 4,
-                        value: 'greater than'
-                    },
-                    {
-                        key: 5,
-                        value: 'less than'
-                    }
-                ]
-            ];
-        }
+        // if(this.attribute.option === 2) {
+        //     res = [
+        //         ...res,
+        //         ...[
+        //             {
+        //                 key: 3,
+        //                 value: 'start with'
+        //             },
+        //             {
+        //                 key: 4,
+        //                 value: 'greater than'
+        //             },
+        //             {
+        //                 key: 5,
+        //                 value: 'less than'
+        //             }
+        //         ]
+        //     ];
+        // }
 
         return res;
     }

@@ -4,24 +4,14 @@
             <div class="userListFilterCon">
                 <h5 class="userFilterHeading">
                     <span class="headingTitle">Member List</span>
-                    <!-- <template v-for="(type, tindex) in JSON.parse($store.state.prevUserFilter)">
-                        <template v-for="(attribute, aindex) in type.child">
-                            <template v-for="(value, index) in attribute.value">
-                                <div :key="`${tindex}-${aindex}-${index}`" v-if="value.checked" class="listFilterCon">
-                                    <span class="filterKey">{{ attribute.name }}:</span>
-                                    <span class="filterValue">{{ value.value }}</span>
-                                    <span class="filterRemoveCheck"
-                                        @click="
-                                            $store.state.userFilter[tindex].child[aindex].value[index].checked=false;
-                                            $store.state.prevUserFilter=JSON.stringify($store.state.userFilter);
-                                        "
-                                    >
-                                        <i class="material-icons">clear</i>
-                                    </span>
-                                </div>
-                            </template>
+                    <template v-if="userFilters.length>0">
+                        <template v-for="(value, index) in userFilters">
+                            <div :key="index" class="listFilterCon segmentSection">
+                                <span class="filterKey">{{ value.key }}:</span>
+                                <span class="filterValue">{{ value.value }}</span>
+                            </div>
                         </template>
-                    </template> -->
+                    </template>
                 </h5>
             </div>
             <div class="userListOptionCon">
@@ -34,19 +24,30 @@
                     <span>export</span>
                 </button>
             </div>
-            <template v-if="$store.state.selectedSegment>-1">
-                <div>Segment selected</div>
-            </template>
-            <template v-else>
-                <div>Select a segment</div>
-            </template>
         </div>
+        
+
+        <template v-if="$store.state.selectedSegment>0">
+            <user-table-component
+                :userList='userList'
+                :userLoading='userLoading'
+            ></user-table-component>
+        </template>
+        <template v-else>
+            <div class="noContent">
+                <i class="material-icons">supervisor_account</i>
+                <span clss="noContentInfo">Select a segment to view reachable users</span>
+            </div>
+        </template>
 
         <div class="popFixedContainer popFixedCenter" v-if="createSegment">
             <div class="userAttributePop filterAttribute">
                 <div class="uaBodyCon">
                     <h5 class="uaTitle">Create new segment</h5>
-                    <input type="text" v-model="filterSegment.name"/>
+                    <div class="segmentTitleCon">
+                        <label class="segmentTitleLabel">Segment Name:</label>
+                        <input class="segmentTitleInput" type="text" placeholder="Segment name" v-model="filterSegment.name"/>
+                    </div>
                     <div class="attributeSelectorList">
                         <template v-for="(attribute, index) in filterSegment.attributes">
                             <div class="attributeSelector" :key="index">
@@ -75,17 +76,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import AttributeSelectorComponent from '../common/AttributeSelectorComponent.vue';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import AttributeFilterListModel from '../../models/AttributeFilterListModel';
+import UserListModel from '../../models/users/UserListModel';
+import UserTableComponent from './UserTableComponent.vue';
+import Axios from 'axios';
+import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 
 @Component({
     components: {
-        AttributeSelectorComponent
+        UserTableComponent
     }
 })
 export default class UserSegmentListComponent extends Vue {
+    private userLoading: boolean = false;
+    private userFilters: Array<any> = [];
+    private userList: Array<UserListModel> = [];
     private createSegment: boolean = false;
+    private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(false, this.$store.state.projectInfo.id, []);
     
     mounted() {
@@ -94,6 +102,35 @@ export default class UserSegmentListComponent extends Vue {
 
     private addNewFitler() {
         this.filterSegment.createNewAttributeFilter();
+    }
+
+    @Watch('$store.state.selectedSegment')
+    private async loadUser() {
+        this.userList = [];
+        this.userFilters = [];
+        if(this.$store.state.selectedSegment===0) {
+            return;
+        }
+
+        this.userLoading = true;
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/users/segments/${this.$store.state.selectedSegment}/users`,
+            method: 'get'
+        }).then(res => {
+            this.userFilters = res.data.data.filters
+            for(let i of res.data.data.user) {
+                this.userList.push(new UserListModel(i, this.$store.state.projectInfo.id));
+            }
+            this.userLoading = false;
+        }).catch(err => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load user!');
+                alert(mesg);
+            }
+        });
+
+        console.log("loading user by segment")
     }
 
     private async createNewSegment() {

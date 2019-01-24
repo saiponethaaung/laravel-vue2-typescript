@@ -83,6 +83,7 @@
 
 .attributeSelectorRoot {
     position: relative;
+    font-size: 13px;
     .attributeSelectorCondi {
         width: 35px;
         height: 30px;
@@ -187,5 +188,7 @@
 }
 
 .attrSelInput {
-
+    border: none;
+    font-size: 13px;
+    padding: 0 5px;
 }

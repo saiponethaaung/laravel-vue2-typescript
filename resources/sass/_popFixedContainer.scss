@@ -1,10 +1,8 @@
 .floatingLoading {
+    @extend %flexJCenter;
     position: fixed;
     width: 100vw;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: #fff;
     background: rgba(0,0,0,0.6);
     z-index: 111;
@@ -23,9 +21,7 @@
 }
 
 .popFixedCenter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @extend %flexJCenter;
 }
 
 $userPopFooter: 60px;
@@ -37,6 +33,12 @@ $userPopFooter: 60px;
     border-radius: 5px;
     &.filterAttribute {
         width: 700px;
+    }
+    &.saveToSegmentPop {
+        height: 180px;
+        .segmentTitleInput {
+            width: calc(100% - 110px);
+        }
     }
     .uaBodyCon {
         height: calc(100% - #{$userPopFooter});
@@ -73,14 +75,12 @@ $userPopFooter: 60px;
             }
 
             .attrDel {
+                @extend %flexJCenter;
                 visibility: hidden;
                 opacity: 0;
                 position: absolute;
                 top: 5px;
                 right: -28px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
                 border: 1px solid $borderPrimary;
                 width: 30px;
                 height: 30px;
@@ -100,8 +100,7 @@ $userPopFooter: 60px;
         }
     }
     .uaFooterCon {
-        display: flex;
-        align-items: center;
+        @extend %flexCenter;
         height: $userPopFooter;
         border-top: 1px solid $borderPrimary;
         padding: 0 15px;

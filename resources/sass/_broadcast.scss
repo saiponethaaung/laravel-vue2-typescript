@@ -45,6 +45,20 @@
     }
 }
 
+.btnOption {
+    width: 80px;
+    cursor: pointer;
+    height: 40px;
+    align-items: center;
+    border-radius: 5px;
+    padding: 8px;
+    margin: 10px;
+    background: $primaryChatBlock;
+    .iconSub {
+        float: right;
+    }
+}
+
 .align {
     float: left;
     margin: 10px;
@@ -103,4 +117,10 @@
 .addBtn {
     margin: 10px;
     color: #aaaaaa;
+}
+
+.textTrig {
+    font-weight: bold;
+    margin: 10px;
+    font-size: 20px;
 }

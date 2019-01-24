@@ -13651,6 +13651,23 @@ a:hover {
   float: right;
 }
 
+.btnOption {
+  width: 80px;
+  cursor: pointer;
+  height: 40px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 5px;
+  padding: 8px;
+  margin: 10px;
+  background: #f7f6f6;
+}
+
+.btnOption .iconSub {
+  float: right;
+}
+
 .align {
   float: left;
   margin: 10px;
@@ -13714,6 +13731,12 @@ a:hover {
 .addBtn {
   margin: 10px;
   color: #aaaaaa;
+}
+
+.textTrig {
+  font-weight: bold;
+  margin: 10px;
+  font-size: 20px;
 }
 
 @font-face {

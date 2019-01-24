@@ -15,4 +15,8 @@ class ProjectMessageTag extends Model
         'notice',
         'is_primary'
     ];
+
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
 }

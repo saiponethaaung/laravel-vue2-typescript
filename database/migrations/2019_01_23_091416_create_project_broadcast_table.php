@@ -32,19 +32,19 @@ class CreateProjectBroadcastTable extends Migration
             // for trigger duration (minute, hour, day)
             $table->unsignedInteger('duration_type')->nullable();
             // id from project_message_tag table
-            $table->unsignedInteger('project_messgage_tag_id')->nullable();
+            $table->unsignedInteger('project_message_tag_id')->nullable();
             // to identify first interation, last interation or attribute set triggered
             $table->unsignedInteger('trigger_type')->nullable();
             // to identify send now, schedule and trigger
             $table->unsignedInteger('broadcast_type')->default(1);
             // to set enable and disabled status for trigger and schedule
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(false);
             // for send now action only
-            $table->boolean('complete')->default(true);
+            $table->boolean('complete')->default(false);
             $table->timestamps();
 
             $table->foreign('project_id')->references('id')->on('project')->onDelete('restrict');
-            $table->foreign('project_messgage_tag_id')->references('id')->on('project_messgage_tag')->onDelete('restrict');
+            $table->foreign('project_message_tag_id')->references('id')->on('project_messgage_tag')->onDelete('restrict');
         });
     }
 

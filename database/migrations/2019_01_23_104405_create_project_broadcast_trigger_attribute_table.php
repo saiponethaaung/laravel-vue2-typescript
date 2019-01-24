@@ -15,7 +15,9 @@ class CreateProjectBroadcastTriggerAttributeTable extends Migration
     {
         Schema::create('project_broadcast_trigger_attribute', function (Blueprint $table) {
             $table->increments('id');
+            // id from chat attribute
             $table->unsignedInteger('chat_attribute_id')->nullable();
+            // condition like (is, is not, etc...)
             $table->unsignedInteger('condition')->default(1);
             $table->string('value');
             $table->timestamps();

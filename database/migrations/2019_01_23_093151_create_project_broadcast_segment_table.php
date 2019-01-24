@@ -16,9 +16,9 @@ class CreateProjectBroadcastSegmentTable extends Migration
         Schema::create('project_broadcast_segment', function (Blueprint $table) {
             $table->increments('id');
             // id from project_user_segments
-            $table->bigIncrements('project_user_segments_id')->nullable()->index();
+            $table->unsignedBigInteger('project_user_segments_id')->nullable()->index();
             // id from project_broadcast
-            $table->bigIncrements('project_broadcast_id')->nullable()->index();
+            $table->unsignedBigInteger('project_broadcast_id')->nullable()->index();
             $table->timestamps();
 
             $table->foreign('project_user_segments_id')->references('id')->on('project_user_segments')->onDelete('restrict');

@@ -32,9 +32,9 @@ class CreateProjectBroadcastFiltersTable extends Migration
             // chat attribute value
             $table->string('chat_attribute_value')->nullable();
             // condition like (is, is not, etc...)
-            $table->unsignedInteger('condition')->default(1)->index()->after('filter_type');
+            $table->unsignedInteger('condition')->default(1);
             // condition like (and, or)
-            $table->unsignedInteger('chain_condition')->default(1)->after('condition');
+            $table->unsignedInteger('chain_condition')->default(1);
             $table->timestamps();
 
             $table->foreign('project_broadcast_id')->references('id')->on('project_broadcast')->onDelete('restrict');

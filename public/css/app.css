@@ -13680,6 +13680,22 @@ a:hover {
   display: flex;
 }
 
+.broadcastContentList ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.broadcastContentList li {
+  background: #f7f6f6;
+  line-height: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+  padding: 0 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 @font-face {
   font-family: 'project-font';
   src: url(/fonts/Rubik-Regular.ttf?6c980940392587c8d7d325c07965ebda) format("truetype");

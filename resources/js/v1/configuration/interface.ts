@@ -167,3 +167,12 @@ export interface segment {
     id: number,
     name: string
 }
+
+export interface messageTag {
+    id: number,
+    name: string,
+    tag_format: string,
+    mesg: string,
+    notice: string,
+    is_primary: boolean
+}

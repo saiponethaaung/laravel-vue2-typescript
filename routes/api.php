@@ -42,6 +42,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::delete('/pages/link', 'V1\\Api\\ProjectController@unlinkProject')->name('chatbot.project.page.unlink');
         Route::post('/pages/change-publish-status', 'V1\\Api\\ProjectController@changePublishStatusPage')->name('chatbot.project.page.publish.status');
         
+        Route::get('message-tags', 'V1\\Api\\MessageTagsController@getList');
+
         Route::group(['prefix' => 'chat-bot'], function() {
             
             Route::post('block', 'V1\\Api\\ChatBotController@createBlock')->name('chatbot.block.create');
@@ -121,6 +123,11 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
                     });
                 });
             });
+        });
+
+        Route::group(['prefix' => 'broadcast'], function() {
+            Route::post('/', 'V1\\Api\\BroadcastController@create');
+            Route::get('/schedule', 'V1\\Api\\BroadcastController@getSchedule');
         });
 
         Route::group(['prefix' => 'chat', 'middleware' => 'verifyProjectHasPage'], function() {

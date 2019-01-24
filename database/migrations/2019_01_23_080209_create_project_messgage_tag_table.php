@@ -13,7 +13,7 @@ class CreateProjectMessgageTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_messgage_tag', function (Blueprint $table) {
+        Schema::create('project_message_tag', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('tag_format')->unique();
@@ -31,6 +31,6 @@ class CreateProjectMessgageTagTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_messgage_tag');
+        Schema::dropIfExists('project_message_tag');
     }
 }

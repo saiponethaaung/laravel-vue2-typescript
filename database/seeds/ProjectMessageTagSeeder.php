@@ -2,8 +2,6 @@
 
 use Illuminate\Database\Seeder;
 
-use DB;
-
 use App\Models\ProjectMessageTag;
 
 class ProjectMessageTagSeeder extends Seeder
@@ -143,5 +141,9 @@ class ProjectMessageTagSeeder extends Seeder
                 'is_primary' => false
             ],
         ];
+
+        foreach($tags as $tag) {
+            ProjectMessageTag::create($tag);
+        }
     }
 }

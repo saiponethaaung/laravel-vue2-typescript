@@ -1,132 +1,94 @@
 <template>
     <div>
-        <div class="outerDisplay">
-            <div @click="showOption1=!showOption1">
-                <div class="btnSub">
-                    <span>Choose Message Type</span>
-                    <span class="iconSub">
-                        <i class="material-icons">
-                            <template v-if="showOption1">expand_less</template>
-                            <template v-else>expand_more</template>
-                        </i>
-                    </span>
+        <div class="upperDisplay">
+            <div class="outerDisplay">
+                <div @click="showOption1=!showOption1">
+                    <div class="btnSub">
+                        <span>Subscription</span>
+                        <span class="iconSub">
+                            <i class="material-icons">
+                                <template v-if="showOption1">expand_less</template>
+                                <template v-else>expand_more</template>
+                            </i>
+                        </span>
+                    </div>
+                    <div v-show="showOption1" class="dropDownList">
+                        <ul>
+                            <li>1</li>
+                            <li>2</li>
+                            <li>3</li>
+                        </ul>
+                    </div>
                 </div>
-                <div v-show="showOption1" class="dropDownList">
-                    <ul>
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="label">
-                <span>Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy.</span>
-                <span class="link">subscription messaging policy.</span>
-            </div>
-        </div>
-        <div class="outerDisplay">
-            <div @click="showOption2=!showOption2">
-                <div class="btnSub">
-                    <span>Segment</span>
-                    <span class="iconSub">
-                        <i class="material-icons">
-                            <template v-if="showOption2">expand_less</template>
-                            <template v-else>expand_more</template>
-                        </i>
-                    </span>
-                </div>
-                <div v-show="showOption2" class="dropDownList">
-                    <ul>
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
-                    </ul>
+                <div class="label">
+                    <span>Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy.</span>
+                    <span class="link">subscription messaging policy.</span>
                 </div>
             </div>
-            <div>
-                <div class="btnOption" @click="showOption3=!showOption3">
-                    <span>is</span>
-                    <span class="iconSub">
-                        <i class="material-icons">
-                            <template v-if="showOption3">expand_less</template>
-                            <template v-else>expand_more</template>
-                        </i>
-                    </span>
-                </div>
-                <div v-show="showOption3" class="dropDownList">
-                    <ul>
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
-                    </ul>
-                </div>
-            </div>
-            <div>
-                <div class="btnSub" @click="showOption4=!showOption4">
-                    <span>Select segment</span>
-                    <span class="iconSub">
-                        <i class="material-icons">
-                            <template v-if="showOption4">expand_less</template>
-                            <template v-else>expand_more</template>
-                        </i>
-                    </span>
-                </div>
-                <div v-show="showOption4" class="dropDownList">
-                    <ul>
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
-                    </ul>
+
+            <div class="attributeSelectorList">
+                <template v-for="(attribute, index) in filterSegment.attributes">
+                    <div class="attributeSelector" :key="index">
+                        <attribute-selector-component
+                            :attribute="attribute"
+                            :canCondition="(filterSegment.attributes.length-1)>index"
+                        ></attribute-selector-component>
+                        
+                        <button v-if="filterSegment.attributes.length>1" class="deleteAttribute" @click="filterSegment.attributes.splice(index, 1);">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
+                </template>
+                <div @click="addNewFitler()" class="addMoreFilterButton">
+                    <i class="material-icons">add</i>
                 </div>
             </div>
-            <div  class="addBtn">
-                <i class="material-icons iconAlign">add</i>Add More
+
+            <div class="textAlign">
+                <span>You have 4 users based on your filters. </span>
+            </div>
+
+            <div class="outerDisplay">
+                <span class="textTrig">Trigger:</span>
+                <div>
+                    <div class="btnSub" @click="showOption2=!showOption2">
+                        <span>1 Minute</span>
+                        <span class="iconSub">
+                            <i class="material-icons">
+                                <template v-if="showOption4">expand_less</template>
+                                <template v-else>expand_more</template>
+                            </i>
+                        </span>
+                    </div>
+                    <div v-show="showOption2" class="dropDownList">
+                        <ul>
+                            <li>1</li>
+                            <li>2</li>
+                            <li>3</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <div class="btnSub" @click="showOption3=!showOption3">
+                        <span>After first interaction</span>
+                        <span class="iconSub">
+                            <i class="material-icons">
+                                <template v-if="showOption6">expand_less</template>
+                                <template v-else>expand_more</template>
+                            </i>
+                        </span>
+                    </div>
+                    <div v-show="showOption3" class="dropDownList">
+                        <ul>
+                            <li>1</li>
+                            <li>2</li>
+                            <li>3</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="textAlign">
-            <span>You have 4 users based on your filters. </span>
-        </div>
-
-        <div class="outerDisplay">
-            <span class="textTrig">Trigger:</span>
-            <div>
-                <div class="btnSub" @click="showOption5=!showOption5">
-                    <span>1 Minute</span>
-                    <span class="iconSub">
-                        <i class="material-icons">
-                            <template v-if="showOption4">expand_less</template>
-                            <template v-else>expand_more</template>
-                        </i>
-                    </span>
-                </div>
-                <div v-show="showOption5" class="dropDownList">
-                    <ul>
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
-                    </ul>
-                </div>
-            </div>
-            <div>
-                <div class="btnSub" @click="showOption6=!showOption6">
-                    <span>After first interaction</span>
-                    <span class="iconSub">
-                        <i class="material-icons">
-                            <template v-if="showOption6">expand_less</template>
-                            <template v-else>expand_more</template>
-                        </i>
-                    </span>
-                </div>
-                <div v-show="showOption6" class="dropDownList">
-                    <ul>
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
 
         <div>
             <div>
@@ -140,6 +102,7 @@
 import Vue from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
 import BuilderComponentMock from '../common/BuilderComponentMock.vue';
+import AttributeFilterListModel from '../../models/AttributeFilterListModel';
 
 @Component({
     components: {
@@ -151,9 +114,16 @@ export default class BroadcastTriggerComponent extends Vue {
     private showOption1: boolean = false;
     private showOption2: boolean = false;
     private showOption3: boolean = false;
-    private showOption4: boolean = false;
-    private showOption5: boolean = false;
-    private showOption6: boolean = false;
+
+    private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(false, this.$store.state.projectInfo.id, []);
+
+    mounted() {
+        this.addNewFitler();
+    }
+
+    private addNewFitler() {
+        this.filterSegment.createNewAttributeFilter();
+    }
 
 }
 </script>

@@ -46103,6 +46103,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__ = __webpack_require__(27);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -46112,15 +46113,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
     constructor() {
         super(...arguments);
         this.showOption1 = false;
         this.showOption2 = false;
         this.showOption3 = false;
-        this.showOption4 = false;
-        this.showOption5 = false;
-        this.showOption6 = false;
+        this.filterSegment = new __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
+    }
+    mounted() {
+        this.addNewFitler();
+    }
+    addNewFitler() {
+        this.filterSegment.createNewAttributeFilter();
     }
 };
 BroadcastTriggerComponent = __decorate([
@@ -46142,82 +46148,147 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "outerDisplay" }, [
+    _c("div", { staticClass: "upperDisplay" }, [
+      _c("div", { staticClass: "outerDisplay" }, [
+        _c(
+          "div",
+          {
+            on: {
+              click: function($event) {
+                _vm.showOption1 = !_vm.showOption1
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "btnSub" }, [
+              _c("span", [_vm._v("Subscription")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "iconSub" }, [
+                _c(
+                  "i",
+                  { staticClass: "material-icons" },
+                  [
+                    _vm.showOption1
+                      ? [_vm._v("expand_less")]
+                      : [_vm._v("expand_more")]
+                  ],
+                  2
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.showOption1,
+                    expression: "showOption1"
+                  }
+                ],
+                staticClass: "dropDownList"
+              },
+              [_vm._m(0)]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _vm._m(1)
+      ]),
+      _vm._v(" "),
       _c(
         "div",
-        {
-          on: {
-            click: function($event) {
-              _vm.showOption1 = !_vm.showOption1
-            }
-          }
-        },
+        { staticClass: "attributeSelectorList" },
         [
-          _c("div", { staticClass: "btnSub" }, [
-            _c("span", [_vm._v("Choose Message Type")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
+          _vm._l(_vm.filterSegment.attributes, function(attribute, index) {
+            return [
               _c(
-                "i",
-                { staticClass: "material-icons" },
+                "div",
+                { key: index, staticClass: "attributeSelector" },
                 [
-                  _vm.showOption1
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
+                  _c("attribute-selector-component", {
+                    attrs: {
+                      attribute: attribute,
+                      canCondition:
+                        _vm.filterSegment.attributes.length - 1 > index
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.filterSegment.attributes.length > 1
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "deleteAttribute",
+                          on: {
+                            click: function($event) {
+                              _vm.filterSegment.attributes.splice(index, 1)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("delete")
+                          ])
+                        ]
+                      )
+                    : _vm._e()
                 ],
-                2
+                1
               )
-            ])
-          ]),
+            ]
+          }),
           _vm._v(" "),
           _c(
             "div",
             {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showOption1,
-                  expression: "showOption1"
+              staticClass: "addMoreFilterButton",
+              on: {
+                click: function($event) {
+                  _vm.addNewFitler()
                 }
-              ],
-              staticClass: "dropDownList"
+              }
             },
-            [_vm._m(0)]
+            [_c("i", { staticClass: "material-icons" }, [_vm._v("add")])]
           )
-        ]
+        ],
+        2
       ),
       _vm._v(" "),
-      _vm._m(1)
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "outerDisplay" }, [
-      _c(
-        "div",
-        {
-          on: {
-            click: function($event) {
-              _vm.showOption2 = !_vm.showOption2
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "btnSub" }, [
-            _c("span", [_vm._v("Segment")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption2
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]),
+      _vm._m(2),
+      _vm._v(" "),
+      _c("div", { staticClass: "outerDisplay" }, [
+        _c("span", { staticClass: "textTrig" }, [_vm._v("Trigger:")]),
+        _vm._v(" "),
+        _c("div", [
+          _c(
+            "div",
+            {
+              staticClass: "btnSub",
+              on: {
+                click: function($event) {
+                  _vm.showOption2 = !_vm.showOption2
+                }
+              }
+            },
+            [
+              _c("span", [_vm._v("1 Minute")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "iconSub" }, [
+                _c(
+                  "i",
+                  { staticClass: "material-icons" },
+                  [
+                    _vm.showOption4
+                      ? [_vm._v("expand_less")]
+                      : [_vm._v("expand_more")]
+                  ],
+                  2
+                )
+              ])
+            ]
+          ),
           _vm._v(" "),
           _c(
             "div",
@@ -46232,201 +46303,55 @@ var render = function() {
               ],
               staticClass: "dropDownList"
             },
-            [_vm._m(2)]
+            [_vm._m(3)]
           )
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "btnOption",
-            on: {
-              click: function($event) {
-                _vm.showOption3 = !_vm.showOption3
-              }
-            }
-          },
-          [
-            _c("span", [_vm._v("is")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption3
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
+        ]),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption3,
-                expression: "showOption3"
+        _c("div", [
+          _c(
+            "div",
+            {
+              staticClass: "btnSub",
+              on: {
+                click: function($event) {
+                  _vm.showOption3 = !_vm.showOption3
+                }
               }
-            ],
-            staticClass: "dropDownList"
-          },
-          [_vm._m(3)]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "btnSub",
-            on: {
-              click: function($event) {
-                _vm.showOption4 = !_vm.showOption4
-              }
-            }
-          },
-          [
-            _c("span", [_vm._v("Select segment")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption4
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption4,
-                expression: "showOption4"
-              }
-            ],
-            staticClass: "dropDownList"
-          },
-          [_vm._m(4)]
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(5)
-    ]),
-    _vm._v(" "),
-    _vm._m(6),
-    _vm._v(" "),
-    _c("div", { staticClass: "outerDisplay" }, [
-      _c("span", { staticClass: "textTrig" }, [_vm._v("Trigger:")]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "btnSub",
-            on: {
-              click: function($event) {
-                _vm.showOption5 = !_vm.showOption5
-              }
-            }
-          },
-          [
-            _c("span", [_vm._v("1 Minute")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption4
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption5,
-                expression: "showOption5"
-              }
-            ],
-            staticClass: "dropDownList"
-          },
-          [_vm._m(7)]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "btnSub",
-            on: {
-              click: function($event) {
-                _vm.showOption6 = !_vm.showOption6
-              }
-            }
-          },
-          [
-            _c("span", [_vm._v("After first interaction")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption6
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption6,
-                expression: "showOption6"
-              }
-            ],
-            staticClass: "dropDownList"
-          },
-          [_vm._m(8)]
-        )
+            },
+            [
+              _c("span", [_vm._v("After first interaction")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "iconSub" }, [
+                _c(
+                  "i",
+                  { staticClass: "material-icons" },
+                  [
+                    _vm.showOption6
+                      ? [_vm._v("expand_less")]
+                      : [_vm._v("expand_more")]
+                  ],
+                  2
+                )
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.showOption3,
+                  expression: "showOption3"
+                }
+              ],
+              staticClass: "dropDownList"
+            },
+            [_vm._m(4)]
+          )
+        ])
       ])
     ]),
     _vm._v(" "),
@@ -46471,51 +46396,6 @@ var staticRenderFns = [
       _c("span", { staticClass: "link" }, [
         _vm._v("subscription messaging policy.")
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "addBtn" }, [
-      _c("i", { staticClass: "material-icons iconAlign" }, [_vm._v("add")]),
-      _vm._v("Add More\n        ")
     ])
   },
   function() {
@@ -50675,6 +50555,10 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
             {
                 key: 3,
                 value: 'System Attribute'
+            },
+            {
+                key: 4,
+                value: 'Segment'
             }
         ];
         this.systemAttribute = [
@@ -50723,6 +50607,26 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
             {
                 key: 2,
                 value: "Female",
+            }
+        ];
+        this.segment = [
+            {
+                key: 1,
+                value: "Select segment",
+            },
+        ];
+        this.segmentValue = [
+            {
+                key: 1,
+                value: "segment1",
+            },
+            {
+                key: 2,
+                value: "segment2",
+            },
+            {
+                key: 3,
+                value: "segment3",
             }
         ];
     }
@@ -50912,7 +50816,21 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v(_vm._s(_vm.options[_vm.selected].value))]
+              [
+                _vm._v(
+                  _vm._s(_vm.options[_vm.selected].value) + "\n            "
+                ),
+                _c(
+                  "i",
+                  { staticClass: "material-icons iconRight" },
+                  [
+                    _vm.showOption
+                      ? [_vm._v("expand_less")]
+                      : [_vm._v("expand_more")]
+                  ],
+                  2
+                )
+              ]
             ),
             _vm._v(" "),
             _vm.showOption && _vm.options.length > 1
@@ -51058,33 +50976,65 @@ var render = function() {
                   1
                 )
               ]
+            : _vm.attribute.option === 4
+            ? [
+                _c(
+                  "div",
+                  { staticClass: "optionSpinner" },
+                  [
+                    _c("spinner-drop-down-component", {
+                      attrs: {
+                        options: _vm.filterType,
+                        selectedKey: _vm.attribute.type
+                      },
+                      model: {
+                        value: _vm.attribute.type,
+                        callback: function($$v) {
+                          _vm.$set(_vm.attribute, "type", $$v)
+                        },
+                        expression: "attribute.type"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ]
             : _vm._e()
         ],
         2
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "attrSelector attrSelOption" }, [
-        _c(
-          "div",
-          { staticClass: "optionSpinner" },
-          [
-            _c("spinner-drop-down-component", {
-              attrs: {
-                options: _vm.filterType,
-                selectedKey: _vm.attribute.type
-              },
-              model: {
-                value: _vm.attribute.type,
-                callback: function($$v) {
-                  _vm.$set(_vm.attribute, "type", $$v)
-                },
-                expression: "attribute.type"
-              }
-            })
-          ],
-          1
-        )
-      ]),
+      _c(
+        "div",
+        { staticClass: "attrSelector attrSelOption" },
+        [
+          _vm.attribute.option != 4
+            ? [
+                _c(
+                  "div",
+                  { staticClass: "optionSpinner" },
+                  [
+                    _c("spinner-drop-down-component", {
+                      attrs: {
+                        options: _vm.filterType,
+                        selectedKey: _vm.attribute.type
+                      },
+                      model: {
+                        value: _vm.attribute.type,
+                        callback: function($$v) {
+                          _vm.$set(_vm.attribute, "type", $$v)
+                        },
+                        expression: "attribute.type"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -51146,6 +51096,29 @@ var render = function() {
                     _c("spinner-drop-down-component", {
                       attrs: {
                         options: _vm.systemAttributeValue,
+                        selectedKey: _vm.attribute.systemValue
+                      },
+                      model: {
+                        value: _vm.attribute.systemValue,
+                        callback: function($$v) {
+                          _vm.$set(_vm.attribute, "systemValue", $$v)
+                        },
+                        expression: "attribute.systemValue"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ]
+            : _vm.attribute.option === 4
+            ? [
+                _c(
+                  "div",
+                  { staticClass: "optionSpinner" },
+                  [
+                    _c("spinner-drop-down-component", {
+                      attrs: {
+                        options: _vm.segmentValue,
                         selectedKey: _vm.attribute.systemValue
                       },
                       model: {
@@ -51268,149 +51241,24 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_AttributeFilterListModel__ = __webpack_require__(27);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 
 
 
-
-let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
+let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
         this.showOption1 = false;
-        this.showOption2 = false;
-        this.showOption3 = false;
-        this.showOption4 = false;
-        this.showOption5 = false;
-        this.showOption6 = false;
-        this.showOption7 = false;
-        this.showOption8 = false;
-        this.createSegment = false;
-        this.filterSegment = new __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
-        this.condiOptions = [
-            {
-                key: 1,
-                value: 'and'
-            },
-            {
-                key: 2,
-                value: 'or'
-            }
-        ];
-        this.attributeOptions = [
-            {
-                key: 1,
-                value: 'User Attribute'
-            },
-            {
-                key: 2,
-                value: 'Attribute',
-            },
-            {
-                key: 3,
-                value: 'System Attribute'
-            }
-        ];
-        this.systemAttribute = [
-            {
-                key: 1,
-                value: "Signed up",
-            },
-            {
-                key: 2,
-                value: "Last Seen",
-            },
-            {
-                key: 3,
-                value: "Last Engaged",
-            }
-        ];
-        this.userAttribute = [
-            {
-                key: 1,
-                value: "Gender",
-            },
-        ];
-        this.systemAttributeValue = [
-            {
-                key: 1,
-                value: "24 hrs ago",
-            },
-            {
-                key: 2,
-                value: "1 week ago",
-            },
-            {
-                key: 3,
-                value: "1 month ago",
-            },
-            {
-                key: 4,
-                value: "3 months ago",
-            },
-        ];
-        this.userAttributeValue = [
-            {
-                key: 1,
-                value: "Male",
-            },
-            {
-                key: 2,
-                value: "Female",
-            }
-        ];
-    }
-    get selected() {
-        if (this.selectedKey === -1)
-            return 0;
-        let index = 0;
-        for (let i in this.options) {
-            if (this.options[i].key !== this.selectedKey)
-                continue;
-            index = i;
-            break;
-        }
-        return index;
-    }
-    get filterType() {
-        let res = [
-            {
-                key: 1,
-                value: 'is not'
-            },
-            {
-                key: 2,
-                value: 'is'
-            }
-        ];
-        return res;
-    }
-    selectNewOption(key) {
-        return key;
-    }
-    documentClick(e) {
-        let el = this.$refs.spinnerDropDown;
-        let target = e.target;
-        if ((el !== target) && !el.contains(target)) {
-            this.showOption2 = false;
-        }
+        this.filterSegment = new __WEBPACK_IMPORTED_MODULE_2__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
     }
     mounted() {
         this.addNewFitler();
@@ -51418,38 +51266,11 @@ let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPAC
     addNewFitler() {
         this.filterSegment.createNewAttributeFilter();
     }
-    createNewSegment() {
-        return __awaiter(this, void 0, void 0, function* () {
-            let createSegment = yield this.filterSegment.createSegment();
-            if (!createSegment['status']) {
-                alert(createSegment['mesg']);
-                return;
-            }
-            this.createSegment = false;
-        });
-    }
 };
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Prop */])({
-        default: false
-    })
-], BroadcastSendNowComponent.prototype, "canCondition", void 0);
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Prop */])()
-], BroadcastSendNowComponent.prototype, "attribute", void 0);
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Prop */])()
-], BroadcastSendNowComponent.prototype, "options", void 0);
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Prop */])({ default: -1 })
-], BroadcastSendNowComponent.prototype, "selectedKey", void 0);
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["b" /* Emit */])('input')
-], BroadcastSendNowComponent.prototype, "selectNewOption", null);
 BroadcastSendNowComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {
-            BuilderComponentMock: __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default.a
+            BuilderComponentMock: __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue___default.a
         }
     })
 ], BroadcastSendNowComponent);
@@ -51465,401 +51286,116 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "outerDisplay" }, [
-      _c(
-        "div",
-        {
-          on: {
-            click: function($event) {
-              _vm.showOption1 = !_vm.showOption1
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "btnSub" }, [
-            _c("span", [_vm._v("Choose Message Type")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption1
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showOption1,
-                  expression: "showOption1"
-                }
-              ],
-              staticClass: "dropDownList"
-            },
-            [_vm._m(0)]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _vm._m(1)
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "outerDisplay" }, [
-      _c(
-        "div",
-        {
-          on: {
-            click: function($event) {
-              _vm.showOption2 = !_vm.showOption2
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "btnSub" }, [
-            _c("span", [_vm._v("Segment")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption2
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showOption2,
-                  expression: "showOption2"
-                }
-              ],
-              staticClass: "dropDownList"
-            },
-            [_vm._m(2)]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", [
+    _c("div", { staticClass: "upperDisplay" }, [
+      _c("div", { staticClass: "outerDisplay" }, [
         _c(
           "div",
           {
-            staticClass: "btnOption",
             on: {
               click: function($event) {
-                _vm.showOption3 = !_vm.showOption3
+                _vm.showOption1 = !_vm.showOption1
               }
             }
           },
           [
-            _c("span", [_vm._v("is")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption3
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption3,
-                expression: "showOption3"
-              }
-            ],
-            staticClass: "dropDownList"
-          },
-          [_vm._m(3)]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "btnSub",
-            on: {
-              click: function($event) {
-                _vm.showOption4 = !_vm.showOption4
-              }
-            }
-          },
-          [
-            _c("span", [_vm._v("Select segment")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption4
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption4,
-                expression: "showOption4"
-              }
-            ],
-            staticClass: "dropDownList"
-          },
-          [_vm._m(4)]
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(5)
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "outerDisplay" }, [
-      _c(
-        "div",
-        {
-          on: {
-            click: function($event) {
-              _vm.showOption5 = !_vm.showOption5
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "btnSub" }, [
-            _c("span", [_vm._v("Attributes")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption5
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showOption5,
-                  expression: "showOption5"
-                }
-              ],
-              staticClass: "dropDownList"
-            },
-            [_vm._m(6)]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          on: {
-            click: function($event) {
-              _vm.showOption6 = !_vm.showOption6
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "btnSub" }, [
-            _c("span", [
-              _vm._v(_vm._s(_vm.attributeOptions[_vm.selected].value))
+            _c("div", { staticClass: "btnSub" }, [
+              _c("span", [_vm._v("Choose Message Type")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "iconSub" }, [
+                _c(
+                  "i",
+                  { staticClass: "material-icons" },
+                  [
+                    _vm.showOption1
+                      ? [_vm._v("expand_less")]
+                      : [_vm._v("expand_more")]
+                  ],
+                  2
+                )
+              ])
             ]),
             _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption6
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
+            _c(
+              "div",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.showOption1,
+                    expression: "showOption1"
+                  }
                 ],
-                2
+                staticClass: "dropDownList"
+              },
+              [_vm._m(0)]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _vm._m(1)
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "attributeSelectorList" },
+        [
+          _vm._l(_vm.filterSegment.attributes, function(attribute, index) {
+            return [
+              _c(
+                "div",
+                { key: index, staticClass: "attributeSelector" },
+                [
+                  _c("attribute-selector-component", {
+                    attrs: {
+                      attribute: attribute,
+                      canCondition:
+                        _vm.filterSegment.attributes.length - 1 > index
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.filterSegment.attributes.length > 1
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "deleteAttribute",
+                          on: {
+                            click: function($event) {
+                              _vm.filterSegment.attributes.splice(index, 1)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("delete")
+                          ])
+                        ]
+                      )
+                    : _vm._e()
+                ],
+                1
               )
-            ])
-          ]),
+            ]
+          }),
           _vm._v(" "),
           _c(
             "div",
             {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showOption6,
-                  expression: "showOption6"
+              staticClass: "addMoreFilterButton",
+              on: {
+                click: function($event) {
+                  _vm.addNewFitler()
                 }
-              ],
-              staticClass: "dropDownList"
+              }
             },
-            [
-              _c(
-                "ul",
-                _vm._l(_vm.attributeOptions, function(attributeOption, index) {
-                  return _c("li", { key: index }, [
-                    _vm._v(_vm._s(attributeOption.value))
-                  ])
-                })
-              )
-            ]
+            [_c("i", { staticClass: "material-icons" }, [_vm._v("add")])]
           )
-        ]
+        ],
+        2
       ),
       _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "btnOption",
-            on: {
-              click: function($event) {
-                _vm.showOption7 = !_vm.showOption7
-              }
-            }
-          },
-          [
-            _c("span", [_vm._v("is")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption7
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption7,
-                expression: "showOption7"
-              }
-            ],
-            staticClass: "dropDownList"
-          },
-          [
-            _c(
-              "ul",
-              _vm._l(_vm.filterType, function(type, index) {
-                return _c("li", { key: index }, [_vm._v(_vm._s(type.value))])
-              })
-            )
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "btnSub",
-            on: {
-              click: function($event) {
-                _vm.showOption8 = !_vm.showOption8
-              }
-            }
-          },
-          [
-            _c("span", [_vm._v("Select value")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption8
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption8,
-                expression: "showOption8"
-              }
-            ],
-            staticClass: "dropDownList"
-          },
-          [_vm._m(7)]
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(8)
+      _vm._m(2)
     ]),
-    _vm._v(" "),
-    _vm._m(9),
     _vm._v(" "),
     _c("div", [
       _c(
@@ -51902,84 +51438,6 @@ var staticRenderFns = [
       _c("span", { staticClass: "link" }, [
         _vm._v("subscription messaging policy.")
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "addBtn" }, [
-      _c("i", { staticClass: "material-icons iconAlign" }, [_vm._v("add")]),
-      _vm._v("Add More\n        ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "addBtn" }, [
-      _c("i", { staticClass: "material-icons iconAlign" }, [_vm._v("add")]),
-      _vm._v("Add More\n        ")
     ])
   },
   function() {

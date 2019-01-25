@@ -32,15 +32,26 @@
                         ></spinner-drop-down-component>
                     </div>
                 </template>
+                <template v-else-if="attribute.option === 4">
+                    <div class="optionSpinner">
+                        <spinner-drop-down-component
+                            :options="filterType"
+                            :selectedKey="attribute.type"
+                            v-model="attribute.type"
+                        ></spinner-drop-down-component>
+                    </div>
+                </template>
             </div>
             <div class="attrSelector attrSelOption">
-                <div class="optionSpinner">
-                    <spinner-drop-down-component
-                        :options="filterType"
-                        :selectedKey="attribute.type"
-                        v-model="attribute.type"
-                    ></spinner-drop-down-component>
-                </div>
+                <template v-if="attribute.option != 4">
+                    <div class="optionSpinner">
+                        <spinner-drop-down-component
+                            :options="filterType"
+                            :selectedKey="attribute.type"
+                            v-model="attribute.type"
+                        ></spinner-drop-down-component>
+                    </div>
+                </template>
             </div>
             <div class="attrSelector attrSelValue">
                 <template v-if="attribute.option === 1">
@@ -59,6 +70,15 @@
                     <div class="optionSpinner">
                         <spinner-drop-down-component
                             :options="systemAttributeValue"
+                            :selectedKey="attribute.systemValue"
+                            v-model="attribute.systemValue"
+                        ></spinner-drop-down-component>
+                    </div>
+                </template>
+                <template v-else-if="attribute.option === 4">
+                    <div class="optionSpinner">
+                        <spinner-drop-down-component
+                            :options="segmentValue"
                             :selectedKey="attribute.systemValue"
                             v-model="attribute.systemValue"
                         ></spinner-drop-down-component>
@@ -115,6 +135,10 @@ export default class AttributeSelectorComponent extends Vue {
         {
             key: 3,
             value: 'System Attribute'
+        },
+        {
+            key: 4,
+            value: 'Segment'
         }
     ];
 
@@ -167,6 +191,28 @@ export default class AttributeSelectorComponent extends Vue {
         {
             key: 2,
             value: "Female",
+        }
+    ];
+
+    private segment: any = [
+        {
+            key: 1,
+            value: "Select segment",
+        },
+    ];
+
+    private segmentValue: any = [
+        {
+            key: 1,
+            value: "segment1",
+        },
+        {
+            key: 2,
+            value: "segment2",
+        },
+        {
+            key: 3,
+            value: "segment3",
         }
     ];
 

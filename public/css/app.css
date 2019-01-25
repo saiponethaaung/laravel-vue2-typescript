@@ -13111,8 +13111,8 @@ a:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;
   border: 1px solid #ebebeb;
   border-radius: 5px;
   font-size: 13px;
@@ -13120,6 +13120,10 @@ a:hover {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 0px;
           flex: 1 1 0px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-left: 7px;
 }
 
 .attributeSelectorBox > div {
@@ -13154,6 +13158,7 @@ a:hover {
   position: relative;
   padding: 0 10px;
   cursor: pointer;
+  background: #ffffff;
 }
 
 .sddListCon .sddList {
@@ -13214,6 +13219,21 @@ a:hover {
   border: none;
   font-size: 13px;
   padding: 0 5px;
+  width: 100%;
+}
+
+.ddListCon {
+  width: 200px;
+  cursor: pointer;
+  height: 40px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 5px;
+  padding: 8px;
+  background: #f7f6f6;
+  margin-left: 7px;
+  position: relative;
 }
 
 .userListRoot {
@@ -13617,6 +13637,11 @@ a:hover {
   margin-right: 5px;
 }
 
+.iconRight {
+  float: right;
+  margin-top: 7px;
+}
+
 .userTable {
   width: 100%;
 }
@@ -13629,11 +13654,6 @@ a:hover {
   width: 100px;
 }
 
-.bgSend {
-  height: 150px;
-  background: #f7f6f6;
-}
-
 .btnSub {
   width: 200px;
   cursor: pointer;
@@ -13642,9 +13662,11 @@ a:hover {
       -ms-flex-align: center;
           align-items: center;
   border-radius: 5px;
+  background: #ffffff;
+  font-size: 13px;
   padding: 8px;
   margin: 10px;
-  background: #f7f6f6;
+  border: 1px solid #ebebeb;
 }
 
 .btnSub .iconSub {
@@ -13668,13 +13690,13 @@ a:hover {
   float: right;
 }
 
-.align {
-  float: left;
-  margin: 10px;
-}
-
 .fullWidth {
   width: 100%;
+}
+
+.upperDisplay {
+  height: 20%;
+  background: #f7f6f6;
 }
 
 .outerDisplay {
@@ -13686,7 +13708,7 @@ a:hover {
 .dropDownList {
   height: 125px;
   overflow: auto;
-  background: #f7f6f6;
+  background: #ffffff;
   width: 200px;
   top: 44px;
   right: 0px;
@@ -13726,11 +13748,6 @@ a:hover {
 
 .textAlign {
   margin: 10px;
-}
-
-.addBtn {
-  margin: 10px;
-  color: #aaaaaa;
 }
 
 .textTrig {

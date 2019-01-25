@@ -1,7 +1,12 @@
 <template>
     <div class="sddListCon">
         <template v-if="undefined!==this.options">
-            <div  ref="spinnerDropDown" @click="showOption=!showOption">{{ options[selected].value }}</div>
+            <div  ref="spinnerDropDown" @click="showOption=!showOption">{{ options[selected].value }}
+                <i class="material-icons iconRight">
+                    <template v-if="showOption">expand_less</template>
+                    <template v-else>expand_more</template>
+                </i>
+            </div>
             <ul class="sddList" v-if="showOption && options.length>1">
                 <li v-for="(option, index) in options" :key="index" @click="selectNewOption(option.key)">{{ option.value }}</li>
             </ul>

@@ -16,6 +16,11 @@
     margin-right: 5px;
 }
 
+.iconRight {
+    float: right;
+    margin-top: 7px;
+}
+
 .userTable {
     width: 100%;
     .utColumn {
@@ -26,13 +31,24 @@
     }
 }
 
-.bgSend {
-    height: 150px;
-    background: #f7f6f6;
-}
-
 .btnSub {
     width: 200px;
+    cursor: pointer;
+    height: 40px;
+    align-items: center;
+    border-radius: 5px;
+    background: #ffffff;
+    font-size: 13px;
+    padding: 8px;
+    margin: 10px;
+    border: 1px solid #ebebeb;
+    .iconSub {
+        float: right;
+    }
+}
+
+.btnOption {
+    width: 80px;
     cursor: pointer;
     height: 40px;
     align-items: center;
@@ -45,56 +61,67 @@
     }
 }
 
-.align {
-    float: left;
-    margin: 10px;
-}
 
 .fullWidth {
     width: 100%;
 }
 
-.textArea {
-    width: 260px;
-    height: 334px;
+.upperDisplay {
+    height: 20%;
     background: #f7f6f6;
-    margin: 7px;
-}
-
-.textBox {
-    width: 228px;
-    height: 270px;
-    background: #ffffff;
-    margin: 7px;
 }
 
 .outerDisplay {
     display: flex;
 }
 
-.broadcastContentList {
-
+.dropDownList {
+    height: 125px;
+    overflow: auto;
+    background: #ffffff;
+    width: 200px;
+    top: 44px;
+    right: 0px;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    padding-left: 5px;
+    z-index: 11;
+    margin: 10px;
     ul {
         list-style: none;
-        margin: 0;
         padding: 0;
-    }
-
-    li {
-        background: #f7f6f6;
-        line-height: 40px;
-        height: 40px;
-        margin-bottom: 12px;
-        padding: 0 12px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    &.schedule {
-
+        margin: 0;
     }
 }
 
+.label {
+    font-size: 9px;
+    height: 40px;
+    align-items: center;
+    border-radius: 5px;
+    padding: 8px;
+    margin: 8px;
+    color: #aaaaaa;
+}
+
+.link {
+    color: #1d68a7;
+}
+
+.link:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.textAlign {
+    margin: 10px;
+}
+
+.textTrig {
+    font-weight: bold;
+    margin: 10px;
+    font-size: 20px;
+}
 
 .broadcastFilterCon {
     background: $secondaryBackground;
@@ -124,7 +151,7 @@
     margin-left: 10px;
     padding: 0 10px;
     font-size: 12px;
-    padding-right: 40px;
+    padding-right: 40px; 
     position: relative;
     cursor: pointer;
     .calendarPlugin {

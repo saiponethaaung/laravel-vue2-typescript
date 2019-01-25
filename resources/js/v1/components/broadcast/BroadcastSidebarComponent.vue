@@ -15,7 +15,15 @@
 
         <div class="contentRoot">Trigger your message</div>
         <div class="btnClick">
-            <i class="material-icons">add</i>Add a trigger
+            <router-link :to="{'name': 'project.broadcast.trigger'}">
+                <i class="material-icons">add</i>Add a trigger
+            </router-link>
+        </div>
+
+        <div class="contentRoot"></i>Schedule your message</div>
+        <div class="chatBlockContentList">
+            <div class="btnClick">Happy New Year</div>
+            <div class="btnClick">Time</div>
         </div>
 
         <div class="contentRoot">Schedule your message</div>

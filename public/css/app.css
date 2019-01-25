@@ -13112,8 +13112,8 @@ a:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;
   border: 1px solid #ebebeb;
   border-radius: 5px;
   font-size: 13px;
@@ -13121,6 +13121,10 @@ a:hover {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 0px;
           flex: 1 1 0px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-left: 7px;
 }
 
 .attributeSelectorBox > div {
@@ -13155,6 +13159,7 @@ a:hover {
   position: relative;
   padding: 0 10px;
   cursor: pointer;
+  background: #ffffff;
 }
 
 .sddListCon .sddList {
@@ -13215,6 +13220,21 @@ a:hover {
   border: none;
   font-size: 13px;
   padding: 0 5px;
+  width: 100%;
+}
+
+.ddListCon {
+  width: 200px;
+  cursor: pointer;
+  height: 40px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 5px;
+  padding: 8px;
+  background: #f7f6f6;
+  margin-left: 7px;
+  position: relative;
 }
 
 .userListRoot {
@@ -13618,6 +13638,11 @@ a:hover {
   margin-right: 5px;
 }
 
+.iconRight {
+  float: right;
+  margin-top: 7px;
+}
+
 .userTable {
   width: 100%;
 }
@@ -13630,13 +13655,27 @@ a:hover {
   width: 100px;
 }
 
-.bgSend {
-  height: 150px;
-  background: #f7f6f6;
-}
-
 .btnSub {
   width: 200px;
+  cursor: pointer;
+  height: 40px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 5px;
+  background: #ffffff;
+  font-size: 13px;
+  padding: 8px;
+  margin: 10px;
+  border: 1px solid #ebebeb;
+}
+
+.btnSub .iconSub {
+  float: right;
+}
+
+.btnOption {
+  width: 80px;
   cursor: pointer;
   height: 40px;
   -webkit-box-align: center;
@@ -13648,31 +13687,17 @@ a:hover {
   background: #f7f6f6;
 }
 
-.btnSub .iconSub {
+.btnOption .iconSub {
   float: right;
-}
-
-.align {
-  float: left;
-  margin: 10px;
 }
 
 .fullWidth {
   width: 100%;
 }
 
-.textArea {
-  width: 260px;
-  height: 334px;
+.upperDisplay {
+  height: 20%;
   background: #f7f6f6;
-  margin: 7px;
-}
-
-.textBox {
-  width: 228px;
-  height: 270px;
-  background: #ffffff;
-  margin: 7px;
 }
 
 .outerDisplay {
@@ -13681,20 +13706,55 @@ a:hover {
   display: flex;
 }
 
-.broadcastContentList ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.dropDownList {
+  height: 125px;
+  overflow: auto;
+  background: #ffffff;
+  width: 200px;
+  top: 44px;
+  right: 0px;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+  padding-left: 5px;
+  z-index: 11;
+  margin: 10px;
 }
 
-.broadcastContentList li {
-  background: #f7f6f6;
-  line-height: 40px;
+.dropDownList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.label {
+  font-size: 9px;
   height: 40px;
-  margin-bottom: 12px;
-  padding: 0 12px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   border-radius: 5px;
+  padding: 8px;
+  margin: 8px;
+  color: #aaaaaa;
+}
+
+.link {
+  color: #1d68a7;
+}
+
+.link:hover {
+  text-decoration: underline;
   cursor: pointer;
+}
+
+.textAlign {
+  margin: 10px;
+}
+
+.textTrig {
+  font-weight: bold;
+  margin: 10px;
+  font-size: 20px;
 }
 
 .broadcastFilterCon {

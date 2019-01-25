@@ -94,3 +94,53 @@
 
     }
 }
+
+
+.broadcastFilterCon {
+    background: $secondaryBackground;
+    padding: 30px;
+}
+
+.broadcastCondition{
+    height: $standardHeight;
+    line-height: $standardHeight;
+    display: block;
+}
+
+.bccHeading {
+    height: $standardHeight;
+    line-height: $standardHeight;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.bccCalender {
+    @extend %inlineFlexCenter;
+    background: $primaryBackground;
+    border: 1px solid $borderPrimary;
+    border-radius: 5px;
+    margin-left: 10px;
+    padding: 0 10px;
+    font-size: 12px;
+    padding-right: 40px;
+    position: relative;
+    cursor: pointer;
+    .calendarPlugin {
+        position: absolute;
+        width: 100%;
+        z-index: 11;
+        input {
+            visibility: hidden;
+            opacity: 0.00001;
+        }
+    }
+    .material-icons {
+        position: absolute;
+        top: 7.5px;
+        right: 10px;
+        font-size: 19px;
+        color: $iconPrimary;
+    }
+}

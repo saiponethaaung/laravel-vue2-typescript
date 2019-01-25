@@ -10,6 +10,7 @@ class ChatBlockSection extends Model
 
     protected $fillable = [
         'block_id',
+        'broadcast_id',
         'title',
         'order'
     ];
@@ -22,7 +23,6 @@ class ChatBlockSection extends Model
                 $content->delete();
             }
         });
-
     }
 
     public function block()

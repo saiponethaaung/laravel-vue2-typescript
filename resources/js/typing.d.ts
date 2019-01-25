@@ -4,3 +4,4 @@ declare module '*.vue' {
 }
 
 declare var FB: any;
+declare module 'v-calendar';

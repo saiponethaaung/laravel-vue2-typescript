@@ -24,7 +24,7 @@
                 <template v-for="(schedule, index) in this.scheduleList">
                     <li :key="index">
                         <router-link :to="{name: 'project.broadcast.schedule', params: { scheduleid: schedule.id }}">
-                            {{ schedule.id }}
+                            {{ scheduleName(index) }}
                         </router-link>
                     </li>
                 </template>
@@ -59,9 +59,51 @@ export default class BroadcastSidebarComponent extends Vue {
         this.loadSchedule();
     }
 
-    private scheduleName(index: string) 
-    {
-        
+    private scheduleName(index: number) {
+        let name = '';
+        let time = this.scheduleList[index].time.toString();
+        let hour = time.slice(0, 2);
+        let min = time.slice(2, 4);
+        let timeOfDay = "am";
+
+        if(hour>12) {
+            hour = hour-12;
+            timeOfDay = "pm";
+        }
+
+        time = `${hour}:${min} ${timeOfDay}`;
+
+        switch(this.scheduleList[index].interval_type) {
+            case(1):
+                name = `${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} ${this.scheduleList[index].year} ${time}`;
+                break;
+
+            case(2):
+                name = `Daily at ${time}`;
+                break;
+
+            case(3):
+                name = `Weekend at ${time}`;
+                break;
+
+            case(4):
+                name = `Every month ${this.scheduleList[index].day}  at ${time}`;
+                break;
+
+            case(5):
+                name = `Workdays at ${time}`;
+                break;
+
+            case(6):
+                name = `Every year ${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} at ${time}`;
+                break;
+
+            case(7):
+                name = `Custom at ${time}`;
+                break;
+        }
+
+        return name;
     }
 
     private async loadSchedule() {

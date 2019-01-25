@@ -9,7 +9,12 @@
             </template>
         </template>
         <template v-else>
-            <login></login>
+            <login v-if="!$store.state.autheticating"></login>
+        </template>
+        <template v-if="$store.state.autheticating">
+            <div class="floatingLoading">
+                Loading...
+            </div>
         </template>
     </div>
 </template>

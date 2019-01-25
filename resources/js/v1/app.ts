@@ -16,10 +16,18 @@ import LoadingComponent from './components/common/LoadingComponent.vue';
 import BuilderComponent from './components/common/BuilderComponent.vue';
 import ButtonComponent from './components/common/builder/ButtonComponent.vue';
 import AttributeSelectorComponent from './components/common/AttributeSelectorComponent.vue';
+import { setupCalendar, Calendar, DatePicker} from 'v-calendar';
 
-import Axios from 'axios';
+import Axios, { CancelTokenSource } from 'axios';
+import AjaxErrorHandler from './utils/AjaxErrorHandler';
+
+setupCalendar({
+    firstDayOfWeek: 2,
+});
 
 let eventHub: any = new Vue();
+let userLoadingToken: CancelTokenSource = Axios.CancelToken.source();
+let ajaxHandler = new AjaxErrorHandler();
 window.fbSdkLoaded = false;
 
 function logoutResponseHandler(error: any) {
@@ -42,13 +50,26 @@ router.beforeEach(async (to, from, next) => {
     if(store.state.token!==null) {
         Axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.token}`;
 
+        userLoadingToken.cancel();
+        userLoadingToken = Axios.CancelToken.source();
+
+        store.state.autheticating = true;
+        
         await Axios({
-            url: '/api/v1/user'
+            url: '/api/v1/user',
+            cancelToken: userLoadingToken.token
         }).then((res) => {
             console.log('res', res);
             store.state.isLogin = true;
             store.state.user = res.data;
+        }).catch(err => {
+            if(err.response) {
+                let mesg = ajaxHandler.globalHandler(err, 'Failed to authenticate!');
+                alert(mesg);
+            }
         });
+
+        store.state.autheticating = false;
     }
 
     next();
@@ -70,6 +91,8 @@ Vue.component('loading-component', LoadingComponent);
 Vue.component('builder-component', BuilderComponent);
 Vue.component('button-component', ButtonComponent);
 Vue.component('attribute-selector-component', AttributeSelectorComponent);
+Vue.component('v-calendar', Calendar);
+Vue.component('v-date-picker', DatePicker);
 
 new Vue({
     router,

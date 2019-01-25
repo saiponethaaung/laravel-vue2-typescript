@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Broadcast;
 use App\Models\ProjectMessageTag;
+use App\Models\ChatBlockSection;
 
 class BroadcastController extends Controller
 {
@@ -54,6 +55,13 @@ class BroadcastController extends Controller
             $broadcast->status = false;
             $broadcast->complete = false;
             $broadcast->save();
+
+            ChatBlockSection::create([
+                'broadcast_id' => $broadcast->id,
+                'title' => '',
+                'type' => 3,
+                'order' => 1
+            ]);
 
             if($section==='schedule') {
                 $res = $this->buildScheduleList($broadcast);
@@ -106,5 +114,10 @@ class BroadcastController extends Controller
             'day' => is_null($schedule->day) ? 0 : $schedule->day,
             'interval_type' => is_null($schedule->interval_type) ? 1 : $schedule->interval_type
         ];
+    }
+
+    public function getScheduleDetail(Request $request)
+    {
+        
     }
 }

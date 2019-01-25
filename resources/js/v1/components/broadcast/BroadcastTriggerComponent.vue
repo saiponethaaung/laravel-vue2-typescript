@@ -146,7 +146,7 @@ import BuilderComponentMock from '../common/BuilderComponentMock.vue';
         BuilderComponentMock
     }
 })
-export default class sendNow extends Vue {
+export default class BroadcastTriggerComponent extends Vue {
 
     private showOption1: boolean = false;
     private showOption2: boolean = false;

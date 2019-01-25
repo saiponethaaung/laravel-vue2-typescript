@@ -38,7 +38,9 @@
                 </div>
                 <div v-show="showOption2" class="dropDownList">
                     <ul>
-                        <li v-for="(attributeOption, index) in attributeOptions" :key="index">{{attributeOption.value}}</li>
+                        <li>1</li>
+                        <li>2</li>
+                        <li>3</li>
                     </ul>
                 </div>
             </div>
@@ -91,6 +93,7 @@
             <div  class="addBtn">
                 <i class="material-icons iconAlign">add</i>Add More
             </div>
+            
         </div>
 
         <div class="outerDisplay">
@@ -106,13 +109,15 @@
                 </div>
                 <div v-show="showOption5" class="dropDownList">
                     <ul>
-                        <li v-for="(attributeOption, index) in attributeOptions" :key="index">{{attributeOption.value}}</li>
+                        <li>1</li>
+                        <li>2</li>
+                        <li>3</li>
                     </ul>
                 </div>
             </div>
             <div @click="showOption6=!showOption6">
                 <div class="btnSub">
-                    <span>Select attributes</span>
+                    <span>{{ attributeOptions[selected].value }}</span>
                     <span class="iconSub">
                         <i class="material-icons">
                             <template v-if="showOption6">expand_less</template>
@@ -138,9 +143,7 @@
                 </div>
                 <div v-show="showOption7" class="dropDownList">
                     <ul>
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
+                        <li v-for="(type, index) in filterType" :key="index">{{type.value}}</li>
                     </ul>
                 </div>
             </div>
@@ -191,7 +194,7 @@ import AttributeFilterModel from '../../models/AttributeFilterModel';
         BuilderComponentMock
     }
 })
-export default class sendNow extends Vue {
+export default class BroadcastSendNowComponent extends Vue {
 
     private showOption1: boolean = false;
     private showOption2: boolean = false;
@@ -209,6 +212,23 @@ export default class sendNow extends Vue {
             default: false
         }) canCondition!: boolean;
     @Prop() attribute!: AttributeFilterModel;
+
+    @Prop() options!: Array<any>;
+    @Prop({default: -1}) selectedKey!: number;
+
+    get selected(): number {
+        if(this.selectedKey === -1) return 0;
+
+        let index: any = 0;
+
+        for(let i in this.options) {
+            if(this.options[i].key!==this.selectedKey) continue;
+            index = i;
+            break;
+        }
+
+        return index;
+    }
 
     private condiOptions: any = [
         {

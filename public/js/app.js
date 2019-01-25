@@ -32050,8 +32050,8 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_broadcast_BroadcastComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_broadcast_BroadcastComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastSidebarComponent_vue__ = __webpack_require__(119);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastSidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_broadcast_sendNow_vue__ = __webpack_require__(122);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_broadcast_sendNow_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_broadcast_sendNow_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSendNowComponent_vue__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSendNowComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSendNowComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastTriggerComponent_vue__ = __webpack_require__(145);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastTriggerComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastTriggerComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_broadcast_BroadcastScheduleComponent_vue__ = __webpack_require__(148);
@@ -32147,7 +32147,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
                         {
                             path: "send",
                             name: "project.broadcast.sendnow",
-                            component: __WEBPACK_IMPORTED_MODULE_16__components_broadcast_sendNow_vue___default.a,
+                            component: __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSendNowComponent_vue___default.a,
                             meta: {
                                 sidebar: __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastSidebarComponent_vue___default.a
                             }
@@ -42856,229 +42856,8 @@ if (false) {
 }
 
 /***/ }),
-/* 122 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(123)
-/* template */
-var __vue_template__ = __webpack_require__(144)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/v1/components/broadcast/sendNow.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3a6885ad", Component.options)
-  } else {
-    hotAPI.reload("data-v-3a6885ad", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 123 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__ = __webpack_require__(27);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-
-
-
-
-let sendNow = class sendNow extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
-    constructor() {
-        super(...arguments);
-        this.showOption1 = false;
-        this.showOption2 = false;
-        this.showOption3 = false;
-        this.showOption4 = false;
-        this.showOption5 = false;
-        this.showOption6 = false;
-        this.showOption7 = false;
-        this.showOption8 = false;
-        this.createSegment = false;
-        this.filterSegment = new __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
-        this.condiOptions = [
-            {
-                key: 1,
-                value: 'and'
-            },
-            {
-                key: 2,
-                value: 'or'
-            }
-        ];
-        this.attributeOptions = [
-            {
-                key: 1,
-                value: 'User Attribute'
-            },
-            {
-                key: 2,
-                value: 'Attribute',
-            },
-            {
-                key: 3,
-                value: 'System Attribute'
-            }
-        ];
-        this.systemAttribute = [
-            {
-                key: 1,
-                value: "Signed up",
-            },
-            {
-                key: 2,
-                value: "Last Seen",
-            },
-            {
-                key: 3,
-                value: "Last Engaged",
-            }
-        ];
-        this.userAttribute = [
-            {
-                key: 1,
-                value: "Gender",
-            },
-        ];
-        this.systemAttributeValue = [
-            {
-                key: 1,
-                value: "24 hrs ago",
-            },
-            {
-                key: 2,
-                value: "1 week ago",
-            },
-            {
-                key: 3,
-                value: "1 month ago",
-            },
-            {
-                key: 4,
-                value: "3 months ago",
-            },
-        ];
-        this.userAttributeValue = [
-            {
-                key: 1,
-                value: "Male",
-            },
-            {
-                key: 2,
-                value: "Female",
-            }
-        ];
-    }
-    get filterType() {
-        let res = [
-            {
-                key: 1,
-                value: 'is not'
-            },
-            {
-                key: 2,
-                value: 'is'
-            }
-        ];
-        return res;
-    }
-    selectNewOption(key) {
-        return key;
-    }
-    documentClick(e) {
-        let el = this.$refs.spinnerDropDown;
-        let target = e.target;
-        if ((el !== target) && !el.contains(target)) {
-            this.showOption2 = false;
-        }
-    }
-    mounted() {
-        this.addNewFitler();
-    }
-    addNewFitler() {
-        this.filterSegment.createNewAttributeFilter();
-    }
-    createNewSegment() {
-        return __awaiter(this, void 0, void 0, function* () {
-            let createSegment = yield this.filterSegment.createSegment();
-            if (!createSegment['status']) {
-                alert(createSegment['mesg']);
-                return;
-            }
-            this.createSegment = false;
-        });
-    }
-};
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Prop */])({
-        default: false
-    })
-], sendNow.prototype, "canCondition", void 0);
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Prop */])()
-], sendNow.prototype, "attribute", void 0);
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["b" /* Emit */])('input')
-], sendNow.prototype, "selectNewOption", null);
-sendNow = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */])({
-        components: {
-            BuilderComponentMock: __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default.a
-        }
-    })
-], sendNow);
-/* harmony default export */ __webpack_exports__["default"] = (sendNow);
-
-
-/***/ }),
+/* 122 */,
+/* 123 */,
 /* 124 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -46267,547 +46046,7 @@ if (false) {
 }
 
 /***/ }),
-/* 144 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "outerDisplay" }, [
-      _c(
-        "div",
-        {
-          on: {
-            click: function($event) {
-              _vm.showOption1 = !_vm.showOption1
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "btnSub" }, [
-            _c("span", [_vm._v("Choose Message Type")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption1
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showOption1,
-                  expression: "showOption1"
-                }
-              ],
-              staticClass: "dropDownList"
-            },
-            [_vm._m(0)]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _vm._m(1)
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "outerDisplay" }, [
-      _c(
-        "div",
-        {
-          on: {
-            click: function($event) {
-              _vm.showOption2 = !_vm.showOption2
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "btnSub" }, [
-            _c("span", [_vm._v("Segment")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption2
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showOption2,
-                  expression: "showOption2"
-                }
-              ],
-              staticClass: "dropDownList"
-            },
-            [
-              _c(
-                "ul",
-                _vm._l(_vm.attributeOptions, function(attributeOption, index) {
-                  return _c("li", { key: index }, [
-                    _vm._v(_vm._s(attributeOption.value))
-                  ])
-                })
-              )
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "btnOption",
-            on: {
-              click: function($event) {
-                _vm.showOption3 = !_vm.showOption3
-              }
-            }
-          },
-          [
-            _c("span", [_vm._v("is")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption3
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption3,
-                expression: "showOption3"
-              }
-            ],
-            staticClass: "dropDownList"
-          },
-          [_vm._m(2)]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "btnSub",
-            on: {
-              click: function($event) {
-                _vm.showOption4 = !_vm.showOption4
-              }
-            }
-          },
-          [
-            _c("span", [_vm._v("Select segment")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption4
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption4,
-                expression: "showOption4"
-              }
-            ],
-            staticClass: "dropDownList"
-          },
-          [_vm._m(3)]
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(4)
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "outerDisplay" }, [
-      _c(
-        "div",
-        {
-          on: {
-            click: function($event) {
-              _vm.showOption5 = !_vm.showOption5
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "btnSub" }, [
-            _c("span", [_vm._v("Attributes")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption5
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showOption5,
-                  expression: "showOption5"
-                }
-              ],
-              staticClass: "dropDownList"
-            },
-            [
-              _c(
-                "ul",
-                _vm._l(_vm.attributeOptions, function(attributeOption, index) {
-                  return _c("li", { key: index }, [
-                    _vm._v(_vm._s(attributeOption.value))
-                  ])
-                })
-              )
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          on: {
-            click: function($event) {
-              _vm.showOption6 = !_vm.showOption6
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "btnSub" }, [
-            _c("span", [_vm._v("Select attributes")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption6
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showOption6,
-                  expression: "showOption6"
-                }
-              ],
-              staticClass: "dropDownList"
-            },
-            [
-              _c(
-                "ul",
-                _vm._l(_vm.attributeOptions, function(attributeOption, index) {
-                  return _c("li", { key: index }, [
-                    _vm._v(_vm._s(attributeOption.value))
-                  ])
-                })
-              )
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "btnOption",
-            on: {
-              click: function($event) {
-                _vm.showOption7 = !_vm.showOption7
-              }
-            }
-          },
-          [
-            _c("span", [_vm._v("is")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption7
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption7,
-                expression: "showOption7"
-              }
-            ],
-            staticClass: "dropDownList"
-          },
-          [_vm._m(5)]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "btnSub",
-            on: {
-              click: function($event) {
-                _vm.showOption8 = !_vm.showOption8
-              }
-            }
-          },
-          [
-            _c("span", [_vm._v("Select value")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "iconSub" }, [
-              _c(
-                "i",
-                { staticClass: "material-icons" },
-                [
-                  _vm.showOption8
-                    ? [_vm._v("expand_less")]
-                    : [_vm._v("expand_more")]
-                ],
-                2
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showOption8,
-                expression: "showOption8"
-              }
-            ],
-            staticClass: "dropDownList"
-          },
-          [_vm._m(6)]
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(7)
-    ]),
-    _vm._v(" "),
-    _vm._m(8),
-    _vm._v(" "),
-    _c("div", [
-      _c(
-        "div",
-        [
-          _c("builder-component-mock", {
-            staticClass: "fullWidth",
-            attrs: { value: [], section: 0 }
-          })
-        ],
-        1
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "label" }, [
-      _c("span", [
-        _vm._v(
-          "Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy."
-        )
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "link" }, [
-        _vm._v("subscription messaging policy.")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "addBtn" }, [
-      _c("i", { staticClass: "material-icons iconAlign" }, [_vm._v("add")]),
-      _vm._v("Add More\n        ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "addBtn" }, [
-      _c("i", { staticClass: "material-icons iconAlign" }, [_vm._v("add")]),
-      _vm._v("Add More\n        ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "textAlign" }, [
-      _c("span", [_vm._v("You have 4 users based on your filters. ")])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3a6885ad", module.exports)
-  }
-}
-
-/***/ }),
+/* 144 */,
 /* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -46873,7 +46112,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-let sendNow = class sendNow extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
+let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
     constructor() {
         super(...arguments);
         this.showOption1 = false;
@@ -46884,14 +46123,14 @@ let sendNow = class sendNow extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"]
         this.showOption6 = false;
     }
 };
-sendNow = __decorate([
+BroadcastTriggerComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */])({
         components: {
             BuilderComponentMock: __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default.a
         }
     })
-], sendNow);
-/* harmony default export */ __webpack_exports__["default"] = (sendNow);
+], BroadcastTriggerComponent);
+/* harmony default export */ __webpack_exports__["default"] = (BroadcastTriggerComponent);
 
 
 /***/ }),
@@ -51966,6 +51205,800 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(196)
+/* template */
+var __vue_template__ = __webpack_require__(197)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/broadcast/BroadcastSendNowComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-459437ef", Component.options)
+  } else {
+    hotAPI.reload("data-v-459437ef", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 196 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__ = __webpack_require__(27);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+
+let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
+    constructor() {
+        super(...arguments);
+        this.showOption1 = false;
+        this.showOption2 = false;
+        this.showOption3 = false;
+        this.showOption4 = false;
+        this.showOption5 = false;
+        this.showOption6 = false;
+        this.showOption7 = false;
+        this.showOption8 = false;
+        this.createSegment = false;
+        this.filterSegment = new __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
+        this.condiOptions = [
+            {
+                key: 1,
+                value: 'and'
+            },
+            {
+                key: 2,
+                value: 'or'
+            }
+        ];
+        this.attributeOptions = [
+            {
+                key: 1,
+                value: 'User Attribute'
+            },
+            {
+                key: 2,
+                value: 'Attribute',
+            },
+            {
+                key: 3,
+                value: 'System Attribute'
+            }
+        ];
+        this.systemAttribute = [
+            {
+                key: 1,
+                value: "Signed up",
+            },
+            {
+                key: 2,
+                value: "Last Seen",
+            },
+            {
+                key: 3,
+                value: "Last Engaged",
+            }
+        ];
+        this.userAttribute = [
+            {
+                key: 1,
+                value: "Gender",
+            },
+        ];
+        this.systemAttributeValue = [
+            {
+                key: 1,
+                value: "24 hrs ago",
+            },
+            {
+                key: 2,
+                value: "1 week ago",
+            },
+            {
+                key: 3,
+                value: "1 month ago",
+            },
+            {
+                key: 4,
+                value: "3 months ago",
+            },
+        ];
+        this.userAttributeValue = [
+            {
+                key: 1,
+                value: "Male",
+            },
+            {
+                key: 2,
+                value: "Female",
+            }
+        ];
+    }
+    get selected() {
+        if (this.selectedKey === -1)
+            return 0;
+        let index = 0;
+        for (let i in this.options) {
+            if (this.options[i].key !== this.selectedKey)
+                continue;
+            index = i;
+            break;
+        }
+        return index;
+    }
+    get filterType() {
+        let res = [
+            {
+                key: 1,
+                value: 'is not'
+            },
+            {
+                key: 2,
+                value: 'is'
+            }
+        ];
+        return res;
+    }
+    selectNewOption(key) {
+        return key;
+    }
+    documentClick(e) {
+        let el = this.$refs.spinnerDropDown;
+        let target = e.target;
+        if ((el !== target) && !el.contains(target)) {
+            this.showOption2 = false;
+        }
+    }
+    mounted() {
+        this.addNewFitler();
+    }
+    addNewFitler() {
+        this.filterSegment.createNewAttributeFilter();
+    }
+    createNewSegment() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let createSegment = yield this.filterSegment.createSegment();
+            if (!createSegment['status']) {
+                alert(createSegment['mesg']);
+                return;
+            }
+            this.createSegment = false;
+        });
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Prop */])({
+        default: false
+    })
+], BroadcastSendNowComponent.prototype, "canCondition", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Prop */])()
+], BroadcastSendNowComponent.prototype, "attribute", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Prop */])()
+], BroadcastSendNowComponent.prototype, "options", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["c" /* Prop */])({ default: -1 })
+], BroadcastSendNowComponent.prototype, "selectedKey", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["b" /* Emit */])('input')
+], BroadcastSendNowComponent.prototype, "selectNewOption", null);
+BroadcastSendNowComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */])({
+        components: {
+            BuilderComponentMock: __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default.a
+        }
+    })
+], BroadcastSendNowComponent);
+/* harmony default export */ __webpack_exports__["default"] = (BroadcastSendNowComponent);
+
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "outerDisplay" }, [
+      _c(
+        "div",
+        {
+          on: {
+            click: function($event) {
+              _vm.showOption1 = !_vm.showOption1
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "btnSub" }, [
+            _c("span", [_vm._v("Choose Message Type")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption1
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.showOption1,
+                  expression: "showOption1"
+                }
+              ],
+              staticClass: "dropDownList"
+            },
+            [_vm._m(0)]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm._m(1)
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "outerDisplay" }, [
+      _c(
+        "div",
+        {
+          on: {
+            click: function($event) {
+              _vm.showOption2 = !_vm.showOption2
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "btnSub" }, [
+            _c("span", [_vm._v("Segment")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption2
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.showOption2,
+                  expression: "showOption2"
+                }
+              ],
+              staticClass: "dropDownList"
+            },
+            [_vm._m(2)]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "div",
+          {
+            staticClass: "btnOption",
+            on: {
+              click: function($event) {
+                _vm.showOption3 = !_vm.showOption3
+              }
+            }
+          },
+          [
+            _c("span", [_vm._v("is")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption3
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showOption3,
+                expression: "showOption3"
+              }
+            ],
+            staticClass: "dropDownList"
+          },
+          [_vm._m(3)]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "div",
+          {
+            staticClass: "btnSub",
+            on: {
+              click: function($event) {
+                _vm.showOption4 = !_vm.showOption4
+              }
+            }
+          },
+          [
+            _c("span", [_vm._v("Select segment")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption4
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showOption4,
+                expression: "showOption4"
+              }
+            ],
+            staticClass: "dropDownList"
+          },
+          [_vm._m(4)]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(5)
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "outerDisplay" }, [
+      _c(
+        "div",
+        {
+          on: {
+            click: function($event) {
+              _vm.showOption5 = !_vm.showOption5
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "btnSub" }, [
+            _c("span", [_vm._v("Attributes")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption5
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.showOption5,
+                  expression: "showOption5"
+                }
+              ],
+              staticClass: "dropDownList"
+            },
+            [_vm._m(6)]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          on: {
+            click: function($event) {
+              _vm.showOption6 = !_vm.showOption6
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "btnSub" }, [
+            _c("span", [
+              _vm._v(_vm._s(_vm.attributeOptions[_vm.selected].value))
+            ]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption6
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.showOption6,
+                  expression: "showOption6"
+                }
+              ],
+              staticClass: "dropDownList"
+            },
+            [
+              _c(
+                "ul",
+                _vm._l(_vm.attributeOptions, function(attributeOption, index) {
+                  return _c("li", { key: index }, [
+                    _vm._v(_vm._s(attributeOption.value))
+                  ])
+                })
+              )
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "div",
+          {
+            staticClass: "btnOption",
+            on: {
+              click: function($event) {
+                _vm.showOption7 = !_vm.showOption7
+              }
+            }
+          },
+          [
+            _c("span", [_vm._v("is")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption7
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showOption7,
+                expression: "showOption7"
+              }
+            ],
+            staticClass: "dropDownList"
+          },
+          [
+            _c(
+              "ul",
+              _vm._l(_vm.filterType, function(type, index) {
+                return _c("li", { key: index }, [_vm._v(_vm._s(type.value))])
+              })
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "div",
+          {
+            staticClass: "btnSub",
+            on: {
+              click: function($event) {
+                _vm.showOption8 = !_vm.showOption8
+              }
+            }
+          },
+          [
+            _c("span", [_vm._v("Select value")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "iconSub" }, [
+              _c(
+                "i",
+                { staticClass: "material-icons" },
+                [
+                  _vm.showOption8
+                    ? [_vm._v("expand_less")]
+                    : [_vm._v("expand_more")]
+                ],
+                2
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showOption8,
+                expression: "showOption8"
+              }
+            ],
+            staticClass: "dropDownList"
+          },
+          [_vm._m(7)]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(8)
+    ]),
+    _vm._v(" "),
+    _vm._m(9),
+    _vm._v(" "),
+    _c("div", [
+      _c(
+        "div",
+        [
+          _c("builder-component-mock", {
+            staticClass: "fullWidth",
+            attrs: { value: [], section: 0 }
+          })
+        ],
+        1
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", [
+      _c("li", [_vm._v("1")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("2")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("3")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "label" }, [
+      _c("span", [
+        _vm._v(
+          "Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy."
+        )
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "link" }, [
+        _vm._v("subscription messaging policy.")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", [
+      _c("li", [_vm._v("1")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("2")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("3")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", [
+      _c("li", [_vm._v("1")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("2")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("3")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", [
+      _c("li", [_vm._v("1")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("2")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("3")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "addBtn" }, [
+      _c("i", { staticClass: "material-icons iconAlign" }, [_vm._v("add")]),
+      _vm._v("Add More\n        ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", [
+      _c("li", [_vm._v("1")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("2")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("3")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", [
+      _c("li", [_vm._v("1")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("2")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("3")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "addBtn" }, [
+      _c("i", { staticClass: "material-icons iconAlign" }, [_vm._v("add")]),
+      _vm._v("Add More\n        ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "textAlign" }, [
+      _c("span", [_vm._v("You have 4 users based on your filters. ")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-459437ef", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

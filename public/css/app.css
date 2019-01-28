@@ -13058,7 +13058,7 @@ a:hover {
   right: 35px;
   width: 25px;
   height: 25px;
-  border: 1px solid #ebebeb;
+  color: #aaaaaa;
   border-radius: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -13140,6 +13140,7 @@ a:hover {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 0px;
           flex: 1 1 0px;
+  margin-left: 10px;
 }
 
 .attrSelector:first-child {
@@ -13688,6 +13689,24 @@ a:hover {
 
 .btnOption .iconSub {
   float: right;
+}
+
+.btnAction {
+  float: right;
+  margin-right: 40px;
+}
+
+.btnAction .material-icons {
+  font-size: 40px;
+  margin-right: 10px;
+}
+
+.btnAction .btnDel {
+  color: red;
+}
+
+.btnAction .btnSend {
+  color: green;
 }
 
 .fullWidth {

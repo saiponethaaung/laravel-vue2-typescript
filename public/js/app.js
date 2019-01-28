@@ -46058,56 +46058,6 @@ var render = function() {
     [
       _c(
         "div",
-        { staticClass: "builderSectionInfo" },
-        [
-          _vm.section.lock
-            ? [_c("div", [_vm._v(_vm._s(_vm.section.title))])]
-            : [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.section.title,
-                      expression: "section.title"
-                    }
-                  ],
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.section.title },
-                  on: {
-                    blur: _vm.updateSection,
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.section, "title", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "deleteAction",
-                    on: {
-                      click: function($event) {
-                        _vm.delSection()
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("delete")
-                    ])
-                  ]
-                )
-              ]
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
         { staticClass: "contentList" },
         _vm._l(_vm.contents, function(content, index) {
           return _c(
@@ -46419,7 +46369,10 @@ var render = function() {
                 }
               }
             },
-            [_c("i", { staticClass: "material-icons" }, [_vm._v("add")])]
+            [
+              _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+              _vm._v("Add More\n            ")
+            ]
           )
         ],
         2
@@ -46427,6 +46380,21 @@ var render = function() {
       _vm._v(" "),
       _vm._m(2)
     ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "btnAction" },
+      [
+        _c("router-link", { attrs: { to: { name: "project.broadcast" } } }, [
+          _c("i", { staticClass: "material-icons btnDel" }, [_vm._v("delete")])
+        ]),
+        _vm._v(" "),
+        _c("router-link", { attrs: { to: { name: "project.broadcast" } } }, [
+          _c("i", { staticClass: "material-icons btnSend" }, [_vm._v("send")])
+        ])
+      ],
+      1
+    ),
     _vm._v(" "),
     _c("div", [
       _c(
@@ -51619,7 +51587,8 @@ var render = function() {
                     })
                   ],
                   1
-                )
+                ),
+                _vm._v("udo\n            ")
               ]
             : _vm.attribute.option === 2
             ? [

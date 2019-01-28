@@ -61,6 +61,21 @@
     }
 }
 
+.btnAction {
+    float: right;
+    margin-right: 40px;
+    .material-icons {
+        font-size: 40px;
+        margin-right: 10px;
+    }
+    .btnDel {
+        color: red;
+    }
+    .btnSend {
+        color: green;
+    }
+}
+
 
 .fullWidth {
     width: 100%;

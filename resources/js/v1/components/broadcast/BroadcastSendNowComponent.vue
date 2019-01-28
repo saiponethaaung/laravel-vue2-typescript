@@ -40,13 +40,22 @@
                     </div>
                 </template>
                 <div @click="addNewFitler()" class="addMoreFilterButton">
-                    <i class="material-icons">add</i>
+                    <i class="material-icons">add</i>Add More
                 </div>
             </div>
 
             <div class="textAlign">
                 <span>You have 4 users based on your filters. </span>
             </div>
+        </div>
+
+        <div class="btnAction">
+            <router-link :to="{name: 'project.broadcast'}">
+                <i class="material-icons btnDel">delete</i>
+            </router-link>
+            <router-link :to="{name: 'project.broadcast'}">
+                <i class="material-icons btnSend">send</i>
+            </router-link>
         </div>
 
         <div>

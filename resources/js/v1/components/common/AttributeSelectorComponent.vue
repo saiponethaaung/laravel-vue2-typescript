@@ -70,7 +70,7 @@
                             :selectedKey="attribute.userValue"
                             v-model="attribute.userValue"
                         ></spinner-drop-down-component>
-                    </div>
+                    </div>udo
                 </template>
                 <template v-else-if="attribute.option === 2">
                     <input placeholder="Attribute value" v-model="attribute.value" class="attrSelInput"/>

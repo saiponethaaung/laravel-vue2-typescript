@@ -69,7 +69,8 @@
     right: 35px;
     width: 25px;
     height: 25px;
-    border: 1px solid $borderPrimary;
+    color: #aaaaaa;
+    // border: 1px solid $borderPrimary;
     border-radius: 100%;
     display: flex;
     align-items: center;
@@ -126,6 +127,7 @@
     border-bottom-color: transparent;
     display: flex;
     flex: 1 1 0px;
+    margin-left: 10px;
     &:first-child {
         border-left: transparent;
     }

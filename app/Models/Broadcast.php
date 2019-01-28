@@ -49,4 +49,9 @@ class Broadcast extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function weekday()
+    {
+        return $this->hasMany('App\Models\BroadcastWeekday', 'project_broadcast_id', 'id');
+    }
 }

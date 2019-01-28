@@ -5,7 +5,10 @@
                 Loading...
             </template>
             <template v-else>
-                <builder-component :value="contents" :section="section"></builder-component>
+                <builder-component
+                    :isBroadcast="false"
+                    :value="contents"
+                    :section="section"></builder-component>
             </template>
         </template>
         <template v-else>

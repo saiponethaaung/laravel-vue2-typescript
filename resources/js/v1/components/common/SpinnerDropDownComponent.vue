@@ -1,7 +1,11 @@
 <template>
     <div class="sddListCon">
         <template v-if="undefined!==this.options">
-            <div  ref="spinnerDropDown" @click="showOption=!showOption">{{ options[selected].value }}
+            <div ref="spinnerDropDown" @click="showOption=!showOption">
+                <template v-if="undefined!==labelText && labelText!==''">
+                    {{ labelText }}
+                </template>
+                {{ options[selected].value }}
                 <i class="material-icons iconRight">
                     <template v-if="showOption">expand_less</template>
                     <template v-else>expand_more</template>
@@ -20,6 +24,7 @@ import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
 @Component
 export default class SpinnerDropDownComponent extends Vue {
     private showOption: boolean = false;
+    @Prop() labelText !: string;
     @Prop() options!: Array<any>;
     @Prop({default: -1}) selectedKey!: number;
 

@@ -16,6 +16,9 @@ import LoadingComponent from './components/common/LoadingComponent.vue';
 import BuilderComponent from './components/common/BuilderComponent.vue';
 import ButtonComponent from './components/common/builder/ButtonComponent.vue';
 import AttributeSelectorComponent from './components/common/AttributeSelectorComponent.vue';
+import DropDownComponent from './components/common/SpinnerDropDownComponent.vue';
+import TimeInputComponent from './components/common/TimeInputComponent.vue';
+
 import { setupCalendar, Calendar, DatePicker} from 'v-calendar';
 
 import Axios, { CancelTokenSource } from 'axios';
@@ -93,6 +96,8 @@ Vue.component('button-component', ButtonComponent);
 Vue.component('attribute-selector-component', AttributeSelectorComponent);
 Vue.component('v-calendar', Calendar);
 Vue.component('v-date-picker', DatePicker);
+Vue.component('dropdown-keybase-component', DropDownComponent);
+Vue.component('time-input-component', TimeInputComponent);
 
 new Vue({
     router,

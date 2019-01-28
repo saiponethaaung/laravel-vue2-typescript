@@ -128,6 +128,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::group(['prefix' => 'broadcast'], function() {
             Route::post('/', 'V1\\Api\\BroadcastController@create');
             Route::get('/schedule', 'V1\\Api\\BroadcastController@getSchedule');
+            Route::get('/schedule/{scheduleid}', 'V1\\Api\\BroadcastController@getScheduleDetail');
         });
 
         Route::group(['prefix' => 'chat', 'middleware' => 'verifyProjectHasPage'], function() {

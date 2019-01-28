@@ -1,6 +1,6 @@
 <template>
     <div class="contentRoot">
-        <div class="builderSectionInfo">
+        <div class="builderSectionInfo" v-if="!isBroadcast">
             <template v-if="section.lock">
                 <div>{{ section.title }}</div>
             </template>
@@ -46,7 +46,7 @@
                         <i class="material-icons">speaker_notes</i>
                         <span class="contentActionName">Typing</span>
                     </li>
-                    <li class="contentActionList" @click="addQuickReply">
+                    <li class="contentActionList" @click="addQuickReply" v-if="!isBroadcast">
                         <i class="material-icons">reply</i>
                         <span class="contentActionName">Quick Reply</span>
                     </li>
@@ -119,6 +119,11 @@ export default class BuilderComponent extends Vue {
         type: Array,
         default: []
     }) value!: Array<any>;
+
+    @Prop({
+        type: Boolean,
+        default: false
+    }) isBroadcast!: boolean;
 
     @Prop() section!: any;
 

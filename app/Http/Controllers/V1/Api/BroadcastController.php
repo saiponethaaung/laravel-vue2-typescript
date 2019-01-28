@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Broadcast;
+use App\Models\BroadcastWeekday;
 use App\Models\ProjectMessageTag;
 use App\Models\ChatBlockSection;
 
@@ -64,6 +65,14 @@ class BroadcastController extends Controller
             ]);
 
             if($section==='schedule') {
+                for($i=0; $i<7; $i++) {
+                    BroadcastWeekday::create([
+                        'project_broadcast_id' => $broadcast->id,
+                        'days' => $i+1,
+                        'status' => true
+                    ]);
+                }
+
                 $res = $this->buildScheduleList($broadcast);
             }
         } catch (\Exception $e) {
@@ -97,7 +106,7 @@ class BroadcastController extends Controller
         }
 
         return response()->json([
-            'status' => false,
+            'status' => true,
             'code' => 200,
             'data' => $res
         ], 200);
@@ -118,6 +127,40 @@ class BroadcastController extends Controller
 
     public function getScheduleDetail(Request $request)
     {
-        
+        $schedule = Broadcast::with([
+            'weekday' => function($query) {
+                $query->orderBy('days', 'ASC');
+            }
+        ])->find($request->scheduleid);
+
+        $hour = substr($schedule->time, 0, 2);
+        $min = substr($schedule->time, 2, 4);
+        $hour = $hour>12 ? $hour-12 : $hour;
+        $min = $min>59 ? '59' : $min;
+
+        $res = [];
+        $res['id'] = $schedule->id;
+        $res['status'] = $schedule->status===1 ? true : false;
+        $res['date'] = $schedule->year.'-'.($schedule->month<10 ? '0'.$schedule->month : $schedule->month).'-'.($schedule->day<10 ? '0'.$schedule->day : $schedule->day);
+        $res['period'] = $hour>12 ? 2 : 1;
+        $res['time'] = ($hour<10 ? '0'.$hour : $hour).':'.$min;
+        $res['repeat'] = $schedule->interval_type;
+        $res['tag'] = $schedule->project_message_tag_id;
+        $res['project'] = md5($schedule->project_id);
+        $res['type'] = $schedule->broadcast_type;
+
+        foreach($schedule->weekday as $weekday) 
+        {
+            $res['days'][] = [
+                'day' => $weekday->days,
+                'status' => $weekday->status===1 ? true : false
+            ];
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $res
+        ], 200);
     }
 }

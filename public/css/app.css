@@ -33,7 +33,9 @@
 .segmentList .segmentListItem .segmentActionIcon .saiWrapper,
 .userFilterHeading,
 .userListControlCon .userListOptionCon .uloButton,
-.bccCalender {
+.bccCalender,
+.bccTime,
+.bccRepeat {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -47,6 +49,13 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+}
+
+.bccCalender,
+.bccRepeat .sddListCon,
+.dayPicker ul {
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
 }
 
 /*!
@@ -13759,18 +13768,33 @@ a:hover {
 
 .broadcastFilterCon {
   background: #f7f6f6;
-  padding: 30px;
+  padding: 20px 30px;
+}
+
+.broadcastFilterCon .dropDownList,
+.broadcastFilterCon .btnSub {
+  margin: 10px 0;
+  font-size: 12px;
+}
+
+.broadcastFilterCon .dropDownList li,
+.broadcastFilterCon .btnSub li {
+  cursor: pointer;
+}
+
+.broadcastFilterCon .btnSub {
+  line-height: 26px;
 }
 
 .broadcastCondition {
-  height: 36px;
-  line-height: 36px;
+  height: 40px;
+  line-height: 40px;
   display: block;
 }
 
 .bccHeading {
-  height: 36px;
-  line-height: 36px;
+  height: 40px;
+  line-height: 40px;
   font-size: 18px;
   font-weight: bold;
   margin: 0;
@@ -13779,11 +13803,11 @@ a:hover {
 
 .bccCalender {
   background: #ffffff;
-  border: 1px solid #ebebeb;
-  border-radius: 5px;
+  height: 40px;
+  line-height: 40px;
   margin-left: 10px;
-  padding: 0 10px;
-  font-size: 12px;
+  margin-right: 10px;
+  padding-left: 10px;
   padding-right: 40px;
   position: relative;
   cursor: pointer;
@@ -13806,6 +13830,97 @@ a:hover {
   right: 10px;
   font-size: 19px;
   color: #aaaaaa;
+}
+
+.bccTime {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.bccTime .timeOptionCon input {
+  width: 83px;
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid #ebebeb;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  text-align: center;
+}
+
+.bccTime .sddListCon {
+  border-top: 1px solid #ebebeb;
+  border-right: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.bccRepeat {
+  line-height: 40px;
+}
+
+.bccCalender,
+.bccTime,
+.bccRepeat {
+  font-size: 12px;
+}
+
+.bccCalender .sddListCon,
+.bccTime .sddListCon,
+.bccRepeat .sddListCon {
+  font-size: 12px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: 40px;
+  line-height: 40px;
+}
+
+.bccRepeat .sddListCon {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.dayPicker {
+  margin-top: 15px;
+}
+
+.dayPicker ul {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.dayPicker ul li {
+  padding: 8px;
+  font-size: 12px;
+  width: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dayPicker ul li.selectedDay {
+  background: #3490dc;
+  color: #fff;
+}
+
+.broadcastRoot {
+  overflow: auto;
+}
+
+.broadcastRoot .attributeSelectorBox {
+  margin-left: 0;
+}
+
+.reachableUser {
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 5px;
 }
 
 @font-face {

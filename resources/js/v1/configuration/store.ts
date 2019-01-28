@@ -46,7 +46,9 @@ export default new Vuex.Store({
             10: 'Oct',
             11: 'Nov',
             12: 'Dec'
-        }
+        },
+        messageTags: [],
+        loadingMessageTags: false
     },
     mutations: {
         logout(state) {

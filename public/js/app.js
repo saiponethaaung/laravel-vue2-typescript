@@ -24258,11 +24258,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_common_builder_ButtonComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_common_builder_ButtonComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_common_AttributeSelectorComponent_vue__ = __webpack_require__(179);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_common_AttributeSelectorComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_common_AttributeSelectorComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_v_calendar__ = __webpack_require__(185);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_v_calendar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_v_calendar__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_axios__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_common_SpinnerDropDownComponent_vue__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_common_SpinnerDropDownComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_common_SpinnerDropDownComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_common_TimeInputComponent_vue__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_common_TimeInputComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_common_TimeInputComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_v_calendar__ = __webpack_require__(185);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_v_calendar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_v_calendar__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__utils_AjaxErrorHandler__ = __webpack_require__(3);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -24290,12 +24294,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-Object(__WEBPACK_IMPORTED_MODULE_10_v_calendar__["setupCalendar"])({
+
+
+Object(__WEBPACK_IMPORTED_MODULE_12_v_calendar__["setupCalendar"])({
     firstDayOfWeek: 2,
 });
 let eventHub = new __WEBPACK_IMPORTED_MODULE_1_vue__["default"]();
-let userLoadingToken = __WEBPACK_IMPORTED_MODULE_11_axios___default.a.CancelToken.source();
-let ajaxHandler = new __WEBPACK_IMPORTED_MODULE_12__utils_AjaxErrorHandler__["a" /* default */]();
+let userLoadingToken = __WEBPACK_IMPORTED_MODULE_13_axios___default.a.CancelToken.source();
+let ajaxHandler = new __WEBPACK_IMPORTED_MODULE_14__utils_AjaxErrorHandler__["a" /* default */]();
 window.fbSdkLoaded = false;
 function logoutResponseHandler(error) {
     // if has response show the error
@@ -24307,14 +24313,14 @@ function logoutResponseHandler(error) {
         return Promise.reject(error);
     }
 }
-__WEBPACK_IMPORTED_MODULE_11_axios___default.a.interceptors.response.use(response => response, logoutResponseHandler);
+__WEBPACK_IMPORTED_MODULE_13_axios___default.a.interceptors.response.use(response => response, logoutResponseHandler);
 __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */].beforeEach((to, from, next) => __awaiter(this, void 0, void 0, function* () {
     if (__WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.token !== null) {
-        __WEBPACK_IMPORTED_MODULE_11_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.token}`;
+        __WEBPACK_IMPORTED_MODULE_13_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.token}`;
         userLoadingToken.cancel();
-        userLoadingToken = __WEBPACK_IMPORTED_MODULE_11_axios___default.a.CancelToken.source();
+        userLoadingToken = __WEBPACK_IMPORTED_MODULE_13_axios___default.a.CancelToken.source();
         __WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.autheticating = true;
-        yield __WEBPACK_IMPORTED_MODULE_11_axios___default()({
+        yield __WEBPACK_IMPORTED_MODULE_13_axios___default()({
             url: '/api/v1/user',
             cancelToken: userLoadingToken.token
         }).then((res) => {
@@ -24346,8 +24352,10 @@ __WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('loading-component', __WE
 __WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('builder-component', __WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('button-component', __WEBPACK_IMPORTED_MODULE_8__components_common_builder_ButtonComponent_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('attribute-selector-component', __WEBPACK_IMPORTED_MODULE_9__components_common_AttributeSelectorComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('v-calendar', __WEBPACK_IMPORTED_MODULE_10_v_calendar__["Calendar"]);
-__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('v-date-picker', __WEBPACK_IMPORTED_MODULE_10_v_calendar__["DatePicker"]);
+__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('v-calendar', __WEBPACK_IMPORTED_MODULE_12_v_calendar__["Calendar"]);
+__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('v-date-picker', __WEBPACK_IMPORTED_MODULE_12_v_calendar__["DatePicker"]);
+__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('dropdown-keybase-component', __WEBPACK_IMPORTED_MODULE_10__components_common_SpinnerDropDownComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_1_vue__["default"].component('time-input-component', __WEBPACK_IMPORTED_MODULE_11__components_common_TimeInputComponent_vue___default.a);
 new __WEBPACK_IMPORTED_MODULE_1_vue__["default"]({
     router: __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */],
     store: __WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */],
@@ -37069,7 +37077,11 @@ var render = function() {
               ? [_vm._v("\n            Loading...\n        ")]
               : [
                   _c("builder-component", {
-                    attrs: { value: _vm.contents, section: _vm.section }
+                    attrs: {
+                      isBroadcast: false,
+                      value: _vm.contents,
+                      section: _vm.section
+                    }
                   })
                 ]
           ]
@@ -42783,6 +42795,7 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
     }
     mounted() {
         this.loadSchedule();
+        this.loadMessageTags();
     }
     scheduleName(index) {
         let name = '';
@@ -42853,6 +42866,25 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
                 }
             });
             this.creatingSchedule = false;
+        });
+    }
+    loadMessageTags() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (undefined === this.$store.state.projectInfo.id)
+                return;
+            this.$store.state.loadingMessageTags = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/message-tags`,
+                method: 'get'
+            }).then(res => {
+                this.$store.state.messageTags = res.data.data;
+            }).catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load message tags!');
+                    alert(mesg);
+                }
+            });
+            this.$store.state.loadingMessageTags = false;
         });
     }
 };
@@ -46919,26 +46951,136 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_broadcast_ScheduleModel__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+
+
 
 let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.date = new Date();
+        this.loading = false;
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__["a" /* default */]();
+        this.loadingToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+        this.periodOption = [
+            {
+                key: 1,
+                value: "am"
+            },
+            {
+                key: 2,
+                value: "pm"
+            },
+        ];
+        this.repeatOption = [
+            {
+                key: 1,
+                value: 'None'
+            },
+            {
+                key: 2,
+                value: 'Daily'
+            },
+            {
+                key: 3,
+                value: 'Weekend'
+            },
+            {
+                key: 4,
+                value: 'Every Month'
+            },
+            {
+                key: 5,
+                value: 'Workdays'
+            },
+            {
+                key: 6,
+                value: 'Yearly'
+            },
+            {
+                key: 7,
+                value: 'Custom'
+            },
+        ];
+        this.showTags = false;
+        this.schedule = new __WEBPACK_IMPORTED_MODULE_2__models_broadcast_ScheduleModel__["a" /* default */]();
+        this.filterSegment = new __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
     }
     get showDate() {
+        if (undefined === this.schedule)
+            return '';
         let date = '';
-        let month = this.date.getMonth() + 1;
-        return `${this.$store.state.months[month]} ${this.date.getDate()}, ${this.date.getFullYear()}`;
+        let month = this.schedule.date.getMonth() + 1;
+        return `${this.$store.state.months[month]} ${this.schedule.date.getDate()}, ${this.schedule.date.getFullYear()}`;
+    }
+    get selectedTag() {
+        if (undefined === this.schedule)
+            return 0;
+        let index = 0;
+        for (let i = 0; this.$store.state.messageTags.length > i; i++) {
+            if (this.$store.state.messageTags[i].id === this.schedule.tag) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+    mounted() {
+        this.loadSchedule();
+    }
+    addNewFitler() {
+        this.filterSegment.createNewAttributeFilter();
+    }
+    loadSchedule() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loadingToken.cancel();
+            this.loadingToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+            this.loading = true;
+            yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/schedule/${this.$route.params.scheduleid}`,
+                method: 'get',
+                cancelToken: this.loadingToken.token
+            }).then(res => {
+                this.schedule.init(res.data.data);
+                this.loading = false;
+            }).catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule info!');
+                    alert(mesg);
+                    this.loading = false;
+                }
+            });
+        });
     }
 };
 BroadcastScheduleComponent = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
+        components: {
+            BuilderComponentMock: __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue___default.a
+        }
+    })
 ], BroadcastScheduleComponent);
 /* harmony default export */ __webpack_exports__["default"] = (BroadcastScheduleComponent);
 
@@ -46951,67 +47093,332 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "broadcastFilterCon" }, [
-      _c("div", [_vm._v("\n            Subscription\n        ")]),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { staticClass: "broadcastCondition" }, [
-        _c("h5", { staticClass: "bccHeading float-left" }, [
-          _vm._v("\n                Schedule:\n            ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "bccCalender float-left" }, [
-          _c("span", [_vm._v(_vm._s(_vm.showDate))]),
-          _vm._v(" "),
-          _c("i", { staticClass: "material-icons" }, [_vm._v("date_range")]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "calendarPlugin" },
-            [
-              _c("v-date-picker", {
-                attrs: { "min-date": new Date() },
-                model: {
-                  value: _vm.date,
-                  callback: function($$v) {
-                    _vm.date = $$v
-                  },
-                  expression: "date"
-                }
-              })
-            ],
-            1
-          )
-        ]),
-        _vm._v(" "),
-        _vm._m(1)
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div")
-  ])
+  return _c(
+    "div",
+    { staticClass: "inheritHFW broadcastRoot" },
+    [
+      _vm.loading && undefined !== _vm.schedule
+        ? [_vm._v("\n        Loading...\n    ")]
+        : [
+            _c(
+              "div",
+              { staticClass: "broadcastFilterCon" },
+              [
+                _vm.$store.state.messageTags.length > 0
+                  ? _c("div", { staticClass: "outerDisplay" }, [
+                      _c(
+                        "div",
+                        {
+                          on: {
+                            click: function($event) {
+                              _vm.showTags = !_vm.showTags
+                            }
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "btnSub" }, [
+                            _c("span", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$store.state.messageTags[_vm.selectedTag]
+                                    .name
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "iconSub" }, [
+                              _c(
+                                "i",
+                                { staticClass: "material-icons" },
+                                [
+                                  _vm.showTags
+                                    ? [_vm._v("expand_less")]
+                                    : [_vm._v("expand_more")]
+                                ],
+                                2
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.showTags,
+                                  expression: "showTags"
+                                }
+                              ],
+                              staticClass: "dropDownList"
+                            },
+                            [
+                              _c(
+                                "ul",
+                                [
+                                  _vm._l(_vm.$store.state.messageTags, function(
+                                    tag,
+                                    index
+                                  ) {
+                                    return [
+                                      _c(
+                                        "li",
+                                        {
+                                          key: index,
+                                          on: {
+                                            click: function($event) {
+                                              _vm.schedule.tag = tag.id
+                                            }
+                                          }
+                                        },
+                                        [_vm._v(_vm._s(tag.name))]
+                                      )
+                                    ]
+                                  })
+                                ],
+                                2
+                              )
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", {
+                        staticClass: "label",
+                        domProps: {
+                          innerHTML: _vm._s(
+                            _vm.$store.state.messageTags[_vm.selectedTag].mesg
+                          )
+                        }
+                      })
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "attributeSelectorList" },
+                  [
+                    _vm._l(_vm.filterSegment.attributes, function(
+                      attribute,
+                      index
+                    ) {
+                      return [
+                        _c(
+                          "div",
+                          { key: index, staticClass: "attributeSelector" },
+                          [
+                            _c("attribute-selector-component", {
+                              attrs: {
+                                attribute: attribute,
+                                canCondition:
+                                  _vm.filterSegment.attributes.length - 1 >
+                                  index
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.filterSegment.attributes.length > 1
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "deleteAttribute",
+                                    on: {
+                                      click: function($event) {
+                                        _vm.filterSegment.attributes.splice(
+                                          index,
+                                          1
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", { staticClass: "material-icons" }, [
+                                      _vm._v("delete")
+                                    ])
+                                  ]
+                                )
+                              : _vm._e()
+                          ],
+                          1
+                        )
+                      ]
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "addMoreFilterButton",
+                        on: {
+                          click: function($event) {
+                            _vm.addNewFitler()
+                          }
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("add")
+                        ])
+                      ]
+                    )
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "broadcastCondition" }, [
+                  _c("h5", { staticClass: "bccHeading float-left" }, [
+                    _vm._v("\n                    Schedule:\n                ")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "bccCalender float-left" }, [
+                    _c("span", [_vm._v(_vm._s(_vm.showDate))]),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("date_range")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "calendarPlugin" },
+                      [
+                        _c("v-date-picker", {
+                          attrs: { "min-date": new Date() },
+                          model: {
+                            value: _vm.schedule.date,
+                            callback: function($$v) {
+                              _vm.$set(_vm.schedule, "date", $$v)
+                            },
+                            expression: "schedule.date"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "bccTime float-left" },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "timeOptionCon" },
+                        [
+                          _c("time-input-component", {
+                            attrs: { value: _vm.schedule.time },
+                            model: {
+                              value: _vm.schedule.time,
+                              callback: function($$v) {
+                                _vm.$set(_vm.schedule, "time", $$v)
+                              },
+                              expression: "schedule.time"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("dropdown-keybase-component", {
+                        attrs: {
+                          options: _vm.periodOption,
+                          selectedKey: _vm.schedule.period
+                        },
+                        model: {
+                          value: _vm.schedule.period,
+                          callback: function($$v) {
+                            _vm.$set(_vm.schedule, "period", $$v)
+                          },
+                          expression: "schedule.period"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "bccRepeat float-left" },
+                    [
+                      _c("dropdown-keybase-component", {
+                        attrs: {
+                          labelText: "Repeat: ",
+                          options: _vm.repeatOption,
+                          selectedKey: _vm.schedule.repeat
+                        },
+                        model: {
+                          value: _vm.schedule.repeat,
+                          callback: function($$v) {
+                            _vm.$set(_vm.schedule, "repeat", $$v)
+                          },
+                          expression: "schedule.repeat"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
+                _vm.schedule.repeat === 7
+                  ? [
+                      _c("div", { staticClass: "dayPicker" }, [
+                        _c(
+                          "ul",
+                          [
+                            _vm._l(_vm.schedule.days, function(day, index) {
+                              return [
+                                _c(
+                                  "li",
+                                  {
+                                    key: index,
+                                    class: { selectedDay: day.check },
+                                    on: {
+                                      click: function($event) {
+                                        day.check = !day.check
+                                      }
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(day.name))]
+                                )
+                              ]
+                            })
+                          ],
+                          2
+                        )
+                      ])
+                    ]
+                  : _vm._e()
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              [
+                _c("builder-component", {
+                  attrs: {
+                    isBroadcast: true,
+                    value: [],
+                    section: _vm.schedule.id
+                  }
+                })
+              ],
+              1
+            )
+          ]
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", [_vm._v("Filter")]),
-      _vm._v(" "),
-      _c("div", [_vm._v("Reachable user")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "bccTime float-left" }, [
-      _c("div", [_vm._v("\n                    12:00\n                ")]),
-      _vm._v(" "),
-      _c("div", [_vm._v("\n                    am\n                ")])
+    return _c("div", { staticClass: "reachableUser" }, [
+      _vm._v("You have "),
+      _c("b", [_vm._v("4")]),
+      _vm._v(" users based on your filters.")
     ])
   }
 ]
@@ -47077,7 +47484,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
             10: 'Oct',
             11: 'Nov',
             12: 'Dec'
-        }
+        },
+        messageTags: [],
+        loadingMessageTags: false
     },
     mutations: {
         logout(state) {
@@ -50181,6 +50590,12 @@ __decorate([
     })
 ], BuilderComponent.prototype, "value", void 0);
 __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: Boolean,
+        default: false
+    })
+], BuilderComponent.prototype, "isBroadcast", void 0);
+__decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], BuilderComponent.prototype, "section", void 0);
 BuilderComponent = __decorate([
@@ -50211,55 +50626,57 @@ var render = function() {
     "div",
     { staticClass: "contentRoot" },
     [
-      _c(
-        "div",
-        { staticClass: "builderSectionInfo" },
-        [
-          _vm.section.lock
-            ? [_c("div", [_vm._v(_vm._s(_vm.section.title))])]
-            : [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.section.title,
-                      expression: "section.title"
-                    }
-                  ],
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.section.title },
-                  on: {
-                    blur: _vm.updateSection,
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+      !_vm.isBroadcast
+        ? _c(
+            "div",
+            { staticClass: "builderSectionInfo" },
+            [
+              _vm.section.lock
+                ? [_c("div", [_vm._v(_vm._s(_vm.section.title))])]
+                : [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.section.title,
+                          expression: "section.title"
+                        }
+                      ],
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.section.title },
+                      on: {
+                        blur: _vm.updateSection,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.section, "title", $event.target.value)
+                        }
                       }
-                      _vm.$set(_vm.section, "title", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "deleteAction",
-                    on: {
-                      click: function($event) {
-                        _vm.delSection()
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("delete")
-                    ])
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "deleteAction",
+                        on: {
+                          click: function($event) {
+                            _vm.delSection()
+                          }
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("delete")
+                        ])
+                      ]
+                    )
                   ]
-                )
-              ]
-        ],
-        2
-      ),
+            ],
+            2
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "div",
@@ -50353,20 +50770,24 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "contentActionList",
-                on: { click: _vm.addQuickReply }
-              },
-              [
-                _c("i", { staticClass: "material-icons" }, [_vm._v("reply")]),
-                _vm._v(" "),
-                _c("span", { staticClass: "contentActionName" }, [
-                  _vm._v("Quick Reply")
-                ])
-              ]
-            ),
+            !_vm.isBroadcast
+              ? _c(
+                  "li",
+                  {
+                    staticClass: "contentActionList",
+                    on: { click: _vm.addQuickReply }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("reply")
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "contentActionName" }, [
+                      _vm._v("Quick Reply")
+                    ])
+                  ]
+                )
+              : _vm._e(),
             _vm._v(" "),
             _c(
               "li",
@@ -51296,6 +51717,9 @@ let SpinnerDropDownComponent = class SpinnerDropDownComponent extends __WEBPACK_
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], SpinnerDropDownComponent.prototype, "labelText", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], SpinnerDropDownComponent.prototype, "options", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({ default: -1 })
@@ -51334,8 +51758,19 @@ var render = function() {
                 }
               },
               [
+                undefined !== _vm.labelText && _vm.labelText !== ""
+                  ? [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(_vm.labelText) +
+                          "\n            "
+                      )
+                    ]
+                  : _vm._e(),
                 _vm._v(
-                  _vm._s(_vm.options[_vm.selected].value) + "\n            "
+                  "\n            " +
+                    _vm._s(_vm.options[_vm.selected].value) +
+                    "\n            "
                 ),
                 _c(
                   "i",
@@ -51347,7 +51782,8 @@ var render = function() {
                   ],
                   2
                 )
-              ]
+              ],
+              2
             ),
             _vm._v(" "),
             _vm.showOption && _vm.options.length > 1
@@ -51702,6 +52138,360 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(198)
+/* template */
+var __vue_template__ = __webpack_require__(199)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/TimeInputComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5d3121de", Component.options)
+  } else {
+    hotAPI.reload("data-v-5d3121de", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 198 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(1);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+let TimeInputComponent = class TimeInputComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.content = '00:00';
+        this.allowKey = [
+            '0',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9'
+        ];
+    }
+    updateProp() {
+        this.content = this.value;
+    }
+    validateContent(e) {
+        console.log('validate time input', e);
+        if (this.allowKey.indexOf(e.key) > -1 && e.target.selectionStart < 5) {
+            // set dummy value if value is empty
+            if (this.content === '') {
+                this.content = '00:00';
+            }
+            // get cursor position
+            let position = e.target.selectionStart === 2 ? e.target.selectionStart + 1 : e.target.selectionStart;
+            // get first part
+            let output = this.content.slice(0, position === 0 ? position + 1 : position);
+            // replace first part if positin is zero
+            if (position === 0) {
+                output = e.key;
+            }
+            else {
+                // append value
+                output += e.key;
+            }
+            // join with the second part with 1 offset
+            output = [output, this.content.slice(position + 1)].join('');
+            // validate hour is max 12 and min is max 59
+            let calculate = output.split(":");
+            calculate[0] = parseInt(calculate[0]) > 12 ? '12' : calculate[0];
+            calculate[1] = parseInt(calculate[1]) > 59 ? '59' : calculate[1];
+            output = calculate.join(":");
+            this.content = output;
+            // reposition a cursor
+            setTimeout(() => {
+                let el = this.$refs.timeInput;
+                el.focus();
+                position = position < 5 ? position === 1 ? position + 2 : position + 1 : position;
+                el.setSelectionRange(position, position + 1);
+            }, 10);
+            this.updateValue(this.content);
+            return true;
+        }
+    }
+    updateValue(content) {
+        return content;
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        default: '00:00'
+    })
+], TimeInputComponent.prototype, "value", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('value', { immediate: true })
+], TimeInputComponent.prototype, "updateProp", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('input')
+], TimeInputComponent.prototype, "updateValue", null);
+TimeInputComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], TimeInputComponent);
+/* harmony default export */ __webpack_exports__["default"] = (TimeInputComponent);
+
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("input", {
+    directives: [
+      {
+        name: "model",
+        rawName: "v-model",
+        value: _vm.content,
+        expression: "content"
+      }
+    ],
+    ref: "timeInput",
+    attrs: { placeholder: "HH:mm" },
+    domProps: { value: _vm.content },
+    on: {
+      keypress: function($event) {
+        $event.preventDefault()
+        return _vm.validateContent($event)
+      },
+      input: function($event) {
+        if ($event.target.composing) {
+          return
+        }
+        _vm.content = $event.target.value
+      }
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5d3121de", module.exports)
+  }
+}
+
+/***/ }),
+/* 200 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BroadcastModel__ = __webpack_require__(201);
+
+class ScheduleModels extends __WEBPACK_IMPORTED_MODULE_0__BroadcastModel__["a" /* default */] {
+    constructor() {
+        super();
+        this.loading = false;
+        this.schedule = {
+            date: new Date(),
+            time: '12:34',
+            period: 2,
+            repeat: 1,
+            days: {
+                1: {
+                    name: 'Mon',
+                    days: 1,
+                    check: false
+                },
+                2: {
+                    name: 'Tue',
+                    days: 2,
+                    check: false
+                },
+                3: {
+                    name: 'Wed',
+                    days: 3,
+                    check: false
+                },
+                4: {
+                    name: 'Thu',
+                    days: 4,
+                    check: false
+                },
+                5: {
+                    name: 'Fri',
+                    days: 5,
+                    check: false
+                },
+                6: {
+                    name: 'Sat',
+                    days: 6,
+                    check: false
+                },
+                7: {
+                    name: 'Sun',
+                    days: 7,
+                    check: false
+                }
+            }
+        };
+    }
+    init(content) {
+        this.broadcastInit(content);
+        this.date = new Date(content.date);
+        this.time = content.time;
+        this.period = content.period;
+        this.repeat = content.repeat;
+        for (let i of content.days) {
+            for (let i2 in this.days) {
+                if (this.days[i2].days == i.day && i.status) {
+                    this.days[i2].check = true;
+                    break;
+                }
+            }
+        }
+    }
+    get date() {
+        return this.schedule.date;
+    }
+    set date(date) {
+        this.schedule.date = date;
+    }
+    get time() {
+        return this.schedule.time;
+    }
+    set time(time) {
+        this.schedule.time = time;
+    }
+    get period() {
+        return this.schedule.period;
+    }
+    set period(period) {
+        this.schedule.period = period;
+    }
+    get repeat() {
+        return this.schedule.repeat;
+    }
+    set repeat(repeat) {
+        this.schedule.repeat = repeat;
+    }
+    get days() {
+        return this.schedule.days;
+    }
+    set days(days) {
+        this.schedule.days = days;
+    }
+    get isLoading() {
+        return this.loading;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ScheduleModels;
+
+
+
+/***/ }),
+/* 201 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+
+class BroadcastModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor() {
+        super();
+        this.content = {
+            id: -1,
+            tag: 2,
+            project: '',
+            type: 1
+        };
+    }
+    broadcastInit(content) {
+        this.id = content.id;
+        this.project = content.project;
+        this.type = content.type;
+        this.tag = content.tag;
+    }
+    get id() {
+        return this.content.id;
+    }
+    set id(id) {
+        this.content.id = id;
+    }
+    get tag() {
+        return this.content.tag;
+    }
+    set tag(tag) {
+        this.content.tag = tag;
+    }
+    get project() {
+        return this.content.project;
+    }
+    set project(project) {
+        this.content.project = project;
+    }
+    get type() {
+        return this.content.type;
+    }
+    set type(type) {
+        this.content.type = type;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = BroadcastModel;
+
+
 
 /***/ })
 /******/ ]);

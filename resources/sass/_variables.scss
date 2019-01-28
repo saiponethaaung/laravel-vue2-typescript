@@ -64,6 +64,7 @@ $ProjectNavWidth: 20px;
 
 $standardHeight: 36px;
 $secondStandardHeight: 30px;
+$thirdStandardHeight: 40px;
 $tableStandardHeight: 30px;
 
 $standardContentPadding: 30px;
@@ -86,4 +87,13 @@ $standardContentPadding: 30px;
 %inlineFlexJCenter {
     @extend %inlineFlexCenter;
     justify-content: center;
+}
+
+%boxBorder {
+    border: 1px solid $borderPrimary;
+    border-radius: 5px;
+}
+
+%inputboxBorder {
+    @extend %boxBorder;
 }

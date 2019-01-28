@@ -59,6 +59,7 @@ export default class BroadcastSidebarComponent extends Vue {
 
     mounted() {
         this.loadSchedule();
+        this.loadMessageTags();
     }
 
     private scheduleName(index: number) {
@@ -141,6 +142,26 @@ export default class BroadcastSidebarComponent extends Vue {
         });
 
         this.creatingSchedule = false;
+    }
+
+    private async loadMessageTags() {
+        if(undefined===this.$store.state.projectInfo.id) return;
+        
+        this.$store.state.loadingMessageTags = true;
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/message-tags`,
+            method: 'get'
+        }).then(res => {
+            this.$store.state.messageTags = res.data.data;
+        }).catch(err => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load message tags!');
+                alert(mesg);
+            }
+        });
+
+        this.$store.state.loadingMessageTags = false;
     }
 }
 </script>

@@ -20,12 +20,6 @@
             </router-link>
         </div>
 
-        <div class="contentRoot"></i>Schedule your message</div>
-        <div class="chatBlockContentList">
-            <div class="btnClick">Happy New Year</div>
-            <div class="btnClick">Time</div>
-        </div>
-
         <div class="contentRoot">Schedule your message</div>
         <div class="broadcastContentList schedule">
             <ul>

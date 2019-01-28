@@ -44,7 +44,7 @@ class CreateProjectBroadcastTable extends Migration
             $table->timestamps();
 
             $table->foreign('project_id')->references('id')->on('project')->onDelete('restrict');
-            $table->foreign('project_message_tag_id')->references('id')->on('project_messgage_tag')->onDelete('restrict');
+            $table->foreign('project_message_tag_id')->references('id')->on('project_message_tag')->onDelete('restrict');
         });
     }
 

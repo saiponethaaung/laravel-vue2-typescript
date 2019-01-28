@@ -42918,12 +42918,6 @@ var render = function() {
         _vm._v("Schedule your message")
       ]),
       _vm._v(" "),
-      _vm._m(2),
-      _vm._v(" "),
-      _c("div", { staticClass: "contentRoot" }, [
-        _vm._v("Schedule your message")
-      ]),
-      _vm._v(" "),
       _c("div", { staticClass: "broadcastContentList schedule" }, [
         _c(
           "ul",
@@ -43007,16 +43001,6 @@ var staticRenderFns = [
     return _c("div", { staticClass: "contentRoot" }, [
       _c("i", { staticClass: "material-icons iconAlign" }, [_vm._v("send")]),
       _vm._v("Send your message now")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "chatBlockContentList" }, [
-      _c("div", { staticClass: "btnClick" }, [_vm._v("Happy New Year")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "btnClick" }, [_vm._v("Time")])
     ])
   }
 ]

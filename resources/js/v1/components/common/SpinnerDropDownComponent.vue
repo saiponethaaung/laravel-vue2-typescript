@@ -2,7 +2,7 @@
     <div class="sddListCon">
         <template v-if="undefined!==this.options">
             <div  ref="spinnerDropDown" @click="showOption=!showOption">{{ options[selected].value }}
-                <i class="material-icons iconRight">
+                <i class="material-icons iconRight" v-if="!showOption && options.length>1">
                     <template v-if="showOption">expand_less</template>
                     <template v-else>expand_more</template>
                 </i>

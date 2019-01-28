@@ -43,7 +43,16 @@
                 </template>
             </div>
             <div class="attrSelector attrSelOption">
-                <template v-if="attribute.option != 4">
+                <template v-if="attribute.option === 4">
+                    <div class="optionSpinner">
+                        <spinner-drop-down-component
+                            :options="segmentValue"
+                            :selectedKey="attribute.systemValue"
+                            v-model="attribute.systemValue"
+                        ></spinner-drop-down-component>
+                    </div>
+                </template>
+                <template v-else>
                     <div class="optionSpinner">
                         <spinner-drop-down-component
                             :options="filterType"
@@ -70,15 +79,6 @@
                     <div class="optionSpinner">
                         <spinner-drop-down-component
                             :options="systemAttributeValue"
-                            :selectedKey="attribute.systemValue"
-                            v-model="attribute.systemValue"
-                        ></spinner-drop-down-component>
-                    </div>
-                </template>
-                <template v-else-if="attribute.option === 4">
-                    <div class="optionSpinner">
-                        <spinner-drop-down-component
-                            :options="segmentValue"
                             :selectedKey="attribute.systemValue"
                             v-model="attribute.systemValue"
                         ></spinner-drop-down-component>

@@ -16,7 +16,7 @@
         <div class="contentRoot">Trigger your message</div>
         <div class="btnClick">
             <router-link :to="{'name': 'project.broadcast.trigger'}">
-                <i class="material-icons">add</i>Add a trigger
+                <i class="material-icons iconAlign">add</i>Add a trigger
             </router-link>
         </div>
 

@@ -13054,8 +13054,8 @@ a:hover {
 
 .addMoreFilterButton {
   position: absolute;
-  bottom: 2px;
-  right: 40px;
+  bottom: 8px;
+  right: 35px;
   width: 25px;
   height: 25px;
   border: 1px solid #ebebeb;

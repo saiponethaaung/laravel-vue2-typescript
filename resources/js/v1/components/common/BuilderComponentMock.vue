@@ -1,16 +1,16 @@
 <template>
     <div class="contentRoot">
-        <div class="builderSectionInfo">
+        <!-- <div class="builderSectionInfo">
             <template v-if="section.lock">
                 <div>{{ section.title }}</div>
             </template>
             <template v-else>
                 <input type="text" v-model="section.title" v-on:blur="updateSection"/>
                 <div class="deleteAction" @click="delSection()">
-                    <i class="material-icons">delete</i>
+                    <i class="material-icons md-40">delete</i>
                 </div>
             </template>
-        </div>
+        </div> -->
         <div class="contentList">
             <div v-for="(content, index) in contents" :key="index" class="conentItem" :class="{'deleting': content.isDeleting}">
                 <div class="optionSection">

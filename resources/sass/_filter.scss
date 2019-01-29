@@ -65,11 +65,12 @@
 
 .addMoreFilterButton {
     position: absolute;
-    bottom: 2px;
-    right: 40px;
+    bottom: 8px;
+    right: 35px;
     width: 25px;
     height: 25px;
-    border: 1px solid $borderPrimary;
+    color: #aaaaaa;
+    // border: 1px solid $borderPrimary;
     border-radius: 100%;
     display: flex;
     align-items: center;
@@ -109,7 +110,6 @@
     display: flex;
     height: 40px;
     line-height: 40px;
-    border: 1px solid $borderPrimary;
     border-radius: 5px;
     font-size: 13px;
     margin-bottom: 15px;
@@ -127,6 +127,7 @@
     border-bottom-color: transparent;
     display: flex;
     flex: 1 1 0px;
+    margin-left: 10px;
     &:first-child {
         border-left: transparent;
     }

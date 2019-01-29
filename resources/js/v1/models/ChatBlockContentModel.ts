@@ -5,9 +5,11 @@ export default class ChatBlockContentModel extends AjaxErrorHandler {
     private content : BotContent;
     private updating: boolean = false;
     private deleting: boolean = false;
+    protected baseUrl: string = "";
 
-    constructor(content: any) {
+    constructor(content: any, baseUrl: string) {
         super();
+        this.baseUrl = baseUrl;
         this.content = {
             id: content.id,
             type: content.type,

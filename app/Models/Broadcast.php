@@ -54,4 +54,9 @@ class Broadcast extends Model
     {
         return $this->hasMany('App\Models\BroadcastWeekday', 'project_broadcast_id', 'id');
     }
+
+    public function chatBlockSection()
+    {
+        return $this->hasOne('App\Models\ChatBlockSection', 'broadcast_id', 'id');
+    }
 }

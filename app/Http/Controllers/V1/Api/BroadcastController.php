@@ -130,7 +130,8 @@ class BroadcastController extends Controller
         $schedule = Broadcast::with([
             'weekday' => function($query) {
                 $query->orderBy('days', 'ASC');
-            }
+            },
+            'chatBlockSection'
         ])->find($request->scheduleid);
 
         $hour = substr($schedule->time, 0, 2);
@@ -148,6 +149,10 @@ class BroadcastController extends Controller
         $res['tag'] = $schedule->project_message_tag_id;
         $res['project'] = md5($schedule->project_id);
         $res['type'] = $schedule->broadcast_type;
+        $res['section'] = [
+            'id' => $schedule->chatBlockSection->id,
+            'broadcast' => $schedule->id
+        ];
 
         foreach($schedule->weekday as $weekday) 
         {

@@ -194,7 +194,7 @@ export default class BuilderComponent extends Vue {
                         text: "",
                         button: []
                     }
-                }));
+                }, ''));
                 break;
 
             case(2):
@@ -207,7 +207,7 @@ export default class BuilderComponent extends Vue {
                     content: {
                         duration: "1"
                     }
-                }));
+                }, ''));
                 break;
 
             case(3):
@@ -218,7 +218,7 @@ export default class BuilderComponent extends Vue {
                     section: 0,
                     project: 0,
                     content: []
-                }));
+                }, ''));
                 break;
 
             case(4):
@@ -229,7 +229,7 @@ export default class BuilderComponent extends Vue {
                     section: 0,
                     project: 0,
                     content: []
-                }));
+                }, ''));
                 break;
 
             case(5):
@@ -243,7 +243,7 @@ export default class BuilderComponent extends Vue {
                         content: [],
                         button: []
                     }
-                }));
+                }, ''));
                 break;
 
             case(6):
@@ -254,7 +254,7 @@ export default class BuilderComponent extends Vue {
                     section: 0,
                     project: 0,
                     content: []
-                }));
+                }, ''));
                 break;
 
             case(7):
@@ -267,7 +267,7 @@ export default class BuilderComponent extends Vue {
                     content: {
                         image: ""
                     }
-                }));
+                }, ''));
                 break;
         }
     }

@@ -16,9 +16,9 @@ export default class ListContentModel extends ChatBlockContentModel {
     private buttonToken: CancelTokenSource = Axios.CancelToken.source();
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
 
-    constructor(content: any) {
-        super(content);
-        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
+    constructor(content: any, baseUrl: string) {
+        super(content, baseUrl);
+        this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         for(let i in content.content.content) {
             this.buildListItem(content.content.content[i]);
         }

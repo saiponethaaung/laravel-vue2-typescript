@@ -30,7 +30,7 @@ class GetController extends Controller
         $section = [
             'id' => $request->attributes->get('chatBlockSection')->id,
             'title' => $request->attributes->get('chatBlockSection')->title,
-            'lock' => $request->attributes->get('chatBlock')->is_lock
+            'lock' => is_null($request->attributes->get('chatBlock')) ? true : $request->attributes->get('chatBlock')->is_lock
         ];
 
         foreach($contents as $content) {

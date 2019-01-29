@@ -6,7 +6,11 @@ export default class BroadcastModel extends AjaxErrorHandler {
         id: -1,
         tag: 2,
         project: '',
-        type: 1
+        type: 1,
+        section: {
+            id: -1,
+            boradcast: -1
+        }
     };
 
     constructor() {
@@ -18,6 +22,7 @@ export default class BroadcastModel extends AjaxErrorHandler {
         this.project = content.project;
         this.type = content.type;
         this.tag = content.tag;
+        this.section = content.section;
     }
 
     get id(): number {
@@ -50,5 +55,13 @@ export default class BroadcastModel extends AjaxErrorHandler {
 
     set type(type: string) {
         this.content.type = type;
+    }
+
+    get section() : any{
+        return this.content.section;
+    }
+
+    set section(section: any) {
+        this.content.section = section;
     }
 }

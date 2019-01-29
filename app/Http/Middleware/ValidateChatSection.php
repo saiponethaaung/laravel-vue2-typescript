@@ -17,6 +17,14 @@ class ValidateChatSection
      */
     public function handle($request, Closure $next)
     {
+        if(is_null($request->blockId) && is_null($request->broadcastId)) {
+            return respons()->json([
+                'stauts' => false,
+                'code' => 422,
+                'mesg' => 'Invalid path!'
+            ], 422);
+        }
+
         $section = ChatBlockSection::find($request->sectionId);
 
         if(empty($section)) {
@@ -26,12 +34,20 @@ class ValidateChatSection
                 'mesg' => 'Invalid section!'
             ], 422);
         }
-
-        if((int) $section->block_id!==(int) $request->blockId) {
+        
+        if(is_null($request->broadcastId) && (int) $section->block_id!==(int) $request->blockId) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
                 'mesg' => 'Invalid section block!'
+            ], 422);
+        }
+
+        if(is_null($request->blockId) && (int) $section->broadcast_id!==(int) $request->broadcastId) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Invalid section broadcast!'
             ], 422);
         }
 

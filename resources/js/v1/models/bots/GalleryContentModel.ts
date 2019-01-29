@@ -10,9 +10,9 @@ export default class GalleryContentModel extends ChatBlockContentModel {
     private creating: boolean = false;
     private orderToken: CancelTokenSource = Axios.CancelToken.source();
 
-    constructor(content: any) {
-        super(content);
-        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
+    constructor(content: any, baseUrl: string) {
+        super(content, baseUrl);
+        this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         for(let i of content.content) {
             this.buildGalleryItem(i);
         }

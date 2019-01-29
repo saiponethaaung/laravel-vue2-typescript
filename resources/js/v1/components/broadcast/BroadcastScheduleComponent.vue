@@ -103,7 +103,7 @@
                 <builder-component
                     :isBroadcast="true"
                     :value="[]"
-                    :section="schedule.id"></builder-component>
+                    :section="schedule.section"></builder-component>
             </div>
         </template>
     </div>

@@ -4,9 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-use App\Models\ChatBlock;
+use App\Models\Broadcast;
 
-class ValidateChatBlock
+class ValidateBroadcast
 {
     /**
      * Handle an incoming request.
@@ -17,28 +17,28 @@ class ValidateChatBlock
      */
     public function handle($request, Closure $next)
     {
-        $block = ChatBlock::find($request->blockId);
+        $broadcast = Broadcast::find($request->broadcastId);
 
-        if(empty($block)) {
+        if(empty($broadcast)) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'mesg' => 'Invalid block!'
+                'mesg' => 'Invalid broadcast!'
             ], 422);
         }
 
-        if((int) $block->project_id!==(int) $request->attributes->get('project')->id) {
+        if((int) $broadcast->project_id!==(int) $request->attributes->get('project')->id) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'mesg' => 'Invalid project block!'
+                'mesg' => 'Invalid project broadcast!'
             ], 422);
         }
 
         $request->attributes->add([
-            'chatBlock' => $block
+            'broadcast' => $broadcast
         ]);
-        
+
         return $next($request);
     }
 }

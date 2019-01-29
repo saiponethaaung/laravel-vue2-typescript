@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
         'verifyProjectPageUserAttribute' => \App\Http\Middleware\ValidateChatUserAttribute::class,
         'verifySegment' => \App\Http\Middleware\ValidateSegment::class,
         'verifySegmentFilter' => \App\Http\Middleware\ValidateSegmentFilter::class,
+        'verifyBroadcast' => \App\Http\Middleware\ValidateBroadcast::class,
     ];
 
     /**

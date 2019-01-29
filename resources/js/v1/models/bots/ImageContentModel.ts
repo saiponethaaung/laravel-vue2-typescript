@@ -11,10 +11,10 @@ export default class ImageContentModel extends ChatBlockContentModel {
     private uploading: boolean = false;
     private imageToken: CancelTokenSource = Axios.CancelToken.source();
     
-    constructor(content: any) {
-        super(content);
+    constructor(content: any, baseUrl: string) {
+        super(content, baseUrl);
         this.imageContent.image = content.content.image;
-        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/image`;
+        this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}/image`;
     }
 
     get image() : string {

@@ -93,7 +93,8 @@ class CreateController extends Controller
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
-                'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'block_id' => is_null($request->attributes->get('chatBlock')) ? null : (int) $request->attributes->get('chatBlock')->id,
+                'broadcast_id' => is_null($request->attributes->get('broadcast')) ? null : (int) $request->attributes->get('broadcast')->id,
                 'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     'text' => $create->content,
@@ -124,7 +125,8 @@ class CreateController extends Controller
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
-                'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'block_id' => is_null($request->attributes->get('chatBlock')) ? null : (int) $request->attributes->get('chatBlock')->id,
+                'broadcast_id' => is_null($request->attributes->get('broadcast')) ? null : (int) $request->attributes->get('broadcast')->id,
                 'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     'duration' => $create->duration,
@@ -164,7 +166,8 @@ class CreateController extends Controller
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
-                'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'block_id' => is_null($request->attributes->get('chatBlock')) ? null : (int) $request->attributes->get('chatBlock')->id,
+                'broadcast_id' => is_null($request->attributes->get('broadcast')) ? null : (int) $request->attributes->get('broadcast')->id,
                 'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     'content' => [
@@ -215,7 +218,8 @@ class CreateController extends Controller
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
-                'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'block_id' => is_null($request->attributes->get('chatBlock')) ? null : (int) $request->attributes->get('chatBlock')->id,
+                'broadcast_id' => is_null($request->attributes->get('broadcast')) ? null : (int) $request->attributes->get('broadcast')->id,
                 'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     [
@@ -253,7 +257,8 @@ class CreateController extends Controller
                 'id' => (int) $content->id,
                 'type' => (int) $content->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
-                'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'block_id' => is_null($request->attributes->get('chatBlock')) ? null : (int) $request->attributes->get('chatBlock')->id,
+                'broadcast_id' => is_null($request->attributes->get('broadcast')) ? null : (int) $request->attributes->get('broadcast')->id,
                 'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     [
@@ -396,7 +401,8 @@ class CreateController extends Controller
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
-                'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'block_id' => is_null($request->attributes->get('chatBlock')) ? null : (int) $request->attributes->get('chatBlock')->id,
+                'broadcast_id' => is_null($request->attributes->get('broadcast')) ? null : (int) $request->attributes->get('broadcast')->id,
                 'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     [
@@ -512,7 +518,8 @@ class CreateController extends Controller
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,
                 'section_id' => (int) $request->attributes->get('chatBlockSection')->id,
-                'block_id' => (int) $request->attributes->get('chatBlock')->id,
+                'block_id' => is_null($request->attributes->get('chatBlock')) ? null : (int) $request->attributes->get('chatBlock')->id,
+                'broadcast_id' => is_null($request->attributes->get('broadcast')) ? null : (int) $request->attributes->get('broadcast')->id,
                 'project' => md5($request->attributes->get('project')->id),
                 'content' => [
                     [

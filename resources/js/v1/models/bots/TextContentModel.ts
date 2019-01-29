@@ -13,9 +13,9 @@ export default class TextContentModel extends ChatBlockContentModel {
     private buttonCreating: boolean = false;
     private buttonEditIndex: number = -1;
 
-    constructor(content: any) {
-        super(content);
-        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
+    constructor(content: any, baseUrl: string) {
+        super(content, baseUrl);
+        this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         this.textContent = {
             content: content.content.text,
             button: content.content.button

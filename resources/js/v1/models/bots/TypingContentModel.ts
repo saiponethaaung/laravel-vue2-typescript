@@ -7,8 +7,8 @@ export default class TypingContentModel extends ChatBlockContentModel {
     private typingContent: typingContent;
     private saveToken: CancelTokenSource = Axios.CancelToken.source();
     
-    constructor(content: any) {
-        super(content);
+    constructor(content: any, baseUrl: string) {
+        super(content, baseUrl);
         this.typingContent = {
             duration: content.content.duration
         };
@@ -34,7 +34,7 @@ export default class TypingContentModel extends ChatBlockContentModel {
         this.isUpdating = true;
         
         await Axios({
-            url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`,
+            url: `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`,
             data: data,
             method: 'post',
             cancelToken: this.saveToken.token

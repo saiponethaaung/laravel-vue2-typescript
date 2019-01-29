@@ -66,7 +66,7 @@
                         <i class="material-icons">insert_photo</i>
                         <span class="contentActionName">Image</span>
                     </li>
-                    <li class="contentActionList">
+                    <li class="contentActionList" v-if="!isBroadcast">
                         <i class="material-icons">stars</i>
                         <span class="contentActionName">Plugins</span>
                     </li>
@@ -114,6 +114,8 @@ export default class BuilderComponent extends Vue {
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private creating: number = 0;
     private sectionToken: CancelTokenSource = Axios.CancelToken.source();
+    private urlPath: string = '';
+    private sectionid: number = -1;
 
     @Prop({
         type: Array,
@@ -131,6 +133,8 @@ export default class BuilderComponent extends Vue {
         for(let i in this.value) {
             this.buildConetnt(this.value[i]);
         }
+
+        this.urlPath = this.isBroadcast ? `broadcast/${this.section.broadcast}`: `chat-bot/block/${this.$store.state.chatBot.block}`;
     }
 
     async addText() {
@@ -188,7 +192,7 @@ export default class BuilderComponent extends Vue {
 
         this.creating++;
         await Axios({
-            url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}/content`,
             data: data,
             method: 'post'
         }).then((res: any) => {
@@ -208,31 +212,31 @@ export default class BuilderComponent extends Vue {
     private buildConetnt(value: any) {
         switch(value.type) {
             case(1):
-                this.contents.push(new TextContentModel(value));
+                this.contents.push(new TextContentModel(value, this.urlPath));
                 break;
 
             case(2):
-                this.contents.push(new TypingContentModel(value));
+                this.contents.push(new TypingContentModel(value, this.urlPath));
                 break;
 
             case(3):
-                this.contents.push(new QuickReplyContentModel(value));
+                this.contents.push(new QuickReplyContentModel(value, this.urlPath));
                 break;
 
             case(4):
-                this.contents.push(new UserInputContentModel(value));
+                this.contents.push(new UserInputContentModel(value, this.urlPath));
                 break;
 
             case(5):
-                this.contents.push(new ListContentModel(value));
+                this.contents.push(new ListContentModel(value, this.urlPath));
                 break;
 
             case(6):
-                this.contents.push(new GalleryContentModel(value));
+                this.contents.push(new GalleryContentModel(value, this.urlPath));
                 break;
 
             case(7):
-                this.contents.push(new ImageContentModel(value));
+                this.contents.push(new ImageContentModel(value, this.urlPath));
                 break;
         }
     }
@@ -277,7 +281,7 @@ export default class BuilderComponent extends Vue {
         if(confirm('Are you sure you want to delete?')) {
             this.contents[index].isDeleting = true;
             await Axios({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content/${this.contents[index].contentId}`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}/content/${this.contents[index].contentId}`,
                 method: 'delete'
             }).then((res) => {
                 this.contents.splice(index, 1);   
@@ -300,7 +304,7 @@ export default class BuilderComponent extends Vue {
         data.append('_method', 'put');
 
         await Axios({
-            url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}`,
             data: data,
             method: 'post',
             cancelToken: this.sectionToken.token
@@ -321,7 +325,7 @@ export default class BuilderComponent extends Vue {
     async delSection() {
         if(confirm('Are you sure you want to delete this block with it\'s content?')) {
             await Axios({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}`,
                 method: 'delete',
             }).then((res) => {
                 this.$store.commit('deleteChatBot', {

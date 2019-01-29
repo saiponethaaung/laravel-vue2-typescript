@@ -11679,10 +11679,12 @@ Vue.compile = compileToFunctions;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
 
 class ChatBlockContentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
-    constructor(content) {
+    constructor(content, baseUrl) {
         super();
         this.updating = false;
         this.deleting = false;
+        this.baseUrl = "";
+        this.baseUrl = baseUrl;
         this.content = {
             id: content.id,
             type: content.type,
@@ -12217,14 +12219,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__["a" /* default */] {
-    constructor(content) {
-        super(content);
+    constructor(content, baseUrl) {
+        super(content, baseUrl);
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__["a" /* default */]();
         this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.buttonCreating = false;
         this.buttonEditIndex = -1;
-        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
+        this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         this.textContent = {
             content: content.content.text,
             button: content.content.button
@@ -12345,8 +12347,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 class TypingContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
-    constructor(content) {
-        super(content);
+    constructor(content, baseUrl) {
+        super(content, baseUrl);
         this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
         this.typingContent = {
             duration: content.content.duration
@@ -12368,7 +12370,7 @@ class TypingContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMo
             data.append('_method', 'put');
             this.isUpdating = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`,
+                url: `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`,
                 data: data,
                 method: 'post',
                 cancelToken: this.saveToken.token
@@ -12409,8 +12411,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
-    constructor(content) {
-        super(content);
+    constructor(content, baseUrl) {
+        super(content, baseUrl);
         this.rootUrl = "";
         this.listContent = [];
         this.listButton = null;
@@ -12420,7 +12422,7 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
         this.buttonCreating = false;
         this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__["a" /* default */]();
-        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
+        this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         for (let i in content.content.content) {
             this.buildListItem(content.content.content[i]);
         }
@@ -12555,12 +12557,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
-    constructor(content) {
-        super(content);
+    constructor(content, baseUrl) {
+        super(content, baseUrl);
         this.galleryContent = [];
         this.creating = false;
         this.orderToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
-        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}`;
+        this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         for (let i of content.content) {
             this.buildGalleryItem(i);
         }
@@ -12639,13 +12641,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
-    constructor(content) {
-        super(content);
+    constructor(content, baseUrl) {
+        super(content, baseUrl);
         this.quickReplyContent = [];
         this.creating = false;
         this.rootUrl = '';
         this.delChild = -1;
-        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/quick-reply`;
+        this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}/quick-reply`;
         for (let i of content.content) {
             this.buildQuickReplyItem(i);
         }
@@ -12729,12 +12731,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
-    constructor(content) {
-        super(content);
+    constructor(content, baseUrl) {
+        super(content, baseUrl);
         this.userInputContent = [];
         this.creating = false;
         this.rootUrl = '';
-        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/user-input`;
+        this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}/user-input`;
         for (let i of content.content) {
             this.buildUserInputItem(i);
         }
@@ -12810,15 +12812,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 class ImageContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
-    constructor(content) {
-        super(content);
+    constructor(content, baseUrl) {
+        super(content, baseUrl);
         this.imageContent = {
             image: ''
         };
         this.uploading = false;
         this.imageToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
         this.imageContent.image = content.content.image;
-        this.rootUrl = `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/image`;
+        this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}/image`;
     }
     get image() {
         return this.imageContent.image;
@@ -43332,7 +43334,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                         text: "",
                         button: []
                     }
-                }));
+                }, ''));
                 break;
             case (2):
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_11__models_bots_TypingContentModel__["a" /* default */]({
@@ -43344,7 +43346,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     content: {
                         duration: "1"
                     }
-                }));
+                }, ''));
                 break;
             case (3):
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_14__models_bots_QuickReplyContentModel__["a" /* default */]({
@@ -43354,7 +43356,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     section: 0,
                     project: 0,
                     content: []
-                }));
+                }, ''));
                 break;
             case (4):
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_15__models_bots_UserInputContentModel__["a" /* default */]({
@@ -43364,7 +43366,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     section: 0,
                     project: 0,
                     content: []
-                }));
+                }, ''));
                 break;
             case (5):
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_12__models_bots_ListContentModel__["a" /* default */]({
@@ -43377,7 +43379,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                         content: [],
                         button: []
                     }
-                }));
+                }, ''));
                 break;
             case (6):
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_13__models_bots_GalleryContentModel__["a" /* default */]({
@@ -43387,7 +43389,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     section: 0,
                     project: 0,
                     content: []
-                }));
+                }, ''));
                 break;
             case (7):
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_16__models_bots_ImageContentModel__["a" /* default */]({
@@ -43399,7 +43401,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     content: {
                         image: ""
                     }
-                }));
+                }, ''));
                 break;
         }
     }
@@ -47224,7 +47226,11 @@ class BroadcastModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler
             id: -1,
             tag: 2,
             project: '',
-            type: 1
+            type: 1,
+            section: {
+                id: -1,
+                boradcast: -1
+            }
         };
     }
     broadcastInit(content) {
@@ -47232,6 +47238,7 @@ class BroadcastModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler
         this.project = content.project;
         this.type = content.type;
         this.tag = content.tag;
+        this.section = content.section;
     }
     get id() {
         return this.content.id;
@@ -47256,6 +47263,12 @@ class BroadcastModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler
     }
     set type(type) {
         this.content.type = type;
+    }
+    get section() {
+        return this.content.section;
+    }
+    set section(section) {
+        this.content.section = section;
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = BroadcastModel;
@@ -47576,7 +47589,7 @@ var render = function() {
                   attrs: {
                     isBroadcast: true,
                     value: [],
-                    section: _vm.schedule.id
+                    section: _vm.schedule.section
                   }
                 })
               ],
@@ -50557,11 +50570,14 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__["a" /* default */]();
         this.creating = 0;
         this.sectionToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.urlPath = '';
+        this.sectionid = -1;
     }
     mounted() {
         for (let i in this.value) {
             this.buildConetnt(this.value[i]);
         }
+        this.urlPath = this.isBroadcast ? `broadcast/${this.section.broadcast}` : `chat-bot/block/${this.$store.state.chatBot.block}`;
     }
     addText() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -50625,7 +50641,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
             data.append('type', content.type);
             this.creating++;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}/content`,
                 data: data,
                 method: 'post'
             }).then((res) => {
@@ -50645,25 +50661,25 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     buildConetnt(value) {
         switch (value.type) {
             case (1):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_10__models_bots_TextContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_10__models_bots_TextContentModel__["a" /* default */](value, this.urlPath));
                 break;
             case (2):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_11__models_bots_TypingContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_11__models_bots_TypingContentModel__["a" /* default */](value, this.urlPath));
                 break;
             case (3):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_14__models_bots_QuickReplyContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_14__models_bots_QuickReplyContentModel__["a" /* default */](value, this.urlPath));
                 break;
             case (4):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_15__models_bots_UserInputContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_15__models_bots_UserInputContentModel__["a" /* default */](value, this.urlPath));
                 break;
             case (5):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_12__models_bots_ListContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_12__models_bots_ListContentModel__["a" /* default */](value, this.urlPath));
                 break;
             case (6):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_13__models_bots_GalleryContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_13__models_bots_GalleryContentModel__["a" /* default */](value, this.urlPath));
                 break;
             case (7):
-                this.contents.push(new __WEBPACK_IMPORTED_MODULE_16__models_bots_ImageContentModel__["a" /* default */](value));
+                this.contents.push(new __WEBPACK_IMPORTED_MODULE_16__models_bots_ImageContentModel__["a" /* default */](value, this.urlPath));
                 break;
         }
     }
@@ -50699,7 +50715,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
             if (confirm('Are you sure you want to delete?')) {
                 this.contents[index].isDeleting = true;
                 yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content/${this.contents[index].contentId}`,
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}/content/${this.contents[index].contentId}`,
                     method: 'delete'
                 }).then((res) => {
                     this.contents.splice(index, 1);
@@ -50721,7 +50737,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
             data.append('title', this.section.title);
             data.append('_method', 'put');
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}`,
                 data: data,
                 method: 'post',
                 cancelToken: this.sectionToken.token
@@ -50743,7 +50759,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
         return __awaiter(this, void 0, void 0, function* () {
             if (confirm('Are you sure you want to delete this block with it\'s content?')) {
                 yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}`,
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}`,
                     method: 'delete',
                 }).then((res) => {
                     this.$store.commit('deleteChatBot', {
@@ -51024,7 +51040,15 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _vm._m(1)
+            !_vm.isBroadcast
+              ? _c("li", { staticClass: "contentActionList" }, [
+                  _c("i", { staticClass: "material-icons" }, [_vm._v("stars")]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "contentActionName" }, [
+                    _vm._v("Plugins")
+                  ])
+                ])
+              : _vm._e()
           ])
         ])
       ])
@@ -51039,16 +51063,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "componentDeleting" }, [
       _c("div", { staticClass: "deletingContainer" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "contentActionList" }, [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("stars")]),
-      _vm._v(" "),
-      _c("span", { staticClass: "contentActionName" }, [_vm._v("Plugins")])
     ])
   }
 ]

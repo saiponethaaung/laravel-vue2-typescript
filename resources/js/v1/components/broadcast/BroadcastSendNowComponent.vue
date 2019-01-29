@@ -14,9 +14,7 @@
                     </div>
                     <div v-show="showOption1" class="dropDownList">
                         <ul>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
+                            <li v-for="(option, index) in condiOptions" :key="index" @click="selectNewOption(option.key)">{{ option.value }}</li>
                         </ul>
                     </div>
                 </div>
@@ -37,11 +35,11 @@
                         <button v-if="filterSegment.attributes.length>1" class="deleteAttribute" @click="filterSegment.attributes.splice(index, 1);">
                             <i class="material-icons">delete</i>
                         </button>
+                        <div v-if="(filterSegment.attributes.length-1)==index" @click="addNewFitler()" class="addMoreFilterButton">
+                            <i class="material-icons">add</i>Add More
+                        </div>
                     </div>
                 </template>
-                <div @click="addNewFitler()" class="addMoreFilterButton">
-                    <i class="material-icons">add</i>Add More
-                </div>
             </div>
 
             <div class="textAlign">
@@ -67,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Emit, Vue } from 'vue-property-decorator';
 import BuilderComponentMock from '../common/BuilderComponentMock.vue';
 import AttributeFilterListModel from '../../models/AttributeFilterListModel';
 import AttributeFilterModel from '../../models/AttributeFilterModel';
@@ -82,6 +80,22 @@ export default class BroadcastSendNowComponent extends Vue {
     private showOption1: boolean = false;
 
     private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(false, this.$store.state.projectInfo.id, []);
+
+    private condiOptions: any = [
+        {
+            key: 1,
+            value: 'and'
+        },
+        {
+            key: 2,
+            value: 'or'
+        }
+    ];
+
+    @Emit('input')
+    selectNewOption(key: number) {
+        return key;
+    }
 
     mounted() {
         this.addNewFitler();

@@ -37,11 +37,11 @@
                         <button v-if="filterSegment.attributes.length>1" class="deleteAttribute" @click="filterSegment.attributes.splice(index, 1);">
                             <i class="material-icons">delete</i>
                         </button>
+                        <div v-if="(filterSegment.attributes.length-1)==index" @click="addNewFitler()" class="addMoreFilterButton">
+                            <i class="material-icons">add</i>Add More
+                        </div>
                     </div>
                 </template>
-                <div @click="addNewFitler()" class="addMoreFilterButton">
-                    <i class="material-icons">add</i>
-                </div>
             </div>
 
             <div class="textAlign">

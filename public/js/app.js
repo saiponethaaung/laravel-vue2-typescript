@@ -42839,8 +42839,11 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
     constructor() {
         super(...arguments);
         this.scheduleLoading = true;
+        this.triggerLoading = false;
         this.scheduleList = [];
+        this.triggerList = [];
         this.creatingSchedule = false;
+        this.creatingTrigger = false;
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__["a" /* default */]();
     }
     mounted() {
@@ -42910,7 +42913,6 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
                 method: 'post'
             }).then(res => {
                 this.scheduleList.push(res.data.data);
-                this.$router.push({ name: 'project.broadcast.schedule', params: { scheduleid: res.data.data.id } });
             }).catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new schedule!');
@@ -42918,6 +42920,22 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
                 }
             });
             this.creatingSchedule = false;
+        });
+    }
+    createTrigger() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.creatingTrigger = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast?section=trigger`,
+                method: 'post'
+            }).then(res => {
+            }).catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new schedule!');
+                    alert(mesg);
+                }
+            });
+            this.creatingTrigger = false;
         });
     }
     loadMessageTags() {
@@ -42981,23 +42999,33 @@ var render = function() {
       _vm._v(" "),
       _vm._m(2),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "btnClick" },
-        [
-          _c(
-            "router-link",
-            { attrs: { to: { name: "project.broadcast.trigger" } } },
-            [
-              _c("i", { staticClass: "material-icons iconAlign" }, [
-                _vm._v("add")
-              ]),
-              _vm._v("Add a trigger\n        ")
-            ]
-          )
-        ],
-        1
-      ),
+      _vm.creatingTrigger
+        ? [
+            _c("div", { staticClass: "btnClick" }, [
+              _vm._v("\n            creating...\n        ")
+            ])
+          ]
+        : [
+            _vm.triggerLoading
+              ? _c("div", { staticClass: "btnClick" }, [
+                  _vm._v("\n            Loading...\n        ")
+                ])
+              : _c(
+                  "div",
+                  {
+                    staticClass: "btnClick",
+                    on: {
+                      click: function($event) {
+                        _vm.createTrigger()
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+                    _vm._v("Add a trigger\n        ")
+                  ]
+                )
+          ],
       _vm._v(" "),
       _vm._m(3),
       _vm._v(" "),
@@ -43061,7 +43089,9 @@ var render = function() {
                     _vm._v("Add a schedule\n        ")
                   ]
                 )
-          ]
+          ],
+      _vm._v(" "),
+      _vm._m(4)
     ],
     2
   )
@@ -43116,6 +43146,12 @@ var staticRenderFns = [
         _c("span", [_vm._v("Schedule your message")])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [_c("div", { attrs: { contenteditable: "true" } })])
   }
 ]
 render._withStripped = true
@@ -46632,40 +46668,189 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_broadcast_ScheduleModel__ = __webpack_require__(151);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 
 
 
 
-let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
+
+
+let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.showOption1 = false;
-        this.showOption2 = false;
-        this.showOption3 = false;
+        this.loading = false;
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__["a" /* default */]();
+        this.loadingToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+        this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+        this.loadingContent = true;
+        this.contents = [];
+        this.periodOption = [
+            {
+                key: 1,
+                value: "am"
+            },
+            {
+                key: 2,
+                value: "pm"
+            },
+        ];
+        this.repeatOption = [
+            {
+                key: 1,
+                value: 'None'
+            },
+            {
+                key: 2,
+                value: 'Daily'
+            },
+            {
+                key: 3,
+                value: 'Weekend'
+            },
+            {
+                key: 4,
+                value: 'Every Month'
+            },
+            {
+                key: 5,
+                value: 'Workdays'
+            },
+            {
+                key: 6,
+                value: 'Yearly'
+            },
+            {
+                key: 7,
+                value: 'Custom'
+            },
+        ];
+        this.showTags = false;
+        this.schedule = new __WEBPACK_IMPORTED_MODULE_2__models_broadcast_ScheduleModel__["a" /* default */]();
         this.filterSegment = new __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
     }
+    get showDate() {
+        if (undefined === this.schedule)
+            return '';
+        let date = '';
+        let month = this.schedule.date.getMonth() + 1;
+        return `${this.$store.state.months[month]} ${this.schedule.date.getDate()}, ${this.schedule.date.getFullYear()}`;
+    }
+    get selectedTag() {
+        if (undefined === this.schedule)
+            return 0;
+        let index = 0;
+        for (let i = 0; this.$store.state.messageTags.length > i; i++) {
+            if (this.$store.state.messageTags[i].id === this.schedule.tag) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
     mounted() {
-        this.addNewFitler();
+        this.loadSchedule();
     }
     addNewFitler() {
         this.filterSegment.createNewAttributeFilter();
     }
+    loadSchedule() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loadingToken.cancel();
+            this.loadingToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+            this.loading = true;
+            yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/schedule/${this.$route.params.scheduleid}`,
+                method: 'get',
+                cancelToken: this.loadingToken.token
+            }).then(res => {
+                this.schedule.init(res.data.data);
+                this.loadScheduleContent();
+                this.loading = false;
+            }).catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule info!');
+                    alert(mesg);
+                    this.loading = false;
+                }
+            });
+        });
+    }
+    loadScheduleContent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loadingContentToken.cancel();
+            this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+            this.loadingContent = true;
+            this.contents = [];
+            yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.schedule.id}/section/${this.schedule.section.id}/content`,
+                cancelToken: this.loadingContentToken.token
+            }).then((res) => {
+                this.contents = res.data.content;
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                    alert(mesg);
+                }
+                else {
+                    this.loadingContentToken.cancel();
+                }
+            });
+            this.loadingContent = false;
+        });
+    }
+    updateSchedule() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.loadingContent)
+                return;
+            yield this.schedule.updateSchedule();
+        });
+    }
+    updateTag() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.loadingContent)
+                return;
+            yield this.schedule.updateTag();
+        });
+    }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$route.params.scheduleid')
+], BroadcastTriggerComponent.prototype, "loadSchedule", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.date'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.time'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.period'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.repeat'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.days', { deep: true })
+], BroadcastTriggerComponent.prototype, "updateSchedule", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.tag')
+], BroadcastTriggerComponent.prototype, "updateTag", null);
 BroadcastTriggerComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {
-            BuilderComponentMock: __WEBPACK_IMPORTED_MODULE_2__common_BuilderComponentMock_vue___default.a
+            BuilderComponentMock: __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue___default.a
         }
     })
 ], BroadcastTriggerComponent);
@@ -46680,294 +46865,334 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "upperDisplay" }, [
-      _c("div", { staticClass: "outerDisplay" }, [
-        _c(
-          "div",
-          {
-            on: {
-              click: function($event) {
-                _vm.showOption1 = !_vm.showOption1
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "btnSub" }, [
-              _c("span", [_vm._v("Subscription")]),
-              _vm._v(" "),
-              _c("span", { staticClass: "iconSub" }, [
-                _c(
-                  "i",
-                  { staticClass: "material-icons" },
-                  [
-                    _vm.showOption1
-                      ? [_vm._v("expand_less")]
-                      : [_vm._v("expand_more")]
-                  ],
-                  2
-                )
-              ])
-            ]),
-            _vm._v(" "),
+  return _c(
+    "div",
+    { staticClass: "inheritHFW broadcastRoot" },
+    [
+      _vm.loading && undefined !== _vm.schedule
+        ? [_vm._v("\n        Loading...\n    ")]
+        : [
             _c(
               "div",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.showOption1,
-                    expression: "showOption1"
-                  }
-                ],
-                staticClass: "dropDownList"
-              },
-              [_vm._m(0)]
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _vm._m(1)
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "attributeSelectorList" },
-        [
-          _vm._l(_vm.filterSegment.attributes, function(attribute, index) {
-            return [
-              _c(
-                "div",
-                { key: index, staticClass: "attributeSelector" },
-                [
-                  _c("attribute-selector-component", {
-                    attrs: {
-                      attribute: attribute,
-                      canCondition:
-                        _vm.filterSegment.attributes.length - 1 > index
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.filterSegment.attributes.length > 1
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "deleteAttribute",
-                          on: {
-                            click: function($event) {
-                              _vm.filterSegment.attributes.splice(index, 1)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", { staticClass: "material-icons" }, [
-                            _vm._v("delete")
-                          ])
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.filterSegment.attributes.length - 1 == index
-                    ? _c(
+              { staticClass: "broadcastFilterCon" },
+              [
+                _vm.$store.state.messageTags.length > 0
+                  ? _c("div", { staticClass: "outerDisplay" }, [
+                      _c(
                         "div",
                         {
-                          staticClass: "addMoreFilterButton",
                           on: {
                             click: function($event) {
-                              _vm.addNewFitler()
+                              _vm.showTags = !_vm.showTags
                             }
                           }
                         },
                         [
-                          _c("i", { staticClass: "material-icons" }, [
-                            _vm._v("add")
+                          _c("div", { staticClass: "btnSub" }, [
+                            _c("span", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$store.state.messageTags[_vm.selectedTag]
+                                    .name
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "iconSub" }, [
+                              _c(
+                                "i",
+                                { staticClass: "material-icons" },
+                                [
+                                  _vm.showTags
+                                    ? [_vm._v("expand_less")]
+                                    : [_vm._v("expand_more")]
+                                ],
+                                2
+                              )
+                            ])
                           ]),
-                          _vm._v("Add More\n                    ")
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.showTags,
+                                  expression: "showTags"
+                                }
+                              ],
+                              staticClass: "dropDownList"
+                            },
+                            [
+                              _c(
+                                "ul",
+                                [
+                                  _vm._l(_vm.$store.state.messageTags, function(
+                                    tag,
+                                    index
+                                  ) {
+                                    return [
+                                      _c(
+                                        "li",
+                                        {
+                                          key: index,
+                                          on: {
+                                            click: function($event) {
+                                              _vm.schedule.tag = tag.id
+                                            }
+                                          }
+                                        },
+                                        [_vm._v(_vm._s(tag.name))]
+                                      )
+                                    ]
+                                  })
+                                ],
+                                2
+                              )
+                            ]
+                          )
                         ]
-                      )
-                    : _vm._e()
-                ],
-                1
-              )
-            ]
-          })
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _vm._m(2),
-      _vm._v(" "),
-      _c("div", { staticClass: "outerDisplay" }, [
-        _c("span", { staticClass: "textTrig" }, [_vm._v("Trigger:")]),
-        _vm._v(" "),
-        _c("div", [
-          _c(
-            "div",
-            {
-              staticClass: "btnSub",
-              on: {
-                click: function($event) {
-                  _vm.showOption2 = !_vm.showOption2
-                }
-              }
-            },
-            [
-              _c("span", [_vm._v("1 Minute")]),
-              _vm._v(" "),
-              _c("span", { staticClass: "iconSub" }, [
+                      ),
+                      _vm._v(" "),
+                      _c("div", {
+                        staticClass: "label",
+                        domProps: {
+                          innerHTML: _vm._s(
+                            _vm.$store.state.messageTags[_vm.selectedTag].mesg
+                          )
+                        }
+                      })
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
                 _c(
-                  "i",
-                  { staticClass: "material-icons" },
+                  "div",
+                  { staticClass: "attributeSelectorList" },
                   [
-                    _vm.showOption4
-                      ? [_vm._v("expand_less")]
-                      : [_vm._v("expand_more")]
+                    _vm._l(_vm.filterSegment.attributes, function(
+                      attribute,
+                      index
+                    ) {
+                      return [
+                        _c(
+                          "div",
+                          { key: index, staticClass: "attributeSelector" },
+                          [
+                            _c("attribute-selector-component", {
+                              attrs: {
+                                attribute: attribute,
+                                canCondition:
+                                  _vm.filterSegment.attributes.length - 1 >
+                                  index
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.filterSegment.attributes.length > 1
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "deleteAttribute",
+                                    on: {
+                                      click: function($event) {
+                                        _vm.filterSegment.attributes.splice(
+                                          index,
+                                          1
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", { staticClass: "material-icons" }, [
+                                      _vm._v("delete")
+                                    ])
+                                  ]
+                                )
+                              : _vm._e()
+                          ],
+                          1
+                        )
+                      ]
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "addMoreFilterButton",
+                        on: {
+                          click: function($event) {
+                            _vm.addNewFitler()
+                          }
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("add")
+                        ])
+                      ]
+                    )
                   ],
                   2
-                )
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showOption2,
-                  expression: "showOption2"
-                }
+                ),
+                _vm._v(" "),
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "broadcastCondition" }, [
+                  _c("h5", { staticClass: "bccHeading float-left" }, [
+                    _vm._v("\n                    Schedule:\n                ")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "bccCalender float-left" }, [
+                    _c("span", [_vm._v(_vm._s(_vm.showDate))]),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("date_range")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "calendarPlugin" },
+                      [
+                        _c("v-date-picker", {
+                          attrs: { "min-date": new Date() },
+                          model: {
+                            value: _vm.schedule.date,
+                            callback: function($$v) {
+                              _vm.$set(_vm.schedule, "date", $$v)
+                            },
+                            expression: "schedule.date"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "bccTime float-left" },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "timeOptionCon" },
+                        [
+                          _c("time-input-component", {
+                            attrs: { value: _vm.schedule.time },
+                            model: {
+                              value: _vm.schedule.time,
+                              callback: function($$v) {
+                                _vm.$set(_vm.schedule, "time", $$v)
+                              },
+                              expression: "schedule.time"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("dropdown-keybase-component", {
+                        attrs: {
+                          options: _vm.periodOption,
+                          selectedKey: _vm.schedule.period
+                        },
+                        model: {
+                          value: _vm.schedule.period,
+                          callback: function($$v) {
+                            _vm.$set(_vm.schedule, "period", $$v)
+                          },
+                          expression: "schedule.period"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "bccRepeat float-left" },
+                    [
+                      _c("dropdown-keybase-component", {
+                        attrs: {
+                          labelText: "Repeat: ",
+                          options: _vm.repeatOption,
+                          selectedKey: _vm.schedule.repeat
+                        },
+                        model: {
+                          value: _vm.schedule.repeat,
+                          callback: function($$v) {
+                            _vm.$set(_vm.schedule, "repeat", $$v)
+                          },
+                          expression: "schedule.repeat"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
+                _vm.schedule.repeat === 7
+                  ? [
+                      _c("div", { staticClass: "dayPicker" }, [
+                        _c(
+                          "ul",
+                          [
+                            _vm._l(_vm.schedule.days, function(day, index) {
+                              return [
+                                _c(
+                                  "li",
+                                  {
+                                    key: index,
+                                    class: { selectedDay: day.check },
+                                    on: {
+                                      click: function($event) {
+                                        day.check = !day.check
+                                      }
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(day.name))]
+                                )
+                              ]
+                            })
+                          ],
+                          2
+                        )
+                      ])
+                    ]
+                  : _vm._e()
               ],
-              staticClass: "dropDownList"
-            },
-            [_vm._m(3)]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _c(
-            "div",
-            {
-              staticClass: "btnSub",
-              on: {
-                click: function($event) {
-                  _vm.showOption3 = !_vm.showOption3
-                }
-              }
-            },
-            [
-              _c("span", [_vm._v("After first interaction")]),
-              _vm._v(" "),
-              _c("span", { staticClass: "iconSub" }, [
-                _c(
-                  "i",
-                  { staticClass: "material-icons" },
+              2
+            ),
+            _vm._v(" "),
+            !_vm.loadingContent
+              ? _c(
+                  "div",
                   [
-                    _vm.showOption6
-                      ? [_vm._v("expand_less")]
-                      : [_vm._v("expand_more")]
+                    _c("builder-component", {
+                      attrs: {
+                        isBroadcast: true,
+                        value: _vm.contents,
+                        section: _vm.schedule.section
+                      }
+                    })
                   ],
-                  2
+                  1
                 )
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showOption3,
-                  expression: "showOption3"
-                }
-              ],
-              staticClass: "dropDownList"
-            },
-            [_vm._m(4)]
-          )
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", [
-      _c(
-        "div",
-        [
-          _c("builder-component-mock", {
-            staticClass: "fullWidth",
-            attrs: { value: [], section: 0 }
-          })
-        ],
-        1
-      )
-    ])
-  ])
+              : _vm._e()
+          ]
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "label" }, [
-      _c("span", [
-        _vm._v(
-          "Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy."
-        )
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "link" }, [
-        _vm._v("subscription messaging policy.")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "textAlign" }, [
-      _c("span", [_vm._v("You have 4 users based on your filters. ")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
+    return _c("div", { staticClass: "reachableUser" }, [
+      _vm._v("You have "),
+      _c("b", [_vm._v("4")]),
+      _vm._v(" users based on your filters.")
     ])
   }
 ]

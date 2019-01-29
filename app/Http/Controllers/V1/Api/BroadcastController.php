@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Broadcast;
 use App\Models\BroadcastWeekday;
+use App\Models\BroadcastTriggerAttribute;
 use App\Models\ProjectMessageTag;
 use App\Models\ChatBlockSection;
 
@@ -52,6 +53,12 @@ class BroadcastController extends Controller
                 $broadcast->time = date("Hi");
             }
 
+            if($section==='trigger') {
+                $broadcast->duration = 15;
+                $broadcast->duration_type = 1;
+                $broadcast->trigger_type = 1;
+            }
+
             $broadcast->interval_type = 1;
             $broadcast->status = false;
             $broadcast->complete = false;
@@ -74,6 +81,14 @@ class BroadcastController extends Controller
                 }
 
                 $res = $this->buildScheduleList($broadcast);
+            }
+
+            if($section==='trigger') {
+                BroadcastTriggerAttribute::create([
+                    'chat_attribute_id' => null,
+                    'condition' => 1,
+                    'value' => ''
+                ]);
             }
         } catch (\Exception $e) {
             DB::rollback();

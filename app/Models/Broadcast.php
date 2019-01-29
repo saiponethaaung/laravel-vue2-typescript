@@ -27,6 +27,20 @@ class Broadcast extends Model
      * 6: yearly
      * 7: custom
      * 
+     * 
+     * Duration Type
+     * 
+     * 1: Minutes
+     * 2: Hour
+     * 3: Day
+     * 
+     * 
+     * Trigger Type
+     * 
+     * 1: After First interaction
+     * 2: After Last interaction
+     * 3: After user attribute is set
+     * 
      */
 
     protected $fillable = [

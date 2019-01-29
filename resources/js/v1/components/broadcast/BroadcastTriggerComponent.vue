@@ -1,129 +1,276 @@
 <template>
-    <div>
-        <div class="upperDisplay">
-            <div class="outerDisplay">
-                <div @click="showOption1=!showOption1">
-                    <div class="btnSub">
-                        <span>Subscription</span>
-                        <span class="iconSub">
-                            <i class="material-icons">
-                                <template v-if="showOption1">expand_less</template>
-                                <template v-else>expand_more</template>
-                            </i>
-                        </span>
-                    </div>
-                    <div v-show="showOption1" class="dropDownList">
-                        <ul>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="label">
-                    <span>Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy.</span>
-                    <span class="link">subscription messaging policy.</span>
-                </div>
-            </div>
-
-            <div class="attributeSelectorList">
-                <template v-for="(attribute, index) in filterSegment.attributes">
-                    <div class="attributeSelector" :key="index">
-                        <attribute-selector-component
-                            :attribute="attribute"
-                            :canCondition="(filterSegment.attributes.length-1)>index"
-                        ></attribute-selector-component>
-                        
-                        <button v-if="filterSegment.attributes.length>1" class="deleteAttribute" @click="filterSegment.attributes.splice(index, 1);">
-                            <i class="material-icons">delete</i>
-                        </button>
-                        <div v-if="(filterSegment.attributes.length-1)==index" @click="addNewFitler()" class="addMoreFilterButton">
-                            <i class="material-icons">add</i>Add More
+    <div class="inheritHFW broadcastRoot">
+        <template v-if="loading && undefined!==schedule">
+            Loading...
+        </template>
+        <template v-else>
+            <div class="broadcastFilterCon">
+                <div class="outerDisplay" v-if="$store.state.messageTags.length>0">
+                    <div @click="showTags=!showTags">
+                        <div class="btnSub">
+                            <span>{{ $store.state.messageTags[selectedTag].name }}</span>
+                            <span class="iconSub">
+                                <i class="material-icons">
+                                    <template v-if="showTags">expand_less</template>
+                                    <template v-else>expand_more</template>
+                                </i>
+                            </span>
                         </div>
+                        <div v-show="showTags" class="dropDownList">
+                            <ul>
+                                <template v-for="(tag, index) in $store.state.messageTags">
+                                    <li :key="index" @click="schedule.tag=tag.id">{{ tag.name }}</li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="label" v-html="$store.state.messageTags[selectedTag].mesg">
+                        <!-- <span>Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy.</span>
+                        <span class="link">subscription messaging policy.</span> -->
+                    </div>
+                </div>
+
+                <div class="attributeSelectorList">
+                    <template v-for="(attribute, index) in filterSegment.attributes">
+                        <div class="attributeSelector" :key="index">
+                            <attribute-selector-component
+                                :attribute="attribute"
+                                :canCondition="(filterSegment.attributes.length-1)>index"
+                            ></attribute-selector-component>
+                            
+                            <button v-if="filterSegment.attributes.length>1" class="deleteAttribute" @click="filterSegment.attributes.splice(index, 1);">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
+                    </template>
+                    <div @click="addNewFitler()" class="addMoreFilterButton">
+                        <i class="material-icons">add</i>
+                    </div>
+                </div>
+                
+                <div class="reachableUser">You have <b>4</b> users based on your filters.</div>
+
+                <div class="broadcastCondition">
+                    <h5 class="bccHeading float-left">
+                        Schedule:
+                    </h5>
+                    <div class="bccCalender float-left">
+                        <span>{{ showDate }}</span>
+                        <i class="material-icons">date_range</i>
+                        <div class="calendarPlugin">
+                            <v-date-picker
+                                v-model="schedule.date"
+                                :min-date="new Date()"
+                            ></v-date-picker>
+                        </div>
+                    </div>
+                    <div class="bccTime float-left">
+                        <div class="timeOptionCon">
+                            <time-input-component
+                                :value="schedule.time"
+                                v-model="schedule.time"
+                            ></time-input-component>
+                        </div>
+                        <dropdown-keybase-component
+                            :options="periodOption"
+                            :selectedKey="schedule.period"
+                            v-model="schedule.period"
+                        ></dropdown-keybase-component>
+                    </div>
+                    <div class="bccRepeat float-left">
+                        <dropdown-keybase-component
+                            :labelText="'Repeat: '"
+                            :options="repeatOption"
+                            :selectedKey="schedule.repeat"
+                            v-model="schedule.repeat"
+                        ></dropdown-keybase-component>
+                    </div>
+                </div>
+                <template v-if="schedule.repeat===7">
+                    <div class="dayPicker">
+                        <ul>
+                            <template v-for="(day, index) in schedule.days">
+                                <li
+                                    :class="{ 'selectedDay': day.check }"
+                                    :key="index"
+                                    @click="day.check=!day.check">{{ day.name }}</li>
+                            </template>
+                        </ul>
                     </div>
                 </template>
             </div>
-
-            <div class="textAlign">
-                <span>You have 4 users based on your filters. </span>
+            <div v-if="!loadingContent">
+                <builder-component
+                    :isBroadcast="true"
+                    :value="contents"
+                    :section="schedule.section"></builder-component>
             </div>
-
-            <div class="outerDisplay">
-                <span class="textTrig">Trigger:</span>
-                <div>
-                    <div class="btnSub" @click="showOption2=!showOption2">
-                        <span>1 Minute</span>
-                        <span class="iconSub">
-                            <i class="material-icons">
-                                <template v-if="showOption4">expand_less</template>
-                                <template v-else>expand_more</template>
-                            </i>
-                        </span>
-                    </div>
-                    <div v-show="showOption2" class="dropDownList">
-                        <ul>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                        </ul>
-                    </div>
-                </div>
-                <div>
-                    <div class="btnSub" @click="showOption3=!showOption3">
-                        <span>After first interaction</span>
-                        <span class="iconSub">
-                            <i class="material-icons">
-                                <template v-if="showOption6">expand_less</template>
-                                <template v-else>expand_more</template>
-                            </i>
-                        </span>
-                    </div>
-                    <div v-show="showOption3" class="dropDownList">
-                        <ul>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div>
-            <div>
-                <builder-component-mock :value="[]" :section="0" class="fullWidth"></builder-component-mock>
-            </div>
-        </div>
+        </template>
     </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch} from 'vue-property-decorator';
 import BuilderComponentMock from '../common/BuilderComponentMock.vue';
+import ScheduleModel from '../../models/broadcast/ScheduleModel';
 import AttributeFilterListModel from '../../models/AttributeFilterListModel';
+import Axios,{ CancelTokenSource } from 'axios';
+import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 
 @Component({
     components: {
         BuilderComponentMock
     }
 })
-export default class BroadcastTriggerComponent extends Vue {
+export default class BroadcastTriggerComponent extends Vue{
+    private loading: boolean = false;
+    private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
+    private loadingToken: CancelTokenSource = Axios.CancelToken.source();
+    private loadingContentToken: CancelTokenSource = Axios.CancelToken.source();
+    private loadingContent: boolean = true;
+    private contents: any = [];
 
-    private showOption1: boolean = false;
-    private showOption2: boolean = false;
-    private showOption3: boolean = false;
+    private periodOption: any = [
+        {
+            key: 1,
+            value: "am"
+        },
+        {
+            key: 2,
+            value: "pm"
+        },
+    ];
+
+    private repeatOption: any = [
+        {
+            key: 1,
+            value: 'None'
+        },
+        {
+            key: 2,
+            value: 'Daily'
+        },
+        {
+            key: 3,
+            value: 'Weekend'
+        },
+        {
+            key: 4,
+            value: 'Every Month'
+        },
+        {
+            key: 5,
+            value: 'Workdays'
+        },
+        {
+            key: 6,
+            value: 'Yearly'
+        },
+        {
+            key: 7,
+            value: 'Custom'
+        },
+    ];
+
+    private showTags: boolean = false;
+
+    private schedule: ScheduleModel = new ScheduleModel();
 
     private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(false, this.$store.state.projectInfo.id, []);
 
+    get showDate() {
+        if(undefined === this.schedule) return '';
+
+        let date = '';
+        let month = this.schedule.date.getMonth()+1;
+        return `${this.$store.state.months[month]} ${this.schedule.date.getDate()}, ${this.schedule.date.getFullYear()}`;
+    }
+
+    get selectedTag() {
+        if(undefined === this.schedule) return 0;
+
+        let index: any = 0;
+
+        for(let i=0; this.$store.state.messageTags.length>i; i++ ) {
+            if(this.$store.state.messageTags[i].id===this.schedule.tag) {
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+    }
+
     mounted() {
-        this.addNewFitler();
+        this.loadSchedule();
     }
 
     private addNewFitler() {
         this.filterSegment.createNewAttributeFilter();
     }
+    
+    @Watch('$route.params.scheduleid')
+    async loadSchedule() {
+        this.loadingToken.cancel();
+        this.loadingToken = Axios.CancelToken.source();
 
+        this.loading = true;
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/schedule/${this.$route.params.scheduleid}`,
+            method: 'get',
+            cancelToken: this.loadingToken.token
+        }).then(res => {
+            this.schedule.init(res.data.data);
+            this.loadScheduleContent();
+            this.loading = false;
+        }).catch(err => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule info!');
+                alert(mesg);
+                this.loading = false;
+            }
+        });
+    }
+
+    async loadScheduleContent() {
+        this.loadingContentToken.cancel();
+        this.loadingContentToken = Axios.CancelToken.source();
+
+        this.loadingContent = true;
+        this.contents = [];
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.schedule.id}/section/${this.schedule.section.id}/content`,
+            cancelToken: this.loadingContentToken.token
+        }).then((res: any) => {
+            this.contents = res.data.content;
+        }).catch((err: any) => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                alert(mesg);
+            } else {
+                this.loadingContentToken.cancel();
+            }
+        });
+
+        this.loadingContent = false;
+    }
+
+    @Watch('schedule.date')
+    @Watch('schedule.time')
+    @Watch('schedule.period')
+    @Watch('schedule.repeat')
+    @Watch('schedule.days', {deep: true})
+    private async updateSchedule() {
+        if(this.loadingContent) return;
+        await this.schedule.updateSchedule();
+    }
+
+    @Watch('schedule.tag')
+    private async updateTag() {
+        if(this.loadingContent) return;
+        await this.schedule.updateTag();
+    }
 }
 </script>

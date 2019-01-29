@@ -26,11 +26,19 @@
                 <span>Trigger your message</span>
             </div>
         </div>
-        <div class="btnClick">
-            <router-link :to="{'name': 'project.broadcast.trigger'}">
-                <i class="material-icons iconAlign">add</i>Add a trigger
-            </router-link>
-        </div>
+        <template v-if="creatingTrigger">
+            <div class="btnClick">
+                creating...
+            </div>
+        </template>
+        <template v-else>
+            <div class="btnClick" v-if="triggerLoading">
+                Loading...
+            </div>
+            <div class="btnClick" @click="createTrigger()" v-else>
+                <i class="material-icons">add</i>Add a trigger
+            </div>
+        </template>
 
         <div class="contentRoot">
             <div class="broadcastHeading">
@@ -66,6 +74,9 @@
                 <i class="material-icons">add</i>Add a schedule
             </div>
         </template>
+        <div>
+            <div contenteditable="true"></div>
+        </div>
     </div>
 </template>
 
@@ -78,8 +89,11 @@ import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 export default class BroadcastSidebarComponent extends Vue {
 
     private scheduleLoading: boolean = true;
+    private triggerLoading: boolean = false;
     private scheduleList: Array<any> = [];
+    private triggerList: Array<any> = [];
     private creatingSchedule: boolean = false;
+    private creatingTrigger: boolean = false;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
 
     mounted() {
@@ -160,7 +174,6 @@ export default class BroadcastSidebarComponent extends Vue {
             method: 'post'
         }).then(res => {
             this.scheduleList.push(res.data.data);
-            this.$router.push({name: 'project.broadcast.schedule', params: { scheduleid: res.data.data.id }})
         }).catch(err => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new schedule!');
@@ -169,6 +182,24 @@ export default class BroadcastSidebarComponent extends Vue {
         });
 
         this.creatingSchedule = false;
+    }
+    
+    private async createTrigger() {
+        this.creatingTrigger = true;
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast?section=trigger`,
+            method: 'post'
+        }).then(res => {
+
+        }).catch(err => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new schedule!');
+               alert(mesg);
+            }
+        });
+
+        this.creatingTrigger = false;
     }
 
     private async loadMessageTags() {

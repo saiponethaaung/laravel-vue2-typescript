@@ -46,11 +46,11 @@
                         <i class="material-icons">speaker_notes</i>
                         <span class="contentActionName">Typing</span>
                     </li>
-                    <li class="contentActionList" @click="addQuickReply" v-if="!isBroadcast">
+                    <li class="contentActionList" @click="addQuickReply">
                         <i class="material-icons">reply</i>
                         <span class="contentActionName">Quick Reply</span>
                     </li>
-                    <li class="contentActionList" @click="addUserInput">
+                    <li class="contentActionList" @click="addUserInput" v-if="!isBroadcast">
                         <i class="material-icons">textsms</i>
                         <span class="contentActionName">User Input</span>
                     </li>
@@ -130,11 +130,11 @@ export default class BuilderComponent extends Vue {
     @Prop() section!: any;
 
     mounted() {
+        this.urlPath = this.isBroadcast ? `broadcast/${this.section.broadcast}`: `chat-bot/block/${this.$store.state.chatBot.block}`;
+
         for(let i in this.value) {
             this.buildConetnt(this.value[i]);
         }
-
-        this.urlPath = this.isBroadcast ? `broadcast/${this.section.broadcast}`: `chat-bot/block/${this.$store.state.chatBot.block}`;
     }
 
     async addText() {

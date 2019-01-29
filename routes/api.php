@@ -50,9 +50,6 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
             Route::get('blocks', 'V1\\Api\\ChatBotController@getBlocks')->name('chatbot.blocks.get');
             Route::get('blocks/search', 'V1\\Api\\ChatBotController@searchSection')->name('chatbot.section.serach');
 
-
-            
-
             Route::group(['prefix' => 'block/{blockId}', 'middleware' => 'verifyChatBlock'], function() {
 
                 Route::delete('/', 'V1\\Api\\ChatBotController@deleteBlock')->name('chatbot.block.delete');
@@ -130,9 +127,16 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::group(['prefix' => 'broadcast'], function() {
             Route::post('/', 'V1\\Api\\BroadcastController@create');
             Route::get('/schedule', 'V1\\Api\\BroadcastController@getSchedule');
-            Route::get('/schedule/{scheduleid}', 'V1\\Api\\BroadcastController@getScheduleDetail');
 
+            Route::group(['prefix' => 'schedule/{broadcastId}', 'middleware' => 'verifyBroadcast'], function(){
+                Route::get('/', 'V1\\Api\\BroadcastController@getScheduleDetail');
+                Route::post('/', 'V1\\Api\\BroadcastController@updateSchedule');
+            });
+            
             Route::group(['prefix' => '{broadcastId}', 'middleware' => 'verifyBroadcast'], function() {
+
+                Route::post('message-tag', 'V1\\Api\\BroadcastController@updateMessageTag');
+
                 Route::group(['prefix' => 'section/{sectionId}/content', 'middleware' => 'verifyChatBlockSection'], function() {
 
                     Route::get('/', 'V1\\Api\\ChatContent\\GetController@getContents')->name('chatbot.content.get');

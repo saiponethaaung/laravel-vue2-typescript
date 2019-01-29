@@ -99,10 +99,10 @@
                     </div>
                 </template>
             </div>
-            <div>
+            <div v-if="!loadingContent">
                 <builder-component
                     :isBroadcast="true"
-                    :value="[]"
+                    :value="contents"
                     :section="schedule.section"></builder-component>
             </div>
         </template>
@@ -110,7 +110,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue} from 'vue-property-decorator';
+import { Component, Vue, Watch} from 'vue-property-decorator';
 import BuilderComponentMock from '../common/BuilderComponentMock.vue';
 import ScheduleModel from '../../models/broadcast/ScheduleModel';
 import AttributeFilterListModel from '../../models/AttributeFilterListModel';
@@ -126,6 +126,9 @@ export default class BroadcastScheduleComponent extends Vue{
     private loading: boolean = false;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private loadingToken: CancelTokenSource = Axios.CancelToken.source();
+    private loadingContentToken: CancelTokenSource = Axios.CancelToken.source();
+    private loadingContent: boolean = true;
+    private contents: any = [];
 
     private periodOption: any = [
         {
@@ -205,7 +208,8 @@ export default class BroadcastScheduleComponent extends Vue{
     private addNewFitler() {
         this.filterSegment.createNewAttributeFilter();
     }
-
+    
+    @Watch('$route.params.scheduleid')
     async loadSchedule() {
         this.loadingToken.cancel();
         this.loadingToken = Axios.CancelToken.source();
@@ -218,6 +222,7 @@ export default class BroadcastScheduleComponent extends Vue{
             cancelToken: this.loadingToken.token
         }).then(res => {
             this.schedule.init(res.data.data);
+            this.loadScheduleContent();
             this.loading = false;
         }).catch(err => {
             if(err.response) {
@@ -226,6 +231,46 @@ export default class BroadcastScheduleComponent extends Vue{
                 this.loading = false;
             }
         });
+    }
+
+    async loadScheduleContent() {
+        this.loadingContentToken.cancel();
+        this.loadingContentToken = Axios.CancelToken.source();
+
+        this.loadingContent = true;
+        this.contents = [];
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.schedule.id}/section/${this.schedule.section.id}/content`,
+            cancelToken: this.loadingContentToken.token
+        }).then((res: any) => {
+            this.contents = res.data.content;
+        }).catch((err: any) => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                alert(mesg);
+            } else {
+                this.loadingContentToken.cancel();
+            }
+        });
+
+        this.loadingContent = false;
+    }
+
+    @Watch('schedule.date')
+    @Watch('schedule.time')
+    @Watch('schedule.period')
+    @Watch('schedule.repeat')
+    @Watch('schedule.days', {deep: true})
+    private async updateSchedule() {
+        if(this.loadingContent) return;
+        await this.schedule.updateSchedule();
+    }
+
+    @Watch('schedule.tag')
+    private async updateTag() {
+        if(this.loadingContent) return;
+        await this.schedule.updateTag();
     }
 }
 </script>

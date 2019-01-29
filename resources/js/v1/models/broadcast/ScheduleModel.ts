@@ -60,9 +60,8 @@ export default class ScheduleModels extends BroadcastModel{
         this.repeat = content.repeat;
         for(let i of content.days) {
             for(let i2 in this.days) {
-                if(this.days[i2].days==i.day && i.status) {
-                    this.days[i2].check = true;
-                    break;
+                if(this.days[i2].days==i.day) {
+                    this.days[i2].check = i.status;
                 }
             }
         }
@@ -110,5 +109,52 @@ export default class ScheduleModels extends BroadcastModel{
 
     get isLoading() : boolean {
         return this.loading;
+    }
+
+    async updateSchedule() {
+        let res = {
+            status: true,
+            mesg: 'success'
+        };
+
+        let month: string = (this.date.getMonth()+1).toString();
+        let day = this.date.getDate().toString();
+        
+        month = month.length==1 ? `0${month}` : month;
+        day = day.length==1 ? `0${day}` : day;
+
+        let time: any = this.time.split(":");
+        if(this.period==2) {
+            time[0] = parseInt(time[0])+12;
+            time[0] = time[0].length<10 ? `0${time[0]}` : time[0];
+        }
+
+        
+        let data = new FormData();
+        data.append('date', `${this.date.getFullYear()}-${month}-${day}`);
+        data.append('time', `${time[0]}${time[1]}`);
+        data.append('repeat', this.repeat.toString());
+        
+        let counter = 0;
+        for(let i in this.days) {
+            data.append(`day[${counter}][key]`, this.days[i].days.toString());
+            data.append(`day[${counter}][value]`, this.days[i].check.toString());
+            counter++;
+        }
+
+        await Axios({
+            url: `/api/v1/project/${this.project}/broadcast/schedule/${this.id}`,
+            data: data,
+            method: 'post'
+        }).then(res => {
+
+        }).catch(err => {
+            if(err.response) {
+                res.status = false;
+                res.mesg = this.globalHandler(err, 'Failed to update schedule!');
+            }
+        });
+
+        return res;
     }
 }

@@ -13941,6 +13941,66 @@ a:hover {
   margin-bottom: 5px;
 }
 
+.broadcastScheduleListRoot {
+  padding: 0;
+  list-style: none;
+  margin-top: 5px;
+}
+
+.broadcastScheduleList a {
+  height: 40px;
+  line-height: 40px;
+  margin-bottom: 10px;
+  background: #f7f6f6;
+  border-radius: 5px;
+  padding: 0 15px;
+  color: #000;
+  display: block;
+  font-size: 12px;
+}
+
+.broadcastHeading {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.broadcastHeading figure {
+  margin: -8px 10px 0 0;
+  height: 18px;
+}
+
+.broadcastHeading figure img {
+  height: inherit;
+}
+
+.broadcastHeading .material-icons {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.broadcastHeading span {
+  line-height: 30px;
+  height: 30px;
+  font-size: 14px;
+}
+
+.bcs .btnClick {
+  margin: 0;
+}
+
+.activeBroadcast {
+  color: #c238eb !important;
+  font-weight: bold;
+}
+
 @font-face {
   font-family: 'project-font';
   src: url(/fonts/Rubik-Regular.ttf?6c980940392587c8d7d325c07965ebda) format("truetype");

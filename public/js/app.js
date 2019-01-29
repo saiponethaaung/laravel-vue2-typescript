@@ -42838,6 +42838,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
+        this.scheduleLoading = true;
         this.scheduleList = [];
         this.creatingSchedule = false;
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__["a" /* default */]();
@@ -42859,25 +42860,25 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
         time = `${hour}:${min} ${timeOfDay}`;
         switch (this.scheduleList[index].interval_type) {
             case (1):
-                name = `${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} ${this.scheduleList[index].year} ${time}`;
+                name = `${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} ${this.scheduleList[index].year} <span class='float-right'>${time}</span>`;
                 break;
             case (2):
-                name = `Daily at ${time}`;
+                name = `Daily <span class='float-right'>${time}</span>`;
                 break;
             case (3):
-                name = `Weekend at ${time}`;
+                name = `Weekend <span class='float-right'>${time}</span>`;
                 break;
             case (4):
-                name = `Every month ${this.scheduleList[index].day}  at ${time}`;
+                name = `Every month <span class='float-right'>${this.scheduleList[index].day} ${time}</span>`;
                 break;
             case (5):
-                name = `Workdays at ${time}`;
+                name = `Workdays <span class='float-right'>${time}</span>`;
                 break;
             case (6):
-                name = `Every year ${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} at ${time}`;
+                name = `Every year <span class='float-right'>${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} ${time}</span>`;
                 break;
             case (7):
-                name = `Custom at ${time}`;
+                name = `Custom <span class='float-right'>${time}</span>`;
                 break;
         }
         return name;
@@ -42891,10 +42892,12 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
                 method: 'get'
             }).then(res => {
                 this.scheduleList = res.data.data;
+                this.scheduleLoading = false;
             }).catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule list!');
                     alert(mesg);
+                    this.scheduleLoading = false;
                 }
             });
         });
@@ -42953,6 +42956,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "bcs" },
     [
       _vm._m(0),
       _vm._v(" "),
@@ -42975,9 +42979,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "contentRoot" }, [
-        _vm._v("Trigger your message")
-      ]),
+      _vm._m(2),
       _vm._v(" "),
       _c(
         "div",
@@ -42997,38 +42999,32 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "contentRoot" }, [
-        _vm._v("Schedule your message")
-      ]),
+      _vm._m(3),
       _vm._v(" "),
       _c("div", { staticClass: "broadcastContentList schedule" }, [
         _c(
           "ul",
+          { staticClass: "broadcastScheduleListRoot" },
           [
             _vm._l(this.scheduleList, function(schedule, index) {
               return [
                 _c(
                   "li",
-                  { key: index },
+                  { key: index, staticClass: "broadcastScheduleList" },
                   [
-                    _c(
-                      "router-link",
-                      {
-                        attrs: {
-                          to: {
-                            name: "project.broadcast.schedule",
-                            params: { scheduleid: schedule.id }
-                          }
+                    _c("router-link", {
+                      class: {
+                        activeBroadcast:
+                          _vm.$route.params.scheduleid == schedule.id
+                      },
+                      attrs: {
+                        to: {
+                          name: "project.broadcast.schedule",
+                          params: { scheduleid: schedule.id }
                         }
                       },
-                      [
-                        _vm._v(
-                          "\n                        " +
-                            _vm._s(_vm.scheduleName(index)) +
-                            "\n                    "
-                        )
-                      ]
-                    )
+                      domProps: { innerHTML: _vm._s(_vm.scheduleName(index)) }
+                    })
                   ],
                   1
                 )
@@ -43046,21 +43042,25 @@ var render = function() {
             ])
           ]
         : [
-            _c(
-              "div",
-              {
-                staticClass: "btnClick",
-                on: {
-                  click: function($event) {
-                    _vm.createSchedule()
-                  }
-                }
-              },
-              [
-                _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-                _vm._v("Add a schedule\n        ")
-              ]
-            )
+            _vm.scheduleLoading
+              ? _c("div", { staticClass: "btnClick" }, [
+                  _vm._v("\n            Loading...\n        ")
+                ])
+              : _c(
+                  "div",
+                  {
+                    staticClass: "btnClick",
+                    on: {
+                      click: function($event) {
+                        _vm.createSchedule()
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+                    _vm._v("Add a schedule\n        ")
+                  ]
+                )
           ]
     ],
     2
@@ -43071,7 +43071,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "chatSbHeaderOption" }, [
+    return _c("div", { staticClass: "chatSbHeaderOption broadcastHeading" }, [
       _c("div", { staticClass: "chatFilterList float-left" }, [
         _c("div", { staticClass: "inboxOptionTitle" }, [_vm._v("Broadcast")])
       ])
@@ -43082,8 +43082,39 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "contentRoot" }, [
-      _c("i", { staticClass: "material-icons iconAlign" }, [_vm._v("send")]),
-      _vm._v("Send your message now")
+      _c("div", { staticClass: "broadcastHeading" }, [
+        _c("i", { staticClass: "material-icons iconAlign" }, [_vm._v("send")]),
+        _vm._v(" "),
+        _c("span", [_vm._v("Send your message now")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "contentRoot" }, [
+      _c("div", { staticClass: "broadcastHeading" }, [
+        _c("figure", [
+          _c("img", { attrs: { src: "/images/icons/trigger.png" } })
+        ]),
+        _vm._v(" "),
+        _c("span", [_vm._v("Trigger your message")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "contentRoot" }, [
+      _c("div", { staticClass: "broadcastHeading" }, [
+        _c("figure", [
+          _c("img", { attrs: { src: "/images/icons/schedule.png" } })
+        ]),
+        _vm._v(" "),
+        _c("span", [_vm._v("Schedule your message")])
+      ])
     ])
   }
 ]
@@ -47003,6 +47034,9 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
         this.loading = false;
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__["a" /* default */]();
         this.loadingToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+        this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+        this.loadingContent = true;
+        this.contents = [];
         this.periodOption = [
             {
                 key: 1,
@@ -47083,6 +47117,7 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
                 cancelToken: this.loadingToken.token
             }).then(res => {
                 this.schedule.init(res.data.data);
+                this.loadScheduleContent();
                 this.loading = false;
             }).catch(err => {
                 if (err.response) {
@@ -47093,7 +47128,57 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
             });
         });
     }
+    loadScheduleContent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loadingContentToken.cancel();
+            this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+            this.loadingContent = true;
+            this.contents = [];
+            yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.schedule.id}/section/${this.schedule.section.id}/content`,
+                cancelToken: this.loadingContentToken.token
+            }).then((res) => {
+                this.contents = res.data.content;
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                    alert(mesg);
+                }
+                else {
+                    this.loadingContentToken.cancel();
+                }
+            });
+            this.loadingContent = false;
+        });
+    }
+    updateSchedule() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.loadingContent)
+                return;
+            yield this.schedule.updateSchedule();
+        });
+    }
+    updateTag() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.loadingContent)
+                return;
+            yield this.schedule.updateTag();
+        });
+    }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$route.params.scheduleid')
+], BroadcastScheduleComponent.prototype, "loadSchedule", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.date'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.time'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.period'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.repeat'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.days', { deep: true })
+], BroadcastScheduleComponent.prototype, "updateSchedule", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.tag')
+], BroadcastScheduleComponent.prototype, "updateTag", null);
 BroadcastScheduleComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {
@@ -47110,6 +47195,17 @@ BroadcastScheduleComponent = __decorate([
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BroadcastModel__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
 
 class ScheduleModels extends __WEBPACK_IMPORTED_MODULE_0__BroadcastModel__["a" /* default */] {
     constructor() {
@@ -47167,9 +47263,8 @@ class ScheduleModels extends __WEBPACK_IMPORTED_MODULE_0__BroadcastModel__["a" /
         this.repeat = content.repeat;
         for (let i of content.days) {
             for (let i2 in this.days) {
-                if (this.days[i2].days == i.day && i.status) {
-                    this.days[i2].check = true;
-                    break;
+                if (this.days[i2].days == i.day) {
+                    this.days[i2].check = i.status;
                 }
             }
         }
@@ -47207,6 +47302,45 @@ class ScheduleModels extends __WEBPACK_IMPORTED_MODULE_0__BroadcastModel__["a" /
     get isLoading() {
         return this.loading;
     }
+    updateSchedule() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            let month = (this.date.getMonth() + 1).toString();
+            let day = this.date.getDate().toString();
+            month = month.length == 1 ? `0${month}` : month;
+            day = day.length == 1 ? `0${day}` : day;
+            let time = this.time.split(":");
+            if (this.period == 2) {
+                time[0] = parseInt(time[0]) + 12;
+                time[0] = time[0].length < 10 ? `0${time[0]}` : time[0];
+            }
+            let data = new FormData();
+            data.append('date', `${this.date.getFullYear()}-${month}-${day}`);
+            data.append('time', `${time[0]}${time[1]}`);
+            data.append('repeat', this.repeat.toString());
+            let counter = 0;
+            for (let i in this.days) {
+                data.append(`day[${counter}][key]`, this.days[i].days.toString());
+                data.append(`day[${counter}][value]`, this.days[i].check.toString());
+                counter++;
+            }
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.project}/broadcast/schedule/${this.id}`,
+                data: data,
+                method: 'post'
+            }).then(res => {
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to update schedule!');
+                }
+            });
+            return res;
+        });
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ScheduleModels;
 
@@ -47218,6 +47352,17 @@ class ScheduleModels extends __WEBPACK_IMPORTED_MODULE_0__BroadcastModel__["a" /
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
 
 class BroadcastModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
     constructor() {
@@ -47269,6 +47414,28 @@ class BroadcastModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler
     }
     set section(section) {
         this.content.section = section;
+    }
+    updateTag() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            let data = new FormData();
+            data.append('tag', this.tag.toString());
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.project}/broadcast/${this.id}/message-tag`,
+                method: 'post',
+                data: data
+            }).then(res => {
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to update message tags!');
+                }
+            });
+            return res;
+        });
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = BroadcastModel;
@@ -47582,19 +47749,21 @@ var render = function() {
               2
             ),
             _vm._v(" "),
-            _c(
-              "div",
-              [
-                _c("builder-component", {
-                  attrs: {
-                    isBroadcast: true,
-                    value: [],
-                    section: _vm.schedule.section
-                  }
-                })
-              ],
-              1
-            )
+            !_vm.loadingContent
+              ? _c(
+                  "div",
+                  [
+                    _c("builder-component", {
+                      attrs: {
+                        isBroadcast: true,
+                        value: _vm.contents,
+                        section: _vm.schedule.section
+                      }
+                    })
+                  ],
+                  1
+                )
+              : _vm._e()
           ]
     ],
     2
@@ -50574,10 +50743,10 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
         this.sectionid = -1;
     }
     mounted() {
+        this.urlPath = this.isBroadcast ? `broadcast/${this.section.broadcast}` : `chat-bot/block/${this.$store.state.chatBot.block}`;
         for (let i in this.value) {
             this.buildConetnt(this.value[i]);
         }
-        this.urlPath = this.isBroadcast ? `broadcast/${this.section.broadcast}` : `chat-bot/block/${this.$store.state.chatBot.block}`;
     }
     addText() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -50963,39 +51132,39 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
+            _c(
+              "li",
+              {
+                staticClass: "contentActionList",
+                on: { click: _vm.addQuickReply }
+              },
+              [
+                _c("i", { staticClass: "material-icons" }, [_vm._v("reply")]),
+                _vm._v(" "),
+                _c("span", { staticClass: "contentActionName" }, [
+                  _vm._v("Quick Reply")
+                ])
+              ]
+            ),
+            _vm._v(" "),
             !_vm.isBroadcast
               ? _c(
                   "li",
                   {
                     staticClass: "contentActionList",
-                    on: { click: _vm.addQuickReply }
+                    on: { click: _vm.addUserInput }
                   },
                   [
                     _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("reply")
+                      _vm._v("textsms")
                     ]),
                     _vm._v(" "),
                     _c("span", { staticClass: "contentActionName" }, [
-                      _vm._v("Quick Reply")
+                      _vm._v("User Input")
                     ])
                   ]
                 )
               : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "contentActionList",
-                on: { click: _vm.addUserInput }
-              },
-              [
-                _c("i", { staticClass: "material-icons" }, [_vm._v("textsms")]),
-                _vm._v(" "),
-                _c("span", { staticClass: "contentActionName" }, [
-                  _vm._v("User Input")
-                ])
-              ]
-            ),
             _vm._v(" "),
             _c(
               "li",

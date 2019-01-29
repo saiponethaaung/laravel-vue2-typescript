@@ -132,18 +132,18 @@ class BroadcastController extends Controller
                 $query->orderBy('days', 'ASC');
             },
             'chatBlockSection'
-        ])->find($request->scheduleid);
+        ])->find($request->broadcastId);
 
         $hour = substr($schedule->time, 0, 2);
         $min = substr($schedule->time, 2, 4);
-        $hour = $hour>12 ? $hour-12 : $hour;
+        $hour = (int) $hour>12 ? (int) $hour-12 : (int) $hour;
         $min = $min>59 ? '59' : $min;
 
         $res = [];
         $res['id'] = $schedule->id;
         $res['status'] = $schedule->status===1 ? true : false;
         $res['date'] = $schedule->year.'-'.($schedule->month<10 ? '0'.$schedule->month : $schedule->month).'-'.($schedule->day<10 ? '0'.$schedule->day : $schedule->day);
-        $res['period'] = $hour>12 ? 2 : 1;
+        $res['period'] = substr($schedule->time, 0, 2)>12 ? 2 : 1;
         $res['time'] = ($hour<10 ? '0'.$hour : $hour).':'.$min;
         $res['repeat'] = $schedule->interval_type;
         $res['tag'] = $schedule->project_message_tag_id;
@@ -167,5 +167,81 @@ class BroadcastController extends Controller
             'code' => 200,
             'data' => $res
         ], 200);
+    }
+
+    public function updateSchedule(Request $request)
+    {
+        $request->attributes->get('broadcast')->day = date("d", strtotime($request->input('date')));
+        $request->attributes->get('broadcast')->month = date("m", strtotime($request->input('date')));
+        $request->attributes->get('broadcast')->year = date("Y", strtotime($request->input('date')));
+        $request->attributes->get('broadcast')->time = $request->input('time');
+        $request->attributes->get('broadcast')->interval_type = $request->input('repeat');
+
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('broadcast')->save();
+
+            foreach($request->input('day') as $day) {
+                BroadcastWeekday::where('project_broadcast_id', $request->attributes->get('broadcast')->id)
+                    ->where('days', $day['key'])
+                    ->update([
+                        'status' => $day['value']=='true' ? 1 : 0
+                    ]);
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update schedule!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
+        ]);
+    }
+
+    public function updateMessageTag(Request $request)
+    {
+        $tag = ProjectMessageTag::find($request->input('tag'));
+
+        if(empty($tag)) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Invalid message tag!'
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('broadcast')->project_message_tag_id = $tag->id;
+            $request->attributes->get('broadcast')->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update message tag!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success'
+        ]);
     }
 }

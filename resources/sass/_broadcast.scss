@@ -287,3 +287,59 @@
     line-height: $secondStandardHeight;
     margin-bottom: 5px;
 }
+
+.broadcastScheduleListRoot {
+    padding: 0;
+    list-style: none;
+    margin-top: 5px;
+}
+
+.broadcastScheduleList {
+    a {
+        height: $thirdStandardHeight;
+        line-height: $thirdStandardHeight;
+        margin-bottom: 10px;
+        background: $secondaryBackground;
+        border-radius: 5px;
+        padding: 0 15px;
+        color: #000;
+        display: block;
+        font-size: 12px;
+    }
+}
+
+.broadcastHeading {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-start;
+    figure {
+        margin: -8px 10px 0 0;
+        height: 18px;
+        img {
+            height: inherit;
+        }
+    }
+
+    .material-icons {
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+    span {
+        line-height: $secondStandardHeight;
+        height: $secondStandardHeight;
+        font-size: 14px;
+    }
+}
+
+.bcs {
+    .btnClick {
+        margin: 0;
+    }
+}
+
+.activeBroadcast {
+    color: $activeText!important;
+    font-weight: bold;
+}

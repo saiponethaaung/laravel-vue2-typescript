@@ -1,4 +1,5 @@
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
+import Axios from "axios";
 
 export default class BroadcastModel extends AjaxErrorHandler {
 
@@ -63,5 +64,30 @@ export default class BroadcastModel extends AjaxErrorHandler {
 
     set section(section: any) {
         this.content.section = section;
+    }
+
+    async updateTag() {
+        let res = {
+            status: true,
+            mesg: 'success'
+        };
+        
+        let data = new FormData();
+        data.append('tag', this.tag.toString());
+
+        await Axios({
+            url: `/api/v1/project/${this.project}/broadcast/${this.id}/message-tag`,
+            method: 'post',
+            data: data
+        }).then(res => {
+            
+        }).catch(err => {
+            if(err.response) {
+                res.status = false;
+                res.mesg = this.globalHandler(err, 'Failed to update message tags!');
+            }
+        });
+
+        return res;
     }
 }

@@ -1,33 +1,54 @@
 <template>
-    <div>
-        <div class="chatSbHeaderOption">
+    <div class="bcs">
+        <div class="chatSbHeaderOption broadcastHeading">
             <div class="chatFilterList float-left">
                 <div class="inboxOptionTitle">Broadcast</div>
             </div>
         </div>
 
-        <div class="contentRoot"><i class="material-icons iconAlign">send</i>Send your message now</div>
+        <div class="contentRoot">
+            <div class="broadcastHeading">
+                <i class="material-icons iconAlign">send</i>
+                <span>Send your message now</span>
+            </div>
+        </div>
         <div class="btnClick">
             <router-link :to="{'name': 'project.broadcast.sendnow'}">
                 Click here to send your message now
             </router-link>
         </div>
 
-        <div class="contentRoot">Trigger your message</div>
+        <div class="contentRoot">
+            <div class="broadcastHeading">
+                <figure>
+                    <img src="/images/icons/trigger.png"/>
+                </figure>
+                <span>Trigger your message</span>
+            </div>
+        </div>
         <div class="btnClick">
             <router-link :to="{'name': 'project.broadcast.trigger'}">
                 <i class="material-icons iconAlign">add</i>Add a trigger
             </router-link>
         </div>
 
-        <div class="contentRoot">Schedule your message</div>
+        <div class="contentRoot">
+            <div class="broadcastHeading">
+                <figure>
+                    <img src="/images/icons/schedule.png"/>
+                </figure>
+                <span>Schedule your message</span>
+            </div>
+        </div>
         <div class="broadcastContentList schedule">
-            <ul>
+            <ul class="broadcastScheduleListRoot">
                 <template v-for="(schedule, index) in this.scheduleList">
-                    <li :key="index">
-                        <router-link :to="{name: 'project.broadcast.schedule', params: { scheduleid: schedule.id }}">
-                            {{ scheduleName(index) }}
-                        </router-link>
+                    <li :key="index" class="broadcastScheduleList">
+                        <router-link
+                            :to="{name: 'project.broadcast.schedule', params: { scheduleid: schedule.id }}"
+                            v-html="scheduleName(index)"
+                            :class="{'activeBroadcast': $route.params.scheduleid==schedule.id}"
+                        ></router-link>
                     </li>
                 </template>
             </ul>
@@ -38,7 +59,10 @@
             </div>
         </template>
         <template v-else>
-            <div class="btnClick" @click="createSchedule()">
+            <div class="btnClick" v-if="scheduleLoading">
+                Loading...
+            </div>
+            <div class="btnClick" @click="createSchedule()" v-else>
                 <i class="material-icons">add</i>Add a schedule
             </div>
         </template>
@@ -53,6 +77,7 @@ import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 @Component
 export default class BroadcastSidebarComponent extends Vue {
 
+    private scheduleLoading: boolean = true;
     private scheduleList: Array<any> = [];
     private creatingSchedule: boolean = false;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
@@ -78,31 +103,31 @@ export default class BroadcastSidebarComponent extends Vue {
 
         switch(this.scheduleList[index].interval_type) {
             case(1):
-                name = `${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} ${this.scheduleList[index].year} ${time}`;
+                name = `${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} ${this.scheduleList[index].year} <span class='float-right'>${time}</span>`;
                 break;
 
             case(2):
-                name = `Daily at ${time}`;
+                name = `Daily <span class='float-right'>${time}</span>`;
                 break;
 
             case(3):
-                name = `Weekend at ${time}`;
+                name = `Weekend <span class='float-right'>${time}</span>`;
                 break;
 
             case(4):
-                name = `Every month ${this.scheduleList[index].day}  at ${time}`;
+                name = `Every month <span class='float-right'>${this.scheduleList[index].day} ${time}</span>`;
                 break;
 
             case(5):
-                name = `Workdays at ${time}`;
+                name = `Workdays <span class='float-right'>${time}</span>`;
                 break;
 
             case(6):
-                name = `Every year ${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} at ${time}`;
+                name = `Every year <span class='float-right'>${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} ${time}</span>`;
                 break;
 
             case(7):
-                name = `Custom at ${time}`;
+                name = `Custom <span class='float-right'>${time}</span>`;
                 break;
         }
 
@@ -117,10 +142,12 @@ export default class BroadcastSidebarComponent extends Vue {
             method: 'get'
         }).then(res => {
             this.scheduleList = res.data.data;
+            this.scheduleLoading = false;
         }).catch(err => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule list!');
                 alert(mesg);
+                this.scheduleLoading = false;
             }
         })
     }

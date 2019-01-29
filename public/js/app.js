@@ -42894,9 +42894,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "contentRoot" }, [
-        _vm._v("Trigger your message")
-      ]),
+      _vm._m(2),
       _vm._v(" "),
       _c(
         "div",
@@ -42916,11 +42914,9 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "contentRoot" }, [
-        _vm._v("Schedule your message")
-      ]),
+      _vm._m(3),
       _vm._v(" "),
-      _vm._m(2),
+      _vm._m(4),
       _vm._v(" "),
       _c("div", { staticClass: "contentRoot" }, [
         _vm._v("Schedule your message")
@@ -43015,6 +43011,28 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "contentRoot" }, [
+      _c("i", { staticClass: "material-icons iconAlign" }, [
+        _vm._v("swap_vert")
+      ]),
+      _vm._v("Trigger your message")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "contentRoot" }, [
+      _c("i", { staticClass: "material-icons iconAlign" }, [
+        _vm._v("calendar_today")
+      ]),
+      _vm._v("Schedule your message")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "chatBlockContentList" }, [
       _c("div", { staticClass: "btnClick" }, [_vm._v("Happy New Year")]),
       _vm._v(" "),
@@ -43102,6 +43120,19 @@ let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPAC
         super(...arguments);
         this.showOption1 = false;
         this.filterSegment = new __WEBPACK_IMPORTED_MODULE_2__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
+        this.condiOptions = [
+            {
+                key: 1,
+                value: 'and'
+            },
+            {
+                key: 2,
+                value: 'or'
+            }
+        ];
+    }
+    selectNewOption(key) {
+        return key;
     }
     mounted() {
         this.addNewFitler();
@@ -43110,6 +43141,9 @@ let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPAC
         this.filterSegment.createNewAttributeFilter();
     }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('input')
+], BroadcastSendNowComponent.prototype, "selectNewOption", null);
 BroadcastSendNowComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {
@@ -46309,12 +46343,30 @@ var render = function() {
                 ],
                 staticClass: "dropDownList"
               },
-              [_vm._m(0)]
+              [
+                _c(
+                  "ul",
+                  _vm._l(_vm.condiOptions, function(option, index) {
+                    return _c(
+                      "li",
+                      {
+                        key: index,
+                        on: {
+                          click: function($event) {
+                            _vm.selectNewOption(option.key)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(option.value))]
+                    )
+                  })
+                )
+              ]
             )
           ]
         ),
         _vm._v(" "),
-        _vm._m(1)
+        _vm._m(0)
       ]),
       _vm._v(" "),
       _c(
@@ -46352,33 +46404,37 @@ var render = function() {
                           ])
                         ]
                       )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.filterSegment.attributes.length - 1 == index
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "addMoreFilterButton",
+                          on: {
+                            click: function($event) {
+                              _vm.addNewFitler()
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("add")
+                          ]),
+                          _vm._v("Add More\n                    ")
+                        ]
+                      )
                     : _vm._e()
                 ],
                 1
               )
             ]
-          }),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "addMoreFilterButton",
-              on: {
-                click: function($event) {
-                  _vm.addNewFitler()
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-              _vm._v("Add More\n            ")
-            ]
-          )
+          })
         ],
         2
       ),
       _vm._v(" "),
-      _vm._m(2)
+      _vm._m(1)
     ]),
     _vm._v(" "),
     _c(
@@ -46411,18 +46467,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("3")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -46644,25 +46688,32 @@ var render = function() {
                           ])
                         ]
                       )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.filterSegment.attributes.length - 1 == index
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "addMoreFilterButton",
+                          on: {
+                            click: function($event) {
+                              _vm.addNewFitler()
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("add")
+                          ]),
+                          _vm._v("Add More\n                    ")
+                        ]
+                      )
                     : _vm._e()
                 ],
                 1
               )
             ]
-          }),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "addMoreFilterButton",
-              on: {
-                click: function($event) {
-                  _vm.addNewFitler()
-                }
-              }
-            },
-            [_c("i", { staticClass: "material-icons" }, [_vm._v("add")])]
-          )
+          })
         ],
         2
       ),
@@ -51036,6 +51087,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
+        this.showOption = false;
         this.condiOptions = [
             {
                 key: 1,
@@ -51384,7 +51436,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "attributeSelectorRoot" }, [
     _c("div", { staticClass: "attributeSelectorBox" }, [
-      _c("div", { staticClass: "attrSelector attrSelOption" }, [
+      _c("div", { staticClass: "attrSelector" }, [
         _c(
           "div",
           { staticClass: "optionSpinner" },
@@ -51407,82 +51459,93 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "attrSelector attrSelName" },
-        [
-          _vm.attribute.option === 1
-            ? [
-                _c(
-                  "div",
-                  { staticClass: "optionSpinner" },
-                  [
-                    _c("spinner-drop-down-component", {
-                      attrs: {
-                        options: _vm.userAttribute,
-                        selectedKey: _vm.attribute.user
-                      },
-                      model: {
-                        value: _vm.attribute.user,
-                        callback: function($$v) {
-                          _vm.$set(_vm.attribute, "user", $$v)
-                        },
-                        expression: "attribute.user"
+      _vm.attribute.option !== 4
+        ? _c(
+            "div",
+            { staticClass: "attrSelector" },
+            [
+              _vm.attribute.option === 1
+                ? [
+                    _c(
+                      "div",
+                      { staticClass: "optionSpinner" },
+                      [
+                        _c("spinner-drop-down-component", {
+                          attrs: {
+                            options: _vm.userAttribute,
+                            selectedKey: _vm.attribute.user
+                          },
+                          model: {
+                            value: _vm.attribute.user,
+                            callback: function($$v) {
+                              _vm.$set(_vm.attribute, "user", $$v)
+                            },
+                            expression: "attribute.user"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                : _vm.attribute.option === 2
+                ? [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.attribute.name,
+                          expression: "attribute.name"
+                        }
+                      ],
+                      staticClass: "attrSelInput",
+                      attrs: { placeholder: "Attribute name" },
+                      domProps: { value: _vm.attribute.name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.attribute, "name", $event.target.value)
+                        }
                       }
                     })
-                  ],
-                  1
-                )
-              ]
-            : _vm.attribute.option === 2
-            ? [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.attribute.name,
-                      expression: "attribute.name"
-                    }
-                  ],
-                  staticClass: "attrSelInput",
-                  attrs: { placeholder: "Attribute name" },
-                  domProps: { value: _vm.attribute.name },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.attribute, "name", $event.target.value)
-                    }
-                  }
-                })
-              ]
-            : _vm.attribute.option === 3
-            ? [
-                _c(
-                  "div",
-                  { staticClass: "optionSpinner" },
-                  [
-                    _c("spinner-drop-down-component", {
-                      attrs: {
-                        options: _vm.systemAttribute,
-                        selectedKey: _vm.attribute.system
-                      },
-                      model: {
-                        value: _vm.attribute.system,
-                        callback: function($$v) {
-                          _vm.$set(_vm.attribute, "system", $$v)
-                        },
-                        expression: "attribute.system"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]
-            : _vm.attribute.option === 4
-            ? [
+                  ]
+                : _vm.attribute.option === 3
+                ? [
+                    _c(
+                      "div",
+                      { staticClass: "optionSpinner" },
+                      [
+                        _c("spinner-drop-down-component", {
+                          attrs: {
+                            options: _vm.systemAttribute,
+                            selectedKey: _vm.attribute.system
+                          },
+                          model: {
+                            value: _vm.attribute.system,
+                            callback: function($$v) {
+                              _vm.$set(_vm.attribute, "system", $$v)
+                            },
+                            expression: "attribute.system"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                : _vm._e()
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.attribute.option === 4
+        ? _c(
+            "div",
+            { staticClass: "attrSelectorOption" },
+            [
+              [
                 _c(
                   "div",
                   { staticClass: "optionSpinner" },
@@ -51504,17 +51567,17 @@ var render = function() {
                   1
                 )
               ]
-            : _vm._e()
-        ],
-        2
-      ),
+            ],
+            2
+          )
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "attrSelector attrSelOption" },
-        [
-          _vm.attribute.option === 4
-            ? [
+      _vm.attribute.option === 4
+        ? _c(
+            "div",
+            { staticClass: "attrSelector" },
+            [
+              [
                 _c(
                   "div",
                   { staticClass: "optionSpinner" },
@@ -51536,7 +51599,17 @@ var render = function() {
                   1
                 )
               ]
-            : [
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.attribute.option !== 4
+        ? _c(
+            "div",
+            { staticClass: "attrSelectorOption" },
+            [
+              [
                 _c(
                   "div",
                   { staticClass: "optionSpinner" },
@@ -51558,113 +51631,100 @@ var render = function() {
                   1
                 )
               ]
-        ],
-        2
-      ),
+            ],
+            2
+          )
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "attrSelector attrSelValue" },
-        [
-          _vm.attribute.option === 1
-            ? [
-                _c(
-                  "div",
-                  { staticClass: "optionSpinner" },
-                  [
-                    _c("spinner-drop-down-component", {
-                      attrs: {
-                        options: _vm.userAttributeValue,
-                        selectedKey: _vm.attribute.userValue
-                      },
-                      model: {
-                        value: _vm.attribute.userValue,
-                        callback: function($$v) {
-                          _vm.$set(_vm.attribute, "userValue", $$v)
-                        },
-                        expression: "attribute.userValue"
+      _vm.attribute.option !== 4
+        ? _c(
+            "div",
+            { staticClass: "attrSelector" },
+            [
+              _vm.attribute.option === 1
+                ? [
+                    _c(
+                      "div",
+                      { staticClass: "optionSpinner" },
+                      [
+                        _c("spinner-drop-down-component", {
+                          attrs: {
+                            options: _vm.userAttributeValue,
+                            selectedKey: _vm.attribute.userValue
+                          },
+                          model: {
+                            value: _vm.attribute.userValue,
+                            callback: function($$v) {
+                              _vm.$set(_vm.attribute, "userValue", $$v)
+                            },
+                            expression: "attribute.userValue"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                : _vm.attribute.option === 2
+                ? [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.attribute.value,
+                          expression: "attribute.value"
+                        }
+                      ],
+                      staticClass: "attrSelInput",
+                      attrs: { placeholder: "Attribute value" },
+                      domProps: { value: _vm.attribute.value },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.attribute, "value", $event.target.value)
+                        }
                       }
                     })
-                  ],
-                  1
-                ),
-                _vm._v("udo\n            ")
-              ]
-            : _vm.attribute.option === 2
-            ? [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.attribute.value,
-                      expression: "attribute.value"
-                    }
-                  ],
-                  staticClass: "attrSelInput",
-                  attrs: { placeholder: "Attribute value" },
-                  domProps: { value: _vm.attribute.value },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.attribute, "value", $event.target.value)
-                    }
-                  }
-                })
-              ]
-            : _vm.attribute.option === 3
-            ? [
-                _c(
-                  "div",
-                  { staticClass: "optionSpinner" },
-                  [
-                    _c("spinner-drop-down-component", {
-                      attrs: {
-                        options: _vm.systemAttributeValue,
-                        selectedKey: _vm.attribute.systemValue
-                      },
-                      model: {
-                        value: _vm.attribute.systemValue,
-                        callback: function($$v) {
-                          _vm.$set(_vm.attribute, "systemValue", $$v)
-                        },
-                        expression: "attribute.systemValue"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]
-            : _vm._e()
-        ],
-        2
-      )
-    ]),
-    _vm._v(" "),
-    _vm.canCondition
-      ? _c(
-          "div",
-          { staticClass: "attributeSelectorCondi" },
-          [
-            _c("spinner-drop-down-component", {
-              attrs: {
-                options: _vm.condiOptions,
-                selectedKey: _vm.attribute.condi
-              },
-              model: {
-                value: _vm.attribute.condi,
-                callback: function($$v) {
-                  _vm.$set(_vm.attribute, "condi", $$v)
-                },
-                expression: "attribute.condi"
-              }
-            })
-          ],
-          1
-        )
-      : _vm._e()
+                  ]
+                : _vm.attribute.option === 3
+                ? [
+                    _c(
+                      "div",
+                      { staticClass: "optionSpinner" },
+                      [
+                        _c("spinner-drop-down-component", {
+                          attrs: {
+                            options: _vm.systemAttributeValue,
+                            selectedKey: _vm.attribute.systemValue
+                          },
+                          model: {
+                            value: _vm.attribute.systemValue,
+                            callback: function($$v) {
+                              _vm.$set(_vm.attribute, "systemValue", $$v)
+                            },
+                            expression: "attribute.systemValue"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                : _vm._e()
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.canCondition
+        ? _c("div", { staticClass: "alignFilter" }, [
+            _c("button", { staticClass: "filterType" }, [_vm._v("and")]),
+            _vm._v(" "),
+            _c("button", { staticClass: "filterType" }, [_vm._v("or")])
+          ])
+        : _vm._e()
+    ])
   ])
 }
 var staticRenderFns = []

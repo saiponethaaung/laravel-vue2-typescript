@@ -13,14 +13,14 @@
             </router-link>
         </div>
 
-        <div class="contentRoot">Trigger your message</div>
+        <div class="contentRoot"><i class="material-icons iconAlign">swap_vert</i>Trigger your message</div>
         <div class="btnClick">
             <router-link :to="{'name': 'project.broadcast.trigger'}">
                 <i class="material-icons iconAlign">add</i>Add a trigger
             </router-link>
         </div>
 
-        <div class="contentRoot"></i>Schedule your message</div>
+        <div class="contentRoot"><i class="material-icons iconAlign">calendar_today</i>Schedule your message</div>
         <div class="chatBlockContentList">
             <div class="btnClick">Happy New Year</div>
             <div class="btnClick">Time</div>

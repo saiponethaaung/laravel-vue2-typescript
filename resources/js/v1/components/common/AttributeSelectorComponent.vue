@@ -1,7 +1,7 @@
 <template>
     <div class="attributeSelectorRoot">
         <div class="attributeSelectorBox">
-            <div class="attrSelector attrSelOption">
+            <div class="attrSelector">
                 <div class="optionSpinner">
                     <spinner-drop-down-component
                         :options="attributeOptions"
@@ -10,7 +10,7 @@
                     ></spinner-drop-down-component>
                 </div>
             </div>
-            <div class="attrSelector attrSelName">
+            <div class="attrSelector" v-if="attribute.option!==4">
                 <template v-if="attribute.option === 1">
                     <div class="optionSpinner">
                         <spinner-drop-down-component
@@ -32,7 +32,9 @@
                         ></spinner-drop-down-component>
                     </div>
                 </template>
-                <template v-else-if="attribute.option === 4">
+            </div>
+            <div class="attrSelectorOption" v-if="attribute.option === 4">
+                <template>
                     <div class="optionSpinner">
                         <spinner-drop-down-component
                             :options="filterType"
@@ -42,8 +44,8 @@
                     </div>
                 </template>
             </div>
-            <div class="attrSelector attrSelOption">
-                <template v-if="attribute.option === 4">
+            <div class="attrSelector" v-if="attribute.option === 4">
+                <template>
                     <div class="optionSpinner">
                         <spinner-drop-down-component
                             :options="segmentValue"
@@ -52,7 +54,9 @@
                         ></spinner-drop-down-component>
                     </div>
                 </template>
-                <template v-else>
+            </div>
+            <div class="attrSelectorOption" v-if="attribute.option !== 4">
+                <template>
                     <div class="optionSpinner">
                         <spinner-drop-down-component
                             :options="filterType"
@@ -62,7 +66,7 @@
                     </div>
                 </template>
             </div>
-            <div class="attrSelector attrSelValue">
+            <div class="attrSelector" v-if="attribute.option!==4">
                 <template v-if="attribute.option === 1">
                     <div class="optionSpinner">
                         <spinner-drop-down-component
@@ -70,7 +74,7 @@
                             :selectedKey="attribute.userValue"
                             v-model="attribute.userValue"
                         ></spinner-drop-down-component>
-                    </div>udo
+                    </div>
                 </template>
                 <template v-else-if="attribute.option === 2">
                     <input placeholder="Attribute value" v-model="attribute.value" class="attrSelInput"/>
@@ -85,14 +89,16 @@
                     </div>
                 </template>
             </div>
+            <div v-if="canCondition" class="alignFilter">
+                <!-- <spinner-drop-down-component
+                    :options="condiOptions"
+                    :selectedKey="attribute.condi"
+                    v-model="attribute.condi"
+                ></spinner-drop-down-component> -->
+                <button class="filterType">and</button>
+                <button class="filterType">or</button>
+            </div>
         </div>    
-        <div v-if="canCondition" class="attributeSelectorCondi">
-            <spinner-drop-down-component
-                :options="condiOptions"
-                :selectedKey="attribute.condi"
-                v-model="attribute.condi"
-            ></spinner-drop-down-component>
-        </div>
     </div>    
 </template>
 
@@ -111,6 +117,8 @@ export default class AttributeSelectorComponent extends Vue {
         default: false
     }) canCondition!: boolean;
     @Prop() attribute!: AttributeFilterModel;
+
+    private showOption: boolean = false;
 
     private condiOptions: any = [
         {

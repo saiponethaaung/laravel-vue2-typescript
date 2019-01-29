@@ -13053,33 +13053,22 @@ a:hover {
 }
 
 .addMoreFilterButton {
-  position: absolute;
-  bottom: 8px;
-  right: 35px;
-  width: 25px;
-  height: 25px;
-  color: #aaaaaa;
-  border-radius: 100%;
+  right: 0px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  font-size: 11px;
+  top: 10px;
+  margin-top: 10px;
+  color: #cccccc;
   cursor: pointer;
-}
-
-.addMoreFilterButton .material-icons {
-  font-size: 18px;
 }
 
 .attributeSelectorRoot {
   position: relative;
   font-size: 13px;
+  display: inline-block;
+  float: left;
+  margin-top: -10px;
 }
 
 .attributeSelectorRoot .attributeSelectorCondi {
@@ -13112,47 +13101,51 @@ a:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  height: 40px;
+  margin: 10px;
   line-height: 40px;
-  border-radius: 5px;
-  font-size: 13px;
-  margin-bottom: 15px;
-  -webkit-box-flex: 1;
-      -ms-flex: 1 1 0px;
-          flex: 1 1 0px;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  margin-left: 7px;
-}
-
-.attributeSelectorBox > div {
-  width: 100%;
+  height: 40px;
 }
 
 .attrSelector {
+  width: 200px;
   border: 1px solid #ebebeb;
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-flex: 1;
-      -ms-flex: 1 1 0px;
-          flex: 1 1 0px;
-  margin-left: 10px;
-}
-
-.attrSelector:first-child {
-  border-left: transparent;
-}
-
-.attrSelector:last-child {
-  border-right: transparent;
+  border-radius: 5px;
+  margin-right: 10px;
 }
 
 .attrSelector .optionSpinner {
-  width: 100%;
+  width: 200px;
+}
+
+.attrSelectorOption {
+  width: 80px;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.attrSelectorOption .optionSpinner {
+  width: 80px;
+}
+
+.alignFilter {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.filterType {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ededed;
+  text-align: center;
+  background: white;
+  cursor: pointer;
+}
+
+.filterType:focus {
+  background: #3490dc;
+  color: #ffffff;
 }
 
 .sddListCon {
@@ -13188,13 +13181,15 @@ a:hover {
 
 .attributeSelector {
   position: relative;
+  display: inline-block;
+  width: 850px;
 }
 
 .deleteAttribute {
   cursor: pointer;
   position: absolute;
-  top: 0;
-  right: -75px;
+  top: 5px;
+  right: -35px;
   width: 30px;
   height: 30px;
   display: -webkit-box;
@@ -13220,7 +13215,7 @@ a:hover {
   border: none;
   font-size: 13px;
   padding: 0 5px;
-  width: 100%;
+  width: 200px;
 }
 
 .ddListCon {
@@ -13722,6 +13717,7 @@ a:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  margin-bottom: 5px;
 }
 
 .dropDownList {
@@ -13767,6 +13763,7 @@ a:hover {
 
 .textAlign {
   margin: 10px;
+  display: inline-block;
 }
 
 .textTrig {

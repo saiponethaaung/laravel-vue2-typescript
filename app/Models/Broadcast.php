@@ -64,6 +64,22 @@ class Broadcast extends Model
         'updated_at'
     ];
 
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($broadcast) {
+            foreach($broadcast->weekday as $weekday) {
+                $weekday->delete();
+            }
+            if(!is_null($broadcast->chatBlockSection)) {
+                $broadcast->chatBlockSection->delete();
+            }
+            if(!is_null($broadcast->attribute)) {
+                $broadcast->attribute->delete();
+            }
+        });
+    }
+
     public function weekday()
     {
         return $this->hasMany('App\Models\BroadcastWeekday', 'project_broadcast_id', 'id');

@@ -84,13 +84,16 @@ class BroadcastController extends Controller
 
                 $res = $this->buildScheduleList($broadcast);
             }
-
+            
             if($section==='trigger') {
                 BroadcastTriggerAttribute::create([
+                    'project_broadcast_id' => $broadcast->id,
                     'chat_attribute_id' => null,
                     'condition' => 1,
                     'value' => ''
                 ]);
+
+                $res = $this->buildTriggerList($broadcast);
             }
         } catch (\Exception $e) {
             DB::rollback();
@@ -137,7 +140,6 @@ class BroadcastController extends Controller
             'month' => is_null($schedule->month) ? 0 : $schedule->month,
             'year' => is_null($schedule->year) ? 0 : $schedule->year,
             'time' => is_null($schedule->time) ? 0 : $schedule->time,
-            'day' => is_null($schedule->day) ? 0 : $schedule->day,
             'interval_type' => is_null($schedule->interval_type) ? 1 : $schedule->interval_type
         ];
     }
@@ -356,6 +358,59 @@ class BroadcastController extends Controller
                 'status' => false,
                 'code' => 422,
                 'mesg' => 'Failed to update message tag!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success'
+        ]);
+    }
+
+    public function updateStatus(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('broadcast')->status = $request->input('status')=='true' ? 1 : 0;
+            $request->attributes->get('broadcast')->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update broadcast status!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success'
+        ]);
+    }
+    
+    public function deleteBroadcast(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('broadcast')->delete();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to delete broadcast!',
                 'debugMesg' => $e->getMessage()
             ], 422);
         }

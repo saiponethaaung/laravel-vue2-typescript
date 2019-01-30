@@ -38,10 +38,10 @@
                             <template v-if="trigger.duration_type===1">{{ trigger.duration>1 ? 'minutes' : 'minute' }}</template>
                             <template v-if="trigger.duration_type===2">{{ trigger.duration>1 ? 'hours' : 'hour' }}</template>
                             <template v-if="trigger.duration_type===3">{{ trigger.duration>1 ? 'days' : 'day' }}</template>
-                             after 
-                            <template v-if="trigger.trigger_type===1">after first interaction</template>
-                            <template v-if="trigger.trigger_type===2">after last interaction</template>
-                            <template v-if="trigger.trigger_type===3">afte attribute set</template>
+                            &nbsp;after&nbsp;
+                            <template v-if="trigger.trigger_type===1">first interaction</template>
+                            <template v-if="trigger.trigger_type===2">last interaction</template>
+                            <template v-if="trigger.trigger_type===3">attribute set</template>
                         </router-link>
                     </li>
                 </template>
@@ -102,7 +102,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import Axios,{ CancelTokenSource } from 'axios';
 import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 
@@ -122,6 +122,54 @@ export default class BroadcastSidebarComponent extends Vue {
         this.loadTrigger();
         this.loadMessageTags();
     }
+    
+    @Watch('$store.state.deleteTrigger')
+    private removeTrigger() {
+        for(let i in this.triggerList) {
+            if(this.triggerList[i].id===this.$store.state.deleteTrigger) {
+                this.triggerList.splice(parseInt(i), 1);
+                break;
+            }
+        }
+    }
+    
+    @Watch('$store.state.updateTrigger', { deep: true })
+    private updateTrigger() {
+        if(this.$store.state.updateTrigger==null) return;
+        for(let i in this.triggerList) {
+            if(this.triggerList[i].id===this.$store.state.updateTrigger.id) {
+                this.triggerList[i].duration = this.$store.state.updateTrigger.duration;
+                this.triggerList[i].duration_type = this.$store.state.updateTrigger.duration_type;
+                this.triggerList[i].trigger_type = this.$store.state.updateTrigger.trigger_type;
+                break;
+            }
+        }
+    }
+
+    @Watch('$store.state.deleteSchedule')
+    private removeSchedule() {
+        for(let i in this.scheduleList) {
+            if(this.scheduleList[i].id===this.$store.state.deleteSchedule) {
+                this.scheduleList.splice(parseInt(i), 1);
+                break;
+            }
+        }
+    }
+
+    @Watch('$store.state.updateSchedule', { deep: true })
+    private updateSchedule() {
+        if(this.$store.state.updateSchedule==null) return;
+        for(let i in this.scheduleList) {
+            if(this.scheduleList[i].id===this.$store.state.updateSchedule.id) {
+                this.scheduleList[i].day = this.$store.state.updateSchedule.day;
+                this.scheduleList[i].month = this.$store.state.updateSchedule.month;
+                this.scheduleList[i].year = this.$store.state.updateSchedule.year;
+                this.scheduleList[i].time = this.$store.state.updateSchedule.time;
+                this.scheduleList[i].interval_type = this.$store.state.updateSchedule.interval_type;
+                break;
+            }
+        }
+    }
 
     private scheduleName(index: number) {
         let name = '';
@@ -130,7 +178,7 @@ export default class BroadcastSidebarComponent extends Vue {
         let min = time.slice(2, 4);
         let timeOfDay = "am";
 
-        if(hour>12) {
+        if(parseInt(hour)>12) {
             hour = hour-12;
             timeOfDay = "pm";
         }
@@ -139,7 +187,7 @@ export default class BroadcastSidebarComponent extends Vue {
 
         switch(this.scheduleList[index].interval_type) {
             case(1):
-                name = `${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} ${this.scheduleList[index].year} <span class='float-right'>${time}</span>`;
+                name = `${this.$store.state.months[parseInt(this.scheduleList[index].month)]} ${this.scheduleList[index].day} ${this.scheduleList[index].year} <span class='float-right'>${time}</span>`;
                 break;
 
             case(2):
@@ -151,7 +199,7 @@ export default class BroadcastSidebarComponent extends Vue {
                 break;
 
             case(4):
-                name = `Every month <span class='float-right'>${this.scheduleList[index].day} ${time}</span>`;
+                name = `Every month <span class='float-right'>${this.scheduleList[index].day} • ${time}</span>`;
                 break;
 
             case(5):
@@ -159,7 +207,7 @@ export default class BroadcastSidebarComponent extends Vue {
                 break;
 
             case(6):
-                name = `Every year <span class='float-right'>${this.$store.state.months[this.scheduleList[index].month]} ${this.scheduleList[index].day} ${time}</span>`;
+                name = `Every year <span class='float-right'>${this.$store.state.months[parseInt(this.scheduleList[index].month)]} ${this.scheduleList[index].day} • ${time}</span>`;
                 break;
 
             case(7):
@@ -231,7 +279,7 @@ export default class BroadcastSidebarComponent extends Vue {
             url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast?section=trigger`,
             method: 'post'
         }).then(res => {
-
+            this.triggerList.push(res.data.data);
         }).catch(err => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new schedule!');

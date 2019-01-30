@@ -136,6 +136,7 @@
 }
 
 .broadcastFilterCon {
+    position: relative;
     background: $secondaryBackground;
     padding: 20px 30px;
     .dropDownList,
@@ -369,5 +370,25 @@
         height: inherit;
         line-height: inherit;
         margin: 0 5px;
+    }
+}
+
+.broadcastActionBtn {
+    position: absolute;
+    right: 0;
+    bottom: -36px;
+}
+
+.statusBtn {
+    @extend %flexJCenter;
+    border-radius: 100%;
+    width: 45px;
+    height: 45px;
+    background: #72bb53;
+    &.deactiveStatus {
+        background: #ffa834;
+    }
+    img {
+        width: 24px;
     }
 }

@@ -6,6 +6,7 @@
 .popFixedCenter,
 .userAttributePop .uaBodyCon table .attrDel,
 .triggerAttribute .sddListCon,
+.statusBtn,
 .segmentList .segmentListItem,
 .segmentTitleCon,
 .assignList,
@@ -25,7 +26,8 @@
 .floatingLoading,
 .popFixedCenter,
 .userAttributePop .uaBodyCon table .attrDel,
-.triggerAttribute .sddListCon {
+.triggerAttribute .sddListCon,
+.statusBtn {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -13806,6 +13808,7 @@ a:hover {
 }
 
 .broadcastFilterCon {
+  position: relative;
   background: #f7f6f6;
   padding: 20px 30px;
 }
@@ -14053,6 +14056,27 @@ a:hover {
   height: inherit;
   line-height: inherit;
   margin: 0 5px;
+}
+
+.broadcastActionBtn {
+  position: absolute;
+  right: 0;
+  bottom: -36px;
+}
+
+.statusBtn {
+  border-radius: 100%;
+  width: 45px;
+  height: 45px;
+  background: #72bb53;
+}
+
+.statusBtn.deactiveStatus {
+  background: #ffa834;
+}
+
+.statusBtn img {
+  width: 24px;
 }
 
 @font-face {

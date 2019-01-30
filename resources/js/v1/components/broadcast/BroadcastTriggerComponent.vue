@@ -38,6 +38,9 @@
                             <button v-if="filterSegment.attributes.length>1" class="deleteAttribute" @click="filterSegment.attributes.splice(index, 1);">
                                 <i class="material-icons">delete</i>
                             </button>
+                            <div v-if="(filterSegment.attributes.length-1)==index" @click="addNewFitler()" class="addMoreFilterButton">
+                                <i class="material-icons">add</i>Add More
+                            </div>
                         </div>
                     </template>
                     <div @click="addNewFitler()" class="addMoreFilterButton">
@@ -106,6 +109,19 @@
                         v-model="trigger.condi"
                     ></dropdown-keybase-component>
                     <input type="text" v-model="trigger.value" placeholder="Attribute Value"/>
+                </div>
+
+                <div class="btnAction broadcastActionBtn">
+                    <a href="javascript:void(0);" @click="deleteBroadcast()">
+                        <figure>
+                            <img src="/images/icons/delete.png"/>
+                        </figure>
+                    </a>
+                    <a href="javascript:void(0);" @click="trigger.updateStatus()" :to="{name: 'project.broadcast'}">
+                        <figure class="btnSend statusBtn" :class="{'deactiveStatus': !trigger.status}">
+                            <img :src="'/images/icons/'+(trigger.status ? 'broadcast_status_enable': 'broadcast_status')+'.png'"/>
+                        </figure>   
+                    </a>
                 </div>
             </div>
             <div v-if="!loadingContent">
@@ -268,12 +284,30 @@ export default class BroadcastTriggerComponent extends Vue{
     private async updateTrigger() {
         if(this.loadingContent) return;
         await this.trigger.updateTrigger();
+        this.$store.state.updateTrigger = {
+            id: this.trigger.id,
+            duration: this.trigger.duration,
+            duration_type: this.trigger.durationType,
+            trigger_type: this.trigger.triggerType
+        };
     }
 
     @Watch('trigger.tag')
     private async updateTag() {
         if(this.loadingContent) return;
         await this.trigger.updateTag();
+    }
+
+    private async deleteBroadcast() {
+        if(confirm("Are you sure you want to delete this broadcast?")) {
+            let del = await this.trigger.deleteBroadcast();
+            if(!del.status) {
+                alert(del.mesg);
+            } else {
+                this.$store.state.deleteTrigger = this.trigger.id;
+                this.$router.push({name: 'project.broadcast'});
+            }
+        }
     }
 }
 </script>

@@ -141,6 +141,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
             
             Route::group(['prefix' => '{broadcastId}', 'middleware' => 'verifyBroadcast'], function() {
 
+                Route::delete('/', 'V1\\Api\\BroadcastController@deleteBroadcast');
+                Route::post('status', 'V1\\Api\\BroadcastController@updateStatus');
                 Route::post('message-tag', 'V1\\Api\\BroadcastController@updateMessageTag');
 
                 Route::group(['prefix' => 'section/{sectionId}/content', 'middleware' => 'verifyChatBlockSection'], function() {

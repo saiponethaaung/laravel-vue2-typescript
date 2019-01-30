@@ -48,7 +48,11 @@ export default new Vuex.Store({
             12: 'Dec'
         },
         messageTags: [],
-        loadingMessageTags: false
+        loadingMessageTags: false,
+        deleteTrigger: null,
+        deleteSchedule: null,
+        updateTrigger: null,
+        updateSchedule: null
     },
     mutations: {
         logout(state) {

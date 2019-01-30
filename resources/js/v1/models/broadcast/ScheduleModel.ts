@@ -111,28 +111,40 @@ export default class ScheduleModels extends BroadcastModel{
         return this.loading;
     }
 
+    get dateDate() {
+        let day = this.date.getDate().toString();
+        day = day.length==1 ? `0${day}` : day;
+        return day;
+    }
+
+    get dateMonth() {
+        let month: string = (this.date.getMonth()+1).toString();
+        month = month.length==1 ? `0${month}` : month;
+        return month;
+    }
+
+    get dateYear() {
+        return this.date.getFullYear();
+    }
+
+    get timeServerFormat() {
+        let time: any = this.time.split(":");
+        if(this.period==2) {
+            time[0] = parseInt(time[0])+12;
+            time[0] = time[0].length<10 ? `0${time[0]}` : time[0];
+        }
+        return `${time[0]}${time[1]}`;
+    }
+
     async updateSchedule() {
         let res = {
             status: true,
             mesg: 'success'
         };
 
-        let month: string = (this.date.getMonth()+1).toString();
-        let day = this.date.getDate().toString();
-        
-        month = month.length==1 ? `0${month}` : month;
-        day = day.length==1 ? `0${day}` : day;
-
-        let time: any = this.time.split(":");
-        if(this.period==2) {
-            time[0] = parseInt(time[0])+12;
-            time[0] = time[0].length<10 ? `0${time[0]}` : time[0];
-        }
-
-        
         let data = new FormData();
-        data.append('date', `${this.date.getFullYear()}-${month}-${day}`);
-        data.append('time', `${time[0]}${time[1]}`);
+        data.append('date', `${this.dateYear}-${this.dateMonth}-${this.dateDate}`);
+        data.append('time', `${this.timeServerFormat}`);
         data.append('repeat', this.repeat.toString());
         
         let counter = 0;

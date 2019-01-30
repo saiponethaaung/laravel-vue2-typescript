@@ -98,6 +98,18 @@
                         </ul>
                     </div>
                 </template>
+                <div class="btnAction broadcastActionBtn">
+                    <a href="javascript:void(0);" @click="deleteBroadcast()">
+                        <figure>
+                            <img src="/images/icons/delete.png"/>
+                        </figure>
+                    </a>
+                    <a href="javascript:void(0);" @click="schedule.updateStatus()" :to="{name: 'project.broadcast'}">
+                        <figure class="btnSend statusBtn" :class="{'deactiveStatus': !schedule.status}">
+                            <img :src="'/images/icons/'+(schedule.status ? 'broadcast_status_enable': 'broadcast_status')+'.png'"/>
+                        </figure>   
+                    </a>
+                </div>
             </div>
             <div v-if="!loadingContent">
                 <builder-component
@@ -265,12 +277,33 @@ export default class BroadcastScheduleComponent extends Vue{
     private async updateSchedule() {
         if(this.loadingContent) return;
         await this.schedule.updateSchedule();
+        console.log('time',  this.schedule.timeServerFormat);
+        this.$store.state.updateSchedule = {
+            id: this.schedule.id,
+            day: this.schedule.dateDate,
+            month: this.schedule.dateMonth,
+            year: this.schedule.dateYear,
+            time: this.schedule.timeServerFormat.toString(),
+            interval_type: this.schedule.repeat
+        };
     }
 
     @Watch('schedule.tag')
     private async updateTag() {
         if(this.loadingContent) return;
         await this.schedule.updateTag();
+    }
+
+    private async deleteBroadcast() {
+        if(confirm("Are you sure you want to delete this broadcast?")) {
+            let del = await this.schedule.deleteBroadcast();
+            if(!del.status) {
+                alert(del.mesg);
+            } else {
+                this.$store.state.deleteSchedule = this.schedule.id;
+                this.$router.push({name: 'project.broadcast'});
+            }
+        }
     }
 }
 </script>

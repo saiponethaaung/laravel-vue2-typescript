@@ -8,6 +8,7 @@ export default class BroadcastModel extends AjaxErrorHandler {
         tag: 2,
         project: '',
         type: 1,
+        status: 0,
         section: {
             id: -1,
             boradcast: -1
@@ -24,6 +25,7 @@ export default class BroadcastModel extends AjaxErrorHandler {
         this.type = content.type;
         this.tag = content.tag;
         this.section = content.section;
+        this.status = content.status;
     }
 
     get id(): number {
@@ -66,6 +68,14 @@ export default class BroadcastModel extends AjaxErrorHandler {
         this.content.section = section;
     }
 
+    get status() : boolean{
+        return this.content.status;
+    }
+
+    set status(status: boolean) {
+        this.content.status = status;
+    }
+
     async updateTag() {
         let res = {
             status: true,
@@ -85,6 +95,50 @@ export default class BroadcastModel extends AjaxErrorHandler {
             if(err.response) {
                 res.status = false;
                 res.mesg = this.globalHandler(err, 'Failed to update message tags!');
+            }
+        });
+
+        return res;
+    }
+
+    async updateStatus() {
+        let res = {
+            status: true,
+            mesg: 'success'
+        };
+        
+        let data = new FormData();
+        data.append('status', (!this.status).toString());
+
+        await Axios({
+            url: `/api/v1/project/${this.project}/broadcast/${this.id}/status`,
+            method: 'post',
+            data: data
+        }).then(res => {
+            this.status = !this.status;
+        }).catch(err => {
+            if(err.response) {
+                res.status = false;
+                res.mesg = this.globalHandler(err, 'Failed to update status!');
+            }
+        });
+
+        return res;
+    }
+
+    async deleteBroadcast() {
+        let res = {
+            status: true,
+            mesg: 'success'
+        };
+        
+        await Axios({
+            url: `/api/v1/project/${this.project}/broadcast/${this.id}`,
+            method: 'delete'
+        }).catch(err => {
+            if(err.response) {
+                res.status = false;
+                res.mesg = this.globalHandler(err, 'Failed to delete!');
             }
         });
 

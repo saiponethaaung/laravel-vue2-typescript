@@ -24,10 +24,14 @@
 .userTable {
     width: 100%;
     .utColumn {
-        width: 120px;
+        width: 100px;
     }
     .utColumnOption {
-        width: 100px;
+        width: 90px;
+    }
+    .tdSentDate {
+        display: flex;
+        align-items: center;
     }
 }
 

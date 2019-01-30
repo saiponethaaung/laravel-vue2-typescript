@@ -13703,11 +13703,20 @@ a:hover {
 }
 
 .userTable .utColumn {
-  width: 120px;
+  width: 100px;
 }
 
 .userTable .utColumnOption {
-  width: 100px;
+  width: 90px;
+}
+
+.userTable .tdSentDate {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .btnSub {

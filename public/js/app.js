@@ -42826,10 +42826,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("tr", [
       _c("td", [
-        _c("div", [
-          _vm._v(
-            "\n                            Dec 20, 2018 10:00 AM\n                        "
-          )
+        _c("div", { staticClass: "tdSentDate" }, [
+          _c("div", [
+            _c("i", { staticClass: "material-icons iconAlign" }, [
+              _vm._v("send")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("span", [_vm._v("Dec 20, 2018 10:00 AM")])
         ])
       ]),
       _vm._v(" "),

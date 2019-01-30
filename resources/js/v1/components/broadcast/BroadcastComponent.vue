@@ -66,8 +66,11 @@
                <template>
                     <tr>
                         <td>
-                            <div>
-                                Dec 20, 2018 10:00 AM
+                            <div class="tdSentDate">
+                                <div>
+                                    <i class="material-icons iconAlign">send</i>
+                                </div>
+                                <span>Dec 20, 2018 10:00 AM</span>
                             </div>
                         </td>
                         <td>

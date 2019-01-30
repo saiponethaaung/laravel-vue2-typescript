@@ -106,7 +106,7 @@ export default new VueRouter({
                             }
                         },
                         {
-                            path: "trigger",
+                            path: "trigger/:triggerid",
                             name: "project.broadcast.trigger",
                             component: BroadcastTriggerComponent,
                             meta: {

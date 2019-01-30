@@ -32389,7 +32389,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
                             }
                         },
                         {
-                            path: "trigger",
+                            path: "trigger/:triggerid",
                             name: "project.broadcast.trigger",
                             component: __WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastTriggerComponent_vue___default.a,
                             meta: {
@@ -42996,7 +42996,7 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
     constructor() {
         super(...arguments);
         this.scheduleLoading = true;
-        this.triggerLoading = false;
+        this.triggerLoading = true;
         this.scheduleList = [];
         this.triggerList = [];
         this.creatingSchedule = false;
@@ -43005,6 +43005,7 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
     }
     mounted() {
         this.loadSchedule();
+        this.loadTrigger();
         this.loadMessageTags();
     }
     scheduleName(index) {
@@ -43058,6 +43059,25 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule list!');
                     alert(mesg);
                     this.scheduleLoading = false;
+                }
+            });
+        });
+    }
+    loadTrigger() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (undefined === this.$store.state.projectInfo.id)
+                return;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/trigger`,
+                method: 'get'
+            }).then(res => {
+                this.triggerList = res.data.data;
+                this.triggerLoading = false;
+            }).catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load trigger list!');
+                    alert(mesg);
+                    this.triggerLoading = false;
                 }
             });
         });
@@ -43155,6 +43175,89 @@ var render = function() {
       ),
       _vm._v(" "),
       _vm._m(2),
+      _vm._v(" "),
+      _c("div", { staticClass: "broadcastContentList schedule" }, [
+        _c(
+          "ul",
+          { staticClass: "broadcastScheduleListRoot" },
+          [
+            _vm._l(this.triggerList, function(trigger, index) {
+              return [
+                _c(
+                  "li",
+                  { key: index, staticClass: "broadcastScheduleList" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        class: {
+                          activeBroadcast:
+                            _vm.$route.params.triggerid == trigger.id
+                        },
+                        attrs: {
+                          to: {
+                            name: "project.broadcast.trigger",
+                            params: { triggerid: trigger.id }
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(trigger.duration) +
+                            "\n                        "
+                        ),
+                        trigger.duration_type === 1
+                          ? [
+                              _vm._v(
+                                _vm._s(
+                                  trigger.duration > 1 ? "minutes" : "minute"
+                                )
+                              )
+                            ]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        trigger.duration_type === 2
+                          ? [
+                              _vm._v(
+                                _vm._s(trigger.duration > 1 ? "hours" : "hour")
+                              )
+                            ]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        trigger.duration_type === 3
+                          ? [
+                              _vm._v(
+                                _vm._s(trigger.duration > 1 ? "days" : "day")
+                              )
+                            ]
+                          : _vm._e(),
+                        _vm._v(
+                          "\n                         after \n                        "
+                        ),
+                        trigger.trigger_type === 1
+                          ? [_vm._v("after first interaction")]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        trigger.trigger_type === 2
+                          ? [_vm._v("after last interaction")]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        trigger.trigger_type === 3
+                          ? [_vm._v("afte attribute set")]
+                          : _vm._e()
+                      ],
+                      2
+                    )
+                  ],
+                  1
+                )
+              ]
+            })
+          ],
+          2
+        )
+      ]),
       _vm._v(" "),
       _vm.creatingTrigger
         ? [
@@ -46832,7 +46935,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_broadcast_ScheduleModel__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_broadcast_TriggerModel__ = __webpack_require__(202);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_axios__);
@@ -46876,53 +46979,44 @@ let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPAC
                 value: "pm"
             },
         ];
-        this.repeatOption = [
+        this.durationOption = [
             {
                 key: 1,
-                value: 'None'
+                value: 'Minute'
             },
             {
                 key: 2,
-                value: 'Daily'
+                value: 'Hour'
             },
             {
                 key: 3,
-                value: 'Weekend'
+                value: 'Day'
+            }
+        ];
+        this.triggerOption = [
+            {
+                key: 1,
+                value: 'After first interaction'
             },
             {
-                key: 4,
-                value: 'Every Month'
+                key: 2,
+                value: 'After last interaction'
             },
             {
-                key: 5,
-                value: 'Workdays'
-            },
-            {
-                key: 6,
-                value: 'Yearly'
-            },
-            {
-                key: 7,
-                value: 'Custom'
-            },
+                key: 3,
+                value: 'After attribute is set'
+            }
         ];
         this.showTags = false;
-        this.schedule = new __WEBPACK_IMPORTED_MODULE_2__models_broadcast_ScheduleModel__["a" /* default */]();
+        this.trigger = new __WEBPACK_IMPORTED_MODULE_2__models_broadcast_TriggerModel__["a" /* default */]();
         this.filterSegment = new __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
     }
-    get showDate() {
-        if (undefined === this.schedule)
-            return '';
-        let date = '';
-        let month = this.schedule.date.getMonth() + 1;
-        return `${this.$store.state.months[month]} ${this.schedule.date.getDate()}, ${this.schedule.date.getFullYear()}`;
-    }
     get selectedTag() {
-        if (undefined === this.schedule)
+        if (undefined === this.trigger)
             return 0;
         let index = 0;
         for (let i = 0; this.$store.state.messageTags.length > i; i++) {
-            if (this.$store.state.messageTags[i].id === this.schedule.tag) {
+            if (this.$store.state.messageTags[i].id === this.trigger.tag) {
                 index = i;
                 break;
             }
@@ -46930,41 +47024,41 @@ let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPAC
         return index;
     }
     mounted() {
-        this.loadSchedule();
+        this.loadTrigger();
     }
     addNewFitler() {
         this.filterSegment.createNewAttributeFilter();
     }
-    loadSchedule() {
+    loadTrigger() {
         return __awaiter(this, void 0, void 0, function* () {
             this.loadingToken.cancel();
             this.loadingToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
             this.loading = true;
             yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/schedule/${this.$route.params.scheduleid}`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/trigger/${this.$route.params.triggerid}`,
                 method: 'get',
                 cancelToken: this.loadingToken.token
             }).then(res => {
-                this.schedule.init(res.data.data);
-                this.loadScheduleContent();
+                this.trigger.init(res.data.data);
+                this.loadBroadcastContent();
                 this.loading = false;
             }).catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule info!');
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load trigger info!');
                     alert(mesg);
                     this.loading = false;
                 }
             });
         });
     }
-    loadScheduleContent() {
+    loadBroadcastContent() {
         return __awaiter(this, void 0, void 0, function* () {
             this.loadingContentToken.cancel();
             this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
             this.loadingContent = true;
             this.contents = [];
             yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.schedule.id}/section/${this.schedule.section.id}/content`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.trigger.id}/section/${this.trigger.section.id}/content`,
                 cancelToken: this.loadingContentToken.token
             }).then((res) => {
                 this.contents = res.data.content;
@@ -46980,33 +47074,36 @@ let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPAC
             this.loadingContent = false;
         });
     }
-    updateSchedule() {
+    updateTrigger() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.loadingContent)
                 return;
-            yield this.schedule.updateSchedule();
+            yield this.trigger.updateTrigger();
         });
     }
     updateTag() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.loadingContent)
                 return;
-            yield this.schedule.updateTag();
+            yield this.trigger.updateTag();
         });
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$route.params.scheduleid')
-], BroadcastTriggerComponent.prototype, "loadSchedule", null);
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$route.params.triggerid')
+], BroadcastTriggerComponent.prototype, "loadTrigger", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.date'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.time'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.period'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.repeat'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.days', { deep: true })
-], BroadcastTriggerComponent.prototype, "updateSchedule", null);
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.duration'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.time'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.period'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.durationType'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.triggerType'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.attr'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.value'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.condi')
+], BroadcastTriggerComponent.prototype, "updateTrigger", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.tag')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.tag')
 ], BroadcastTriggerComponent.prototype, "updateTag", null);
 BroadcastTriggerComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
@@ -47126,239 +47223,221 @@ var render = function() {
     "div",
     { staticClass: "inheritHFW broadcastRoot" },
     [
-      _vm.loading && undefined !== _vm.schedule
+      _vm.loading && undefined !== _vm.trigger
         ? [_vm._v("\n        Loading...\n    ")]
         : [
-            _c(
-              "div",
-              { staticClass: "broadcastFilterCon" },
-              [
-                _vm.$store.state.messageTags.length > 0
-                  ? _c("div", { staticClass: "outerDisplay" }, [
-                      _c(
-                        "div",
-                        {
-                          on: {
-                            click: function($event) {
-                              _vm.showTags = !_vm.showTags
-                            }
-                          }
-                        },
-                        [
-                          _c("div", { staticClass: "btnSub" }, [
-                            _c("span", [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.$store.state.messageTags[_vm.selectedTag]
-                                    .name
-                                )
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "iconSub" }, [
-                              _c(
-                                "i",
-                                { staticClass: "material-icons" },
-                                [
-                                  _vm.showTags
-                                    ? [_vm._v("expand_less")]
-                                    : [_vm._v("expand_more")]
-                                ],
-                                2
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              directives: [
-                                {
-                                  name: "show",
-                                  rawName: "v-show",
-                                  value: _vm.showTags,
-                                  expression: "showTags"
-                                }
-                              ],
-                              staticClass: "dropDownList"
-                            },
-                            [
-                              _c(
-                                "ul",
-                                [
-                                  _vm._l(_vm.$store.state.messageTags, function(
-                                    tag,
-                                    index
-                                  ) {
-                                    return [
-                                      _c(
-                                        "li",
-                                        {
-                                          key: index,
-                                          on: {
-                                            click: function($event) {
-                                              _vm.schedule.tag = tag.id
-                                            }
-                                          }
-                                        },
-                                        [_vm._v(_vm._s(tag.name))]
-                                      )
-                                    ]
-                                  })
-                                ],
-                                2
-                              )
-                            ]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", {
-                        staticClass: "label",
-                        domProps: {
-                          innerHTML: _vm._s(
-                            _vm.$store.state.messageTags[_vm.selectedTag].mesg
-                          )
-                        }
-                      })
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "attributeSelectorList" },
-                  [
-                    _vm._l(_vm.filterSegment.attributes, function(
-                      attribute,
-                      index
-                    ) {
-                      return [
-                        _c(
-                          "div",
-                          { key: index, staticClass: "attributeSelector" },
-                          [
-                            _c("attribute-selector-component", {
-                              attrs: {
-                                attribute: attribute,
-                                canCondition:
-                                  _vm.filterSegment.attributes.length - 1 >
-                                  index
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.filterSegment.attributes.length > 1
-                              ? _c(
-                                  "button",
-                                  {
-                                    staticClass: "deleteAttribute",
-                                    on: {
-                                      click: function($event) {
-                                        _vm.filterSegment.attributes.splice(
-                                          index,
-                                          1
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", { staticClass: "material-icons" }, [
-                                      _vm._v("delete")
-                                    ])
-                                  ]
-                                )
-                              : _vm._e()
-                          ],
-                          1
-                        )
-                      ]
-                    }),
-                    _vm._v(" "),
+            _c("div", { staticClass: "broadcastFilterCon" }, [
+              _vm.$store.state.messageTags.length > 0
+                ? _c("div", { staticClass: "outerDisplay" }, [
                     _c(
                       "div",
                       {
-                        staticClass: "addMoreFilterButton",
                         on: {
                           click: function($event) {
-                            _vm.addNewFitler()
+                            _vm.showTags = !_vm.showTags
                           }
                         }
                       },
                       [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("add")
-                        ])
+                        _c("div", { staticClass: "btnSub" }, [
+                          _c("span", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.$store.state.messageTags[_vm.selectedTag]
+                                  .name
+                              )
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "iconSub" }, [
+                            _c(
+                              "i",
+                              { staticClass: "material-icons" },
+                              [
+                                _vm.showTags
+                                  ? [_vm._v("expand_less")]
+                                  : [_vm._v("expand_more")]
+                              ],
+                              2
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.showTags,
+                                expression: "showTags"
+                              }
+                            ],
+                            staticClass: "dropDownList"
+                          },
+                          [
+                            _c(
+                              "ul",
+                              [
+                                _vm._l(_vm.$store.state.messageTags, function(
+                                  tag,
+                                  index
+                                ) {
+                                  return [
+                                    _c(
+                                      "li",
+                                      {
+                                        key: index,
+                                        on: {
+                                          click: function($event) {
+                                            _vm.trigger.tag = tag.id
+                                          }
+                                        }
+                                      },
+                                      [_vm._v(_vm._s(tag.name))]
+                                    )
+                                  ]
+                                })
+                              ],
+                              2
+                            )
+                          ]
+                        )
                       ]
-                    )
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _vm._m(0),
-                _vm._v(" "),
-                _c("div", { staticClass: "broadcastCondition" }, [
-                  _c("h5", { staticClass: "bccHeading float-left" }, [
-                    _vm._v("\n                    Schedule:\n                ")
-                  ]),
+                    ),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "label",
+                      domProps: {
+                        innerHTML: _vm._s(
+                          _vm.$store.state.messageTags[_vm.selectedTag].mesg
+                        )
+                      }
+                    })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "attributeSelectorList" },
+                [
+                  _vm._l(_vm.filterSegment.attributes, function(
+                    attribute,
+                    index
+                  ) {
+                    return [
+                      _c(
+                        "div",
+                        { key: index, staticClass: "attributeSelector" },
+                        [
+                          _c("attribute-selector-component", {
+                            attrs: {
+                              attribute: attribute,
+                              canCondition:
+                                _vm.filterSegment.attributes.length - 1 > index
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.filterSegment.attributes.length > 1
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "deleteAttribute",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.filterSegment.attributes.splice(
+                                        index,
+                                        1
+                                      )
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", { staticClass: "material-icons" }, [
+                                    _vm._v("delete")
+                                  ])
+                                ]
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    ]
+                  }),
                   _vm._v(" "),
-                  _c("div", { staticClass: "bccCalender float-left" }, [
-                    _c("span", [_vm._v(_vm._s(_vm.showDate))]),
-                    _vm._v(" "),
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("date_range")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "calendarPlugin" },
-                      [
-                        _c("v-date-picker", {
-                          attrs: { "min-date": new Date() },
-                          model: {
-                            value: _vm.schedule.date,
-                            callback: function($$v) {
-                              _vm.$set(_vm.schedule, "date", $$v)
-                            },
-                            expression: "schedule.date"
-                          }
-                        })
-                      ],
-                      1
-                    )
+                  _c(
+                    "div",
+                    {
+                      staticClass: "addMoreFilterButton",
+                      on: {
+                        click: function($event) {
+                          _vm.addNewFitler()
+                        }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("add")
+                      ])
+                    ]
+                  )
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "broadcastCondition" },
+                [
+                  _c("h5", { staticClass: "bccHeading float-left" }, [
+                    _vm._v("\n                    Trigger:\n                ")
                   ]),
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "bccTime float-left" },
+                    { staticClass: "bccTime bccDuration float-left" },
                     [
-                      _c(
-                        "div",
-                        { staticClass: "timeOptionCon" },
-                        [
-                          _c("time-input-component", {
-                            attrs: { value: _vm.schedule.time },
-                            model: {
-                              value: _vm.schedule.time,
-                              callback: function($$v) {
-                                _vm.$set(_vm.schedule, "time", $$v)
-                              },
-                              expression: "schedule.time"
+                      _c("div", { staticClass: "timeOptionCon" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.trigger.duration,
+                              expression: "trigger.duration"
                             }
-                          })
-                        ],
-                        1
-                      ),
+                          ],
+                          attrs: { type: "number", min: "1" },
+                          domProps: { value: _vm.trigger.duration },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.trigger,
+                                "duration",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
                       _vm._v(" "),
                       _c("dropdown-keybase-component", {
                         attrs: {
-                          options: _vm.periodOption,
-                          selectedKey: _vm.schedule.period
+                          options: _vm.durationOption,
+                          selectedKey: _vm.trigger.durationType
                         },
                         model: {
-                          value: _vm.schedule.period,
+                          value: _vm.trigger.durationType,
                           callback: function($$v) {
-                            _vm.$set(_vm.schedule, "period", $$v)
+                            _vm.$set(_vm.trigger, "durationType", $$v)
                           },
-                          expression: "schedule.period"
+                          expression: "trigger.durationType"
                         }
                       })
                     ],
@@ -47371,55 +47450,147 @@ var render = function() {
                     [
                       _c("dropdown-keybase-component", {
                         attrs: {
-                          labelText: "Repeat: ",
-                          options: _vm.repeatOption,
-                          selectedKey: _vm.schedule.repeat
+                          options: _vm.triggerOption,
+                          selectedKey: _vm.trigger.triggerType
                         },
                         model: {
-                          value: _vm.schedule.repeat,
+                          value: _vm.trigger.triggerType,
                           callback: function($$v) {
-                            _vm.$set(_vm.schedule, "repeat", $$v)
+                            _vm.$set(_vm.trigger, "triggerType", $$v)
                           },
-                          expression: "schedule.repeat"
+                          expression: "trigger.triggerType"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _vm.trigger.durationType === 3
+                    ? [
+                        _c("div", { staticClass: "float-left" }, [
+                          _vm._v(
+                            "\n                         send at  \n                    "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "bccTime float-left" },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "timeOptionCon" },
+                              [
+                                _c("time-input-component", {
+                                  attrs: { value: _vm.trigger.time },
+                                  model: {
+                                    value: _vm.trigger.time,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.trigger, "time", $$v)
+                                    },
+                                    expression: "trigger.time"
+                                  }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("dropdown-keybase-component", {
+                              attrs: {
+                                options: _vm.periodOption,
+                                selectedKey: _vm.trigger.period
+                              },
+                              model: {
+                                value: _vm.trigger.period,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.trigger, "period", $$v)
+                                },
+                                expression: "trigger.period"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    : _vm._e()
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _vm.trigger.triggerType === 3
+                ? _c(
+                    "div",
+                    { staticClass: "triggerAttribute" },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.trigger.attr,
+                            expression: "trigger.attr"
+                          }
+                        ],
+                        attrs: { type: "text", placeholder: "Attribute Name" },
+                        domProps: { value: _vm.trigger.attr },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.trigger, "attr", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("dropdown-keybase-component", {
+                        attrs: {
+                          options: [
+                            {
+                              key: 1,
+                              value: "is"
+                            },
+                            {
+                              key: 2,
+                              value: "is not"
+                            }
+                          ],
+                          selectedKey: _vm.trigger.condi
+                        },
+                        model: {
+                          value: _vm.trigger.condi,
+                          callback: function($$v) {
+                            _vm.$set(_vm.trigger, "condi", $$v)
+                          },
+                          expression: "trigger.condi"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.trigger.value,
+                            expression: "trigger.value"
+                          }
+                        ],
+                        attrs: { type: "text", placeholder: "Attribute Value" },
+                        domProps: { value: _vm.trigger.value },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.trigger, "value", $event.target.value)
+                          }
                         }
                       })
                     ],
                     1
                   )
-                ]),
-                _vm._v(" "),
-                _vm.schedule.repeat === 7
-                  ? [
-                      _c("div", { staticClass: "dayPicker" }, [
-                        _c(
-                          "ul",
-                          [
-                            _vm._l(_vm.schedule.days, function(day, index) {
-                              return [
-                                _c(
-                                  "li",
-                                  {
-                                    key: index,
-                                    class: { selectedDay: day.check },
-                                    on: {
-                                      click: function($event) {
-                                        day.check = !day.check
-                                      }
-                                    }
-                                  },
-                                  [_vm._v(_vm._s(day.name))]
-                                )
-                              ]
-                            })
-                          ],
-                          2
-                        )
-                      ])
-                    ]
-                  : _vm._e()
-              ],
-              2
-            ),
+                : _vm._e()
+            ]),
             _vm._v(" "),
             !_vm.loadingContent
               ? _c(
@@ -47429,7 +47600,7 @@ var render = function() {
                       attrs: {
                         isBroadcast: true,
                         value: _vm.contents,
-                        section: _vm.schedule.section
+                        section: _vm.trigger.section
                       }
                     })
                   ],
@@ -52927,6 +53098,145 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BroadcastModel__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+class TriggerModel extends __WEBPACK_IMPORTED_MODULE_0__BroadcastModel__["a" /* default */] {
+    constructor() {
+        super();
+        this.trigger = {
+            duration: 1,
+            durationType: 1,
+            triggerType: 1,
+            time: '12:34',
+            period: 2,
+            attr: '',
+            value: '',
+            condi: 1
+        };
+    }
+    init(content) {
+        this.broadcastInit(content);
+        this.duration = content.duration;
+        this.durationType = content.durationType;
+        this.triggerType = content.triggerType;
+        this.time = content.time;
+        this.period = content.period;
+        this.attr = content.attributeName;
+        this.value = content.attributeValue;
+        this.condi = content.attributeCondi;
+    }
+    get duration() {
+        return this.trigger.duration;
+    }
+    set duration(duration) {
+        this.trigger.duration = duration;
+    }
+    get durationType() {
+        return this.trigger.durationType;
+    }
+    set durationType(durationType) {
+        this.trigger.durationType = durationType;
+    }
+    get triggerType() {
+        return this.trigger.triggerType;
+    }
+    set triggerType(triggerType) {
+        this.trigger.triggerType = triggerType;
+    }
+    get time() {
+        return this.trigger.time;
+    }
+    set time(time) {
+        this.trigger.time = time;
+    }
+    get period() {
+        return this.trigger.period;
+    }
+    set period(period) {
+        this.trigger.period = period;
+    }
+    get attr() {
+        return this.trigger.attr;
+    }
+    set attr(attr) {
+        this.trigger.attr = attr;
+    }
+    get value() {
+        return this.trigger.value;
+    }
+    set value(value) {
+        this.trigger.value = value;
+    }
+    get condi() {
+        return this.trigger.condi;
+    }
+    set condi(condi) {
+        this.trigger.condi = condi;
+    }
+    updateTrigger() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            let time = this.time.split(":");
+            if (this.period == 2) {
+                time[0] = parseInt(time[0]) + 12;
+                time[0] = time[0].length < 10 ? `0${time[0]}` : time[0];
+            }
+            let data = new FormData();
+            data.append('time', `${time[0]}${time[1]}`);
+            data.append('duration', this.duration.toString());
+            data.append('durationType', this.durationType.toString());
+            data.append('triggerType', this.triggerType.toString());
+            data.append('attribute', this.attr);
+            data.append('value', this.value);
+            data.append('condi', this.condi.toString());
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.project}/broadcast/trigger/${this.id}`,
+                data: data,
+                method: 'post'
+            }).then(res => {
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to update trigger!');
+                }
+            });
+            return res;
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = TriggerModel;
+
+
 
 /***/ })
 /******/ ]);

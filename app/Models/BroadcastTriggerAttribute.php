@@ -13,8 +13,14 @@ class BroadcastTriggerAttribute extends Model
     protected $table = 'project_broadcast_trigger_attribute';
 
     protected $fillable = [
+        'project_broadcast_id',
         'chat_attribute_id',
         'condition',
         'value'
     ];
+
+    public function attrValue()
+    {
+        return $this->hasOne('App\Models\ChatAttribute', 'id', 'chat_attribute_id');
+    }
 }

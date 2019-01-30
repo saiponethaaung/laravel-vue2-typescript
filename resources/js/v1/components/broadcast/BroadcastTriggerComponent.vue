@@ -1,6 +1,6 @@
 <template>
     <div class="inheritHFW broadcastRoot">
-        <template v-if="loading && undefined!==schedule">
+        <template v-if="loading && undefined!==trigger">
             Loading...
         </template>
         <template v-else>
@@ -19,15 +19,12 @@
                         <div v-show="showTags" class="dropDownList">
                             <ul>
                                 <template v-for="(tag, index) in $store.state.messageTags">
-                                    <li :key="index" @click="schedule.tag=tag.id">{{ tag.name }}</li>
+                                    <li :key="index" @click="trigger.tag=tag.id">{{ tag.name }}</li>
                                 </template>
                             </ul>
                         </div>
                     </div>
-                    <div class="label" v-html="$store.state.messageTags[selectedTag].mesg">
-                        <!-- <span>Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy.</span>
-                        <span class="link">subscription messaging policy.</span> -->
-                    </div>
+                    <div class="label" v-html="$store.state.messageTags[selectedTag].mesg"></div>
                 </div>
 
                 <div class="attributeSelectorList">
@@ -52,58 +49,70 @@
 
                 <div class="broadcastCondition">
                     <h5 class="bccHeading float-left">
-                        Schedule:
+                        Trigger:
                     </h5>
-                    <div class="bccCalender float-left">
-                        <span>{{ showDate }}</span>
-                        <i class="material-icons">date_range</i>
-                        <div class="calendarPlugin">
-                            <v-date-picker
-                                v-model="schedule.date"
-                                :min-date="new Date()"
-                            ></v-date-picker>
-                        </div>
-                    </div>
-                    <div class="bccTime float-left">
+                   
+                    <div class="bccTime bccDuration float-left">
                         <div class="timeOptionCon">
-                            <time-input-component
-                                :value="schedule.time"
-                                v-model="schedule.time"
-                            ></time-input-component>
+                            <input type="number" v-model="trigger.duration" min="1"/>
                         </div>
                         <dropdown-keybase-component
-                            :options="periodOption"
-                            :selectedKey="schedule.period"
-                            v-model="schedule.period"
+                            :options="durationOption"
+                            :selectedKey="trigger.durationType"
+                            v-model="trigger.durationType"
                         ></dropdown-keybase-component>
                     </div>
                     <div class="bccRepeat float-left">
                         <dropdown-keybase-component
-                            :labelText="'Repeat: '"
-                            :options="repeatOption"
-                            :selectedKey="schedule.repeat"
-                            v-model="schedule.repeat"
+                            :options="triggerOption"
+                            :selectedKey="trigger.triggerType"
+                            v-model="trigger.triggerType"
                         ></dropdown-keybase-component>
                     </div>
+                    <template v-if="trigger.durationType===3">
+                        <div class="float-left">
+                           &nbsp;&nbsp;send at&nbsp;&nbsp;
+                        </div>
+                        <div class="bccTime float-left">
+                            <div class="timeOptionCon">
+                                <time-input-component
+                                    :value="trigger.time"
+                                    v-model="trigger.time"
+                                ></time-input-component>
+                            </div>
+                            <dropdown-keybase-component
+                                :options="periodOption"
+                                :selectedKey="trigger.period"
+                                v-model="trigger.period"
+                            ></dropdown-keybase-component>
+                        </div>
+                    </template>
                 </div>
-                <template v-if="schedule.repeat===7">
-                    <div class="dayPicker">
-                        <ul>
-                            <template v-for="(day, index) in schedule.days">
-                                <li
-                                    :class="{ 'selectedDay': day.check }"
-                                    :key="index"
-                                    @click="day.check=!day.check">{{ day.name }}</li>
-                            </template>
-                        </ul>
-                    </div>
-                </template>
+
+                <div class="triggerAttribute" v-if="trigger.triggerType===3">
+                    <input type="text" v-model="trigger.attr" placeholder="Attribute Name"/>
+                    <dropdown-keybase-component
+                        :options="[
+                            {
+                                key: 1,
+                                value: 'is'
+                            },
+                            {
+                                key: 2,
+                                value: 'is not'
+                            }
+                        ]"
+                        :selectedKey="trigger.condi"
+                        v-model="trigger.condi"
+                    ></dropdown-keybase-component>
+                    <input type="text" v-model="trigger.value" placeholder="Attribute Value"/>
+                </div>
             </div>
             <div v-if="!loadingContent">
                 <builder-component
                     :isBroadcast="true"
                     :value="contents"
-                    :section="schedule.section"></builder-component>
+                    :section="trigger.section"></builder-component>
             </div>
         </template>
     </div>
@@ -112,7 +121,7 @@
 <script lang="ts">
 import { Component, Vue, Watch} from 'vue-property-decorator';
 import BuilderComponentMock from '../common/BuilderComponentMock.vue';
-import ScheduleModel from '../../models/broadcast/ScheduleModel';
+import TriggerModel from '../../models/broadcast/TriggerModel';
 import AttributeFilterListModel from '../../models/AttributeFilterListModel';
 import Axios,{ CancelTokenSource } from 'axios';
 import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
@@ -141,58 +150,49 @@ export default class BroadcastTriggerComponent extends Vue{
         },
     ];
 
-    private repeatOption: any = [
+    private durationOption: any = [
         {
             key: 1,
-            value: 'None'
+            value: 'Minute'
         },
         {
             key: 2,
-            value: 'Daily'
+            value: 'Hour'
         },
         {
             key: 3,
-            value: 'Weekend'
+            value: 'Day'
+        }
+    ];
+
+    private triggerOption: any = [
+        {
+            key: 1,
+            value: 'After first interaction'
         },
         {
-            key: 4,
-            value: 'Every Month'
+            key: 2,
+            value: 'After last interaction'
         },
         {
-            key: 5,
-            value: 'Workdays'
-        },
-        {
-            key: 6,
-            value: 'Yearly'
-        },
-        {
-            key: 7,
-            value: 'Custom'
-        },
+            key: 3,
+            value: 'After attribute is set'
+        }
     ];
 
     private showTags: boolean = false;
 
-    private schedule: ScheduleModel = new ScheduleModel();
+    private trigger: TriggerModel = new TriggerModel();
 
     private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(false, this.$store.state.projectInfo.id, []);
 
-    get showDate() {
-        if(undefined === this.schedule) return '';
-
-        let date = '';
-        let month = this.schedule.date.getMonth()+1;
-        return `${this.$store.state.months[month]} ${this.schedule.date.getDate()}, ${this.schedule.date.getFullYear()}`;
-    }
-
     get selectedTag() {
-        if(undefined === this.schedule) return 0;
+        if(undefined === this.trigger) return 0;
 
         let index: any = 0;
 
         for(let i=0; this.$store.state.messageTags.length>i; i++ ) {
-            if(this.$store.state.messageTags[i].id===this.schedule.tag) {
+            if(this.$store.state.messageTags[i].id===this.trigger.tag) {
                 index = i;
                 break;
             }
@@ -202,38 +202,38 @@ export default class BroadcastTriggerComponent extends Vue{
     }
 
     mounted() {
-        this.loadSchedule();
+        this.loadTrigger();
     }
 
     private addNewFitler() {
         this.filterSegment.createNewAttributeFilter();
     }
     
-    @Watch('$route.params.scheduleid')
-    async loadSchedule() {
+    @Watch('$route.params.triggerid')
+    async loadTrigger() {
         this.loadingToken.cancel();
         this.loadingToken = Axios.CancelToken.source();
 
         this.loading = true;
 
         await Axios({
-            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/schedule/${this.$route.params.scheduleid}`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/trigger/${this.$route.params.triggerid}`,
             method: 'get',
             cancelToken: this.loadingToken.token
         }).then(res => {
-            this.schedule.init(res.data.data);
-            this.loadScheduleContent();
+            this.trigger.init(res.data.data);
+            this.loadBroadcastContent();
             this.loading = false;
         }).catch(err => {
             if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule info!');
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load trigger info!');
                 alert(mesg);
                 this.loading = false;
             }
         });
     }
 
-    async loadScheduleContent() {
+    async loadBroadcastContent() {
         this.loadingContentToken.cancel();
         this.loadingContentToken = Axios.CancelToken.source();
 
@@ -241,7 +241,7 @@ export default class BroadcastTriggerComponent extends Vue{
         this.contents = [];
 
         await Axios({
-            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.schedule.id}/section/${this.schedule.section.id}/content`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.trigger.id}/section/${this.trigger.section.id}/content`,
             cancelToken: this.loadingContentToken.token
         }).then((res: any) => {
             this.contents = res.data.content;
@@ -257,20 +257,23 @@ export default class BroadcastTriggerComponent extends Vue{
         this.loadingContent = false;
     }
 
-    @Watch('schedule.date')
-    @Watch('schedule.time')
-    @Watch('schedule.period')
-    @Watch('schedule.repeat')
-    @Watch('schedule.days', {deep: true})
-    private async updateSchedule() {
+    @Watch('trigger.duration')
+    @Watch('trigger.time')
+    @Watch('trigger.period')
+    @Watch('trigger.durationType')
+    @Watch('trigger.triggerType')
+    @Watch('trigger.attr')
+    @Watch('trigger.value')
+    @Watch('trigger.condi')
+    private async updateTrigger() {
         if(this.loadingContent) return;
-        await this.schedule.updateSchedule();
+        await this.trigger.updateTrigger();
     }
 
-    @Watch('schedule.tag')
+    @Watch('trigger.tag')
     private async updateTag() {
         if(this.loadingContent) return;
-        await this.schedule.updateTag();
+        await this.trigger.updateTag();
     }
 }
 </script>

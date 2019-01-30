@@ -5,6 +5,7 @@
 .floatingLoading,
 .popFixedCenter,
 .userAttributePop .uaBodyCon table .attrDel,
+.triggerAttribute .sddListCon,
 .segmentList .segmentListItem,
 .segmentTitleCon,
 .assignList,
@@ -23,7 +24,8 @@
 .segmentList .segmentListItem .segmentActionIcon,
 .floatingLoading,
 .popFixedCenter,
-.userAttributePop .uaBodyCon table .attrDel {
+.userAttributePop .uaBodyCon table .attrDel,
+.triggerAttribute .sddListCon {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -53,6 +55,8 @@
 
 .bccCalender,
 .bccRepeat .sddListCon,
+.triggerAttribute input,
+.triggerAttribute .sddListCon,
 .dayPicker ul {
   border: 1px solid #ebebeb;
   border-radius: 5px;
@@ -13991,6 +13995,39 @@ a:hover {
 .activeBroadcast {
   color: #c238eb !important;
   font-weight: bold;
+}
+
+.bccDuration {
+  margin-left: 10px;
+}
+
+.bccDuration input {
+  -webkit-appearance: none;
+  margin: 0;
+  -moz-appearance: textfield;
+}
+
+.triggerAttribute {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: 75px;
+  margin-top: 10px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 12px;
+}
+
+.triggerAttribute input {
+  width: 200px;
+  height: inherit;
+  padding: 0 15px;
+}
+
+.triggerAttribute .sddListCon {
+  height: inherit;
+  line-height: inherit;
+  margin: 0 5px;
 }
 
 @font-face {

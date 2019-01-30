@@ -26,6 +26,27 @@
                 <span>Trigger your message</span>
             </div>
         </div>
+        <div class="broadcastContentList schedule">
+            <ul class="broadcastScheduleListRoot">
+                <template v-for="(trigger, index) in this.triggerList">
+                    <li :key="index" class="broadcastScheduleList">
+                        <router-link
+                            :to="{name: 'project.broadcast.trigger', params: { triggerid: trigger.id }}"
+                            :class="{'activeBroadcast': $route.params.triggerid==trigger.id}"
+                        >
+                            {{ trigger.duration }}
+                            <template v-if="trigger.duration_type===1">{{ trigger.duration>1 ? 'minutes' : 'minute' }}</template>
+                            <template v-if="trigger.duration_type===2">{{ trigger.duration>1 ? 'hours' : 'hour' }}</template>
+                            <template v-if="trigger.duration_type===3">{{ trigger.duration>1 ? 'days' : 'day' }}</template>
+                             after 
+                            <template v-if="trigger.trigger_type===1">after first interaction</template>
+                            <template v-if="trigger.trigger_type===2">after last interaction</template>
+                            <template v-if="trigger.trigger_type===3">afte attribute set</template>
+                        </router-link>
+                    </li>
+                </template>
+            </ul>
+        </div>
         <template v-if="creatingTrigger">
             <div class="btnClick">
                 creating...
@@ -89,7 +110,7 @@ import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 export default class BroadcastSidebarComponent extends Vue {
 
     private scheduleLoading: boolean = true;
-    private triggerLoading: boolean = false;
+    private triggerLoading: boolean = true;
     private scheduleList: Array<any> = [];
     private triggerList: Array<any> = [];
     private creatingSchedule: boolean = false;
@@ -98,6 +119,7 @@ export default class BroadcastSidebarComponent extends Vue {
 
     mounted() {
         this.loadSchedule();
+        this.loadTrigger();
         this.loadMessageTags();
     }
 
@@ -162,6 +184,24 @@ export default class BroadcastSidebarComponent extends Vue {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule list!');
                 alert(mesg);
                 this.scheduleLoading = false;
+            }
+        })
+    }
+
+    private async loadTrigger() {
+        if(undefined===this.$store.state.projectInfo.id) return;
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/trigger`,
+            method: 'get'
+        }).then(res => {
+            this.triggerList = res.data.data;
+            this.triggerLoading = false;
+        }).catch(err => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load trigger list!');
+                alert(mesg);
+                this.triggerLoading = false;
             }
         })
     }

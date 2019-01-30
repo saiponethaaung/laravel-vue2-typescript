@@ -73,4 +73,9 @@ class Broadcast extends Model
     {
         return $this->hasOne('App\Models\ChatBlockSection', 'broadcast_id', 'id');
     }
+
+    public function attribute()
+    {
+        return $this->hasOne('App\Models\BroadcastTriggerAttribute', 'project_broadcast_id', 'id');
+    }
 }

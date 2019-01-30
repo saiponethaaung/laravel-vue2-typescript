@@ -127,10 +127,16 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::group(['prefix' => 'broadcast'], function() {
             Route::post('/', 'V1\\Api\\BroadcastController@create');
             Route::get('/schedule', 'V1\\Api\\BroadcastController@getSchedule');
+            Route::get('/trigger', 'V1\\Api\\BroadcastController@getTrigger');
 
             Route::group(['prefix' => 'schedule/{broadcastId}', 'middleware' => 'verifyBroadcast'], function(){
                 Route::get('/', 'V1\\Api\\BroadcastController@getScheduleDetail');
                 Route::post('/', 'V1\\Api\\BroadcastController@updateSchedule');
+            });
+
+            Route::group(['prefix' => 'trigger/{broadcastId}', 'middleware' => 'verifyBroadcast'], function(){
+                Route::get('/', 'V1\\Api\\BroadcastController@getTriggerDetail');
+                Route::post('/', 'V1\\Api\\BroadcastController@updateTrigger');
             });
             
             Route::group(['prefix' => '{broadcastId}', 'middleware' => 'verifyBroadcast'], function() {

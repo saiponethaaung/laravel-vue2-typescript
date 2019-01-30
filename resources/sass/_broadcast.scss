@@ -340,3 +340,34 @@
     color: $activeText!important;
     font-weight: bold;
 }
+
+.bccDuration {
+    margin-left: 10px;
+    input {
+        -webkit-appearance: none;
+        margin: 0;
+        -moz-appearance: textfield;
+    }
+}
+
+.triggerAttribute {
+    display: flex;
+    margin-left: 75px;
+    margin-top: 10px;
+    height: $thirdStandardHeight;
+    line-height: $thirdStandardHeight;
+    font-size: 12px;
+    input {
+        @extend %inputboxBorder;
+        width: 200px;
+        height: inherit;
+        padding: 0 15px;
+    }
+    .sddListCon {
+        @extend %flexJCenter;
+        @extend %inputboxBorder;
+        height: inherit;
+        line-height: inherit;
+        margin: 0 5px;
+    }
+}

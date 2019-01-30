@@ -12,6 +12,7 @@ use App\Models\BroadcastWeekday;
 use App\Models\BroadcastTriggerAttribute;
 use App\Models\ProjectMessageTag;
 use App\Models\ChatBlockSection;
+use App\Models\ChatAttribute;
 
 class BroadcastController extends Controller
 {
@@ -52,11 +53,12 @@ class BroadcastController extends Controller
                 $broadcast->year = date("Y");
                 $broadcast->time = date("Hi");
             }
-
+            
             if($section==='trigger') {
                 $broadcast->duration = 15;
                 $broadcast->duration_type = 1;
                 $broadcast->trigger_type = 1;
+                $broadcast->time = date("Hi");
             }
 
             $broadcast->interval_type = 1;
@@ -137,6 +139,33 @@ class BroadcastController extends Controller
             'time' => is_null($schedule->time) ? 0 : $schedule->time,
             'day' => is_null($schedule->day) ? 0 : $schedule->day,
             'interval_type' => is_null($schedule->interval_type) ? 1 : $schedule->interval_type
+        ];
+    }
+    
+    public function getTrigger(Request $request)
+    {
+        $triggers = Broadcast::where('broadcast_type', 2)->get();
+        
+        $res = [];
+
+        foreach($triggers as $trigger) {
+            $res[] = $this->buildTriggerList($trigger);
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $res
+        ], 200);
+    }
+
+    public function buildTriggerList(\App\Models\Broadcast $trigger)
+    {
+        return [
+            'id' => $trigger->id,
+            'duration' => $trigger->duration,
+            'duration_type' => $trigger->duration_type,
+            'trigger_type' => $trigger->trigger_type,
         ];
     }
 
@@ -223,6 +252,86 @@ class BroadcastController extends Controller
         ]);
     }
 
+    public function getTriggerDetail(Request $request)
+    {
+        $trigger = Broadcast::with([
+            'weekday' => function($query) {
+                $query->orderBy('days', 'ASC');
+            },
+            'chatBlockSection',
+            'attribute',
+            'attribute.attrValue'
+        ])->find($request->broadcastId);
+
+        $hour = substr($trigger->time, 0, 2);
+        $min = substr($trigger->time, 2, 4);
+        $hour = (int) $hour>12 ? (int) $hour-12 : (int) $hour;
+        $min = $min>59 ? '59' : $min;
+
+        $res = [];
+        $res['id'] = $trigger->id;
+        $res['status'] = $trigger->status===1 ? true : false;
+        $res['period'] = substr($trigger->time, 0, 2)>12 ? 2 : 1;
+        $res['time'] = ($hour<10 ? '0'.$hour : $hour).':'.$min;
+        $res['tag'] = $trigger->project_message_tag_id;
+        $res['project'] = md5($trigger->project_id);
+        $res['duration'] = $trigger->duration;
+        $res['durationType'] = $trigger->duration_type;
+        $res['triggerType'] = $trigger->trigger_type;
+        $res['attributeName'] = is_null($trigger->attribute->attrValue) ? '' : $trigger->attribute->attrValue->attribute;
+        $res['attributeValue'] = $trigger->attribute->value;
+        $res['attributeCondi'] = $trigger->attribute->condition;
+        $res['project'] = md5($trigger->project_id);
+        $res['type'] = $trigger->broadcast_type;
+        $res['section'] = [
+            'id' => $trigger->chatBlockSection->id,
+            'broadcast' => $trigger->id
+        ];
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $res
+        ], 200);
+    }
+
+    public function updateTrigger(Request $request)
+    {
+        $request->attributes->get('broadcast')->duration = $request->input('duration');
+        $request->attributes->get('broadcast')->duration_type = $request->input('durationType');
+        $request->attributes->get('broadcast')->trigger_type = $request->input('triggerType');
+        $request->attributes->get('broadcast')->time = $request->input('time');
+
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('broadcast')->save();
+
+            $attribute = BroadcastTriggerAttribute::where('project_broadcast_id', $request->attributes->get('broadcast')->id)
+                            ->first();
+            $attribute->chat_attribute_id = $this->getChatAttribute($request->input('attribute'));
+            $attribute->condition = $request->input('condi');
+            $attribute->value = (String) $request->input('value');
+            $attribute->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update schedule!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
+        ]);
+    }
+
     public function updateMessageTag(Request $request)
     {
         $tag = ProjectMessageTag::find($request->input('tag'));
@@ -258,5 +367,20 @@ class BroadcastController extends Controller
             'code' => 200,
             'mesg' => 'Success'
         ]);
+    }
+
+    public function getChatAttribute($name)
+    {
+        $chatAttribute = ChatAttribute::where(
+            DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $name.'%'
+        )->first();
+
+        if(empty($chatAttribute)) {
+            $chatAttribute = ChatAttribute::create([
+                'attribute' => $name
+            ]);
+        }
+
+        return $chatAttribute->id;
     }
 }

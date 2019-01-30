@@ -82,7 +82,7 @@
                         Loading...
                     </template>
                     <template v-else>
-                        <div class="attributeSelectorList">
+                        <div class="attributeSelectorList alignAttribute">
                             <template v-for="(attribute, index) in segmentList.segments[editSegment].attributes">
                                 <div class="attributeSelector" :key="index">
                                     <attribute-selector-component

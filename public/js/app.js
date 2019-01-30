@@ -41940,7 +41940,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "attributeSelectorList" },
+                  { staticClass: "attributeSelectorList alignAttribute" },
                   [
                     _vm._l(_vm.filterSegment.attributes, function(
                       attribute,
@@ -41953,6 +41953,7 @@ var render = function() {
                           [
                             _c("attribute-selector-component", {
                               attrs: {
+                                isSegment: true,
                                 attribute: attribute,
                                 canCondition:
                                   _vm.filterSegment.attributes.length - 1 >
@@ -42519,6 +42520,7 @@ var render = function() {
                                   [
                                     _c("attribute-selector-component", {
                                       attrs: {
+                                        isSegment: true,
                                         attribute: attribute,
                                         canCondition:
                                           _vm.segmentList.segments[
@@ -43494,16 +43496,6 @@ let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPAC
         super(...arguments);
         this.showOption1 = false;
         this.filterSegment = new __WEBPACK_IMPORTED_MODULE_2__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
-        this.condiOptions = [
-            {
-                key: 1,
-                value: 'and'
-            },
-            {
-                key: 2,
-                value: 'or'
-            }
-        ];
     }
     selectNewOption(key) {
         return key;
@@ -46674,8 +46666,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "upperDisplay" }, [
+  return _c("div", { staticClass: "inheritHFW broadcastRoot" }, [
+    _c("div", { staticClass: "broadcastFilterCon" }, [
       _c("div", { staticClass: "outerDisplay" }, [
         _c(
           "div",
@@ -46717,30 +46709,12 @@ var render = function() {
                 ],
                 staticClass: "dropDownList"
               },
-              [
-                _c(
-                  "ul",
-                  _vm._l(_vm.condiOptions, function(option, index) {
-                    return _c(
-                      "li",
-                      {
-                        key: index,
-                        on: {
-                          click: function($event) {
-                            _vm.selectNewOption(option.key)
-                          }
-                        }
-                      },
-                      [_vm._v(_vm._s(option.value))]
-                    )
-                  })
-                )
-              ]
+              [_vm._m(0)]
             )
           ]
         ),
         _vm._v(" "),
-        _vm._m(0)
+        _vm._m(1)
       ]),
       _vm._v(" "),
       _c(
@@ -46755,6 +46729,7 @@ var render = function() {
                 [
                   _c("attribute-selector-component", {
                     attrs: {
+                      isSegment: false,
                       attribute: attribute,
                       canCondition:
                         _vm.filterSegment.attributes.length - 1 > index
@@ -46808,7 +46783,7 @@ var render = function() {
         2
       ),
       _vm._v(" "),
-      _vm._m(1)
+      _vm._m(2)
     ]),
     _vm._v(" "),
     _c(
@@ -46845,6 +46820,18 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", [
+      _c("li", [_vm._v("Type 1")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("Type 2")]),
+      _vm._v(" "),
+      _c("li", [_vm._v("Type 3")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -52287,10 +52274,6 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
             {
                 key: 3,
                 value: 'System Attribute'
-            },
-            {
-                key: 4,
-                value: 'Segment'
             }
         ];
         this.systemAttribute = [
@@ -52394,6 +52377,14 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
         // }
         return res;
     }
+    mounted() {
+        if (!this.isSegment) {
+            this.attributeOptions.push({
+                key: 4,
+                value: 'Segment'
+            });
+        }
+    }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
@@ -52403,6 +52394,12 @@ __decorate([
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], AttributeSelectorComponent.prototype, "attribute", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: Boolean,
+        default: true
+    })
+], AttributeSelectorComponent.prototype, "isSegment", void 0);
 AttributeSelectorComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {

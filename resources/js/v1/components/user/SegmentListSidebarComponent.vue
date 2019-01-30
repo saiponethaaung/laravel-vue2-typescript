@@ -86,6 +86,7 @@
                             <template v-for="(attribute, index) in segmentList.segments[editSegment].attributes">
                                 <div class="attributeSelector" :key="index">
                                     <attribute-selector-component
+                                        :isSegment="true"
                                         :attribute="attribute"
                                         :canCondition="(segmentList.segments[editSegment].attributes.length-1)>index"
                                     ></attribute-selector-component>

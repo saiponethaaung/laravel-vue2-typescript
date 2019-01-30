@@ -13202,7 +13202,7 @@ a:hover {
   cursor: pointer;
   position: absolute;
   top: 5px;
-  right: -35px;
+  right: 0px;
   width: 30px;
   height: 30px;
   display: -webkit-box;
@@ -13620,6 +13620,31 @@ a:hover {
 
 .userAttributePop .uaFooterCon button {
   margin: 0;
+}
+
+.alignAttribute .attributeSelector {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin-left: -15px;
+}
+
+.alignAttribute .attrSelector {
+  width: 150px;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.alignAttribute .attrSelector .optionSpinner {
+  width: 150px;
+}
+
+.alignAttribute .deleteAttribute {
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: -108px;
 }
 
 .btnClick {

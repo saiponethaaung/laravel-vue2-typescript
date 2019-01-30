@@ -48,10 +48,11 @@
                         <label class="segmentTitleLabel">Segment Name:</label>
                         <input class="segmentTitleInput" type="text" placeholder="Segment name" v-model="filterSegment.name"/>
                     </div>
-                    <div class="attributeSelectorList">
+                    <div class="attributeSelectorList alignAttribute">
                         <template v-for="(attribute, index) in filterSegment.attributes">
                             <div class="attributeSelector" :key="index">
                                 <attribute-selector-component
+                                    :isSegment="true"
                                     :attribute="attribute"
                                     :canCondition="(filterSegment.attributes.length-1)>index"
                                 ></attribute-selector-component>

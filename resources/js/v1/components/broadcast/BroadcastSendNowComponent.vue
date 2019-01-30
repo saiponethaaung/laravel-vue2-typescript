@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="upperDisplay">
+    <div class="inheritHFW broadcastRoot">
+        <div class="broadcastFilterCon">
             <div class="outerDisplay">
                 <div @click="showOption1=!showOption1">
                     <div class="btnSub">
@@ -14,7 +14,9 @@
                     </div>
                     <div v-show="showOption1" class="dropDownList">
                         <ul>
-                            <li v-for="(option, index) in condiOptions" :key="index" @click="selectNewOption(option.key)">{{ option.value }}</li>
+                            <li>Type 1</li>
+                            <li>Type 2</li>
+                            <li>Type 3</li>
                         </ul>
                     </div>
                 </div>
@@ -28,6 +30,7 @@
                 <template v-for="(attribute, index) in filterSegment.attributes">
                     <div class="attributeSelector" :key="index">
                         <attribute-selector-component
+                            :isSegment="false"
                             :attribute="attribute"
                             :canCondition="(filterSegment.attributes.length-1)>index"
                         ></attribute-selector-component>
@@ -84,17 +87,6 @@ export default class BroadcastSendNowComponent extends Vue {
     private showOption1: boolean = false;
 
     private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(false, this.$store.state.projectInfo.id, []);
-
-    private condiOptions: any = [
-        {
-            key: 1,
-            value: 'and'
-        },
-        {
-            key: 2,
-            value: 'or'
-        }
-    ];
 
     @Emit('input')
     selectNewOption(key: number) {

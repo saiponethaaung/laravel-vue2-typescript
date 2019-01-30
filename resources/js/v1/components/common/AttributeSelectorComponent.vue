@@ -113,10 +113,16 @@ import AttributeFilterModel from '../../models/AttributeFilterModel';
     }
 })
 export default class AttributeSelectorComponent extends Vue {
+
     @Prop({
         default: false
     }) canCondition!: boolean;
     @Prop() attribute!: AttributeFilterModel;
+
+    @Prop({
+        type: Boolean,
+        default: true
+    }) isSegment!: boolean;
 
     private showOption: boolean = false;
 
@@ -143,10 +149,6 @@ export default class AttributeSelectorComponent extends Vue {
         {
             key: 3,
             value: 'System Attribute'
-        },
-        {
-            key: 4,
-            value: 'Segment'
         }
     ];
 
@@ -257,6 +259,15 @@ export default class AttributeSelectorComponent extends Vue {
         // }
 
         return res;
+    }
+
+    mounted() {
+        if(!this.isSegment) {
+            this.attributeOptions.push({
+                key: 4,
+                value: 'Segment'
+            })
+        }
     }
 }
 </script>

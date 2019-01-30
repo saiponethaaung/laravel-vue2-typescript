@@ -126,6 +126,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 
         Route::group(['prefix' => 'broadcast'], function() {
             Route::post('/', 'V1\\Api\\BroadcastController@create');
+            Route::get('/sendnow', 'V1\\Api\\BroadcastController@getSendNow');
             Route::get('/schedule', 'V1\\Api\\BroadcastController@getSchedule');
             Route::get('/trigger', 'V1\\Api\\BroadcastController@getTrigger');
 
@@ -142,6 +143,9 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
             Route::group(['prefix' => '{broadcastId}', 'middleware' => 'verifyBroadcast'], function() {
 
                 Route::delete('/', 'V1\\Api\\BroadcastController@deleteBroadcast');
+                Route::get('filters', 'V1\\Api\\BroadcastController@getFilters');
+                Route::post('filters', 'V1\\Api\\BroadcastController@createFilters');
+                Route::delete('filters/{filterId}', 'V1\\Api\\BroadcastController@deleteFilters');
                 Route::post('status', 'V1\\Api\\BroadcastController@updateStatus');
                 Route::post('message-tag', 'V1\\Api\\BroadcastController@updateMessageTag');
 

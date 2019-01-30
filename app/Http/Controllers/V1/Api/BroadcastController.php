@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Broadcast;
 use App\Models\BroadcastWeekday;
+use App\Models\BroadcastFilters;
 use App\Models\BroadcastTriggerAttribute;
 use App\Models\ProjectMessageTag;
 use App\Models\ChatBlockSection;
@@ -16,6 +17,88 @@ use App\Models\ChatAttribute;
 
 class BroadcastController extends Controller
 {
+    public function getSendNow(Request $request) {
+        $sendNow = Broadcast::where('broadcast_type', 1)->where('complete', 0)->first();
+
+        if(empty($sendNow)) {
+            $createSendNow = $this->createSendNow($request);
+            
+            if(!$createSendNow['status']) {
+                return response()->json($createSendNow, $createSendNow['code']);
+            }
+
+            $sendNow = $createSendNow['data'];
+        }
+        
+        $res = [];
+        $res['id'] = $sendNow->id;
+        $res['status'] = $sendNow->status===1 ? true : false;
+        $res['tag'] = $sendNow->project_message_tag_id;
+        $res['project'] = md5($sendNow->project_id);
+        $res['type'] = $sendNow->broadcast_type;
+        $res['section'] = [
+            'id' => $sendNow->chatBlockSection->id,
+            'broadcast' => $sendNow->id
+        ];
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $res
+        ], 200);
+    }
+
+    public function createSendNow(Request $request)
+    {
+        $broadcast = new Broadcast();
+        $tag = ProjectMessageTag::where('tag_format', 'NON_​PROMOTIONAL_​SUBSCRIPTION')->first();
+
+        if(empty($tag)) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Message tag not found!'
+            ], 422);
+        }
+
+        $res = null;
+        DB::beginTransaction();
+
+        try {
+            $broadcast->project_id = $request->attributes->get('project')->id;
+            $broadcast->project_message_tag_id = $tag->id;
+            $broadcast->broadcast_type = 1;
+            $broadcast->interval_type = 1;
+            $broadcast->status = false;
+            $broadcast->complete = false;
+            $broadcast->save();
+
+            $broadcast->ChatBlockSection = ChatBlockSection::create([
+                'broadcast_id' => $broadcast->id,
+                'title' => '',
+                'type' => 3,
+                'order' => 1
+            ]);
+
+            $this->createSingleFilter($broadcast->id);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to create new broadcast!',
+                'debugMesg' => $e->getMessage()
+            ];
+        }
+
+        DB::commit();
+
+        return [
+            'status' => true,
+            'data' => $broadcast
+        ];
+    }
+
     public function create(Request $request)
     {
         $section = $request->input('section');
@@ -95,6 +178,8 @@ class BroadcastController extends Controller
 
                 $res = $this->buildTriggerList($broadcast);
             }
+
+            $this->createSingleFilter($broadcast->id);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
@@ -437,5 +522,123 @@ class BroadcastController extends Controller
         }
 
         return $chatAttribute->id;
+    }
+
+    public function createSingleFilter($id)
+    {
+        return BroadcastFilters::create([
+            'project_broadcast_id' => $id,
+            'filter_type' => 2,
+            'conditin' => 1,
+            'chain_conditin' => 1
+        ]);
+    }
+
+    public function getFilters(Request $request)
+    {
+        $filters = BroadcastFilters::with([
+            'attribute',
+            'segment'
+        ])->where('project_broadcast_id', $request->attributes->get('broadcast')->id)->get();
+
+        $res = [];
+
+        foreach($filters as $filter) {
+            $res[] = [
+                'filters' => [
+                    'id' => (int) $filter->id,
+                    'option' => (int) $filter->filter_type,
+                    'type' => (int) $filter->condition,
+                    'name' => is_null($filter->attribute) ? (string) '' : (string) $filter->attribute->attribute,
+                    'value' => is_null($filter->chat_attribute_value) ? (string) '' : (string) $filter->chat_attribute_value,
+                    'condi' => (int) $filter->chain_condition,
+                    'systemAttribute' => is_null($filter->system_attribute_type) ? (int) 1 : (int) $filter->system_attribute_type,
+                    'systemAttributeValue' => is_null($filter->system_attribute_value) ? (int) 1 : (int) $filter->system_attribute_value,
+                    'userAttribute' => is_null($filter->user_attribute_type) ? (int) 1 : (int) $filter->user_attribute_type,
+                    'userAttributeValue' => is_null($filter->user_attribute_value) ? (int) 1 : (int) $filter->user_attribute_value,
+                ],
+                'segment' => [
+                    'id' => $filter->project_user_segment_id ? $filter->project_user_segment_id : -1,
+                    'name' => is_null($filter->project_user_segment_id) ? '' : $filter->segment->name
+                ]
+            ];
+        }
+
+        return response()->json([
+            'status' => false,
+            'code' => 200,
+            'data' => $res
+        ]);
+    }
+
+    public function createFilters(Request $request)
+    {
+        $filter = '';
+
+        DB::beginTransaction();
+
+        try {
+            $filter = $this->createSingleFilter($request->attributes->get('broadcast')->id);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to create new attribute',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 201,
+            'data' => [
+                'filters' => [
+                    'id' => (int) $filter->id,
+                    'option' => (int) $filter->filter_type,
+                    'type' => (int) $filter->condition,
+                    'name' => is_null($filter->attribute) ? (string) '' : (string) $filter->attribute->attribute,
+                    'value' => is_null($filter->chat_attribute_value) ? (string) '' : (string) $filter->chat_attribute_value,
+                    'condi' => (int) $filter->chain_condition,
+                    'systemAttribute' => is_null($filter->system_attribute_type) ? (int) 1 : (int) $filter->system_attribute_type,
+                    'systemAttributeValue' => is_null($filter->system_attribute_value) ? (int) 1 : (int) $filter->system_attribute_value,
+                    'userAttribute' => is_null($filter->user_attribute_type) ? (int) 1 : (int) $filter->user_attribute_type,
+                    'userAttributeValue' => is_null($filter->user_attribute_value) ? (int) 1 : (int) $filter->user_attribute_value,
+                ],
+                'segment' => [
+                    'id' => 0,
+                    'name' => ''
+                ]
+            ]
+        ], 201);
+    }
+    
+    public function deleteFilters(Request $request)
+    {
+        $filter = '';
+
+        DB::beginTransaction();
+
+        try {
+            BroadcastFilters::where('id', $request->filterId)->delete();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to create new attribute',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success'
+        ]);
     }
 }

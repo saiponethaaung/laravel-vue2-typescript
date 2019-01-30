@@ -49,13 +49,13 @@
                     <div class="optionSpinner">
                         <spinner-drop-down-component
                             :options="segmentValue"
-                            :selectedKey="attribute.systemValue"
-                            v-model="attribute.systemValue"
+                            :selectedKey="segment.id"
+                            v-model="segment.id"
                         ></spinner-drop-down-component>
                     </div>
                 </template>
             </div>
-            <div class="attrSelectorOption" v-if="attribute.option !== 4">
+            <div class="attrSelectorOption" v-if="attribute.option!==4">
                 <template>
                     <div class="optionSpinner">
                         <spinner-drop-down-component
@@ -90,13 +90,8 @@
                 </template>
             </div>
             <div v-if="canCondition" class="alignFilter">
-                <!-- <spinner-drop-down-component
-                    :options="condiOptions"
-                    :selectedKey="attribute.condi"
-                    v-model="attribute.condi"
-                ></spinner-drop-down-component> -->
-                <button class="filterType" @click="attribute.condi=1">and</button>
-                <button class="filterType" @click="attribute.condi=2">or</button>
+                <button class="filterType" :class="{'selectedCondi': attribute.cond===1}" @click="attribute.condi=1">and</button>
+                <button class="filterType" :class="{'selectedCondi': attribute.cond===2}" @click="attribute.condi=2">or</button>
             </div>
         </div>    
     </div>    
@@ -123,6 +118,13 @@ export default class AttributeSelectorComponent extends Vue {
         type: Boolean,
         default: false
     }) isSegment!: boolean;
+
+    @Prop({
+        type: Array,
+        default: []
+    }) segmentValue!: Array<any>;
+
+    @Prop() segment!: any;
 
     private showOption: boolean = false;
 
@@ -204,28 +206,6 @@ export default class AttributeSelectorComponent extends Vue {
         }
     ];
 
-    private segment: any = [
-        {
-            key: 1,
-            value: "Select segment",
-        },
-    ];
-
-    private segmentValue: any = [
-        {
-            key: 1,
-            value: "segment1",
-        },
-        {
-            key: 2,
-            value: "segment2",
-        },
-        {
-            key: 3,
-            value: "segment3",
-        }
-    ];
-
     get filterType() : Array<any> {
         let res = [
             {
@@ -262,7 +242,7 @@ export default class AttributeSelectorComponent extends Vue {
     }
 
     mounted() {
-        if(!this.isSegment) {
+        if(!this.isSegment && undefined!==this.segmentValue && this.segmentValue.length>0) {
             this.attributeOptions.push({
                 key: 4,
                 value: 'Segment'

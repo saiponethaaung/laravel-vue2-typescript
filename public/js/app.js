@@ -43524,35 +43524,140 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_AttributeFilterListModel__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_BroadcastAttributeFilterListModel__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_broadcast_BroadcastModel__ = __webpack_require__(36);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
 
 
 
 let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.showOption1 = false;
-        this.filterSegment = new __WEBPACK_IMPORTED_MODULE_2__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
+        this.showTags = false;
+        this.broadcast = new __WEBPACK_IMPORTED_MODULE_5__models_broadcast_BroadcastModel__["a" /* default */]();
+        this.loading = false;
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__["a" /* default */]();
+        this.loadingToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+        this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+        this.loadingContent = true;
+        this.contents = [];
+        this.filterList = new __WEBPACK_IMPORTED_MODULE_2__models_BroadcastAttributeFilterListModel__["a" /* default */](this.$store.state.projectInfo.id);
     }
     selectNewOption(key) {
         return key;
     }
     mounted() {
-        this.addNewFitler();
+        this.loadSendNowContent();
+    }
+    get selectedTag() {
+        if (undefined === this.broadcast)
+            return 0;
+        let index = 0;
+        for (let i = 0; this.$store.state.messageTags.length > i; i++) {
+            if (this.$store.state.messageTags[i].id === this.broadcast.tag) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+    loadSendNowContent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loadingToken.cancel();
+            this.loadingToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+            this.loading = true;
+            yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/sendnow`,
+                method: 'get',
+                cancelToken: this.loadingToken.token
+            }).then(res => {
+                this.broadcast.broadcastInit(res.data.data);
+                this.filterList.id = this.broadcast.id;
+                this.filterList.loadAttributes();
+                this.loadBroadcastContent();
+                this.loading = false;
+            }).catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load broadcast info!');
+                    alert(mesg);
+                    this.loading = false;
+                }
+            });
+        });
+    }
+    loadBroadcastContent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loadingContentToken.cancel();
+            this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+            this.loadingContent = true;
+            this.contents = [];
+            yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.broadcast.id}/section/${this.broadcast.section.id}/content`,
+                cancelToken: this.loadingContentToken.token
+            }).then((res) => {
+                this.contents = res.data.content;
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                    alert(mesg);
+                }
+                else {
+                    this.loadingContentToken.cancel();
+                }
+            });
+            this.loadingContent = false;
+        });
     }
     addNewFitler() {
-        this.filterSegment.createNewAttributeFilter();
+        this.filterList.createNewAttribute();
+    }
+    updateTag() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.loadingContent)
+                return;
+            yield this.broadcast.updateTag();
+        });
+    }
+    deleteBroadcast() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to delete this broadcast?")) {
+                let del = yield this.broadcast.deleteBroadcast();
+                if (!del.status) {
+                    alert(del.mesg);
+                }
+                else {
+                    this.$store.state.deleteTrigger = this.broadcast.id;
+                    this.$router.push({ name: 'project.broadcast' });
+                }
+            }
+        });
     }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('input')
 ], BroadcastSendNowComponent.prototype, "selectNewOption", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('broadcast.tag')
+], BroadcastSendNowComponent.prototype, "updateTag", null);
 BroadcastSendNowComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {
@@ -46709,194 +46814,243 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "inheritHFW broadcastRoot" }, [
-    _c("div", { staticClass: "broadcastFilterCon" }, [
-      _c("div", { staticClass: "outerDisplay" }, [
-        _c(
-          "div",
-          {
-            on: {
-              click: function($event) {
-                _vm.showOption1 = !_vm.showOption1
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "btnSub" }, [
-              _c("span", [_vm._v("Choose Message Type")]),
+  return _c(
+    "div",
+    { staticClass: "inheritHFW broadcastRoot" },
+    [
+      _vm.loading
+        ? [_vm._v("\n        Loading...\n    ")]
+        : [
+            _c("div", { staticClass: "broadcastFilterCon" }, [
+              _vm.$store.state.messageTags.length > 0
+                ? _c("div", { staticClass: "outerDisplay" }, [
+                    _c(
+                      "div",
+                      {
+                        on: {
+                          click: function($event) {
+                            _vm.showTags = !_vm.showTags
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "btnSub" }, [
+                          _c("span", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.$store.state.messageTags[_vm.selectedTag]
+                                  .name
+                              )
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "iconSub" }, [
+                            _c(
+                              "i",
+                              { staticClass: "material-icons" },
+                              [
+                                _vm.showTags
+                                  ? [_vm._v("expand_less")]
+                                  : [_vm._v("expand_more")]
+                              ],
+                              2
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.showTags,
+                                expression: "showTags"
+                              }
+                            ],
+                            staticClass: "dropDownList"
+                          },
+                          [
+                            _c(
+                              "ul",
+                              [
+                                _vm._l(_vm.$store.state.messageTags, function(
+                                  tag,
+                                  index
+                                ) {
+                                  return [
+                                    _c(
+                                      "li",
+                                      {
+                                        key: index,
+                                        on: {
+                                          click: function($event) {
+                                            _vm.broadcast.tag = tag.id
+                                          }
+                                        }
+                                      },
+                                      [_vm._v(_vm._s(tag.name))]
+                                    )
+                                  ]
+                                })
+                              ],
+                              2
+                            )
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "label",
+                      domProps: {
+                        innerHTML: _vm._s(
+                          _vm.$store.state.messageTags[_vm.selectedTag].mesg
+                        )
+                      }
+                    })
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("span", { staticClass: "iconSub" }, [
-                _c(
-                  "i",
-                  { staticClass: "material-icons" },
-                  [
-                    _vm.showOption1
-                      ? [_vm._v("expand_less")]
-                      : [_vm._v("expand_more")]
-                  ],
-                  2
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.showOption1,
-                    expression: "showOption1"
-                  }
-                ],
-                staticClass: "dropDownList"
-              },
-              [_vm._m(0)]
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _vm._m(1)
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "attributeSelectorList" },
-        [
-          _vm._l(_vm.filterSegment.attributes, function(attribute, index) {
-            return [
               _c(
                 "div",
-                { key: index, staticClass: "attributeSelector" },
+                { staticClass: "attributeSelectorList" },
                 [
-                  _c("attribute-selector-component", {
-                    attrs: {
-                      isSegment: false,
-                      attribute: attribute,
-                      canCondition:
-                        _vm.filterSegment.attributes.length - 1 > index
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.filterSegment.attributes.length > 1
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "deleteAttribute",
-                          on: {
-                            click: function($event) {
-                              _vm.filterSegment.attributes.splice(index, 1)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", { staticClass: "material-icons" }, [
-                            _vm._v("delete")
-                          ])
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.filterSegment.attributes.length - 1 == index
-                    ? _c(
+                  _vm._l(_vm.filterList.attributes, function(attribute, index) {
+                    return [
+                      _c(
                         "div",
-                        {
-                          staticClass: "addMoreFilterButton",
-                          on: {
-                            click: function($event) {
-                              _vm.addNewFitler()
-                            }
-                          }
-                        },
+                        { key: index, staticClass: "attributeSelector" },
                         [
-                          _c("i", { staticClass: "material-icons" }, [
-                            _vm._v("add")
-                          ]),
-                          _vm._v("Add More\n                    ")
-                        ]
+                          _c("attribute-selector-component", {
+                            attrs: {
+                              isSegment: false,
+                              attribute: attribute,
+                              canCondition:
+                                _vm.filterList.attributes.length - 1 > index,
+                              segmentValue: _vm.filterList.segments,
+                              segment: attribute.segment
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.filterList.attributes.length > 1
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "deleteAttribute",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.filterList.deleteFilter(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", { staticClass: "material-icons" }, [
+                                    _vm._v("delete")
+                                  ])
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.filterList.attributes.length - 1 == index
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "addMoreFilterButton",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.addNewFitler()
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", { staticClass: "material-icons" }, [
+                                    _vm._v("add")
+                                  ]),
+                                  _vm._v("Add More\n                        ")
+                                ]
+                              )
+                            : _vm._e()
+                        ],
+                        1
                       )
-                    : _vm._e()
+                    ]
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "btnAction broadcastActionBtn" },
+                [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "javascript:void(0);" },
+                      on: {
+                        click: function($event) {
+                          _vm.deleteBroadcast()
+                        }
+                      }
+                    },
+                    [_vm._m(1)]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    { attrs: { to: { name: "project.broadcast" } } },
+                    [
+                      _c("figure", { staticClass: "btnSend" }, [
+                        _c("img", { attrs: { src: "/images/icons/send.png" } })
+                      ])
+                    ]
+                  )
                 ],
                 1
               )
-            ]
-          })
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _vm._m(2)
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "btnAction" },
-      [
-        _c("router-link", { attrs: { to: { name: "project.broadcast" } } }, [
-          _c("figure", [
-            _c("img", { attrs: { src: "/images/icons/delete.png" } })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("router-link", { attrs: { to: { name: "project.broadcast" } } }, [
-          _c("figure", { staticClass: "btnSend" }, [
-            _c("img", { attrs: { src: "/images/icons/send.png" } })
-          ])
-        ])
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", [
-      _c(
-        "div",
-        [
-          _c("builder-component-mock", {
-            staticClass: "fullWidth",
-            attrs: { value: [], section: 0 }
-          })
-        ],
-        1
-      )
-    ])
-  ])
+            ]),
+            _vm._v(" "),
+            !_vm.loadingContent
+              ? _c(
+                  "div",
+                  [
+                    _c("builder-component", {
+                      attrs: {
+                        isBroadcast: true,
+                        value: _vm.contents,
+                        section: _vm.broadcast.section
+                      }
+                    })
+                  ],
+                  1
+                )
+              : _vm._e()
+          ]
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [_vm._v("Type 1")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("Type 2")]),
-      _vm._v(" "),
-      _c("li", [_vm._v("Type 3")])
+    return _c("div", { staticClass: "reachableUser" }, [
+      _vm._v("You have "),
+      _c("b", [_vm._v("4")]),
+      _vm._v(" users based on your filters.")
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "label" }, [
-      _c("span", [
-        _vm._v(
-          "Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy."
-        )
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "link" }, [
-        _vm._v("subscription messaging policy.")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "textAlign" }, [
-      _c("span", [_vm._v("You have 4 users based on your filters. ")])
+    return _c("figure", [
+      _c("img", { attrs: { src: "/images/icons/delete.png" } })
     ])
   }
 ]
@@ -52754,26 +52908,6 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
                 value: "Female",
             }
         ];
-        this.segment = [
-            {
-                key: 1,
-                value: "Select segment",
-            },
-        ];
-        this.segmentValue = [
-            {
-                key: 1,
-                value: "segment1",
-            },
-            {
-                key: 2,
-                value: "segment2",
-            },
-            {
-                key: 3,
-                value: "segment3",
-            }
-        ];
     }
     get filterType() {
         let res = [
@@ -52808,7 +52942,7 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
         return res;
     }
     mounted() {
-        if (!this.isSegment) {
+        if (!this.isSegment && undefined !== this.segmentValue && this.segmentValue.length > 0) {
             this.attributeOptions.push({
                 key: 4,
                 value: 'Segment'
@@ -52830,6 +52964,15 @@ __decorate([
         default: false
     })
 ], AttributeSelectorComponent.prototype, "isSegment", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: Array,
+        default: []
+    })
+], AttributeSelectorComponent.prototype, "segmentValue", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], AttributeSelectorComponent.prototype, "segment", void 0);
 AttributeSelectorComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {
@@ -52863,11 +53006,16 @@ let SpinnerDropDownComponent = class SpinnerDropDownComponent extends __WEBPACK_
         if (this.selectedKey === -1)
             return 0;
         let index = 0;
+        let found = false;
         for (let i in this.options) {
             if (this.options[i].key !== this.selectedKey)
                 continue;
             index = i;
+            found = true;
             break;
+        }
+        if (found === false) {
+            this.selectNewOption(this.options[index].key);
         }
         return index;
     }
@@ -52932,20 +53080,28 @@ var render = function() {
                 }
               },
               [
-                undefined !== _vm.labelText && _vm.labelText !== ""
-                  ? [
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(_vm.labelText) +
-                          "\n            "
-                      )
-                    ]
-                  : _vm._e(),
-                _vm._v(
-                  "\n            " +
-                    _vm._s(_vm.options[_vm.selected].value) +
-                    "\n            "
+                _c(
+                  "span",
+                  { staticClass: "spinnerSelectedValue" },
+                  [
+                    undefined !== _vm.labelText && _vm.labelText !== ""
+                      ? [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(_vm.labelText) +
+                              "\n                "
+                          )
+                        ]
+                      : _vm._e(),
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.options[_vm.selected].value) +
+                        "\n            "
+                    )
+                  ],
+                  2
                 ),
+                _vm._v(" "),
                 _vm.options.length > 1
                   ? _c(
                       "i",
@@ -52958,8 +53114,7 @@ var render = function() {
                       2
                     )
                   : _vm._e()
-              ],
-              2
+              ]
             ),
             _vm._v(" "),
             _vm.showOption && _vm.options.length > 1
@@ -53157,14 +53312,14 @@ var render = function() {
                     _c("spinner-drop-down-component", {
                       attrs: {
                         options: _vm.segmentValue,
-                        selectedKey: _vm.attribute.systemValue
+                        selectedKey: _vm.segment.id
                       },
                       model: {
-                        value: _vm.attribute.systemValue,
+                        value: _vm.segment.id,
                         callback: function($$v) {
-                          _vm.$set(_vm.attribute, "systemValue", $$v)
+                          _vm.$set(_vm.segment, "id", $$v)
                         },
-                        expression: "attribute.systemValue"
+                        expression: "segment.id"
                       }
                     })
                   ],
@@ -53295,6 +53450,7 @@ var render = function() {
               "button",
               {
                 staticClass: "filterType",
+                class: { selectedCondi: _vm.attribute.cond === 1 },
                 on: {
                   click: function($event) {
                     _vm.attribute.condi = 1
@@ -53308,6 +53464,7 @@ var render = function() {
               "button",
               {
                 staticClass: "filterType",
+                class: { selectedCondi: _vm.attribute.cond === 2 },
                 on: {
                   click: function($event) {
                     _vm.attribute.condi = 2
@@ -53527,6 +53684,209 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BroadcastAttributeFilterModel__ = __webpack_require__(204);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(projectId) {
+        super();
+        this.projectId = projectId;
+        this.attributeLoaded = false;
+        this.attributeLoading = false;
+        this.segmentLoading = false;
+        this.attributeCreating = false;
+        this.segmentUpdating = false;
+        this.attributeFilters = [];
+        this.loadAttributeToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.broadcastId = -1;
+        this.segmentList = [];
+        this.loadSegments();
+    }
+    get id() {
+        return this.broadcastId;
+    }
+    set id(broadcastId) {
+        this.broadcastId = broadcastId;
+    }
+    get isAttrLoaded() {
+        return this.attributeLoaded;
+    }
+    set isAttrLoaded(status) {
+        this.attributeLoaded = status;
+    }
+    get isAttrLoading() {
+        return this.attributeLoading;
+    }
+    set isAttrLoading(status) {
+        this.attributeLoading = status;
+    }
+    get isAttrCreating() {
+        return this.attributeCreating;
+    }
+    set isAttrCreating(status) {
+        this.attributeCreating = status;
+    }
+    get isSegmentLoading() {
+        return this.segmentLoading;
+    }
+    set isSegmentLoading(status) {
+        this.segmentLoading = status;
+    }
+    get updating() {
+        return this.segmentUpdating;
+    }
+    set updating(status) {
+        this.segmentUpdating = status;
+    }
+    get attributes() {
+        return this.attributeFilters;
+    }
+    set attributes(attributeFilters) {
+        this.attributeFilters = attributeFilters;
+    }
+    get segments() {
+        return this.segmentList;
+    }
+    loadAttributes() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            this.isAttrLoading = true;
+            this.loadAttributeToken.cancel();
+            this.loadAttributeToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/broadcast/${this.id}/filters`,
+                method: 'get',
+                cancelToken: this.loadAttributeToken.token
+            }).then(res => {
+                for (let i of res.data.data) {
+                    this.attributes.push(new __WEBPACK_IMPORTED_MODULE_2__BroadcastAttributeFilterModel__["a" /* default */](i.filters, i.segment));
+                }
+                this.isAttrLoaded = true;
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to load segments!');
+                }
+            });
+            this.isAttrLoading = false;
+            return res;
+        });
+    }
+    createNewAttribute() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            this.isAttrCreating = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/broadcast/${this.id}/filters`,
+                method: 'post'
+            }).then(res => {
+                this.attributes.push(new __WEBPACK_IMPORTED_MODULE_2__BroadcastAttributeFilterModel__["a" /* default */](res.data.data.filters, res.data.data.segment));
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to create new attribute filter!');
+                }
+            });
+            this.isAttrCreating = false;
+            return res;
+        });
+    }
+    deleteFilter(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/broadcast/${this.id}/filters/${this.attributes[index].id}`,
+                method: 'delete'
+            }).then(res => {
+                this.attributes.splice(index, 1);
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to delete filter atttribute!');
+                }
+            });
+            return res;
+        });
+    }
+    loadSegments() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.isSegmentLoading = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/users/segments`,
+                method: 'get'
+            }).then(res => {
+                for (let i of res.data.data) {
+                    this.segmentList.push({
+                        key: i.id,
+                        value: i.name
+                    });
+                }
+            });
+            this.isSegmentLoading = false;
+        });
+    }
+    loadCount() {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = SegmentModel;
+
+
+
+/***/ }),
+/* 204 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AttributeFilterModel__ = __webpack_require__(28);
+
+class BroadcastAttributeFilterModel extends __WEBPACK_IMPORTED_MODULE_0__AttributeFilterModel__["a" /* default */] {
+    constructor(attributeData, segment) {
+        super(attributeData);
+        this.segment = segment;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = BroadcastAttributeFilterModel;
+
+
 
 /***/ })
 /******/ ]);

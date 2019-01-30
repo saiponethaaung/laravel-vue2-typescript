@@ -2,10 +2,12 @@
     <div class="sddListCon">
         <template v-if="undefined!==this.options">
             <div ref="spinnerDropDown" @click="showOption=!showOption">
-                <template v-if="undefined!==labelText && labelText!==''">
-                    {{ labelText }}
-                </template>
-                {{ options[selected].value }}
+                <span class="spinnerSelectedValue">
+                    <template v-if="undefined!==labelText && labelText!==''">
+                        {{ labelText }}
+                    </template>
+                    {{ options[selected].value }}
+                </span>
                 <i class="material-icons iconRight" v-if="options.length>1" >
                     <template v-if="showOption">expand_less</template>
                     <template v-else>expand_more</template>
@@ -32,11 +34,17 @@ export default class SpinnerDropDownComponent extends Vue {
         if(this.selectedKey === -1) return 0;
 
         let index: any = 0;
+        let found: boolean = false;
 
         for(let i in this.options) {
             if(this.options[i].key!==this.selectedKey) continue;
             index = i;
+            found = true;
             break;
+        }
+
+        if(found===false) {
+            this.selectNewOption(this.options[index].key);
         }
 
         return index;

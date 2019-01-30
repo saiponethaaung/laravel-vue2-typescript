@@ -14099,6 +14099,15 @@ a:hover {
   width: 24px;
 }
 
+.spinnerSelectedValue {
+  display: block;
+  width: calc(100% - 24px);
+  float: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 @font-face {
   font-family: 'project-font';
   src: url(/fonts/Rubik-Regular.ttf?6c980940392587c8d7d325c07965ebda) format("truetype");

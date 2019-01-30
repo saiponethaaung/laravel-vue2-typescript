@@ -1,81 +1,87 @@
 <template>
     <div class="inheritHFW broadcastRoot">
-        <div class="broadcastFilterCon">
-            <div class="outerDisplay">
-                <div @click="showOption1=!showOption1">
-                    <div class="btnSub">
-                        <span>Choose Message Type</span>
-                        <span class="iconSub">
-                            <i class="material-icons">
-                                <template v-if="showOption1">expand_less</template>
-                                <template v-else>expand_more</template>
-                            </i>
-                        </span>
-                    </div>
-                    <div v-show="showOption1" class="dropDownList">
-                        <ul>
-                            <li>Type 1</li>
-                            <li>Type 2</li>
-                            <li>Type 3</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="label">
-                    <span>Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy.</span>
-                    <span class="link">subscription messaging policy.</span>
-                </div>
-            </div>
-
-            <div class="attributeSelectorList">
-                <template v-for="(attribute, index) in filterSegment.attributes">
-                    <div class="attributeSelector" :key="index">
-                        <attribute-selector-component
-                            :isSegment="false"
-                            :attribute="attribute"
-                            :canCondition="(filterSegment.attributes.length-1)>index"
-                        ></attribute-selector-component>
-                        
-                        <button v-if="filterSegment.attributes.length>1" class="deleteAttribute" @click="filterSegment.attributes.splice(index, 1);">
-                            <i class="material-icons">delete</i>
-                        </button>
-                        <div v-if="(filterSegment.attributes.length-1)==index" @click="addNewFitler()" class="addMoreFilterButton">
-                            <i class="material-icons">add</i>Add More
+        <template v-if="loading">
+            Loading...
+        </template>
+        <template v-else>
+            <div class="broadcastFilterCon">
+                <div class="outerDisplay" v-if="$store.state.messageTags.length>0">
+                    <div @click="showTags=!showTags">
+                        <div class="btnSub">
+                            <span>{{ $store.state.messageTags[selectedTag].name }}</span>
+                            <span class="iconSub">
+                                <i class="material-icons">
+                                    <template v-if="showTags">expand_less</template>
+                                    <template v-else>expand_more</template>
+                                </i>
+                            </span>
+                        </div>
+                        <div v-show="showTags" class="dropDownList">
+                            <ul>
+                                <template v-for="(tag, index) in $store.state.messageTags">
+                                    <li :key="index" @click="broadcast.tag=tag.id">{{ tag.name }}</li>
+                                </template>
+                            </ul>
                         </div>
                     </div>
-                </template>
+                    <div class="label" v-html="$store.state.messageTags[selectedTag].mesg"></div>
+                </div>
+
+                <div class="attributeSelectorList">
+                    <template v-for="(attribute, index) in filterList.attributes">
+                        <div class="attributeSelector" :key="index">
+                            <attribute-selector-component
+                                :isSegment="false"
+                                :attribute="attribute"
+                                :canCondition="(filterList.attributes.length-1)>index"
+                                :segmentValue="filterList.segments"
+                                :segment="attribute.segment"
+                            ></attribute-selector-component>
+                            
+                            <button v-if="filterList.attributes.length>1" class="deleteAttribute" @click="filterList.deleteFilter(index);">
+                                <i class="material-icons">delete</i>
+                            </button>
+                            <div v-if="(filterList.attributes.length-1)==index" @click="addNewFitler()" class="addMoreFilterButton">
+                                <i class="material-icons">add</i>Add More
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="reachableUser">You have <b>4</b> users based on your filters.</div>
+
+                <div class="btnAction broadcastActionBtn">
+                    <a href="javascript:void(0);" @click="deleteBroadcast()">
+                        <figure>
+                            <img src="/images/icons/delete.png"/>
+                        </figure>
+                    </a>
+                    <router-link :to="{name: 'project.broadcast'}">
+                        <figure class="btnSend">
+                            <img src="/images/icons/send.png"/>
+                        </figure>   
+                    </router-link>
+                </div>
             </div>
 
-            <div class="textAlign">
-                <span>You have 4 users based on your filters. </span>
+            <div v-if="!loadingContent">
+                <builder-component
+                    :isBroadcast="true"
+                    :value="contents"
+                    :section="broadcast.section"></builder-component>
             </div>
-        </div>
-
-        <div class="btnAction">
-            <router-link :to="{name: 'project.broadcast'}">
-                <figure>
-                    <img src="/images/icons/delete.png"/>
-                </figure>
-            </router-link>
-            <router-link :to="{name: 'project.broadcast'}">
-                <figure class="btnSend">
-                    <img src="/images/icons/send.png"/>
-                </figure>   
-            </router-link>
-        </div>
-
-        <div>
-            <div>
-                <builder-component-mock :value="[]" :section="0" class="fullWidth"></builder-component-mock>
-            </div>
-        </div>
+        </template>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue } from 'vue-property-decorator';
+import { Component, Emit, Vue, Watch } from 'vue-property-decorator';
 import BuilderComponentMock from '../common/BuilderComponentMock.vue';
-import AttributeFilterListModel from '../../models/AttributeFilterListModel';
+import BroadcastAttributeFilterListModel from '../../models/BroadcastAttributeFilterListModel';
 import AttributeFilterModel from '../../models/AttributeFilterModel';
+import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
+import Axios,{ CancelTokenSource } from 'axios';
+import BroadcastModel from '../../models/broadcast/BroadcastModel';
 
 @Component({
     components: {
@@ -84,9 +90,15 @@ import AttributeFilterModel from '../../models/AttributeFilterModel';
 })
 export default class BroadcastSendNowComponent extends Vue {
 
-    private showOption1: boolean = false;
-
-    private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(false, this.$store.state.projectInfo.id, []);
+    private showTags: boolean = false;
+    private broadcast: BroadcastModel = new BroadcastModel();
+    private loading: boolean = false;
+    private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
+    private loadingToken: CancelTokenSource = Axios.CancelToken.source();
+    private loadingContentToken: CancelTokenSource = Axios.CancelToken.source();
+    private loadingContent: boolean = true;
+    private contents: any = [];
+    private filterList: BroadcastAttributeFilterListModel = new BroadcastAttributeFilterListModel(this.$store.state.projectInfo.id);
 
     @Emit('input')
     selectNewOption(key: number) {
@@ -94,12 +106,93 @@ export default class BroadcastSendNowComponent extends Vue {
     }
 
     mounted() {
-        this.addNewFitler();
+        this.loadSendNowContent();
+    }
+
+    get selectedTag() {
+        if(undefined === this.broadcast) return 0;
+
+        let index: any = 0;
+
+        for(let i=0; this.$store.state.messageTags.length>i; i++ ) {
+            if(this.$store.state.messageTags[i].id===this.broadcast.tag) {
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+    }
+
+    private async loadSendNowContent() {
+        this.loadingToken.cancel();
+        this.loadingToken = Axios.CancelToken.source();
+
+        this.loading = true;
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/sendnow`,
+            method: 'get',
+            cancelToken: this.loadingToken.token
+        }).then(res => {
+            this.broadcast.broadcastInit(res.data.data);
+            this.filterList.id = this.broadcast.id;
+            this.filterList.loadAttributes();
+            this.loadBroadcastContent();
+            this.loading = false;
+        }).catch(err => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load broadcast info!');
+                alert(mesg);
+                this.loading = false;
+            }
+        });
+    }
+
+    async loadBroadcastContent() {
+        this.loadingContentToken.cancel();
+        this.loadingContentToken = Axios.CancelToken.source();
+
+        this.loadingContent = true;
+        this.contents = [];
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.broadcast.id}/section/${this.broadcast.section.id}/content`,
+            cancelToken: this.loadingContentToken.token
+        }).then((res: any) => {
+            this.contents = res.data.content;
+        }).catch((err: any) => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                alert(mesg);
+            } else {
+                this.loadingContentToken.cancel();
+            }
+        });
+
+        this.loadingContent = false;
     }
 
     private addNewFitler() {
-        this.filterSegment.createNewAttributeFilter();
+        this.filterList.createNewAttribute();
     }
 
+    @Watch('broadcast.tag')
+    private async updateTag() {
+        if(this.loadingContent) return;
+        await this.broadcast.updateTag();
+    }
+    
+    private async deleteBroadcast() {
+        if(confirm("Are you sure you want to delete this broadcast?")) {
+            let del = await this.broadcast.deleteBroadcast();
+            if(!del.status) {
+                alert(del.mesg);
+            } else {
+                this.$store.state.deleteTrigger = this.broadcast.id;
+                this.$router.push({name: 'project.broadcast'});
+            }
+        }
+    }
 }
 </script>

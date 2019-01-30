@@ -49,10 +49,14 @@
 
         <div class="btnAction">
             <router-link :to="{name: 'project.broadcast'}">
-                <i class="material-icons btnDel">delete</i>
+                <figure>
+                    <img src="/images/icons/delete.png"/>
+                </figure>
             </router-link>
             <router-link :to="{name: 'project.broadcast'}">
-                <i class="material-icons btnSend">send</i>
+                <figure class="btnSend">
+                    <img src="/images/icons/send.png"/>
+                </figure>   
             </router-link>
         </div>
 

@@ -55,7 +55,7 @@
                         <span>1 Minute</span>
                         <span class="iconSub">
                             <i class="material-icons">
-                                <template v-if="showOption4">expand_less</template>
+                                <template v-if="showOption2">expand_less</template>
                                 <template v-else>expand_more</template>
                             </i>
                         </span>
@@ -73,7 +73,7 @@
                         <span>After first interaction</span>
                         <span class="iconSub">
                             <i class="material-icons">
-                                <template v-if="showOption6">expand_less</template>
+                                <template v-if="showOption3">expand_less</template>
                                 <template v-else>expand_more</template>
                             </i>
                         </span>

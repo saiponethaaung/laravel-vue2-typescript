@@ -35380,7 +35380,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -46520,11 +46520,15 @@ var render = function() {
       { staticClass: "btnAction" },
       [
         _c("router-link", { attrs: { to: { name: "project.broadcast" } } }, [
-          _c("i", { staticClass: "material-icons btnDel" }, [_vm._v("delete")])
+          _c("figure", [
+            _c("img", { attrs: { src: "/images/icons/delete.png" } })
+          ])
         ]),
         _vm._v(" "),
         _c("router-link", { attrs: { to: { name: "project.broadcast" } } }, [
-          _c("i", { staticClass: "material-icons btnSend" }, [_vm._v("send")])
+          _c("figure", { staticClass: "btnSend" }, [
+            _c("img", { attrs: { src: "/images/icons/send.png" } })
+          ])
         ])
       ],
       1
@@ -46820,7 +46824,7 @@ var render = function() {
                   "i",
                   { staticClass: "material-icons" },
                   [
-                    _vm.showOption4
+                    _vm.showOption2
                       ? [_vm._v("expand_less")]
                       : [_vm._v("expand_more")]
                   ],
@@ -46866,7 +46870,7 @@ var render = function() {
                   "i",
                   { staticClass: "material-icons" },
                   [
-                    _vm.showOption6
+                    _vm.showOption3
                       ? [_vm._v("expand_less")]
                       : [_vm._v("expand_more")]
                   ],
@@ -49842,7 +49846,7 @@ var content = __webpack_require__(163);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(165)("044f53b3", content, false, {});
+var update = __webpack_require__(165)("8f8c94da", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -52462,9 +52466,31 @@ var render = function() {
       _vm._v(" "),
       _vm.canCondition
         ? _c("div", { staticClass: "alignFilter" }, [
-            _c("button", { staticClass: "filterType" }, [_vm._v("and")]),
+            _c(
+              "button",
+              {
+                staticClass: "filterType",
+                on: {
+                  click: function($event) {
+                    _vm.attribute.condi = 1
+                  }
+                }
+              },
+              [_vm._v("and")]
+            ),
             _vm._v(" "),
-            _c("button", { staticClass: "filterType" }, [_vm._v("or")])
+            _c(
+              "button",
+              {
+                staticClass: "filterType",
+                on: {
+                  click: function($event) {
+                    _vm.attribute.condi = 2
+                  }
+                }
+              },
+              [_vm._v("or")]
+            )
           ])
         : _vm._e()
     ])

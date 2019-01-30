@@ -13697,20 +13697,15 @@ a:hover {
 
 .btnAction {
   float: right;
-  margin-right: 40px;
-}
-
-.btnAction .material-icons {
-  font-size: 40px;
-  margin-right: 10px;
-}
-
-.btnAction .btnDel {
-  color: red;
+  margin-top: -20px;
+  margin-right: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .btnAction .btnSend {
-  color: green;
+  margin-left: 10px;
 }
 
 .fullWidth {

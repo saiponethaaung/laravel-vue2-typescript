@@ -95,8 +95,8 @@
                     :selectedKey="attribute.condi"
                     v-model="attribute.condi"
                 ></spinner-drop-down-component> -->
-                <button class="filterType">and</button>
-                <button class="filterType">or</button>
+                <button class="filterType" @click="attribute.condi=1">and</button>
+                <button class="filterType" @click="attribute.condi=2">or</button>
             </div>
         </div>    
     </div>    

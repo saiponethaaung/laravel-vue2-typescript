@@ -52827,7 +52827,7 @@ __decorate([
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
         type: Boolean,
-        default: true
+        default: false
     })
 ], AttributeSelectorComponent.prototype, "isSegment", void 0);
 AttributeSelectorComponent = __decorate([
@@ -52946,16 +52946,18 @@ var render = function() {
                     _vm._s(_vm.options[_vm.selected].value) +
                     "\n            "
                 ),
-                _c(
-                  "i",
-                  { staticClass: "material-icons iconRight" },
-                  [
-                    _vm.showOption
-                      ? [_vm._v("expand_less")]
-                      : [_vm._v("expand_more")]
-                  ],
-                  2
-                )
+                _vm.options.length > 1
+                  ? _c(
+                      "i",
+                      { staticClass: "material-icons iconRight" },
+                      [
+                        _vm.showOption
+                          ? [_vm._v("expand_less")]
+                          : [_vm._v("expand_more")]
+                      ],
+                      2
+                    )
+                  : _vm._e()
               ],
               2
             ),

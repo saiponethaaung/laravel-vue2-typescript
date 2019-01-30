@@ -121,7 +121,7 @@ export default class AttributeSelectorComponent extends Vue {
 
     @Prop({
         type: Boolean,
-        default: true
+        default: false
     }) isSegment!: boolean;
 
     private showOption: boolean = false;

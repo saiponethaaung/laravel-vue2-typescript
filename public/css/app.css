@@ -13117,30 +13117,30 @@ a:hover {
   display: -ms-flexbox;
   display: flex;
   margin: 10px;
-  line-height: 40px;
-  height: 40px;
+  font-size: 13px;
 }
 
 .attrSelector {
   width: 200px;
-  border: 1px solid #ebebeb;
-  border-radius: 5px;
   margin-right: 10px;
 }
 
 .attrSelector .optionSpinner {
   width: 200px;
+  height: 40px;
+  line-height: 40px;
 }
 
 .attrSelectorOption {
   width: 80px;
-  border: 1px solid #ebebeb;
   border-radius: 5px;
   margin-right: 10px;
 }
 
 .attrSelectorOption .optionSpinner {
   width: 80px;
+  height: 40px;
+  line-height: 40px;
 }
 
 .alignFilter {
@@ -13153,6 +13153,7 @@ a:hover {
   width: 40px;
   height: 40px;
   border: 1px solid #ededed;
+  border-radius: 5px;
   text-align: center;
   background: white;
   cursor: pointer;
@@ -13167,7 +13168,10 @@ a:hover {
   position: relative;
   padding: 0 10px;
   cursor: pointer;
+  height: 40px;
   background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
 }
 
 .sddListCon .sddList {
@@ -13231,6 +13235,10 @@ a:hover {
   font-size: 13px;
   padding: 0 5px;
   width: 200px;
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
 }
 
 .ddListCon {
@@ -13625,28 +13633,40 @@ a:hover {
 }
 
 .alignAttribute .attributeSelector {
-  position: relative;
-  display: inline-block;
   width: 100%;
   margin-left: -15px;
 }
 
 .alignAttribute .attrSelector {
   width: 150px;
-  border: 1px solid #ebebeb;
-  border-radius: 5px;
-  margin-right: 10px;
 }
 
 .alignAttribute .attrSelector .optionSpinner {
-  width: 150px;
+  width: 100%;
+}
+
+.alignAttribute .attrSelector .attrSelInput {
+  width: 100%;
+}
+
+.alignAttribute .attrSelectorOption {
+  width: 80px;
+}
+
+.alignAttribute .attrSelectorOption .optionSpinner {
+  width: 100%;
 }
 
 .alignAttribute .deleteAttribute {
-  cursor: pointer;
-  position: absolute;
-  top: 5px;
   right: -108px;
+}
+
+.alignAttribute .addMoreFilterButton {
+  float: right;
+  position: relative;
+  top: -50px;
+  right: -10px;
+  margin-top: 0px;
 }
 
 .btnClick {

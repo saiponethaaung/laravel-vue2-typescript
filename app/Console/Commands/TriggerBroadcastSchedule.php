@@ -115,5 +115,12 @@ class TriggerBroadcastSchedule extends Command
                 BroadcastJob::dispatch($b->id);
             }
         }
+
+        print_r($dateTime);
+        echo "\n";
+        print_r('totol schedule broadcast'.$broadcast->count());
+        echo "\n";
+        print_r($broadcast->toArray());
+        echo "\n";
     }
 }

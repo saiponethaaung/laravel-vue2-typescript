@@ -1,10 +1,11 @@
 import { attributeFilter } from "../configuration/interface";
+import AjaxErrorHandler from "../utils/AjaxErrorHandler";
 
-export default class AttributeFilterModel {
+export default class AttributeFilterModel extends AjaxErrorHandler {
     constructor(
         private attributeData: attributeFilter
     ) {
-
+        super();
     }
 
     get id() : number {

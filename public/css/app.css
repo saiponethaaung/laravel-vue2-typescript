@@ -13153,14 +13153,23 @@ a:hover {
   width: 40px;
   height: 40px;
   border: 1px solid #ededed;
-  border-radius: 5px;
   text-align: center;
   background: white;
   cursor: pointer;
 }
 
-.filterType:focus {
-  background: #3490dc;
+.filterType:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.filterType:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.filterType.selectedCondi {
+  background: #c238eb;
   color: #ffffff;
 }
 
@@ -14115,6 +14124,14 @@ a:hover {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.broadcastRoot .addMoreFilterButton {
+  cursor: pointer !important;
+  position: relative !important;
+  right: 15px !important;
+  margin-top: initial !important;
+  top: 8px !important;
 }
 
 @font-face {

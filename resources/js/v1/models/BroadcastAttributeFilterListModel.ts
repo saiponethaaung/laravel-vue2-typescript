@@ -97,7 +97,7 @@ export default class SegmentModel extends AjaxErrorHandler {
             cancelToken: this.loadAttributeToken.token
         }).then(res => {
             for(let i of res.data.data) {
-                this.attributes.push(new BroadcastAttributeFilterModel(i.filters, i.segment));
+                this.attributes.push(new BroadcastAttributeFilterModel(i.filters, i.segment, this.id, this.projectId));
             }
             this.isAttrLoaded = true;
         }).catch(err => {
@@ -123,7 +123,7 @@ export default class SegmentModel extends AjaxErrorHandler {
             url: `/api/v1/project/${this.projectId}/broadcast/${this.id}/filters`,
             method: 'post'   
         }).then(res => {
-            this.attributes.push(new BroadcastAttributeFilterModel(res.data.data.filters, res.data.data.segment));
+            this.attributes.push(new BroadcastAttributeFilterModel(res.data.data.filters, res.data.data.segment, this.id, this.projectId));
         }).catch(err => {
             if(err.response) {
                 res.status = false;

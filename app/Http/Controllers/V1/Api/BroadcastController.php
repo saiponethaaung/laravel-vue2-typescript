@@ -15,6 +15,8 @@ use App\Models\ProjectMessageTag;
 use App\Models\ChatBlockSection;
 use App\Models\ChatAttribute;
 
+use App\Jobs\Facebook\BroadcastJob;
+
 class BroadcastController extends Controller
 {
     public function getSendNow(Request $request) {
@@ -508,6 +510,34 @@ class BroadcastController extends Controller
             'mesg' => 'Success'
         ]);
     }
+    
+    public function publishBroadcast(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('broadcast')->complete = 1;
+            $request->attributes->get('broadcast')->save();
+            BroadcastJob::dispatch($request->attributes->get('broadcast')->id);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to publish broadcast!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success'
+        ]);
+    }
 
     public function getChatAttribute($name)
     {
@@ -629,6 +659,65 @@ class BroadcastController extends Controller
                 'status' => false,
                 'code' => 422,
                 'mesg' => 'Failed to create new attribute',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success'
+        ]);
+    }
+
+    public function updateFilters(Request $request)
+    {
+        $filter = BroadcastFilters::find($request->filterId);
+
+        try {
+            $attributeId = null;
+            $filter->filter_type = $request->input('option');
+            $filter->condition = $request->input('type');
+            $filter->chain_condition = $request->input('condi');
+            $filter->user_attribute_type = null;
+            $filter->user_attribute_value = null;
+            $filter->chat_attribute_id = null;
+            $filter->chat_attribute_value = null;
+            $filter->system_attribute_type = null;
+            $filter->system_attribute_value = null;
+            $filter->project_user_segments_id = null;
+            
+            switch($request->input('option')) {
+                case("1"):
+                    $filter->user_attribute_type = $request->input('userAttribute');
+                    $filter->user_attribute_value = $request->input('userAttributeValue');
+                    break;
+
+                case("2"):
+                    $attributeId = $this->getChatAttribute($request->input('name'));
+                    $filter->chat_attribute_id = $attributeId;
+                    $filter->chat_attribute_value = $request->input('value');
+                    break;
+                    
+                case("3"):
+                    $filter->system_attribute_type = $request->input('systemAttribute');
+                    $filter->system_attribute_value = $request->input('systemAttributeValue');
+                    break;
+                    
+                case("4"):
+                    $filter->project_user_segments_id = $request->input('segmentId')<0 ? null : $request->input('segmentId');
+                    break;
+            }
+            
+            $filter->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update attribute',
                 'debugMesg' => $e->getMessage()
             ], 422);
         }

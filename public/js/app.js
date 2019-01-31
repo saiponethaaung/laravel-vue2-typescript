@@ -12051,8 +12051,11 @@ process.umask = function() { return 0; };
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-class AttributeFilterModel {
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+
+class AttributeFilterModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
     constructor(attributeData) {
+        super();
         this.attributeData = attributeData;
     }
     get id() {
@@ -13083,6 +13086,24 @@ class BroadcastModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler
                 if (err.response) {
                     res.status = false;
                     res.mesg = this.globalHandler(err, 'Failed to delete!');
+                }
+            });
+            return res;
+        });
+    }
+    broadcastSend() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.project}/broadcast/${this.id}/send`,
+                method: 'post'
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to publish!');
                 }
             });
             return res;
@@ -43655,6 +43676,20 @@ let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPAC
             }
         });
     }
+    broadcastSend() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to publish this broadcast?")) {
+                let publish = yield this.broadcast.broadcastSend();
+                if (!publish.status) {
+                    alert(publish.mesg);
+                }
+                else {
+                    this.$store.state.deleteTrigger = this.broadcast.id;
+                    this.$router.push({ name: 'project.broadcast' });
+                }
+            }
+        });
+    }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('input')
@@ -46905,7 +46940,7 @@ class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
                 cancelToken: this.loadAttributeToken.token
             }).then(res => {
                 for (let i of res.data.data) {
-                    this.attributes.push(new __WEBPACK_IMPORTED_MODULE_2__BroadcastAttributeFilterModel__["a" /* default */](i.filters, i.segment));
+                    this.attributes.push(new __WEBPACK_IMPORTED_MODULE_2__BroadcastAttributeFilterModel__["a" /* default */](i.filters, i.segment, this.id, this.projectId));
                 }
                 this.isAttrLoaded = true;
             }).catch(err => {
@@ -46929,7 +46964,7 @@ class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
                 url: `/api/v1/project/${this.projectId}/broadcast/${this.id}/filters`,
                 method: 'post'
             }).then(res => {
-                this.attributes.push(new __WEBPACK_IMPORTED_MODULE_2__BroadcastAttributeFilterModel__["a" /* default */](res.data.data.filters, res.data.data.segment));
+                this.attributes.push(new __WEBPACK_IMPORTED_MODULE_2__BroadcastAttributeFilterModel__["a" /* default */](res.data.data.filters, res.data.data.segment, this.id, this.projectId));
             }).catch(err => {
                 if (err.response) {
                     res.status = false;
@@ -46992,11 +47027,61 @@ class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AttributeFilterModel__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
 
 class BroadcastAttributeFilterModel extends __WEBPACK_IMPORTED_MODULE_0__AttributeFilterModel__["a" /* default */] {
-    constructor(attributeData, segment) {
+    constructor(attributeData, segment, broadcast, projectId) {
         super(attributeData);
         this.segment = segment;
+        this.broadcast = broadcast;
+        this.projectId = projectId;
+        this.updating = false;
+        this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+    }
+    updateFilter() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.updateToken.cancel();
+            this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            let res = {
+                status: true,
+                mesg: 'Success'
+            };
+            let data = new FormData();
+            data.append(`option`, this.option.toString());
+            data.append(`type`, this.type.toString());
+            data.append(`name`, this.name);
+            data.append(`value`, this.value);
+            data.append(`condi`, this.condi.toString());
+            data.append(`systemAttribute`, this.system.toString());
+            data.append(`systemAttributeValue`, this.systemValue.toString());
+            data.append(`userAttribute`, this.user.toString());
+            data.append(`userAttributeValue`, this.userValue.toString());
+            data.append(`segmentId`, this.segment.id.toString());
+            this.updating = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/broadcast/${this.broadcast}/filters/${this.id}`,
+                method: 'post',
+                data: data,
+                cancelToken: this.updateToken.token
+            }).then(res => {
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to create a segment!');
+                }
+            });
+            return res;
+        });
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = BroadcastAttributeFilterModel;
@@ -47180,35 +47265,33 @@ var render = function() {
               _vm._v(" "),
               _vm._m(0),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "btnAction broadcastActionBtn" },
-                [
-                  _c(
-                    "a",
-                    {
-                      attrs: { href: "javascript:void(0);" },
-                      on: {
-                        click: function($event) {
-                          _vm.deleteBroadcast()
-                        }
+              _c("div", { staticClass: "btnAction broadcastActionBtn" }, [
+                _c(
+                  "a",
+                  {
+                    attrs: { href: "javascript:void(0);" },
+                    on: {
+                      click: function($event) {
+                        _vm.deleteBroadcast()
                       }
-                    },
-                    [_vm._m(1)]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "router-link",
-                    { attrs: { to: { name: "project.broadcast" } } },
-                    [
-                      _c("figure", { staticClass: "btnSend" }, [
-                        _c("img", { attrs: { src: "/images/icons/send.png" } })
-                      ])
-                    ]
-                  )
-                ],
-                1
-              )
+                    }
+                  },
+                  [_vm._m(1)]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    attrs: { href: "javascript:void(0);" },
+                    on: {
+                      click: function($event) {
+                        _vm.broadcastSend()
+                      }
+                    }
+                  },
+                  [_vm._m(2)]
+                )
+              ])
             ]),
             _vm._v(" "),
             !_vm.loadingContent
@@ -47248,6 +47331,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("figure", [
       _c("img", { attrs: { src: "/images/icons/delete.png" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("figure", { staticClass: "btnSend" }, [
+      _c("img", { attrs: { src: "/images/icons/send.png" } })
     ])
   }
 ]
@@ -53106,6 +53197,11 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
             }
         ];
     }
+    updateFilter() {
+        if (this.isSegment)
+            return;
+        this.attribute.updateFilter();
+    }
     get filterType() {
         let res = [
             {
@@ -53170,6 +53266,18 @@ __decorate([
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], AttributeSelectorComponent.prototype, "segment", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.option'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.type'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.name'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.value'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.condi'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.system'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.systemValue'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.user'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.userValue'),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('segment.id')
+], AttributeSelectorComponent.prototype, "updateFilter", null);
 AttributeSelectorComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {
@@ -53647,7 +53755,7 @@ var render = function() {
               "button",
               {
                 staticClass: "filterType",
-                class: { selectedCondi: _vm.attribute.cond === 1 },
+                class: { selectedCondi: _vm.attribute.condi === 1 },
                 on: {
                   click: function($event) {
                     _vm.attribute.condi = 1
@@ -53661,7 +53769,7 @@ var render = function() {
               "button",
               {
                 staticClass: "filterType",
-                class: { selectedCondi: _vm.attribute.cond === 2 },
+                class: { selectedCondi: _vm.attribute.condi === 2 },
                 on: {
                   click: function($event) {
                     _vm.attribute.condi = 2

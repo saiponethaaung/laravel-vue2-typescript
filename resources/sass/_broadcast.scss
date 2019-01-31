@@ -405,3 +405,13 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+.broadcastRoot {
+    .addMoreFilterButton {
+        cursor: pointer!important;
+        position: relative!important;
+        right: 15px!important;
+        margin-top: initial!important;
+        top: 8px!important;
+    }
+}

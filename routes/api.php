@@ -143,9 +143,11 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
             Route::group(['prefix' => '{broadcastId}', 'middleware' => 'verifyBroadcast'], function() {
 
                 Route::delete('/', 'V1\\Api\\BroadcastController@deleteBroadcast');
+                Route::post('/send', 'V1\\Api\\BroadcastController@publishBroadcast');
                 Route::get('filters', 'V1\\Api\\BroadcastController@getFilters');
                 Route::post('filters', 'V1\\Api\\BroadcastController@createFilters');
                 Route::delete('filters/{filterId}', 'V1\\Api\\BroadcastController@deleteFilters');
+                Route::post('filters/{filterId}', 'V1\\Api\\BroadcastController@updateFilters');
                 Route::post('status', 'V1\\Api\\BroadcastController@updateStatus');
                 Route::post('message-tag', 'V1\\Api\\BroadcastController@updateMessageTag');
 

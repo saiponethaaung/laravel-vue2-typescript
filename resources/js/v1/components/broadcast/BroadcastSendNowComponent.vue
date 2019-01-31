@@ -56,11 +56,11 @@
                             <img src="/images/icons/delete.png"/>
                         </figure>
                     </a>
-                    <router-link :to="{name: 'project.broadcast'}">
+                    <a href="javascript:void(0);" @click="broadcastSend()">
                         <figure class="btnSend">
                             <img src="/images/icons/send.png"/>
                         </figure>   
-                    </router-link>
+                    </a>
                 </div>
             </div>
 
@@ -188,6 +188,18 @@ export default class BroadcastSendNowComponent extends Vue {
             let del = await this.broadcast.deleteBroadcast();
             if(!del.status) {
                 alert(del.mesg);
+            } else {
+                this.$store.state.deleteTrigger = this.broadcast.id;
+                this.$router.push({name: 'project.broadcast'});
+            }
+        }
+    }
+    
+    private async broadcastSend() {
+        if(confirm("Are you sure you want to publish this broadcast?")) {
+            let publish = await this.broadcast.broadcastSend();
+            if(!publish.status) {
+                alert(publish.mesg);
             } else {
                 this.$store.state.deleteTrigger = this.broadcast.id;
                 this.$router.push({name: 'project.broadcast'});

@@ -144,4 +144,23 @@ export default class BroadcastModel extends AjaxErrorHandler {
 
         return res;
     }
+
+    async broadcastSend() {
+        let res = {
+            status: true,
+            mesg: 'success'
+        };
+        
+        await Axios({
+            url: `/api/v1/project/${this.project}/broadcast/${this.id}/send`,
+            method: 'post'
+        }).catch(err => {
+            if(err.response) {
+                res.status = false;
+                res.mesg = this.globalHandler(err, 'Failed to publish!');
+            }
+        });
+
+        return res;
+    }
 }

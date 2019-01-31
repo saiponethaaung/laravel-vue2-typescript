@@ -185,14 +185,21 @@
     width: 40px;
     height: 40px;
     border: 1px solid #ededed;
-    border-radius: 5px;
     text-align: center;
     background: white;
     cursor: pointer;
+    &:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+    &:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
 }
 
-.filterType:focus {
-    background: #3490dc;
+.filterType.selectedCondi {
+    background: $iconActive;
     color: #ffffff;
 }
 

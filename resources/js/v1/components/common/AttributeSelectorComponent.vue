@@ -90,17 +90,18 @@
                 </template>
             </div>
             <div v-if="canCondition" class="alignFilter">
-                <button class="filterType" :class="{'selectedCondi': attribute.cond===1}" @click="attribute.condi=1">and</button>
-                <button class="filterType" :class="{'selectedCondi': attribute.cond===2}" @click="attribute.condi=2">or</button>
+                <button class="filterType" :class="{'selectedCondi': attribute.condi===1}" @click="attribute.condi=1">and</button>
+                <button class="filterType" :class="{'selectedCondi': attribute.condi===2}" @click="attribute.condi=2">or</button>
             </div>
         </div>    
     </div>    
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SpinnerDropDownComponent from './SpinnerDropDownComponent.vue';
 import AttributeFilterModel from '../../models/AttributeFilterModel';
+import BroadcastAttributeFilterListModel from '../../models/BroadcastAttributeFilterListModel';
 
 @Component({
     components: {
@@ -112,7 +113,7 @@ export default class AttributeSelectorComponent extends Vue {
     @Prop({
         default: false
     }) canCondition!: boolean;
-    @Prop() attribute!: AttributeFilterModel;
+    @Prop() attribute!: any;
 
     @Prop({
         type: Boolean,
@@ -125,6 +126,21 @@ export default class AttributeSelectorComponent extends Vue {
     }) segmentValue!: Array<any>;
 
     @Prop() segment!: any;
+
+    @Watch('attribute.option')
+    @Watch('attribute.type')
+    @Watch('attribute.name')
+    @Watch('attribute.value')
+    @Watch('attribute.condi')
+    @Watch('attribute.system')
+    @Watch('attribute.systemValue')
+    @Watch('attribute.user')
+    @Watch('attribute.userValue')
+    @Watch('segment.id')
+    private updateFilter() {
+        if(this.isSegment) return;
+        this.attribute.updateFilter();
+    }
 
     private showOption: boolean = false;
 

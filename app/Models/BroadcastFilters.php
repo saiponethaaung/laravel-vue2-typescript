@@ -10,7 +10,7 @@ class BroadcastFilters extends Model
 
     protected $fillable = [
         'project_broadcast_id',
-        'project_user_segment_id',
+        'project_user_segments_id',
         'filter_type',
         'user_attribute_type',
         'user_attribute_value',

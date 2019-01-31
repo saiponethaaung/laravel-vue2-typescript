@@ -269,14 +269,17 @@ $attributePanelWidth: 336px;
             border: 1px solid $actionBtn1;
             border-radius: 5px;
             position: fixed;
-            bottom: 70px;
-            right: 375px;
+            bottom: 15px;
             cursor: pointer;
 
             img {
                 width: 16px;
                 height: 16px;
                 margin-right: 10px;
+            }
+
+            &.stopLiveChatBtn {
+                bottom: 60px;
             }
 
             &.startLiveChat {
@@ -286,6 +289,7 @@ $attributePanelWidth: 336px;
 
             &.stopLiveChat {
                 background: #fff;
+                color: $actionBtn1;
             }
 
             .material-icons {
@@ -302,7 +306,7 @@ $attributePanelWidth: 336px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: calc(100% - 65px);
+            width: calc(100% - 130px);
             height: 100%;
             padding-left: 30px;
             float: left;
@@ -398,4 +402,28 @@ $attributePanelWidth: 336px;
 
 .activeFav {
     color: $color1;
+}
+
+.addNote {
+    width: 250px;
+    height: 30px;
+    background: #c238eb;
+    margin-left: 30px;
+    font-size: 13px;
+    color: white;
+    border: 1px solid #c238eb;
+    border-radius: 5px;
+    .iconSub {
+        float: right;
+        cursor: pointer;
+    }
+}
+
+.adminNote {
+    width: 250px;
+    height: 125px;
+    margin-left: 30px;
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
 }

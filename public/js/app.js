@@ -35617,7 +35617,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -38137,6 +38137,7 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
         this.el = null;
         this.prevLoading = false;
         this.lastScroll = 0;
+        this.showTags = false;
     }
     reloadMesg() {
         if (this.$store.state.selectedInbox === -1)
@@ -39126,7 +39127,7 @@ var render = function() {
                                           "button",
                                           {
                                             staticClass:
-                                              "liveChatButton stopLiveChat",
+                                              "liveChatButton stopLiveChat stopLiveChatBtn",
                                             attrs: { type: "button" },
                                             on: {
                                               click: function($event) {
@@ -39203,9 +39204,11 @@ var render = function() {
                                             ]
                                           ),
                                           _vm._v(" "),
-                                          _vm._m(0)
+                                          _vm._m(0),
+                                          _vm._v(" "),
+                                          _vm._m(1)
                                         ]
-                                      : [_vm._m(1), _vm._v(" "), _vm._m(2)]
+                                      : [_vm._m(2), _vm._v(" "), _vm._m(3)]
                                   ]
                                 : [
                                     _c(
@@ -39241,10 +39244,10 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "attributeTableRoot" }, [
-                            _vm._m(3),
+                            _vm._m(4),
                             _vm._v(" "),
                             _c("table", { staticClass: "attributeTable" }, [
-                              _vm._m(4),
+                              _vm._m(5),
                               _vm._v(" "),
                               _c(
                                 "tbody",
@@ -39281,19 +39284,59 @@ var render = function() {
                                           ])
                                         }
                                       )
-                                    : [_vm._m(5)]
+                                    : [_vm._m(6)]
                                 ],
                                 2
                               )
                             ]),
                             _vm._v(" "),
-                            _vm._m(6)
-                          ])
+                            _vm._m(7)
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "addNote",
+                              on: {
+                                click: function($event) {
+                                  _vm.showTags = !_vm.showTags
+                                }
+                              }
+                            },
+                            [
+                              _c("span", [_vm._v("Write note about the shop")]),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "iconSub" }, [
+                                _c(
+                                  "i",
+                                  { staticClass: "material-icons" },
+                                  [
+                                    _vm.showTags
+                                      ? [_vm._v("expand_more")]
+                                      : [_vm._v("expand_less")]
+                                  ],
+                                  2
+                                )
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.showTags,
+                                expression: "showTags"
+                              }
+                            ],
+                            staticClass: "adminNote"
+                          })
                         ])
                       ]
-                    : [_vm._m(7)]
+                    : [_vm._m(8)]
                 ]
-              : [_vm._m(8)]
+              : [_vm._m(9)]
           ]
     ],
     2
@@ -39314,10 +39357,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "chatInputMesgBox" }, [
-      _c("input", {
-        attrs: { type: "text", placeholder: "Send message...", disabled: "" }
-      })
+    return _c("div", { staticClass: "chatInputEmoji" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("chat")])
     ])
   },
   function() {
@@ -39328,6 +39369,14 @@ var staticRenderFns = [
       _c("i", { staticClass: "material-icons" }, [
         _vm._v("sentiment_satisfied")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "chatInputEmoji" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("chat")])
     ])
   },
   function() {
@@ -51148,7 +51197,7 @@ var content = __webpack_require__(166);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(168)("044f53b3", content, false, {});
+var update = __webpack_require__(168)("8f8c94da", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags

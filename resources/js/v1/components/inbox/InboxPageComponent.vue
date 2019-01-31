@@ -39,7 +39,7 @@
                                     <img src="/images/icons/chat_icon.png"/>
                                     <span>Start a live chat</span>
                                 </button>
-                                <button class="liveChatButton stopLiveChat" @click="stopLiveChat()" type="button" v-else>
+                                <button class="liveChatButton stopLiveChat stopLiveChatBtn" @click="stopLiveChat()" type="button" v-else>
                                     <img src="/images/icons/chat_stop.png"/>
                                     <span>Finish live chat</span>
                                 </button>
@@ -54,13 +54,19 @@
                                     <div class="chatInputEmoji">
                                         <i class="material-icons">sentiment_satisfied</i>
                                     </div>
+                                    <div class="chatInputEmoji">
+                                        <i class="material-icons">chat</i>
+                                    </div>
                                 </template>
                                 <template v-else>
-                                    <div class="chatInputMesgBox">
+                                    <!-- <div class="chatInputMesgBox">
                                         <input type="text" placeholder="Send message..." disabled/>
-                                    </div>
+                                    </div> -->
                                     <div class="chatInputEmoji">
                                         <i class="material-icons">sentiment_satisfied</i>
+                                    </div>
+                                    <div class="chatInputEmoji">
+                                        <i class="material-icons">chat</i>
                                     </div>
                                 </template>
                             </template>
@@ -132,8 +138,20 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
+                        </div>                        
                         <!-- <div>Note</div> -->
+                        <div class="addNote" @click="showTags=!showTags">
+                            <span>Write note about the shop</span>
+                            <span class="iconSub">
+                                <i class="material-icons">
+                                    <template v-if="showTags">expand_more</template>
+                                    <template v-else>expand_less</template>
+                                </i>
+                            </span>
+                        </div>
+                        <div v-show="showTags" class="adminNote">
+                            
+                        </div>
                     </div>
                 </template>
                 <template v-else>
@@ -177,6 +195,7 @@ export default class InboxPageComponent extends Vue {
     private el: any = null;
     private prevLoading: boolean = false;
     private lastScroll: number = 0;
+    private showTags: boolean = false;
     
     @Watch('$store.state.selectedInbox')
     reloadMesg() {

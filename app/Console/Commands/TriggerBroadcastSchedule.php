@@ -116,11 +116,11 @@ class TriggerBroadcastSchedule extends Command
             }
         }
 
-        print_r($dateTime);
-        echo "\n";
-        print_r('totol schedule broadcast'.$broadcast->count());
-        echo "\n";
-        print_r($broadcast->toArray());
-        echo "\n";
+        // print_r($dateTime);
+        // echo "\n";
+        // print_r('totol schedule broadcast'.$broadcast->count());
+        // echo "\n";
+        // print_r($broadcast->toArray());
+        // echo "\n";
     }
 }

@@ -77,6 +77,11 @@ class Broadcast extends Model
             if(!is_null($broadcast->attribute)) {
                 $broadcast->attribute->delete();
             }
+            if(!is_null($broadcast->filterSegments)) {
+                foreach($broadcast->filterSegments as $filterSegments) {
+                    $filterSegments->delete();
+                }
+            }
         });
     }
 
@@ -98,5 +103,10 @@ class Broadcast extends Model
     public function attribute()
     {
         return $this->hasOne('App\Models\BroadcastTriggerAttribute', 'project_broadcast_id', 'id');
+    }
+
+    public function filterSegments()
+    {
+        return $this->hasMany('App\Models\BroadcastFilters', 'project_broadcast_id', 'id');
     }
 }

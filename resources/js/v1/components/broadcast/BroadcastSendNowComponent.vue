@@ -136,6 +136,7 @@ export default class BroadcastSendNowComponent extends Vue {
             cancelToken: this.loadingToken.token
         }).then(res => {
             this.broadcast.broadcastInit(res.data.data);
+            this.filterList = new BroadcastAttributeFilterListModel(this.$store.state.projectInfo.id);
             this.filterList.id = this.broadcast.id;
             this.filterList.loadAttributes();
             this.loadBroadcastContent();

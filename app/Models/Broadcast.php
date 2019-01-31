@@ -80,6 +80,11 @@ class Broadcast extends Model
         });
     }
 
+    public function project()
+    {
+        return $this->hasOne('App\Models\Project', 'id', 'project_id');
+    }
+
     public function weekday()
     {
         return $this->hasMany('App\Models\BroadcastWeekday', 'project_broadcast_id', 'id');

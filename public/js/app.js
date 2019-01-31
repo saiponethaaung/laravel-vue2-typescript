@@ -43860,6 +43860,7 @@ let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPAC
                 cancelToken: this.loadingToken.token
             }).then(res => {
                 this.broadcast.broadcastInit(res.data.data);
+                this.filterList = new __WEBPACK_IMPORTED_MODULE_2__models_BroadcastAttributeFilterListModel__["a" /* default */](this.$store.state.projectInfo.id);
                 this.filterList.id = this.broadcast.id;
                 this.filterList.loadAttributes();
                 this.loadBroadcastContent();
@@ -47577,6 +47578,7 @@ let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPAC
                 cancelToken: this.loadingToken.token
             }).then(res => {
                 this.trigger.init(res.data.data);
+                this.filterList = new __WEBPACK_IMPORTED_MODULE_1__models_BroadcastAttributeFilterListModel__["a" /* default */](this.$store.state.projectInfo.id);
                 this.filterList.id = this.trigger.id;
                 this.filterList.loadAttributes();
                 this.loadBroadcastContent();
@@ -48450,6 +48452,7 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
                 cancelToken: this.loadingToken.token
             }).then(res => {
                 this.schedule.init(res.data.data);
+                this.filterList = new __WEBPACK_IMPORTED_MODULE_3__models_BroadcastAttributeFilterListModel__["a" /* default */](this.$store.state.projectInfo.id);
                 this.filterList.id = this.schedule.id;
                 this.filterList.loadAttributes();
                 this.loadScheduleContent();

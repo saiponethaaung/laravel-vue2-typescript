@@ -232,6 +232,7 @@ export default class BroadcastTriggerComponent extends Vue{
             cancelToken: this.loadingToken.token
         }).then(res => {
             this.trigger.init(res.data.data);
+            this.filterList = new BroadcastAttributeFilterListModel(this.$store.state.projectInfo.id);
             this.filterList.id = this.trigger.id;
             this.filterList.loadAttributes();
             this.loadBroadcastContent();

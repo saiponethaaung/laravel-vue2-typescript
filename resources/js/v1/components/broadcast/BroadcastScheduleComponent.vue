@@ -236,6 +236,7 @@ export default class BroadcastScheduleComponent extends Vue{
             cancelToken: this.loadingToken.token
         }).then(res => {
             this.schedule.init(res.data.data);
+            this.filterList = new BroadcastAttributeFilterListModel(this.$store.state.projectInfo.id);
             this.filterList.id = this.schedule.id;
             this.filterList.loadAttributes();
             this.loadScheduleContent();

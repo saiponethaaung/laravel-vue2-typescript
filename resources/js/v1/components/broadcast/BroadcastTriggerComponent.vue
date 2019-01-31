@@ -28,24 +28,24 @@
                 </div>
 
                 <div class="attributeSelectorList">
-                    <template v-for="(attribute, index) in filterSegment.attributes">
+                    <template v-for="(attribute, index) in filterList.attributes">
                         <div class="attributeSelector" :key="index">
                             <attribute-selector-component
+                                :isSegment="false"
                                 :attribute="attribute"
-                                :canCondition="(filterSegment.attributes.length-1)>index"
+                                :canCondition="(filterList.attributes.length-1)>index"
+                                :segmentValue="filterList.segments"
+                                :segment="attribute.segment"
                             ></attribute-selector-component>
                             
-                            <button v-if="filterSegment.attributes.length>1" class="deleteAttribute" @click="filterSegment.attributes.splice(index, 1);">
+                            <button v-if="filterList.attributes.length>1" class="deleteAttribute" @click="filterList.deleteFilter(index);">
                                 <i class="material-icons">delete</i>
                             </button>
-                            <div v-if="(filterSegment.attributes.length-1)==index" @click="addNewFitler()" class="addMoreFilterButton">
+                            <div v-if="(filterList.attributes.length-1)==index" @click="addNewFitler()" class="addMoreFilterButton">
                                 <i class="material-icons">add</i>Add More
                             </div>
                         </div>
                     </template>
-                    <div @click="addNewFitler()" class="addMoreFilterButton">
-                        <i class="material-icons">add</i>
-                    </div>
                 </div>
                 
                 <div class="reachableUser">You have <b>4</b> users based on your filters.</div>
@@ -136,17 +136,12 @@
 
 <script lang="ts">
 import { Component, Vue, Watch} from 'vue-property-decorator';
-import BuilderComponentMock from '../common/BuilderComponentMock.vue';
+import BroadcastAttributeFilterListModel from '../../models/BroadcastAttributeFilterListModel';
 import TriggerModel from '../../models/broadcast/TriggerModel';
-import AttributeFilterListModel from '../../models/AttributeFilterListModel';
 import Axios,{ CancelTokenSource } from 'axios';
 import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 
-@Component({
-    components: {
-        BuilderComponentMock
-    }
-})
+@Component
 export default class BroadcastTriggerComponent extends Vue{
     private loading: boolean = false;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
@@ -154,6 +149,7 @@ export default class BroadcastTriggerComponent extends Vue{
     private loadingContentToken: CancelTokenSource = Axios.CancelToken.source();
     private loadingContent: boolean = true;
     private contents: any = [];
+    private filterList: BroadcastAttributeFilterListModel = new BroadcastAttributeFilterListModel(this.$store.state.projectInfo.id);
 
     private periodOption: any = [
         {
@@ -200,8 +196,6 @@ export default class BroadcastTriggerComponent extends Vue{
 
     private trigger: TriggerModel = new TriggerModel();
 
-    private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(false, this.$store.state.projectInfo.id, []);
-
     get selectedTag() {
         if(undefined === this.trigger) return 0;
 
@@ -222,7 +216,7 @@ export default class BroadcastTriggerComponent extends Vue{
     }
 
     private addNewFitler() {
-        this.filterSegment.createNewAttributeFilter();
+        this.filterList.createNewAttribute();
     }
     
     @Watch('$route.params.triggerid')
@@ -238,6 +232,8 @@ export default class BroadcastTriggerComponent extends Vue{
             cancelToken: this.loadingToken.token
         }).then(res => {
             this.trigger.init(res.data.data);
+            this.filterList.id = this.trigger.id;
+            this.filterList.loadAttributes();
             this.loadBroadcastContent();
             this.loading = false;
         }).catch(err => {

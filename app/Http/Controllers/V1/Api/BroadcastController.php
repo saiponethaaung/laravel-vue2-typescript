@@ -56,11 +56,11 @@ class BroadcastController extends Controller
         $tag = ProjectMessageTag::where('tag_format', 'NON_​PROMOTIONAL_​SUBSCRIPTION')->first();
 
         if(empty($tag)) {
-            return response()->json([
+            return [
                 'status' => false,
                 'code' => 422,
                 'mesg' => 'Message tag not found!'
-            ], 422);
+            ];
         }
 
         $res = null;

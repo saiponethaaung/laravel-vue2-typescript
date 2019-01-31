@@ -13,6 +13,7 @@ use App\Models\ProjectPage;
 use App\Models\ProjectPageUser;
 use App\Models\ProjectPageUserChat;
 use App\Models\FacebookRequestLogs;
+use App\Models\Broadcast;
 
 use App\Http\Controllers\V1\Api\ChatBotProjectController;
 
@@ -404,6 +405,157 @@ class FacebookChatbotController extends Controller
                     ]);
                 }
             }
+        }
+    }
+
+    public function sendBroadcast($id)
+    {
+        FacebookRequestLogs::create([
+            'data' => 'suppose to handle this broadcast section '. $id
+        ]);
+
+        $broadcast = Broadcast::with('chatBlockSection')->find($id);
+
+        if(empty($broadcast)) {
+            FacebookRequestLogs::create([
+                'data' => "there is no data for broadcast $id"
+            ]);
+            return;
+        }
+
+        $page = ProjectPage::where('project_id', $broadcast->project_id)->first();
+        if(!$page->publish) {
+            FacebookRequestLogs::create([
+                'data' => "The page is not publish $id"
+            ]);
+            return;
+        }
+
+        $users = ProjectPageUser::where('project_page_id', $page->id)->get();
+
+        if(empty($users)) {
+            FacebookRequestLogs::create([
+                'data' => 'The page has no user to broadcast'
+            ]);
+            return;
+        }
+        try {
+            $project = new ChatBotProjectController($broadcast->project_id);
+            $messages = $project->getSection($broadcast->chatBlockSection->id);
+
+            if($messages['status']===false) {
+                FacebookRequestLogs::create([
+                    'data' => json_encode([
+                        'data' => $messages
+                    ])
+                ]);
+                return;
+            }
+            unset($project);
+
+            FacebookRequestLogs::create([
+                'data' => json_encode([
+                    'aclist' => 'action list: ',
+                    'data' => $messages
+                ])
+            ]);
+
+            $this->token = $page->token;
+            $this->url = 'https://graph.facebook.com/v3.2/me/messages?access_token='.$this->token;
+                
+            foreach($messages['data'] as $mesg) {
+                foreach($users as $user) {
+                    if($mesg['status']===false) continue;
+
+                    $jsonData = [
+                        "recipient" => [
+                            "id" => $user->fb_user_id,
+                        ]
+                    ];
+
+                    $sleep = -1;
+                    $skip = false;
+
+                    $recordChat = [
+                        'content_id' => $mesg['content_id'],
+                        'post_back' => '',
+                        'from_platform' => true,
+                        'mesg' => json_encode($mesg['data']),
+                        'mesg_id' => '',
+                        'project_page_user_id' => $user->id,
+                        'is_send' => true,
+                        'is_live' => false,
+                        'content_type' => $mesg['type']
+                    ];
+
+                    switch($mesg['type']) {
+                        case(1):
+                        case(5):
+                        case(6):
+                            $jsonData['message'] = $mesg['data'];
+                            break;
+
+                        case(2):
+                            $jsonData['sender_action'] = 'typing_on';
+                            $sleep = $mesg['duration'];
+                            break;
+
+                        case(3):
+                            $break = true;
+                            $jsonData['message'] = $mesg['data'];
+                            break;
+
+                        case(7):
+                            $attach = $this->getImage($mesg['data']['image']);
+                            if($attach['status']) {
+                                $jsonData['message'] = [
+                                    'attachment' => [
+                                        'type' => 'template',
+                                        'payload' => [
+                                            'template_type' => 'media',
+                                            'elements' => [
+                                                [
+                                                    'media_type' => 'image',
+                                                    'attachment_id' => $attach['atid'],
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ];
+                            } else {
+                                $skip = true;
+                            }
+                            break;
+                    }
+
+                    if($skip) continue;
+
+                    FacebookRequestLogs::create([
+                        'fb_request' => true,
+                        'data' => json_encode($jsonData)
+                    ]);
+
+                    $recordChat = ProjectPageUserChat::create($recordChat);
+                    
+                    $this->execResponse($jsonData);
+
+                    if($sleep>-1) {
+                        sleep((int) $sleep);
+                        $jsonData['sender_action'] = 'typing_off';
+                        $this->execResponse($jsonData);
+                    } else {
+                        sleep(1);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            FacebookRequestLogs::create([
+                'data' => json_encode([
+                    'error' => true,
+                    'data' => $e->getMessage(),
+                    'raw' => $e
+                ])
+            ]);
         }
     }
 

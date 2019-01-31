@@ -47405,13 +47405,11 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_BroadcastAttributeFilterListModel__ = __webpack_require__(146);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_broadcast_TriggerModel__ = __webpack_require__(151);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -47431,16 +47429,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-
 let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
         this.loading = false;
-        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__["a" /* default */]();
-        this.loadingToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
-        this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_4__utils_AjaxErrorHandler__["a" /* default */]();
+        this.loadingToken = __WEBPACK_IMPORTED_MODULE_3_axios___default.a.CancelToken.source();
+        this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_3_axios___default.a.CancelToken.source();
         this.loadingContent = true;
         this.contents = [];
+        this.filterList = new __WEBPACK_IMPORTED_MODULE_1__models_BroadcastAttributeFilterListModel__["a" /* default */](this.$store.state.projectInfo.id);
         this.periodOption = [
             {
                 key: 1,
@@ -47481,7 +47479,6 @@ let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPAC
         ];
         this.showTags = false;
         this.trigger = new __WEBPACK_IMPORTED_MODULE_2__models_broadcast_TriggerModel__["a" /* default */]();
-        this.filterSegment = new __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
     }
     get selectedTag() {
         if (undefined === this.trigger)
@@ -47499,19 +47496,21 @@ let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPAC
         this.loadTrigger();
     }
     addNewFitler() {
-        this.filterSegment.createNewAttributeFilter();
+        this.filterList.createNewAttribute();
     }
     loadTrigger() {
         return __awaiter(this, void 0, void 0, function* () {
             this.loadingToken.cancel();
-            this.loadingToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+            this.loadingToken = __WEBPACK_IMPORTED_MODULE_3_axios___default.a.CancelToken.source();
             this.loading = true;
-            yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/trigger/${this.$route.params.triggerid}`,
                 method: 'get',
                 cancelToken: this.loadingToken.token
             }).then(res => {
                 this.trigger.init(res.data.data);
+                this.filterList.id = this.trigger.id;
+                this.filterList.loadAttributes();
                 this.loadBroadcastContent();
                 this.loading = false;
             }).catch(err => {
@@ -47526,10 +47525,10 @@ let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPAC
     loadBroadcastContent() {
         return __awaiter(this, void 0, void 0, function* () {
             this.loadingContentToken.cancel();
-            this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
+            this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_3_axios___default.a.CancelToken.source();
             this.loadingContent = true;
             this.contents = [];
-            yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.trigger.id}/section/${this.trigger.section.id}/content`,
                 cancelToken: this.loadingContentToken.token
             }).then((res) => {
@@ -47598,11 +47597,7 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.tag')
 ], BroadcastTriggerComponent.prototype, "updateTag", null);
 BroadcastTriggerComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
-        components: {
-            BuilderComponentMock: __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue___default.a
-        }
-    })
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
 ], BroadcastTriggerComponent);
 /* harmony default export */ __webpack_exports__["default"] = (BroadcastTriggerComponent);
 
@@ -47847,10 +47842,7 @@ var render = function() {
                 "div",
                 { staticClass: "attributeSelectorList" },
                 [
-                  _vm._l(_vm.filterSegment.attributes, function(
-                    attribute,
-                    index
-                  ) {
+                  _vm._l(_vm.filterList.attributes, function(attribute, index) {
                     return [
                       _c(
                         "div",
@@ -47858,23 +47850,23 @@ var render = function() {
                         [
                           _c("attribute-selector-component", {
                             attrs: {
+                              isSegment: false,
                               attribute: attribute,
                               canCondition:
-                                _vm.filterSegment.attributes.length - 1 > index
+                                _vm.filterList.attributes.length - 1 > index,
+                              segmentValue: _vm.filterList.segments,
+                              segment: attribute.segment
                             }
                           }),
                           _vm._v(" "),
-                          _vm.filterSegment.attributes.length > 1
+                          _vm.filterList.attributes.length > 1
                             ? _c(
                                 "button",
                                 {
                                   staticClass: "deleteAttribute",
                                   on: {
                                     click: function($event) {
-                                      _vm.filterSegment.attributes.splice(
-                                        index,
-                                        1
-                                      )
+                                      _vm.filterList.deleteFilter(index)
                                     }
                                   }
                                 },
@@ -47886,7 +47878,7 @@ var render = function() {
                               )
                             : _vm._e(),
                           _vm._v(" "),
-                          _vm.filterSegment.attributes.length - 1 == index
+                          _vm.filterList.attributes.length - 1 == index
                             ? _c(
                                 "div",
                                 {
@@ -47909,24 +47901,7 @@ var render = function() {
                         1
                       )
                     ]
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "addMoreFilterButton",
-                      on: {
-                        click: function($event) {
-                          _vm.addNewFitler()
-                        }
-                      }
-                    },
-                    [
-                      _c("i", { staticClass: "material-icons" }, [
-                        _vm._v("add")
-                      ])
-                    ]
-                  )
+                  })
                 ],
                 2
               ),
@@ -48294,7 +48269,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__common_BuilderComponentMock_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_broadcast_ScheduleModel__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_BroadcastAttributeFilterListModel__ = __webpack_require__(146);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__ = __webpack_require__(3);
@@ -48327,6 +48302,7 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
         this.loadingContentToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
         this.loadingContent = true;
         this.contents = [];
+        this.filterList = new __WEBPACK_IMPORTED_MODULE_3__models_BroadcastAttributeFilterListModel__["a" /* default */](this.$store.state.projectInfo.id);
         this.periodOption = [
             {
                 key: 1,
@@ -48369,7 +48345,6 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
         ];
         this.showTags = false;
         this.schedule = new __WEBPACK_IMPORTED_MODULE_2__models_broadcast_ScheduleModel__["a" /* default */]();
-        this.filterSegment = new __WEBPACK_IMPORTED_MODULE_3__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
     }
     get showDate() {
         if (undefined === this.schedule)
@@ -48394,7 +48369,7 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
         this.loadSchedule();
     }
     addNewFitler() {
-        this.filterSegment.createNewAttributeFilter();
+        this.filterList.createNewAttribute();
     }
     loadSchedule() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -48407,6 +48382,8 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
                 cancelToken: this.loadingToken.token
             }).then(res => {
                 this.schedule.init(res.data.data);
+                this.filterList.id = this.schedule.id;
+                this.filterList.loadAttributes();
                 this.loadScheduleContent();
                 this.loading = false;
             }).catch(err => {
@@ -48785,7 +48762,7 @@ var render = function() {
                   "div",
                   { staticClass: "attributeSelectorList" },
                   [
-                    _vm._l(_vm.filterSegment.attributes, function(
+                    _vm._l(_vm.filterList.attributes, function(
                       attribute,
                       index
                     ) {
@@ -48796,24 +48773,23 @@ var render = function() {
                           [
                             _c("attribute-selector-component", {
                               attrs: {
+                                isSegment: false,
                                 attribute: attribute,
                                 canCondition:
-                                  _vm.filterSegment.attributes.length - 1 >
-                                  index
+                                  _vm.filterList.attributes.length - 1 > index,
+                                segmentValue: _vm.filterList.segments,
+                                segment: attribute.segment
                               }
                             }),
                             _vm._v(" "),
-                            _vm.filterSegment.attributes.length > 1
+                            _vm.filterList.attributes.length > 1
                               ? _c(
                                   "button",
                                   {
                                     staticClass: "deleteAttribute",
                                     on: {
                                       click: function($event) {
-                                        _vm.filterSegment.attributes.splice(
-                                          index,
-                                          1
-                                        )
+                                        _vm.filterList.deleteFilter(index)
                                       }
                                     }
                                   },
@@ -48823,29 +48799,32 @@ var render = function() {
                                     ])
                                   ]
                                 )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.filterList.attributes.length - 1 == index
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass: "addMoreFilterButton",
+                                    on: {
+                                      click: function($event) {
+                                        _vm.addNewFitler()
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", { staticClass: "material-icons" }, [
+                                      _vm._v("add")
+                                    ]),
+                                    _vm._v("Add More\n                        ")
+                                  ]
+                                )
                               : _vm._e()
                           ],
                           1
                         )
                       ]
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "addMoreFilterButton",
-                        on: {
-                          click: function($event) {
-                            _vm.addNewFitler()
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("add")
-                        ])
-                      ]
-                    )
+                    })
                   ],
                   2
                 ),

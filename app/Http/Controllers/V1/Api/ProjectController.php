@@ -388,7 +388,7 @@ class ProjectController extends Controller
         // Change project page status
         DB::beginTransaction();
         try {
-            $projectPage->publish = $projectPage->publish===1 ? 0 : 1;
+            $projectPage->publish = $projectPage->publish==1 ? 0 : 1;
             $projectPage->save();
         } catch(\Exception $e) {
             // Rollback and send error on failed

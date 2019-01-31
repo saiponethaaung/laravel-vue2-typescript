@@ -14134,6 +14134,133 @@ a:hover {
   top: 8px !important;
 }
 
+.navList {
+  height: 64px;
+  width: 100%;
+}
+
+.navIcon {
+  width: 24px;
+  height: 24px;
+  margin-top: 15px;
+  margin-left: 42px;
+  cursor: pointer;
+}
+
+.navUser {
+  float: right;
+  margin-top: -35px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.userIcon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 28px;
+  height: 28px;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-right: 8px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  cursor: pointer;
+}
+
+.bodyList {
+  width: 100%;
+  height: 600px;
+  background: #ebebeb;
+  display: inline-block;
+}
+
+.bodyList .titleHeight {
+  height: 20%;
+}
+
+.titleList {
+  cursor: pointer;
+  width: 100px;
+  height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: #f7f6f6;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-left: 40px;
+  color: #c238eb;
+}
+
+.outerCardList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.cardList {
+  display: block;
+  width: 40px;
+  height: 300px;
+  border-radius: 8px;
+  min-width: 200px;
+  max-width: 280px;
+  position: relative;
+  margin-left: 40px;
+  background: #ffffff;
+}
+
+.cardList .addIcon {
+  height: 140px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.cardList .addIcon .material-icons {
+  color: white;
+  cursor: pointer;
+  font-size: 50px;
+}
+
+.cardList .btnProject {
+  height: 60px;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.addBgColor {
+  background: #c238eb;
+}
+
+.projectName {
+  color: #000000;
+}
+
 @font-face {
   font-family: 'project-font';
   src: url(/fonts/Rubik-Regular.ttf?6c980940392587c8d7d325c07965ebda) format("truetype");

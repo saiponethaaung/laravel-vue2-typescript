@@ -55,6 +55,8 @@
                                     :isSegment="true"
                                     :attribute="attribute"
                                     :canCondition="(filterSegment.attributes.length-1)>index"
+                                    :segmentValue="[]"
+                                    :segment="[]"
                                 ></attribute-selector-component>
                                 <button v-if="filterSegment.attributes.length>1" class="deleteAttribute" @click="filterSegment.attributes.splice(index, 1);">
                                     <i class="material-icons">delete</i>

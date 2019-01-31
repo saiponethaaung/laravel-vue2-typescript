@@ -89,6 +89,8 @@
                                         :isSegment="true"
                                         :attribute="attribute"
                                         :canCondition="(segmentList.segments[editSegment].attributes.length-1)>index"
+                                        :segmentValue="[]"
+                                        :segment="[]"
                                     ></attribute-selector-component>
                                     <button v-if="segmentList.segments[editSegment].attributes.length>1" class="deleteAttribute" @click="deleteFilter(index)">
                                         <i class="material-icons">delete</i>

@@ -154,11 +154,16 @@
                                 <div>
                                     <span class="userIcon"></span>
                                     <span>TESTING USER</span>
-                                    <div class="userNote">Notes</div>
+                                    <div class="userNote">
+                                        Notes
+                                        {{ noteList.note }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="noteInput">
-                                <Input placeholder="Type a note" />
+                                <form @submit.prevent="noteList.createNote()">
+                                    <Input type="text" placeholder="Type a note" v-model="noteList.note" />
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -184,6 +189,7 @@
 import { Component, Watch, Vue } from 'vue-property-decorator';
 import Axios from 'axios';
 
+import AdminNoteListModel from '../../models/inbox/AdminNoteListModel';
 import GalleryTemplateComponent from './builder/GalleryTemplateComponent.vue';
 import ListTemplateComponent from './builder/ListTemplateComponent.vue';
 import TextTemplateComponent from './builder/TextTemplateComponent.vue';
@@ -205,16 +211,19 @@ export default class InboxPageComponent extends Vue {
     private prevLoading: boolean = false;
     private lastScroll: number = 0;
     private showTags: boolean = false;
+    private noteList: AdminNoteListModel = new AdminNoteListModel('', 0);
     
     @Watch('$store.state.selectedInbox')
-    reloadMesg() {
+    async reloadMesg() {
         if(this.$store.state.selectedInbox===-1) return;
         setTimeout(() => {
             this.el = this.$refs.mesgBox;
         }, 3000);
+        this.noteList = new AdminNoteListModel(this.$store.state.projectInfo.id, this.$store.state.inboxList[this.$store.state.selectedInbox].id);
         this.mesgList = [];
         this.firstLoad = true;
         this.loadMesg(false);
+        // let status = await this.noteList.getNote();
     }
 
     private scrollCallback(a: any) {
@@ -400,5 +409,6 @@ export default class InboxPageComponent extends Vue {
         });
 
     }
+
 }
 </script>

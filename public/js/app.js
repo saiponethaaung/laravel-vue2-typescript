@@ -38102,12 +38102,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__builder_GalleryTemplateComponent_vue__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__builder_GalleryTemplateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__builder_GalleryTemplateComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__builder_TextTemplateComponent_vue__ = __webpack_require__(95);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__builder_TextTemplateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__builder_TextTemplateComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_inbox_AdminNoteListModel__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__builder_GalleryTemplateComponent_vue__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__builder_GalleryTemplateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__builder_GalleryTemplateComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__builder_ListTemplateComponent_vue__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__builder_ListTemplateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__builder_ListTemplateComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__builder_TextTemplateComponent_vue__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__builder_TextTemplateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__builder_TextTemplateComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38127,6 +38128,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
+
 let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
@@ -38138,16 +38140,21 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
         this.prevLoading = false;
         this.lastScroll = 0;
         this.showTags = false;
+        this.noteList = new __WEBPACK_IMPORTED_MODULE_2__models_inbox_AdminNoteListModel__["a" /* default */]('', 0);
     }
     reloadMesg() {
-        if (this.$store.state.selectedInbox === -1)
-            return;
-        setTimeout(() => {
-            this.el = this.$refs.mesgBox;
-        }, 3000);
-        this.mesgList = [];
-        this.firstLoad = true;
-        this.loadMesg(false);
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.$store.state.selectedInbox === -1)
+                return;
+            setTimeout(() => {
+                this.el = this.$refs.mesgBox;
+            }, 3000);
+            this.noteList = new __WEBPACK_IMPORTED_MODULE_2__models_inbox_AdminNoteListModel__["a" /* default */](this.$store.state.projectInfo.id, this.$store.state.inboxList[this.$store.state.selectedInbox].id);
+            this.mesgList = [];
+            this.firstLoad = true;
+            this.loadMesg(false);
+            // let status = await this.noteList.getNote();
+        });
     }
     scrollCallback(a) {
         this.el = this.$el.querySelector('.chatHisRoot');
@@ -38325,9 +38332,9 @@ __decorate([
 InboxPageComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {
-            GalleryTemplateComponent: __WEBPACK_IMPORTED_MODULE_2__builder_GalleryTemplateComponent_vue___default.a,
-            ListTemplateComponent: __WEBPACK_IMPORTED_MODULE_3__builder_ListTemplateComponent_vue___default.a,
-            TextTemplateComponent: __WEBPACK_IMPORTED_MODULE_4__builder_TextTemplateComponent_vue___default.a
+            GalleryTemplateComponent: __WEBPACK_IMPORTED_MODULE_3__builder_GalleryTemplateComponent_vue___default.a,
+            ListTemplateComponent: __WEBPACK_IMPORTED_MODULE_4__builder_ListTemplateComponent_vue___default.a,
+            TextTemplateComponent: __WEBPACK_IMPORTED_MODULE_5__builder_TextTemplateComponent_vue___default.a
         }
     })
 ], InboxPageComponent);
@@ -39335,25 +39342,58 @@ var render = function() {
                               staticClass: "adminNote"
                             },
                             [
-                              _vm._m(8),
+                              _c("div", { staticClass: "noteContent" }, [
+                                _c("div", [
+                                  _c("span", { staticClass: "userIcon" }),
+                                  _vm._v(" "),
+                                  _c("span", [_vm._v("TESTING USER")]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "userNote" }, [
+                                    _vm._v(
+                                      "\n                                    Notes\n                                    " +
+                                        _vm._s(_vm.noteList.note) +
+                                        "\n                                "
+                                    )
+                                  ])
+                                ])
+                              ]),
                               _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "noteInput" },
-                                [
-                                  _c("Input", {
-                                    attrs: { placeholder: "Type a note" }
-                                  })
-                                ],
-                                1
-                              )
+                              _c("div", { staticClass: "noteInput" }, [
+                                _c(
+                                  "form",
+                                  {
+                                    on: {
+                                      submit: function($event) {
+                                        $event.preventDefault()
+                                        _vm.noteList.createNote()
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("Input", {
+                                      attrs: {
+                                        type: "text",
+                                        placeholder: "Type a note"
+                                      },
+                                      model: {
+                                        value: _vm.noteList.note,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.noteList, "note", $$v)
+                                        },
+                                        expression: "noteList.note"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ])
                             ]
                           )
                         ])
                       ]
-                    : [_vm._m(9)]
+                    : [_vm._m(8)]
                 ]
-              : [_vm._m(10)]
+              : [_vm._m(9)]
           ]
     ],
     2
@@ -39463,20 +39503,6 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("td", { staticClass: "attrValue" }, [_vm._v("value")])
         ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "noteContent" }, [
-      _c("div", [
-        _c("span", { staticClass: "userIcon" }),
-        _vm._v(" "),
-        _c("span", [_vm._v("TESTING USER")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "userNote" }, [_vm._v("Notes")])
       ])
     ])
   },
@@ -54116,6 +54142,101 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+class AdminNoteListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(projectId, userId) {
+        super();
+        this.projectId = projectId;
+        this.userId = userId;
+        this.content = "";
+        this.adminNoteList = [];
+    }
+    get adminNotes() {
+        return this.adminNoteList;
+    }
+    set adminNotes(adminNoteList) {
+        this.adminNoteList = adminNoteList;
+    }
+    get note() {
+        return this.content;
+    }
+    set note(note) {
+        this.content = note;
+    }
+    createNote() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'Success'
+            };
+            let data = new FormData();
+            data.append('note', this.note);
+            console.log(this.content);
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/note`,
+                method: 'post',
+                data: data
+            }).then(res => {
+                this.content = '';
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to create a note!');
+                }
+            });
+        });
+    }
+    getNote() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'Success'
+            };
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/inbox`
+            }).then(res => {
+                this.content = '';
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to create a note!');
+                }
+            });
+            return res;
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AdminNoteListModel;
+
+
 
 /***/ })
 /******/ ]);

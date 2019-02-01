@@ -406,7 +406,7 @@ $attributePanelWidth: 336px;
 
 .addNote {
     width: 250px;
-    height: 30px;
+    height: 25px;
     background: #c238eb;
     margin-left: 30px;
     font-size: 13px;
@@ -421,9 +421,31 @@ $attributePanelWidth: 336px;
 
 .adminNote {
     width: 250px;
-    height: 125px;
+    height: 180px;
     margin-left: 30px;
     background: #ffffff;
     border: 1px solid #e2e2e2;
     border-radius: 5px;
+    .noteContent {
+        height: 80%;
+        background: $color2;
+        padding: 10px;
+        .userNote {
+            margin-left: 50px;
+            width: 180px;
+            background: #ffffff;
+            border: 1px solid #ffffff;
+            border-radius: 5px;
+        }
+    }
+    .noteInput {
+        height: 20%;
+        text-align: center;
+        background: $color2;
+        input {
+            width: 230px;
+            border: 1px;
+            border-radius: 5px;
+        }
+    }
 }

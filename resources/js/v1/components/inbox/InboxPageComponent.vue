@@ -144,13 +144,22 @@
                             <span>Write note about the shop</span>
                             <span class="iconSub">
                                 <i class="material-icons">
-                                    <template v-if="showTags">expand_more</template>
-                                    <template v-else>expand_less</template>
+                                    <template v-if="showTags">expand_less</template>
+                                    <template v-else>expand_more</template>
                                 </i>
                             </span>
                         </div>
                         <div v-show="showTags" class="adminNote">
-                            
+                            <div class="noteContent">
+                                <div>
+                                    <span class="userIcon"></span>
+                                    <span>TESTING USER</span>
+                                    <div class="userNote">Notes</div>
+                                </div>
+                            </div>
+                            <div class="noteInput">
+                                <Input placeholder="Type a note" />
+                            </div>
                         </div>
                     </div>
                 </template>

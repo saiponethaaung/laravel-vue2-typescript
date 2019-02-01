@@ -39312,8 +39312,8 @@ var render = function() {
                                   { staticClass: "material-icons" },
                                   [
                                     _vm.showTags
-                                      ? [_vm._v("expand_more")]
-                                      : [_vm._v("expand_less")]
+                                      ? [_vm._v("expand_less")]
+                                      : [_vm._v("expand_more")]
                                   ],
                                   2
                                 )
@@ -39321,22 +39321,39 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c("div", {
-                            directives: [
-                              {
-                                name: "show",
-                                rawName: "v-show",
-                                value: _vm.showTags,
-                                expression: "showTags"
-                              }
-                            ],
-                            staticClass: "adminNote"
-                          })
+                          _c(
+                            "div",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.showTags,
+                                  expression: "showTags"
+                                }
+                              ],
+                              staticClass: "adminNote"
+                            },
+                            [
+                              _vm._m(8),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "noteInput" },
+                                [
+                                  _c("Input", {
+                                    attrs: { placeholder: "Type a note" }
+                                  })
+                                ],
+                                1
+                              )
+                            ]
+                          )
                         ])
                       ]
-                    : [_vm._m(8)]
+                    : [_vm._m(9)]
                 ]
-              : [_vm._m(9)]
+              : [_vm._m(10)]
           ]
     ],
     2
@@ -39446,6 +39463,20 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("td", { staticClass: "attrValue" }, [_vm._v("value")])
         ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "noteContent" }, [
+      _c("div", [
+        _c("span", { staticClass: "userIcon" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("TESTING USER")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "userNote" }, [_vm._v("Notes")])
       ])
     ])
   },

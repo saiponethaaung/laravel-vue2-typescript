@@ -4,7 +4,7 @@
             <div class="buttonPopHeading">
                 <p class="buttonPopInfo">If subscriber clicks</p>
                 <div class="actionInfo">
-                    <input type="text" v-model="button.title" v-on:focus="cancelUpdate()" v-on:blur="updateContent()"/>
+                    <input type="text" v-model="button.title" v-on:focus="cancelUpdate()" v-on:blur="updateContent()" max="20"/>
                 </div>
             </div>
             <div class="buttonOptions">

@@ -114,21 +114,26 @@
                 <div class="btnAction broadcastActionBtn">
                     <a href="javascript:void(0);" @click="deleteBroadcast()">
                         <figure>
-                            <img src="/images/icons/delete.png"/>
+                            <img src="/images/icons/broadcast/delete.png"/>
                         </figure>
                     </a>
                     <a href="javascript:void(0);" @click="trigger.updateStatus()" :to="{name: 'project.broadcast'}">
                         <figure class="btnSend statusBtn" :class="{'deactiveStatus': !trigger.status}">
-                            <img :src="'/images/icons/'+(trigger.status ? 'broadcast_status_enable': 'broadcast_status')+'.png'"/>
+                            <img :src="'/images/icons/broadcast/'+(trigger.status ? 'broadcast_status_enable': 'broadcast_status')+'.png'"/>
                         </figure>   
                     </a>
                 </div>
             </div>
-            <div v-if="!loadingContent">
-                <builder-component
-                    :isBroadcast="true"
-                    :value="contents"
-                    :section="trigger.section"></builder-component>
+            <div>
+                <template v-if="loadingContent">
+                    Loading...
+                </template>
+                <template v-else>
+                    <builder-component
+                        :isBroadcast="true"
+                        :value="contents"
+                        :section="trigger.section"></builder-component>
+                </template>
             </div>
         </template>
     </div>

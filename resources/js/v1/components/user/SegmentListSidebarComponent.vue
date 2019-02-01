@@ -57,7 +57,9 @@
                                             <i class="material-icons">delete</i>
                                         </div>
                                         <div class="saiWrapper">
-                                            <i class="material-icons">more_vert</i>
+                                            <figure>
+                                                <img src="/images/icons/common/sort.png"/>
+                                            </figure>
                                         </div>
                                     </div>
                                 </li>

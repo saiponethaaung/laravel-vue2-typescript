@@ -2,7 +2,9 @@
     <div class="componentTypeOne">
         <div class="typingRoot">
             <div class="typingInfo">
-                <i class="material-icons">speaker_notes</i>
+                <figure>
+                    <img src="/images/icons/chatbot/typing.png"/>
+                </figure>
                 <span>Show "Typing.." for at least</span>
             </div>
             <div class="typingDuration" ref="dropdownMenu" @click="showOption=!showOption">

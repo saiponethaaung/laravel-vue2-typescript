@@ -53,12 +53,12 @@
                 <div class="btnAction broadcastActionBtn">
                     <a href="javascript:void(0);" @click="deleteBroadcast()">
                         <figure>
-                            <img src="/images/icons/delete.png"/>
+                            <img src="/images/icons/broadcast/delete.png"/>
                         </figure>
                     </a>
                     <a href="javascript:void(0);" @click="broadcastSend()">
                         <figure class="btnSend">
-                            <img src="/images/icons/send.png"/>
+                            <img src="/images/icons/broadcast/send.png"/>
                         </figure>   
                     </a>
                 </div>

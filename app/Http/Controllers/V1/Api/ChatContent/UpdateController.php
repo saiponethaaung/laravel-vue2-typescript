@@ -196,7 +196,7 @@ class UpdateController extends Controller
         $input = $request->only('title', 'sub', 'url');
 
         $validator = Validator::make($input, [
-            'title' => 'required|string',
+            'title' => 'nullable|string',
             'sub' => 'nullable|string',
             'url' => 'nullable|url'
         ]);
@@ -222,8 +222,8 @@ class UpdateController extends Controller
         DB::beginTransaction();
 
         try {
-            $galle->title = $input['title'];
-            $galle->sub = (String) $input['sub'];
+            $galle->title = (String) substr($input['title'], 0, 80);
+            $galle->sub = (String) substr($input['sub'], 0, 80);
             $galle->url = (String) $input['url'];
             $galle->save();
         } catch (\Exception $e) {

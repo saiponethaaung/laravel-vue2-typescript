@@ -35,7 +35,9 @@
                     <span>Save to segment</span>
                 </button>
                 <button class="uloButton">
-                    <i class="material-icons">exit_to_app</i>
+                    <figure>
+                        <img src="/images/icons/user/export.png"/>
+                    </figure>
                     <span>export</span>
                 </button>
             </div>

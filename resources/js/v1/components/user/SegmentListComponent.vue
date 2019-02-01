@@ -20,7 +20,9 @@
                     <span>Create Segment</span>
                 </button>
                 <button class="uloButton">
-                    <i class="material-icons">exit_to_app</i>
+                    <figure>
+                        <img src="/images/icons/user/export.png"/>
+                    </figure>
                     <span>export</span>
                 </button>
             </div>
@@ -83,7 +85,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import AttributeFilterListModel from '../../models/AttributeFilterListModel';
 import UserListModel from '../../models/users/UserListModel';
 import UserTableComponent from './UserTableComponent.vue';
-import Axios from 'axios';
+import Axios,{ CancelTokenSource } from 'axios';
 import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 
 @Component({
@@ -94,6 +96,7 @@ import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 export default class UserSegmentListComponent extends Vue {
     private userLoading: boolean = false;
     private userFilters: Array<any> = [];
+    private loadUserToken: CancelTokenSource = Axios.CancelToken.source();
     private userList: Array<UserListModel> = [];
     private createSegment: boolean = false;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
@@ -115,11 +118,15 @@ export default class UserSegmentListComponent extends Vue {
             return;
         }
 
+        this.loadUserToken.cancel();
+        this.loadUserToken = Axios.CancelToken.source();
+
         this.userLoading = true;
 
         await Axios({
             url: `/api/v1/project/${this.$store.state.projectInfo.id}/users/segments/${this.$store.state.selectedSegment}/users`,
-            method: 'get'
+            method: 'get',
+            cancelToken: this.loadUserToken.token
         }).then(res => {
             this.userFilters = res.data.data.filters
             for(let i of res.data.data.user) {

@@ -3,37 +3,61 @@
         <section id="sideMenu">
             <ul id="sideNav">
                 <li>
-                    <router-link :to="{name: 'project.home', params: {projectid: $route.params.projectid}}">
+                    <router-link 
+                        :to="{name: 'project.home', params: {projectid: $route.params.projectid}}"
+                        :class="{'activeSection': this.$route.meta.section==='chatbot'}"    
+                    >
                         <i class="material-icons">assistant</i>
                         <span class="icon-label">Chatbot</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project.inbox', params: {projectid: $route.params.projectid}}">
+                    <router-link 
+                        :to="{name: 'project.inbox', params: {projectid: $route.params.projectid}}"
+                        :class="{'activeSection': this.$route.meta.section==='inbox'}"    
+                    >
                         <i class="material-icons">question_answer</i>
                         <span class="icon-label">Inbox</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project.users', params: {projectid: $route.params.projectid}}">
+                    <router-link 
+                        :to="{name: 'project.users', params: {projectid: $route.params.projectid}}"
+                        :class="{'activeSection': this.$route.meta.section==='user'}"    
+                    >
                         <i class="material-icons">supervisor_account</i>
                         <span class="icon-label">Users</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project.broadcast', params: {projectid: $route.params.projectid}}">
-                        <i class="material-icons">volume_up</i>
+                    <router-link 
+                        :to="{name: 'project.broadcast', params: {projectid: $route.params.projectid}}"
+                        :class="{'activeSection': this.$route.meta.section==='broadcast'}"    
+                    >
+                        <figure>
+                            <img class="imgIcon" src="/images/icons/sidebar/broadcast.png"/>
+                            <img class="activeIcon" src="/images/icons/sidebar/broadcast_active.png"/>
+                        </figure>
                         <span class="icon-label">Broadcast</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project.home', params: {projectid: $route.params.projectid}}">
-                        <i class="material-icons">stars</i>
-                        <span class="icon-label">Star</span>
+                    <router-link 
+                        :to="{name: 'project.home', params: {projectid: $route.params.projectid}}"
+                        :class="{'activeSection': this.$route.meta.section==='plugin'}"    
+                    >
+                        <figure>
+                            <img class="imgIcon" src="/images/icons/sidebar/plugin.png"/>
+                            <img class="activeIcon" src="/images/icons/sidebar/plugin_active.png"/>
+                        </figure>
+                        <span class="icon-label">Plugin</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project.configuration', params: {projectid: $route.params.projectid}}">
+                    <router-link 
+                        :to="{name: 'project.configuration', params: {projectid: $route.params.projectid}}"
+                        :class="{'activeSection': this.$route.meta.section==='setting'}"    
+                    >
                         <i class="material-icons">settings</i>
                         <span class="icon-label">Settings</span>
                     </router-link>
@@ -52,7 +76,7 @@
             <section id="headerContent">
                 <div class="sidebar headerSidebar">
                     <div class="projectList">
-                        <div class="projectInfoContainer" @click="projectOptions=!projectOptions">
+                        <div class="projectInfoContainer" ref="projectListDropDown" @click="projectOptions=!projectOptions">
                             <figure class="projectIconWrapper">
                                 <img :src="$store.state.projectInfo.image ? $store.state.projectInfo.image : '/images/sample/logo.png'" class="projectIcon"/>
                             </figure>
@@ -311,6 +335,23 @@ export default class DefaultLayout extends Vue {
             }
         });
         this.updatingStatus = false;
+    }
+
+    documentClick(e: any){
+        let el: any = this.$refs.projectListDropDown;
+        let target = e.target;
+        if (( el !== target) && !el.contains(target)) {
+            this.projectOptions = false;
+        }
+    }
+
+    created() {
+      document.addEventListener('click', this.documentClick);
+    }
+
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener('click', this.documentClick);
     }
 }
 </script>

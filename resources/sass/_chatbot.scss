@@ -58,6 +58,7 @@
     cursor: pointer;
     width: calc(100%/3 - 10px);
     height: 40px;
+    max-height: 40px;
     font-size: 12px;
     display: flex;
     align-items: center;
@@ -65,6 +66,9 @@
     background: $primaryChatBlock;
     border-radius: 5px;
     margin: 5px;
+    padding: 0 6px;
+    text-align: center;
+    line-height: 15px;
     &.addMore {
         color: $iconPrimary;
     }

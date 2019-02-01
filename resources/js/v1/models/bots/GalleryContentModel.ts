@@ -46,7 +46,7 @@ export default class GalleryContentModel extends ChatBlockContentModel {
         this.isCreating = true;
 
         await Axios({
-            url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/gallery`,
+            url: `${this.rootUrl}/gallery`,
             method: 'post'
         }).then((res: any) => {
             this.buildGalleryItem(res.data.content);

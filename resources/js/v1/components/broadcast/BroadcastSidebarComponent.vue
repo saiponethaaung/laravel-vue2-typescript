@@ -21,7 +21,7 @@
         <div class="contentRoot">
             <div class="broadcastHeading">
                 <figure>
-                    <img src="/images/icons/trigger.png"/>
+                    <img src="/images/icons/broadcast/trigger.png"/>
                 </figure>
                 <span>Trigger your message</span>
             </div>
@@ -64,7 +64,7 @@
         <div class="contentRoot">
             <div class="broadcastHeading">
                 <figure>
-                    <img src="/images/icons/schedule.png"/>
+                    <img src="/images/icons/broadcast/schedule.png"/>
                 </figure>
                 <span>Schedule your message</span>
             </div>

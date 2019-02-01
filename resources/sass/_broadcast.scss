@@ -29,10 +29,6 @@
     .utColumnOption {
         width: 90px;
     }
-    .tdSentDate {
-        display: flex;
-        align-items: center;
-    }
 }
 
 .btnSub {
@@ -239,6 +235,8 @@
         font-size: 12px;
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
+        border-top-left-radius: unset;
+        border-bottom-left-radius: unset;
         height: $thirdStandardHeight;
         line-height: $thirdStandardHeight;
     }
@@ -414,4 +412,52 @@
         margin-top: initial!important;
         top: 8px!important;
     }
+}
+
+$bcDateColumn: 170px;
+$bcTypeColumn: 140px;
+$bcCountColumn: 100px;
+
+.broadcastHistoryList {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    .braodcastHistoryHeading,
+    .braodcastHistory {
+        @extend %flexJCenter;
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+}
+
+.bcDate {
+    width: $bcDateColumn;
+}
+
+.bcType {
+    width: $bcTypeColumn;
+}
+
+.bcCounts {
+    width: $bcCountColumn;
+}
+
+.bcContent {
+    width: calc(100% - #{$bcDateColumn+$bcTypeColumn+($bcCountColumn*4)});
+}
+
+.braodcastHistoryHeading {
+    & > * {
+        font-weight: bold;
+    }
+}
+
+.bchColumn {
+    @extend %flexCenter;
+    float: left;
+    height: $standardHeight;
+    line-height: $standardHeight;
 }

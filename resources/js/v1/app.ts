@@ -13,6 +13,7 @@ import store from './configuration/store';
 import App from './App.vue';
 import PopupComponent from './components/common/PopupComponent.vue';
 import LoadingComponent from './components/common/LoadingComponent.vue';
+import FullScreenLoadingComponent from './components/common/FullScreenLoadingComponent.vue';
 import BuilderComponent from './components/common/BuilderComponent.vue';
 import ButtonComponent from './components/common/builder/ButtonComponent.vue';
 import AttributeSelectorComponent from './components/common/AttributeSelectorComponent.vue';
@@ -98,6 +99,7 @@ Vue.component('v-calendar', Calendar);
 Vue.component('v-date-picker', DatePicker);
 Vue.component('dropdown-keybase-component', DropDownComponent);
 Vue.component('time-input-component', TimeInputComponent);
+Vue.component('fullscreen-loading-component', FullScreenLoadingComponent);
 
 new Vue({
     router,

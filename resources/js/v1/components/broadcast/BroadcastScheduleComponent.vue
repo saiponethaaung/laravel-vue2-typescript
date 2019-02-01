@@ -104,12 +104,12 @@
                 <div class="btnAction broadcastActionBtn">
                     <a href="javascript:void(0);" @click="deleteBroadcast()">
                         <figure>
-                            <img src="/images/icons/delete.png"/>
+                            <img src="/images/icons/broadcast/delete.png"/>
                         </figure>
                     </a>
                     <a href="javascript:void(0);" @click="schedule.updateStatus()" :to="{name: 'project.broadcast'}">
                         <figure class="btnSend statusBtn" :class="{'deactiveStatus': !schedule.status}">
-                            <img :src="'/images/icons/'+(schedule.status ? 'broadcast_status_enable': 'broadcast_status')+'.png'"/>
+                            <img :src="'/images/icons/broadcast/'+(schedule.status ? 'broadcast_status_enable': 'broadcast_status')+'.png'"/>
                         </figure>   
                     </a>
                 </div>

@@ -26,24 +26,28 @@
                     <th class="ultDateColumn">
                         <div class="ultWrapper">
                             Last Engaged
+                            <i class="material-icons">arrow_drop_down</i>
                         </div>
                     </th>
                     <th class="ultDateColumn">
                         <div class="ultWrapper">
                             Last Seen
+                            <i class="material-icons">arrow_drop_down</i>
                         </div>
                     </th>
                     <th class="ultDateColumn">
                         <div class="ultWrapper">
                             Signed up
+                            <i class="material-icons">arrow_drop_down</i>
                         </div>
                     </th>
                     <th class="utlSessinColumn">
                         <div class="ultWrapper">
                             Session
+                            <i class="material-icons">arrow_drop_down</i>
                         </div>
                     </th>
-                    <th colspan="2"></th>
+                    <th colspan="2" class="editColumn"></th>
                 </tr>
             </thead>
             <tbody>
@@ -101,7 +105,7 @@
                         </td>
                         <td class="utlIconColumn">
                             <div class="ultWrapper iconCenter">
-                                <img src="/images/icons/messenger.png" @click="enableLiveChat(user)" class="messengerIcon"/>
+                                <img src="/images/icons/common/messenger.png" @click="enableLiveChat(user)" class="messengerIcon"/>
                             </div>
                         </td>
                     </tr>

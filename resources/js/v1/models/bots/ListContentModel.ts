@@ -115,7 +115,7 @@ export default class ListContentModel extends ChatBlockContentModel {
         this.isCreating = true;
 
         await Axios({
-            url: `/api/v1/project/${this.project}/chat-bot/block/${this.block}/section/${this.section}/content/${this.contentId}/list`,
+            url: `${this.rootUrl}/list`,
             method: 'post'
         }).then((res: any) => {
             this.buildListItem(res.data.content);

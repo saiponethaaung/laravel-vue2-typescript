@@ -46,7 +46,8 @@ export default new VueRouter({
                     path: "/",
                     name: "project.home",
                     meta: {
-                        sidebar: ChatBotSidebar
+                        sidebar: ChatBotSidebar,
+                        section: 'chatbot'
                     },
                     component: ChatBotComponent
                 },
@@ -58,7 +59,8 @@ export default new VueRouter({
                             path: "/",
                             name: "project.inbox",
                             meta: {
-                                sidebar: InboxPageSidebarComponent
+                                sidebar: InboxPageSidebarComponent,
+                                section: 'inbox'
                             }
                         }
                     ]
@@ -72,7 +74,8 @@ export default new VueRouter({
                             name: "project.users",
                             component: UserListComponent,
                             meta: {
-                                sidebar: UserListSidebarComponent
+                                sidebar: UserListSidebarComponent,
+                                section: 'user'
                             }
                         },
                         {
@@ -80,7 +83,8 @@ export default new VueRouter({
                             name: "project.users.segments",
                             component: UserSegmentListComponent,
                             meta: {
-                                sidebar: UserSegmentListSidebarComponent
+                                sidebar: UserSegmentListSidebarComponent,
+                                section: 'user'
                             }
                         }
                     ]
@@ -94,7 +98,8 @@ export default new VueRouter({
                             name: "project.broadcast",
                             component: BroadcastComponent,
                             meta: {
-                                sidebar: BroadcastSidebarComponent
+                                sidebar: BroadcastSidebarComponent,
+                                section: 'broadcast'
                             }
                         },
                         {
@@ -102,7 +107,8 @@ export default new VueRouter({
                             name: "project.broadcast.sendnow",
                             component: BroadcastSendNowComponent,
                             meta: {
-                                sidebar: BroadcastSidebarComponent
+                                sidebar: BroadcastSidebarComponent,
+                                section: 'broadcast'
                             }
                         },
                         {
@@ -110,7 +116,8 @@ export default new VueRouter({
                             name: "project.broadcast.trigger",
                             component: BroadcastTriggerComponent,
                             meta: {
-                                sidebar: BroadcastSidebarComponent
+                                sidebar: BroadcastSidebarComponent,
+                                section: 'broadcast'
                             }
                         },
                         {
@@ -118,7 +125,8 @@ export default new VueRouter({
                             name: "project.broadcast.schedule",
                             component: BroadcastScheduleComponent,
                             meta: {
-                                sidebar: BroadcastSidebarComponent
+                                sidebar: BroadcastSidebarComponent,
+                                section: 'broadcast'
                             }
                         }
                     ]
@@ -127,7 +135,8 @@ export default new VueRouter({
                     path: "configuration",
                     name: "project.configuration",
                     meta: {
-                        sidebar: null
+                        sidebar: null,
+                        section: 'setting'
                     },
                     component: ProjectConfigrationComponent
                 },

@@ -12,17 +12,28 @@
     line-height: $standardHeight;
     font-size: 14px;
     float: right;
+    color: $secondaryText;
     cursor: pointer;
 }
 
 .userListTable {
     width: 100%;
     .ultDateColumn {
-        width: 110px;
+        width: 125px;
+    }
+
+    th.ultDateColumn .ultWrapper,
+    th.utlSessinColumn .ultWrapper {
+        @extend %flexCenter;
+        cursor: pointer;
+        .material-icons {
+            margin-left: 3px;
+            color: $secondaryText;
+        }
     }
 
     .utlSessinColumn {
-        width: 80px;
+        width: 85px;
     }
 
     .utlCheckColumn {
@@ -37,6 +48,7 @@
 
     .ultChecker {
         @extend %flexJCenter;
+        float: left;
         .material-icons {
             color: $filterCheckBoxUnchecked;
             cursor: pointer;
@@ -149,6 +161,12 @@
                 font-size: 15px;
                 margin-right: 8px;
             }
+            
+            @extend %figureFlexCenter;
+            figure {
+                margin-right: 8px;
+                width: 15px;
+            }
         }
     }
 }
@@ -169,9 +187,13 @@
         cursor: pointer;
         .segmentListName {
             display: block;
-            height: $secondStandardHeight;
-            line-height: $secondStandardHeight;
+            height: inherit;
+            line-height: 50px;
             color: $secondaryText;
+            width: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
         
         .segmentActionIcon {
@@ -185,10 +207,17 @@
             background: $secondaryBackground;
             .saiWrapper {
                 @extend %inlineFlexJCenter;
+                @extend %figureFlexCenter;
                 height: 100%;
+                figure {
+                    width: 35px;
+                }
                 .material-icons {
                     font-size: 18px;
                     color: $iconPrimary;
+                }
+                &:first-child {
+                    margin-right: 10px;
                 }
             }
         }
@@ -200,6 +229,8 @@
                 font-weight: bold;
                 width: 100%;
             }
+        }
+        &:hover {
             .segmentActionIcon {
                 visibility: visible;
                 opacity: 1;
@@ -247,4 +278,8 @@
     padding: 5px 10px;
     font-size: 13px;
     cursor: pointer;
+}
+
+.editColumn {
+    width: 64px;
 }

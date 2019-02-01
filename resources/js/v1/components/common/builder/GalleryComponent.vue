@@ -68,7 +68,9 @@
                 <li class="addMoreChatGallery" v-if="content.item.length<10">
                     <div class="galleAddMore">
                         <template v-if="content.isCreating">
-                            Creating...
+                            <div class="galleLoader">
+                                <loading-component></loading-component>
+                            </div>
                         </template>
                         <template v-else>
                             <div class="addMoreGalleBtn" @click="createNewGallery">+</div>

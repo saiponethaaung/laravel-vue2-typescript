@@ -43024,11 +43024,28 @@ var render = function() {
           _vm._l(3, function(broadcast, index) {
             return [
               _c("li", { key: index, staticClass: "broadcastHistory" }, [
-                _vm._m(2, true),
-                _vm._v(" "),
-                _vm._m(3, true),
-                _vm._v(" "),
-                _vm._m(4, true),
+                _c("div", { staticClass: "bchColumn bcDate" }, [
+                  _c(
+                    "div",
+                    { staticClass: "bchIcon" },
+                    [
+                      broadcast === 1
+                        ? [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("send")
+                            ])
+                          ]
+                        : _vm._e(),
+                      _vm._v(" "),
+                      broadcast === 2 ? [_vm._m(2, true)] : _vm._e(),
+                      _vm._v(" "),
+                      broadcast === 3 ? [_vm._m(3, true)] : _vm._e()
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _vm._m(4, true)
+                ]),
                 _vm._v(" "),
                 _vm._m(5, true),
                 _vm._v(" "),
@@ -43036,7 +43053,11 @@ var render = function() {
                 _vm._v(" "),
                 _vm._m(7, true),
                 _vm._v(" "),
-                _vm._m(8, true)
+                _vm._m(8, true),
+                _vm._v(" "),
+                _vm._m(9, true),
+                _vm._v(" "),
+                _vm._m(10, true)
               ])
             ]
           })
@@ -43063,37 +43084,37 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("li", { staticClass: "broadcastHistoryHeading" }, [
       _c("div", { staticClass: "bchColumn bcDate" }, [
-        _c("span", [_vm._v("Sent Date")])
+        _c("b", [_vm._v("Sent Date")])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "bchColumn bcType" }, [
-        _c("span", [_vm._v("Type")])
+        _c("b", [_vm._v("Type")])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "bchColumn bcContent" }, [
-        _c("span", [_vm._v("Content")])
+        _c("b", [_vm._v("Content")])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "bchColumn bcCounts bcBlock" }, [
-        _c("span", [_vm._v("Blocked")]),
+        _c("b", [_vm._v("Blocked")]),
         _vm._v(" "),
         _c("i", { staticClass: "material-icons" }, [_vm._v("arrow_drop_down")])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "bchColumn bcCounts bcSent" }, [
-        _c("span", [_vm._v("Sent")]),
+        _c("b", [_vm._v("Sent")]),
         _vm._v(" "),
         _c("i", { staticClass: "material-icons" }, [_vm._v("arrow_drop_down")])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "bchColumn bcCounts bcRead" }, [
-        _c("span", [_vm._v("Read")]),
+        _c("b", [_vm._v("Read")]),
         _vm._v(" "),
         _c("i", { staticClass: "material-icons" }, [_vm._v("arrow_drop_down")])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "bchColumn bcCounts bcClick" }, [
-        _c("span", [_vm._v("Clicked")]),
+        _c("b", [_vm._v("Clicked")]),
         _vm._v(" "),
         _c("i", { staticClass: "material-icons" }, [_vm._v("arrow_drop_down")])
       ])
@@ -43103,8 +43124,26 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "bchColumn bcDate" }, [
-      _c("span", [_vm._v("Sent Date")])
+    return _c("figure", [
+      _c("img", { attrs: { src: "/images/icons/broadcast/trigger.png" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("figure", [
+      _c("img", { attrs: { src: "/images/icons/broadcast/schedule.png" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "bchTimestamp" }, [
+      _c("span", { staticClass: "bchDate" }, [_vm._v("Dec 20, 2018")]),
+      _vm._v(" "),
+      _c("span", { staticClass: "bchTime" }, [_vm._v("10:00 AM")])
     ])
   },
   function() {
@@ -43112,7 +43151,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "bchColumn bcType" }, [
-      _c("span", [_vm._v("Type")])
+      _c("span", [_vm._v("Subscription")])
     ])
   },
   function() {
@@ -43120,7 +43159,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "bchColumn bcContent" }, [
-      _c("span", [_vm._v("Content")])
+      _c("span", [_vm._v("Thank you for...")])
     ])
   },
   function() {
@@ -43128,9 +43167,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "bchColumn bcCounts bcBlock" }, [
-      _c("span", [_vm._v("Blocked")]),
-      _vm._v(" "),
-      _c("i", { staticClass: "material-icons" }, [_vm._v("arrow_drop_down")])
+      _c("div", { staticClass: "bchPercentage" }, [
+        _c("b", [_vm._v("2%")]),
+        _vm._v(" "),
+        _c("span", [_vm._v("2/100")])
+      ])
     ])
   },
   function() {
@@ -43138,9 +43179,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "bchColumn bcCounts bcSent" }, [
-      _c("span", [_vm._v("Sent")]),
-      _vm._v(" "),
-      _c("i", { staticClass: "material-icons" }, [_vm._v("arrow_drop_down")])
+      _c("div", { staticClass: "bchPercentage" }, [
+        _c("b", [_vm._v("98%")]),
+        _vm._v(" "),
+        _c("span", [_vm._v("98/100")])
+      ])
     ])
   },
   function() {
@@ -43148,9 +43191,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "bchColumn bcCounts bcRead" }, [
-      _c("span", [_vm._v("Read")]),
-      _vm._v(" "),
-      _c("i", { staticClass: "material-icons" }, [_vm._v("arrow_drop_down")])
+      _c("div", { staticClass: "bchPercentage" }, [
+        _c("b", [_vm._v("98%")]),
+        _vm._v(" "),
+        _c("span", [_vm._v("98/100")])
+      ])
     ])
   },
   function() {
@@ -43158,9 +43203,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "bchColumn bcCounts bcClick" }, [
-      _c("span", [_vm._v("Clicked")]),
-      _vm._v(" "),
-      _c("i", { staticClass: "material-icons" }, [_vm._v("arrow_drop_down")])
+      _c("div", { staticClass: "bchPercentage" }, [
+        _c("b", [_vm._v("98%")]),
+        _vm._v(" "),
+        _c("span", [_vm._v("98/100")])
+      ])
     ])
   }
 ]

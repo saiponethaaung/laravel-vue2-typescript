@@ -449,15 +449,55 @@ $bcCountColumn: 100px;
     width: calc(100% - #{$bcDateColumn+$bcTypeColumn+($bcCountColumn*4)});
 }
 
-.braodcastHistoryHeading {
-    & > * {
-        font-weight: bold;
-    }
-}
-
 .bchColumn {
     @extend %flexCenter;
     float: left;
     height: $standardHeight;
     line-height: $standardHeight;
+}
+
+.broadcastHistoryHeading,
+.broadcastHistory {
+    @extend %flexCenter;
+    padding: 10px;
+    font-size: 14px;
+}
+
+%broadcastHeight {
+    height: 36px;
+    line-height: 20px;
+}
+
+.broadcastHistory {
+    height: 65px;
+    margin-bottom: 10px;
+    background: $secondaryBackground;
+    border-radius: 5px;
+    .bcDate {
+        @extend %flexCenter;
+        .bchIcon {
+            @extend %flexJCenter;
+            .material-icons {
+                font-size: 20px;
+            }
+            
+            figure {
+                width: 20px;
+                img {
+                    width: 100%;
+                }
+            }
+            
+            margin-right: 5px;
+        }
+        
+    }
+
+    .bchPercentage,
+    .bchTimestamp {
+        @extend %flexCenter;
+        @extend %broadcastHeight;
+        align-items: baseline;
+        flex-direction: column;
+    }
 }

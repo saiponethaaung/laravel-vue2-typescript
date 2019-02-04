@@ -13,13 +13,19 @@
 .statusBtn,
 .broadcastHistoryList .braodcastHistoryHeading,
 .broadcastHistoryList .braodcastHistory,
+.broadcastHistory .bcDate .bchIcon,
 .userListTable th.ultDateColumn .ultWrapper,
 .userListTable th.utlSessinColumn .ultWrapper,
 .segmentList .segmentListItem,
 .segmentTitleCon,
 .assignList,
 .userAttributePop .uaFooterCon,
-.bchColumn {
+.bchColumn,
+.broadcastHistoryHeading,
+.broadcastHistory,
+.broadcastHistory .bcDate,
+.broadcastHistory .bchPercentage,
+.broadcastHistory .bchTimestamp {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -42,7 +48,8 @@
 .triggerAttribute .sddListCon,
 .statusBtn,
 .broadcastHistoryList .braodcastHistoryHeading,
-.broadcastHistoryList .braodcastHistory {
+.broadcastHistoryList .braodcastHistory,
+.broadcastHistory .bcDate .bchIcon {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -14269,14 +14276,56 @@ a:hover {
   width: calc(100% - 710px);
 }
 
-.braodcastHistoryHeading > * {
-  font-weight: bold;
-}
-
 .bchColumn {
   float: left;
   height: 36px;
   line-height: 36px;
+}
+
+.broadcastHistoryHeading,
+.broadcastHistory {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.broadcastHistory .bchPercentage,
+.broadcastHistory .bchTimestamp {
+  height: 36px;
+  line-height: 20px;
+}
+
+.broadcastHistory {
+  height: 65px;
+  margin-bottom: 10px;
+  background: #f7f6f6;
+  border-radius: 5px;
+}
+
+.broadcastHistory .bcDate .bchIcon {
+  margin-right: 5px;
+}
+
+.broadcastHistory .bcDate .bchIcon .material-icons {
+  font-size: 20px;
+}
+
+.broadcastHistory .bcDate .bchIcon figure {
+  width: 20px;
+}
+
+.broadcastHistory .bcDate .bchIcon figure img {
+  width: 100%;
+}
+
+.broadcastHistory .bchPercentage,
+.broadcastHistory .bchTimestamp {
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 .navList {
@@ -14425,5 +14474,10 @@ a:hover {
 *:focus,
 *:active {
   outline: none;
+}
+
+figure {
+  margin: 0;
+  padding: 0;
 }
 

@@ -9,28 +9,28 @@
             <ul class="broadcastHistoryList">
                 <li class="broadcastHistoryHeading">
                     <div class="bchColumn bcDate">
-                        <span>Sent Date</span>
+                        <b>Sent Date</b>
                     </div>
                     <div class="bchColumn bcType">
-                        <span>Type</span>
+                        <b>Type</b>
                     </div>
                     <div class="bchColumn bcContent">
-                        <span>Content</span>
+                        <b>Content</b>
                     </div>
                     <div class="bchColumn bcCounts bcBlock">
-                        <span>Blocked</span>
+                        <b>Blocked</b>
                         <i class="material-icons">arrow_drop_down</i>
                     </div>
                     <div class="bchColumn bcCounts bcSent">
-                        <span>Sent</span>
+                        <b>Sent</b>
                         <i class="material-icons">arrow_drop_down</i>
                     </div>
                     <div class="bchColumn bcCounts bcRead">
-                        <span>Read</span>
+                        <b>Read</b>
                         <i class="material-icons">arrow_drop_down</i>
                     </div>
                     <div class="bchColumn bcCounts bcClick">
-                        <span>Clicked</span>
+                        <b>Clicked</b>
                         <i class="material-icons">arrow_drop_down</i>
                     </div>
                     <!-- <div>
@@ -42,35 +42,56 @@
                 <template v-for="(broadcast, index) in 3">
                     <li class="broadcastHistory" :key="index">
                         <div class="bchColumn bcDate">
-                            <span>Sent Date</span>
+                            <div class="bchIcon">
+                                <template v-if="broadcast===1">
+                                    <i class="material-icons">send</i>
+                                </template>
+                                <template v-if="broadcast===2">
+                                    <figure>
+                                        <img src="/images/icons/broadcast/trigger.png"/>
+                                    </figure>
+                                </template>
+                                <template v-if="broadcast===3">
+                                    <figure>
+                                        <img src="/images/icons/broadcast/schedule.png"/>
+                                    </figure>
+                                </template>
+                            </div>
+                            <div class="bchTimestamp">
+                                <span class="bchDate">Dec 20, 2018</span>
+                                <span class="bchTime">10:00 AM</span>
+                            </div>
                         </div>
                         <div class="bchColumn bcType">
-                            <span>Type</span>
+                            <span>Subscription</span>
                         </div>
                         <div class="bchColumn bcContent">
-                            <span>Content</span>
+                            <span>Thank you for...</span>
                         </div>
                         <div class="bchColumn bcCounts bcBlock">
-                            <span>Blocked</span>
-                            <i class="material-icons">arrow_drop_down</i>
+                            <div class="bchPercentage">
+                                <b>2%</b>
+                                <span>2/100</span>
+                            </div>
                         </div>
                         <div class="bchColumn bcCounts bcSent">
-                            <span>Sent</span>
-                            <i class="material-icons">arrow_drop_down</i>
+                            <div class="bchPercentage">
+                                <b>98%</b>
+                                <span>98/100</span>
+                            </div>
                         </div>
                         <div class="bchColumn bcCounts bcRead">
-                            <span>Read</span>
-                            <i class="material-icons">arrow_drop_down</i>
+                            <div class="bchPercentage">
+                                <b>98%</b>
+                                <span>98/100</span>
+                            </div>
                         </div>
                         <div class="bchColumn bcCounts bcClick">
-                            <span>Clicked</span>
-                            <i class="material-icons">arrow_drop_down</i>
+                            <div class="bchPercentage">
+                                <b>98%</b>
+                                <span>98/100</span>
+                            </div>
                         </div>
-                        <!-- <div>
-                            <i class="material-icons">
-                                error_outline
-                            </i>
-                        </div> -->
                     </li>
                 </template>
             </ul>

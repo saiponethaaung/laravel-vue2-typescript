@@ -40,14 +40,13 @@ export default class AdminNoteListModel extends AjaxErrorHandler {
 
         data.append('note', this.note);
 
-        console.log(this.content);
-
         await Axios({
             url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/note`,
             method: 'post',
             data: data
         }).then(res => {
-            this.content = '';
+            this.note = '';
+            this.adminNoteList.push(new AdminNoteModel(res.data.data));
         }).catch(err => {
             if(err.response) {
                 res.status = false;
@@ -61,15 +60,18 @@ export default class AdminNoteListModel extends AjaxErrorHandler {
             status: true,
             mesg: 'Success'
         };
-
+    
         await Axios({
-            url: `/api/v1/project/${this.projectId}/inbox`
+            url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/note`,
+            method: 'get'
         }).then(res => {
-            this.content = '';
+            for(let n of res.data.data) {
+                this.adminNoteList.push(new AdminNoteModel(n));
+            }
         }).catch(err => {
             if(err.response) {
                 res.status = false;
-                res.mesg = this.globalHandler(err, 'Failed to create a note!');
+                res.mesg = this.globalHandler(err, 'Failed to load note list!');
             }
         });
 

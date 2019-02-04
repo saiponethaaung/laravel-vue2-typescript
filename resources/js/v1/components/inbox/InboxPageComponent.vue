@@ -59,9 +59,6 @@
                                     </div>
                                 </template>
                                 <template v-else>
-                                    <!-- <div class="chatInputMesgBox">
-                                        <input type="text" placeholder="Send message..." disabled/>
-                                    </div> -->
                                     <div class="chatInputEmoji">
                                         <i class="material-icons">sentiment_satisfied</i>
                                     </div>
@@ -139,31 +136,33 @@
                                 </tbody>
                             </table>
                         </div>                        
-                        <!-- <div>Note</div> -->
-                        <div class="addNote" @click="showTags=!showTags">
-                            <span>Write note about the shop</span>
-                            <span class="iconSub">
-                                <i class="material-icons">
-                                    <template v-if="showTags">expand_less</template>
-                                    <template v-else>expand_more</template>
-                                </i>
-                            </span>
-                        </div>
-                        <div v-show="showTags" class="adminNote">
-                            <div class="noteContent">
-                                <div>
-                                    <span class="userIcon"></span>
-                                    <span>TESTING USER</span>
-                                    <div class="userNote">
-                                        Notes
-                                        {{ noteList.note }}
-                                    </div>
-                                </div>
+                        <div class="alignNote">
+                            <div class="addNote" @click="showTags=!showTags">
+                                <span>Write note about the shop</span>
+                                <span class="iconSub">
+                                    <i class="material-icons">
+                                        <template v-if="showTags">expand_more</template>
+                                        <template v-else>expand_less</template>
+                                    </i>
+                                </span>
                             </div>
-                            <div class="noteInput">
-                                <form @submit.prevent="noteList.createNote()">
-                                    <Input type="text" placeholder="Type a note" v-model="noteList.note" />
-                                </form>
+                            <div v-show="showTags" class="adminNote">
+                                <div class="noteContent">
+                                    <template v-for="(note, index) in noteList.adminNotes">
+                                        <div class="subNote" :key="index">
+                                            <span class="userIcon"></span>
+                                            <span class="userName">{{ note.name }}</span>
+                                            <div class="userNote">
+                                                <span>{{ note.note }}</span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="noteInput">
+                                    <form @submit.prevent="noteList.createNote()">
+                                        <input type="text" placeholder="Type a note" v-model="noteList.note" />
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -223,7 +222,10 @@ export default class InboxPageComponent extends Vue {
         this.mesgList = [];
         this.firstLoad = true;
         this.loadMesg(false);
-        // let status = await this.noteList.getNote();
+        let status = await this.noteList.getNote();
+        if(!status.status) {
+            alert(status.mesg);
+        }
     }
 
     private scrollCallback(a: any) {

@@ -404,48 +404,67 @@ $attributePanelWidth: 336px;
     color: $color1;
 }
 
+.alignNote {
+    bottom: 0;
+    position: fixed;
+}
+
 .addNote {
-    width: 250px;
-    height: 25px;
+    width: 260px;
+    height: 30px;
     background: #c238eb;
     margin-left: 30px;
     font-size: 13px;
     color: white;
     border: 1px solid #c238eb;
-    border-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
     .iconSub {
         float: right;
-        cursor: pointer;
+        margin-top: -2px;
     }
 }
 
 .adminNote {
-    width: 250px;
-    height: 180px;
+    width: 260px;
+    height: 230px;
     margin-left: 30px;
-    background: #ffffff;
     border: 1px solid #e2e2e2;
-    border-radius: 5px;
     .noteContent {
+        width: 100%;
         height: 80%;
         background: $color2;
-        padding: 10px;
+        overflow: auto;
+        font-size: 13px;
+        .subNote {
+            padding: 5px 10px 10px 10px;
+            .userName {
+                font-weight: bold;
+            }
+        }
         .userNote {
-            margin-left: 50px;
+            margin-left: 40px;
             width: 180px;
+            height: 20px;
             background: #ffffff;
             border: 1px solid #ffffff;
             border-radius: 5px;
+            padding-left: 10px;
         }
     }
     .noteInput {
         height: 20%;
         text-align: center;
         background: $color2;
+        padding-top: 7px;
         input {
             width: 230px;
+            height: 29px;
             border: 1px;
             border-radius: 5px;
+            padding-left: 10px;
         }
     }
 }

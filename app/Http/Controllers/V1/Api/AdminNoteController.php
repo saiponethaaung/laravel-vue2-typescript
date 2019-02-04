@@ -14,7 +14,19 @@ class AdminNoteController extends Controller
 
     public function getNote(Request $request) 
     {
-        
+
+        $noteList = AdminNote::where('project_page_user_id', $request->attributes->get('project_page_user')->id)->get();
+
+        $res = [];
+
+        foreach($noteList as $note) {
+            $res[] = $this->formatNote($note);
+        }
+        return response()->json([
+            'status' => true,
+            'code' => true,
+            'data' => $res
+        ]);   
     }
 
     public function createNote(Request $request) 

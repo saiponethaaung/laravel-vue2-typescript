@@ -14,7 +14,10 @@ class ProjectListTest extends TestCase
                 'Authorization' => 'Bearer '.$this->token
             ])
             ->json('get', route('chatbot.project.list'), [])
-        // print_r($project->getContent());
-            ->assertStatus(200);
+            ->assertStatus(200)
+            ->assertJson([
+                'status' => true,
+                'code' => 200
+            ]);
     }
 }

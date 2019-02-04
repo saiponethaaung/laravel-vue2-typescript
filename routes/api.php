@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 
 Route::any('/queue-tester', 'TestController@startQueue');
 
-Route::post('/user/login', 'V1\\Api\\UserAuthController@login');
+Route::post('/user/login', 'V1\\Api\\UserAuthController@login')->name('api.login');
 
 Route::any('/facebook/chatbot/$2y$12$uyP735FKW7vuSYmlAEhF/OOoo1vCaWZN7zIEeFEhYbAw2qv8X4ffe', 'V1\\Api\\FacebookChatbotController@index');
 

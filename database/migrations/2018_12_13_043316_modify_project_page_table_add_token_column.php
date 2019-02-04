@@ -14,7 +14,7 @@ class ModifyProjectPageTableAddTokenColumn extends Migration
     public function up()
     {
         Schema::table('project_page', function(Blueprint $table) {
-            $table->text('token')->after('page_id');
+            $table->text('token')->nullable()->after('page_id');
         });
     }
 

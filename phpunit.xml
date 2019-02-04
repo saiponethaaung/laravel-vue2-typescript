@@ -39,10 +39,10 @@
         <ini name="memory_limit" value="512M" />
     </php>
     <logging>
-        <log type="coverage-html" target="./public/unit-testing"
+        <log type="coverage-html" target="./public/test-report"
             lowUpperBound="50" highLowerBound="80" />
-        <log type="junit" target="./public/unit-testing/logfile.xml"/>
-        <log type="testdox-html" target="./public/unit-testing/testdox.html"/>
-        <log type="testdox-text" target="./public/unit-testing/testdox.txt"/>
+        <log type="junit" target="./public/test-report/logfile.xml"/>
+        <log type="testdox-html" target="./public/test-report/testdox.html"/>
+        <log type="testdox-text" target="./public/test-report/testdox.txt"/>
     </logging>
 </phpunit>

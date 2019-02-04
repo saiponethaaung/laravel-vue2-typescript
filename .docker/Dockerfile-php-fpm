@@ -13,3 +13,5 @@ RUN chmod +x -R /var/www/html
 RUN pecl install xdebug
 
 RUN docker-php-ext-enable xdebug
+
+RUN apt-get install --yes sqlite3 tesseract-ocr

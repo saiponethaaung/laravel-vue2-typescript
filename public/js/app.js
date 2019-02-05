@@ -39525,7 +39525,11 @@ var render = function() {
                                           _vm._v(" "),
                                           _vm._m(5),
                                           _vm._v(" "),
-                                          _vm._m(6)
+                                          _vm._m(6),
+                                          _vm._v(" "),
+                                          _c("div", {
+                                            staticClass: "replyText"
+                                          })
                                         ]
                                       )
                                     ]

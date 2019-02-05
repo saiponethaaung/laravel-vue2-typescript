@@ -114,6 +114,9 @@
                                     <div class="replyMessages">
                                         <textarea class="inputMessage" placeholder="Enter message" />
                                     </div>
+                                    <div class="replyText">
+                                        
+                                    </div>
                                     <!-- <div class="replyTitle">
                                         <input type="text" placeholder="Enter reply title" />
                                     </div> -->

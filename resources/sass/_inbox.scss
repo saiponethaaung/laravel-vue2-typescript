@@ -550,10 +550,13 @@ $attributePanelWidth: 336px;
 }
 
 .replyMessages {
-    height: 100%;
+    height: 200px;
     border-bottom: 1px solid #e5e5e5;
     display: flex;
-    .inputText {
-        resize: 0;
+    .inputMessage {
+        width: 100%;
+        margin-left: 10px;
+        border: none;
+        resize: none;
     }
 }

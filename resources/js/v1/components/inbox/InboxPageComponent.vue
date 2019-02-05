@@ -54,7 +54,7 @@
                                     <div class="chatInputEmoji">
                                         <i class="material-icons">sentiment_satisfied</i>
                                     </div>
-                                    <div class="chatInputEmoji">
+                                    <div class="chatInputEmoji" @click="saveReply=true">
                                         <i class="material-icons">chat</i>
                                     </div>
                                 </template>
@@ -62,7 +62,7 @@
                                     <div class="chatInputEmoji">
                                         <i class="material-icons">sentiment_satisfied</i>
                                     </div>
-                                    <div class="chatInputEmoji">
+                                    <div class="chatInputEmoji" @click="saveReply=true">
                                         <i class="material-icons">chat</i>
                                     </div>
                                 </template>
@@ -72,6 +72,53 @@
                                     Activate Page in order to perform live chat
                                 </div>
                             </template>
+                        </div>
+                    </div>
+                    <div class="popSavedReply">
+                        <div class="popFixedContainer popFixedCenter" v-if="saveReply">
+                            <div class="userAttributePop filterAttribute">
+                                <div v-show="!createReply">
+                                    <div class="popNav">
+                                        <span class="saved">Saved Replies</span>
+                                        <span class="manage">Manage Replies</span>
+                                    </div>
+                                    <div class="replyText">
+                                        <i class="material-icons">search</i>
+                                        <input class="inputText" placeholder="Search saved replies" />
+                                    </div>
+                                    <div class="savedList">
+                                        <div class="subReply">
+                                            <div class="replyTitle">
+                                                title
+                                            </div>
+                                            <div class="replyMessage">
+                                                message
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="createSavedLink">
+                                        <a href="#" @click="createReply = true">Create Saved Reply</a>
+                                    </div>
+                                </div>
+                                <div v-show="createReply">
+                                    <div class="createReplyNav">
+                                        <div class="list" @click="createReply = false">
+                                            <i class="material-icons">keyboard_arrow_left</i>
+                                            <span>List</span>
+                                        </div>
+                                        <span class="saved">Create Saved Reply</span>
+                                    </div>
+                                    <div class="replyText">
+                                        <input class="inputText" placeholder="Enter reply title" />
+                                    </div>
+                                    <div class="replyMessages">
+                                        <textarea class="inputMessage" placeholder="Enter message" />
+                                    </div>
+                                    <!-- <div class="replyTitle">
+                                        <input type="text" placeholder="Enter reply title" />
+                                    </div> -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="attributePanel">
@@ -211,6 +258,8 @@ export default class InboxPageComponent extends Vue {
     private lastScroll: number = 0;
     private showTags: boolean = false;
     private noteList: AdminNoteListModel = new AdminNoteListModel('', 0);
+    private saveReply: boolean = false;
+    private createReply: boolean = false;
     
     @Watch('$store.state.selectedInbox')
     async reloadMesg() {

@@ -5,13 +5,10 @@ pipeline {
       parallel {
         stage('Build') {
           steps {
-            echo 'Hello'
-          }
-        }
-        stage('') {
-          steps {
-            echo 'World'
-            sh 'ls'
+            sh 'docker-compose up -d'
+            sh 'docker ps'
+            sh 'docker-compose stop'
+            sh 'docker-compose down'
           }
         }
       }

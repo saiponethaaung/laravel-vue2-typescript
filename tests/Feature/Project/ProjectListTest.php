@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use App\Models\Project;
+use App\Models\ProjectUser;
 
 class ProjectListTest extends TestCase
 {
@@ -24,27 +25,36 @@ class ProjectListTest extends TestCase
             ]);
     }
     
-    // public function testGetProjectList()
-    // {
-    //     $project = $this->withHeaders([
-    //             'Authorization' => 'Bearer '.$this->token
-    //         ])
-    //         ->json('get', route('chatbot.project.list'), [])
-    //         ->assertStatus(200)
-    //         ->assertJson([
-    //             'status' => true,
-    //             'code' => 200,
-    //         ])
-    //         ->assertJsonStructure([
-    //             'status' => true,
-    //             'code' => 200,
-    //             'data' => [
-    //                 '*' => [
-    //                     'id',
-    //                     'name',
-    //                     'page_image'
-    //                 ]
-    //             ]
-    //         ]);
-    // }
+    public function testGetProjectList()
+    {
+        factory(Project::class, 10)->create(['user_id' => $this->user->id])->each(function($project) {
+            factory(ProjectUser::class)->create([
+                'project_id' => $project->id,
+                'user_id' => $project->user_id
+            ]);
+        });
+
+        $project = $this->withHeaders([
+                'Authorization' => 'Bearer '.$this->token
+            ])
+            ->json('get', route('chatbot.project.list'), [])
+            ->assertStatus(200)
+            ->assertJson([
+                'status' => true,
+                'code' => 200,
+            ])
+            ->assertJsonStructure([
+                'status',
+                'code',
+                'data' => [
+                    '*' => [
+                        'id',
+                        'name',
+                        'page_image',
+                        'isOwner',
+                        'pageConnected'
+                    ]
+                ]
+            ]);
+    }
 }

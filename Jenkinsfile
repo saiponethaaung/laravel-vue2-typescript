@@ -22,6 +22,7 @@ pipeline {
           steps {
               sh 'docker-compose stop'
               sh 'docker-compose down'
+              sh 'chmod -R 777 */*'
           }
       }
           

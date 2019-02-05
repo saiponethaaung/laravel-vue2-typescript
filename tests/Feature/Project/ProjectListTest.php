@@ -57,4 +57,19 @@ class ProjectListTest extends TestCase
                 ]
             ]);
     }
+    
+    public function testGetProjectListUnauthorize()
+    {
+        $project = $this->withHeaders([
+                'Authorization' => 'Bearer '.md5($this->token)
+            ])
+            ->json('get', route('chatbot.project.list'), [])
+            ->assertStatus(401)
+            ->assertJson([
+                'message' => 'Unauthenticated.'
+            ])
+            ->assertJsonStructure([
+                'message'
+            ]);
+    }
 }

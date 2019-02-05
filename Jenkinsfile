@@ -20,7 +20,7 @@ pipeline {
 
       stage('Docker Destory') {
           steps {
-              sh 'docker exec chatbitsaiapplev1_php_1 bash -c \'rm -rf vendor\''
+              sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf vendor\''
               sh 'docker-compose stop'
               sh 'docker-compose down'
           }

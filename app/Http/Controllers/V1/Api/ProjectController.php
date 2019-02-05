@@ -15,6 +15,53 @@ use App\Models\ProjectPage;
 
 class ProjectController extends Controller
 {
+    public function create(Request $request)
+    {
+        $input = $request->only('name');
+
+        if(empty($input['name'])) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Project name is reqired!'
+            ], 422);
+        }
+
+        $project = null;
+
+        DB::beginTransaction();
+
+        try {
+            $project = Project::create([
+                'name' => $input['name'],
+                'timezone' => '',
+                'user_id' => Auth::guard('api')->user()->id
+            ]);
+
+            ProjectUser::create([
+                'project_id' => $project->id,
+                'user_id' => Auth::guard('api')->user()->id,
+                'user_type' => 0
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to create new project!'
+            ], 422);
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 201,
+            'mesg' => 'success',
+            'data' => [
+                'name' => $project->name
+            ]
+        ], 201);
+    }
+
     public function list(Request $request)
     {
         $projects = ProjectUser::with('project')->where('user_id', Auth::guard('api')->user()->id)->get();

@@ -31,6 +31,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
     });
 
     Route::group(['prefix' => 'project'], function(){
+        Route::post('/', 'v1\\Api\\ProjectController@createProject')->name('chatbot.project.create');
         Route::get('list', 'V1\\Api\\ProjectController@list')->name('chatbot.project.list');
     });
 

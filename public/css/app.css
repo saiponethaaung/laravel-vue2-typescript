@@ -13164,7 +13164,7 @@ a:hover {
 }
 
 .replyMessages {
-  height: 200px;
+  height: 261px;
   border-bottom: 1px solid #e5e5e5;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -13173,9 +13173,32 @@ a:hover {
 
 .replyMessages .inputMessage {
   width: 100%;
-  margin-left: 10px;
+  margin: 10px;
   border: none;
   resize: none;
+}
+
+.buttonOption {
+  background: #f5f6f7;
+  height: 46px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.buttonOption .alignBtn {
+  margin: 30px 0 0 300px;
+}
+
+.buttonOption .alignBtn .btnAction {
+  width: 60px;
+  height: 25px;
+  font-size: 12px;
+  margin-right: 5px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .avaFilterList {

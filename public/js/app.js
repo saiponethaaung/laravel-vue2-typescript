@@ -39527,9 +39527,7 @@ var render = function() {
                                           _vm._v(" "),
                                           _vm._m(6),
                                           _vm._v(" "),
-                                          _c("div", {
-                                            staticClass: "replyText"
-                                          })
+                                          _vm._m(7)
                                         ]
                                       )
                                     ]
@@ -39557,10 +39555,10 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "attributeTableRoot" }, [
-                            _vm._m(7),
+                            _vm._m(8),
                             _vm._v(" "),
                             _c("table", { staticClass: "attributeTable" }, [
-                              _vm._m(8),
+                              _vm._m(9),
                               _vm._v(" "),
                               _c(
                                 "tbody",
@@ -39597,13 +39595,13 @@ var render = function() {
                                           ])
                                         }
                                       )
-                                    : [_vm._m(9)]
+                                    : [_vm._m(10)]
                                 ],
                                 2
                               )
                             ]),
                             _vm._v(" "),
-                            _vm._m(10)
+                            _vm._m(11)
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "alignNote" }, [
@@ -39741,9 +39739,9 @@ var render = function() {
                           ])
                         ])
                       ]
-                    : [_vm._m(11)]
+                    : [_vm._m(12)]
                 ]
-              : [_vm._m(12)]
+              : [_vm._m(13)]
           ]
     ],
     2
@@ -39833,6 +39831,18 @@ var staticRenderFns = [
         staticClass: "inputMessage",
         attrs: { placeholder: "Enter message" }
       })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "buttonOption" }, [
+      _c("div", { staticClass: "alignBtn" }, [
+        _c("button", { staticClass: "btnAction" }, [_vm._v("Save")]),
+        _vm._v(" "),
+        _c("button", { staticClass: "btnAction" }, [_vm._v("Cancel")])
+      ])
     ])
   },
   function() {

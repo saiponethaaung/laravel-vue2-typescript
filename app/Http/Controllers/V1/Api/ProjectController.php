@@ -30,7 +30,7 @@ class ProjectController extends Controller
         $project = null;
 
         DB::beginTransaction();
-
+ 
         try {
             $project = Project::create([
                 'name' => $input['name'],

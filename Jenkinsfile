@@ -11,6 +11,7 @@ pipeline {
         stage('') {
           steps {
             echo 'World'
+            sh 'ls'
           }
         }
       }

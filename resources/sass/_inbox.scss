@@ -510,6 +510,8 @@ $attributePanelWidth: 336px;
 }
 
 .savedList {
+    height: 200px;
+    overflow: auto;
     .subReply {
         border-bottom: 1px solid #e5e5e5;
         .replyTitle {
@@ -518,6 +520,7 @@ $attributePanelWidth: 336px;
         }
         .replyMessage {
             margin: 0 0 10px 10px;
+            word-break: break-word;
         }
     }
 }
@@ -569,11 +572,24 @@ $attributePanelWidth: 336px;
     .alignBtn {
         margin: 30px 0 0 300px;
         .btnAction {
-            width: 60px;
             height: 25px;
             font-size: 12px;
             margin-right: 5px;
             justify-content: center;
         }
+    }
+}
+
+.createReply {
+    .buttonOption {
+        .btnAction {
+            width: 60px;
+        }
+    }
+}
+
+.manageReply {
+    .createSavedLink {
+        margin-bottom: 20px;
     }
 }

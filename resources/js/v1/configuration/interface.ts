@@ -184,3 +184,10 @@ export interface adminNote {
     image: string;
     time: string;
 }
+
+export interface savedReply {
+    id: number;
+    title: string;
+    message: string;
+    time: string;
+}

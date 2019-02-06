@@ -13112,6 +13112,11 @@ a:hover {
   margin: 10px;
 }
 
+.savedList {
+  height: 200px;
+  overflow: auto;
+}
+
 .savedList .subReply {
   border-bottom: 1px solid #e5e5e5;
 }
@@ -13123,6 +13128,7 @@ a:hover {
 
 .savedList .subReply .replyMessage {
   margin: 0 0 10px 10px;
+  word-break: break-word;
 }
 
 .createSavedLink {
@@ -13192,13 +13198,20 @@ a:hover {
 }
 
 .buttonOption .alignBtn .btnAction {
-  width: 60px;
   height: 25px;
   font-size: 12px;
   margin-right: 5px;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+}
+
+.createReply .buttonOption .btnAction {
+  width: 60px;
+}
+
+.manageReply .createSavedLink {
+  margin-bottom: 20px;
 }
 
 .avaFilterList {

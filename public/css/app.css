@@ -12932,8 +12932,7 @@ a:hover {
   border: 1px solid #72bb53;
   border-radius: 5px;
   position: fixed;
-  bottom: 70px;
-  right: 375px;
+  bottom: 15px;
   cursor: pointer;
 }
 
@@ -12943,6 +12942,10 @@ a:hover {
   margin-right: 10px;
 }
 
+.chatInfoPanel .chatHisCon .liveChatButton.stopLiveChatBtn {
+  bottom: 60px;
+}
+
 .chatInfoPanel .chatHisCon .liveChatButton.startLiveChat {
   background: #72bb53;
   color: #fff;
@@ -12950,6 +12953,7 @@ a:hover {
 
 .chatInfoPanel .chatHisCon .liveChatButton.stopLiveChat {
   background: #fff;
+  color: #72bb53;
 }
 
 .chatInfoPanel .chatHisCon .liveChatButton .material-icons {
@@ -12972,7 +12976,7 @@ a:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  width: calc(100% - 65px);
+  width: calc(100% - 130px);
   height: 100%;
   padding-left: 30px;
   float: left;
@@ -13074,6 +13078,223 @@ a:hover {
 
 .activeFav {
   color: #c238eb;
+}
+
+.alignNote {
+  bottom: 0;
+  position: fixed;
+}
+
+.addNote {
+  width: 260px;
+  height: 30px;
+  background: #c238eb;
+  margin-left: 30px;
+  font-size: 13px;
+  color: white;
+  border: 1px solid #c238eb;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.addNote .iconSub {
+  float: right;
+  margin-top: -2px;
+}
+
+.adminNote {
+  width: 260px;
+  height: 230px;
+  margin-left: 30px;
+  border: 1px solid #e2e2e2;
+}
+
+.adminNote .noteContent {
+  width: 100%;
+  height: 80%;
+  background: #f7f6f6;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.adminNote .noteContent .subNote {
+  padding: 5px 10px 10px 10px;
+}
+
+.adminNote .noteContent .subNote .userName {
+  font-weight: bold;
+}
+
+.adminNote .noteContent .userNote {
+  margin-left: 40px;
+  width: 180px;
+  height: 20px;
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.adminNote .noteInput {
+  height: 20%;
+  text-align: center;
+  background: #f7f6f6;
+  padding-top: 7px;
+}
+
+.adminNote .noteInput input {
+  width: 230px;
+  height: 29px;
+  border: 1px;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.popSavedReply .popFixedContainer .userAttributePop {
+  max-height: 400px;
+}
+
+.popSavedReply .popFixedContainer .filterAttribute {
+  width: 450px;
+}
+
+.popNav {
+  background-color: #f5f6f7;
+  border-bottom: 1px solid #e5e5e5;
+  line-height: 41px;
+}
+
+.popNav .saved {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.popNav .manage {
+  float: right;
+  margin-right: 10px;
+}
+
+.replyText {
+  border-bottom: 1px solid #e5e5e5;
+  height: 51px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.replyText .material-icons {
+  margin: 15px 0 0 10px;
+}
+
+.replyText .inputText {
+  width: 100%;
+  max-height: 60%;
+  border: 0;
+  margin: 10px;
+}
+
+.savedList {
+  height: 200px;
+  overflow: auto;
+}
+
+.savedList .subReply {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.savedList .subReply .replyTitle {
+  font-weight: bold;
+  margin: 10px 0 0 10px;
+}
+
+.savedList .subReply .replyMessage {
+  margin: 0 0 10px 10px;
+  word-break: break-word;
+}
+
+.createSavedLink {
+  font-size: 13px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 20px;
+}
+
+.createReplyNav {
+  background-color: #f5f6f7;
+  border-bottom: 1px solid #e5e5e5;
+  line-height: 41px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.createReplyNav .list {
+  width: 15%;
+  border-right: 1px solid #e5e5e5;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.createReplyNav .list .material-icons {
+  margin-top: 8px;
+}
+
+.createReplyNav .saved {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.replyMessages {
+  height: 261px;
+  border-bottom: 1px solid #e5e5e5;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.replyMessages .inputMessage {
+  width: 100%;
+  margin: 10px;
+  border: none;
+  resize: none;
+}
+
+.buttonOption {
+  background: #f5f6f7;
+  height: 46px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.buttonOption .alignBtn {
+  margin: 30px 0 0 300px;
+}
+
+.buttonOption .alignBtn .btnAction {
+  height: 25px;
+  font-size: 12px;
+  margin-right: 5px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.createReply .buttonOption .btnAction {
+  width: 60px;
+}
+
+.manageReply .createSavedLink {
+  margin-bottom: 20px;
 }
 
 .avaFilterList {

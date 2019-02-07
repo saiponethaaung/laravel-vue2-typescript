@@ -39,7 +39,7 @@
                                     <img src="/images/icons/chat_icon.png"/>
                                     <span>Start a live chat</span>
                                 </button>
-                                <button class="liveChatButton stopLiveChat" @click="stopLiveChat()" type="button" v-else>
+                                <button class="liveChatButton stopLiveChat stopLiveChatBtn" @click="stopLiveChat()" type="button" v-else>
                                     <img src="/images/icons/chat_stop.png"/>
                                     <span>Finish live chat</span>
                                 </button>
@@ -54,13 +54,16 @@
                                     <div class="chatInputEmoji">
                                         <i class="material-icons">sentiment_satisfied</i>
                                     </div>
+                                    <div class="chatInputEmoji" @click="saveReply=true">
+                                        <i class="material-icons">chat</i>
+                                    </div>
                                 </template>
                                 <template v-else>
-                                    <div class="chatInputMesgBox">
-                                        <input type="text" placeholder="Send message..." disabled/>
-                                    </div>
                                     <div class="chatInputEmoji">
                                         <i class="material-icons">sentiment_satisfied</i>
+                                    </div>
+                                    <div class="chatInputEmoji" @click="saveReply=true">
+                                        <i class="material-icons">chat</i>
                                     </div>
                                 </template>
                             </template>
@@ -69,6 +72,91 @@
                                     Activate Page in order to perform live chat
                                 </div>
                             </template>
+                        </div>
+                    </div>
+                    <div class="popSavedReply">
+                        <div class="popFixedContainer popFixedCenter" v-if="saveReply">
+                            <div class="userAttributePop filterAttribute">
+                                <div v-show="!createReply && !manageReply">
+                                    <div class="popNav">
+                                        <span class="saved">Saved Replies</span>
+                                        <a href="#" class="manage" @click="manageReply = true">Manage Replies</a>
+                                    </div>
+                                    <div class="replyText">
+                                        <i class="material-icons">search</i>
+                                            <input class="inputText" placeholder="Search saved replies" />
+                                    </div>
+                                    <div class="savedList">
+                                        <template v-for="(reply, index) in replyList.savedReplies">
+                                            <div class="subReply" :key="index">
+                                                <div class="replyTitle">
+                                                    {{ reply.title }}
+                                                </div>
+                                                <div class="replyMessage">
+                                                    {{ reply.message }}
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div class="createSavedLink">
+                                        <a href="#" @click="createReply = true">Create Saved Reply</a>
+                                    </div>
+                                    <div class="createSavedLink">
+                                        <a href="#" @click="saveReply = false">Cancel</a>
+                                    </div>
+                                </div>
+                                <div class="createReply" v-show="createReply">
+                                    <div class="createReplyNav">
+                                        <div class="list" @click="createReply = false">
+                                            <i class="material-icons">keyboard_arrow_left</i>
+                                            <span>List</span>
+                                        </div>
+                                        <span class="saved">Create Saved Reply</span>
+                                    </div>
+                                    <div class="replyText">
+                                        <input class="inputText" placeholder="Enter reply title" v-model="replyList.reply" />
+                                    </div>
+                                    <div class="replyMessages">                                       
+                                        <textarea class="inputMessage" placeholder="Enter message" v-model="replyList.message" />
+                                    </div>
+                                    <div class="buttonOption">
+                                        <div class="alignBtn">
+                                            <button class="btnAction" @click="replyList.createReply()">Save</button>
+                                            <button class="btnAction" @click="createReply = false">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="manageReply" v-show="manageReply">
+                                    <div class="popNav">
+                                        <span class="saved">Saved Replies</span>
+                                    </div>
+                                    <div class="replyText">
+                                        <i class="material-icons">search</i>
+                                            <input class="inputText" placeholder="Search saved replies" />
+                                    </div>
+                                    <div class="savedList">
+                                        <template v-for="(reply, index) in replyList.savedReplies">
+                                            <div class="subReply" :key="index">
+                                                <div class="replyTitle">
+                                                    {{ reply.title }}
+                                                </div>
+                                                <div class="replyMessage">
+                                                    {{ reply.message }}
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div class="createSavedLink">
+                                        <span>End of saved replies</span>
+                                    </div>
+                                    <div class="buttonOption">
+                                        <div class="alignBtn">
+                                            <button class="btnAction" @click="manageReply = false">Done</button>
+                                            <button class="btnAction" @click="createReply = true, manageReply = false">Create Reply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="attributePanel">
@@ -132,8 +220,36 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>                        
+                        <div class="alignNote">
+                            <div class="addNote" @click="showTags=!showTags">
+                                <span>Write note about the shop</span>
+                                <span class="iconSub">
+                                    <i class="material-icons">
+                                        <template v-if="showTags">expand_more</template>
+                                        <template v-else>expand_less</template>
+                                    </i>
+                                </span>
+                            </div>
+                            <div v-show="showTags" class="adminNote">
+                                <div class="noteContent">
+                                    <template v-for="(note, index) in noteList.adminNotes">
+                                        <div class="subNote" :key="index">
+                                            <span class="userIcon"></span>
+                                            <span class="userName">{{ note.name }}</span>
+                                            <div class="userNote">
+                                                <span>{{ note.note }}</span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="noteInput">
+                                    <form @submit.prevent="noteList.createNote()">
+                                        <input type="text" placeholder="Type a note" v-model="noteList.note" />
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <!-- <div>Note</div> -->
                     </div>
                 </template>
                 <template v-else>
@@ -157,9 +273,11 @@
 import { Component, Watch, Vue } from 'vue-property-decorator';
 import Axios from 'axios';
 
+import AdminNoteListModel from '../../models/inbox/AdminNoteListModel';
 import GalleryTemplateComponent from './builder/GalleryTemplateComponent.vue';
 import ListTemplateComponent from './builder/ListTemplateComponent.vue';
 import TextTemplateComponent from './builder/TextTemplateComponent.vue';
+import SavedReplyListModel from '../../models/inbox/SavedReplyListModel';
 
 @Component({
     components: {
@@ -177,16 +295,32 @@ export default class InboxPageComponent extends Vue {
     private el: any = null;
     private prevLoading: boolean = false;
     private lastScroll: number = 0;
+    private showTags: boolean = false;
+    private noteList: AdminNoteListModel = new AdminNoteListModel('', 0);
+    private saveReply: boolean = false;
+    private createReply: boolean = false;
+    private manageReply: boolean = false; 
+    private replyList: SavedReplyListModel = new SavedReplyListModel('', 0);
     
     @Watch('$store.state.selectedInbox')
-    reloadMesg() {
+    async reloadMesg() {
         if(this.$store.state.selectedInbox===-1) return;
         setTimeout(() => {
             this.el = this.$refs.mesgBox;
         }, 3000);
+        this.noteList = new AdminNoteListModel(this.$store.state.projectInfo.id, this.$store.state.inboxList[this.$store.state.selectedInbox].id);
+        this.replyList = new SavedReplyListModel(this.$store.state.projectInfo.id, this.$store.state.inboxList[this.$store.state.selectedInbox].id);
         this.mesgList = [];
         this.firstLoad = true;
         this.loadMesg(false);
+        let status = await this.noteList.getNote();
+        if(!status.status) {
+            alert(status.mesg);
+        }
+        let replyStatus = await this.replyList.getReply();
+        if(!replyStatus.status) {
+            alert(status.mesg);
+        }
     }
 
     private scrollCallback(a: any) {
@@ -372,5 +506,6 @@ export default class InboxPageComponent extends Vue {
         });
 
     }
+
 }
 </script>

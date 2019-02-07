@@ -176,3 +176,18 @@ export interface messageTag {
     notice: string,
     is_primary: boolean
 }
+
+export interface adminNote {
+    id: number;
+    name: string;
+    note: string;
+    image: string;
+    time: string;
+}
+
+export interface savedReply {
+    id: number;
+    title: string;
+    message: string;
+    time: string;
+}

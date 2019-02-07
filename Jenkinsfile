@@ -5,7 +5,7 @@ pipeline {
       stage('Docker Build') {
           steps {
               sh 'docker-compose down'
-              sh 'docker-compose -f docker-compose-jenkins.yml up -d --user jenkins'
+              sh 'docker-compose -f docker-compose-jenkins.yml up -d'
           }
       }
       

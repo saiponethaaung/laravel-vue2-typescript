@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
+use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\ProjectPage;
 
@@ -23,7 +24,7 @@ class ProjectController extends Controller
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'mesg' => 'Project name is reqired!'
+                'mesg' => 'Project name is required!'
             ], 422);
         }
 

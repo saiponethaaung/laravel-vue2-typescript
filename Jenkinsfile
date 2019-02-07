@@ -15,13 +15,6 @@ pipeline {
                 sh 'docker cp chatbotsaiapplev1_php_1:/var/www/html/public/test-report /var/www/chatbot-saiapple-v1-report'
             }
         }
-
-        stage('Publish Report') {
-            steps {
-                junit 'public/test-report/logfile.xml'
-                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public/test-report/', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
-            }
-        }
             
         stage('Publish Development') {
             steps {
@@ -33,6 +26,8 @@ pipeline {
     post {
         always {
             echo 'This will always run'
+            junit 'public/test-report/logfile.xml'
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public/test-report/', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
             sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf vendor\''
             sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf public/test-report\''
             sh 'docker-compose stop'

@@ -73,17 +73,30 @@ class ProjectListTest extends TestCase
             ]);
     }
 
-    // public function testGetProjectInfo()
-    // {
-    //     $project = factory(Project::class, 10)->create(['user_id' => $this->user->id])->each(function($project) {
-    //         factory(ProjectUser::class)->create([
-    //             'project_id' => $project->id,
-    //             'user_id' => $project->user_id
-    //         ]);
-    //     });
+    public function testGetProjectInfo()
+    {
+        factory(Project::class)->create(['user_id' => $this->user->id])->each(function($p) {
+            factory(ProjectUser::class)->create([
+                'project_id' => $p->id,
+                'user_id' => $p->user_id
+            ]);
+        });
+        $project = factory(Project::class)->create(['user_id' => $this->user->id])->each(function($p) {
+            factory(ProjectUser::class)->create([
+                'project_id' => $p->id,
+                'user_id' => $p->user_id
+            ]);
+        });
 
-    //     $this->withHeaders([
-    //         'Authorization' => 'Bearer '.md5($this->token)
-    //     ]);
-    // }
+        print_r($project);
+
+        $featureTest = $this->withHeaders([
+            'Authorization' => 'Bearer '.md5($this->token)
+        ])
+        ->json('get', route('chatbot.project.info', [
+            'projectId' => $project->id
+        ]));
+
+        print_r($featureTest);
+    }
 }

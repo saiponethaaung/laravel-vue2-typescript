@@ -27,7 +27,7 @@ pipeline {
         always {
             echo 'This will always run'
             junit 'public/test-report/logfile.xml'
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public/test-report/', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public/test-report/', reportFiles: 'index.html', reportName: 'Code Coverage Report', reportTitles: ''])
             sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf vendor\''
             sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf public/test-report\''
             sh 'docker-compose stop'

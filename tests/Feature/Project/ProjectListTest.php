@@ -72,4 +72,18 @@ class ProjectListTest extends TestCase
                 'message'
             ]);
     }
+
+    // public function testGetProjectInfo()
+    // {
+    //     $project = factory(Project::class, 10)->create(['user_id' => $this->user->id])->each(function($project) {
+    //         factory(ProjectUser::class)->create([
+    //             'project_id' => $project->id,
+    //             'user_id' => $project->user_id
+    //         ]);
+    //     });
+
+    //     $this->withHeaders([
+    //         'Authorization' => 'Bearer '.md5($this->token)
+    //     ]);
+    // }
 }

@@ -128,7 +128,7 @@ class ProjectController extends Controller
             'data' => $res
         ]);
     }
-
+    
     public function getPage(Request $request)
     {
         $fbc = new FacebookController(Auth::guard('api')->user()->facebook_token);
@@ -171,6 +171,7 @@ class ProjectController extends Controller
         ], 200);
     }
 
+    // @codeCoverageIgnoreStart
     public function linkProject(Request $request)
     {
         // Collect id and access_token from post
@@ -419,6 +420,7 @@ class ProjectController extends Controller
             ]
         ]);
     }
+    // @codeCoverageIgnoreEnd
 
     public function changePublishStatusPage(Request $request)
     {

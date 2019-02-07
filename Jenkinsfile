@@ -13,6 +13,11 @@ pipeline {
             steps {
                 sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'composer install && cp .env.example .env && php artisan key:generate && vendor/bin/phpunit\''
                 sh 'docker cp chatbotsaiapplev1_php_1:/var/www/html/public/test-report /var/www/chatbot-saiapple-v1-report'
+            }
+        }
+
+        stage('Publish Report') {
+            steps {
                 junit 'public/test-report/logfile.xml'
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public/test-report/', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
             }

@@ -24,6 +24,10 @@ class ProjectStatusTest extends TestCase
                 'user_id' => $project->user_id
             ]);
         });
-        $this->assertTrue(false);
+        $this->withHeaders([
+            'Authorization' => 'Bearer '.$this->token
+        ])
+        ->json('post', route('chatbot.project.page.publish.status'))
+        ->assertStatus(true);
     }
 }

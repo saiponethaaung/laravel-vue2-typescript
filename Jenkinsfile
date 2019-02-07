@@ -5,7 +5,7 @@ pipeline {
       stage('Docker Build') {
           steps {
               sh 'docker-compose down'
-              sh 'docker-compose -f docker-compose-jenkins.yml up -d'
+              sh 'docker-compose -f docker-compose-jenkins.yml up -d --user jenkins'
           }
       }
       
@@ -21,6 +21,7 @@ pipeline {
       stage('Docker Destory') {
           steps {
               sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf vendor\''
+              sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf public/test-report\''
               sh 'docker-compose stop'
               sh 'docker-compose down'
           }

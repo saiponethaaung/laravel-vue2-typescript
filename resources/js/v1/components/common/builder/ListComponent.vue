@@ -7,10 +7,12 @@
                         <div class="chatListInfo">
                             <div class="chatListInput">
                                 <div>
-                                    <input type="text" placeholder="Heading (required)" v-model="l.title" class="chatListTitle" v-on:blur="l.saveContent()"/>
+                                    <input type="text" placeholder="Heading (required)" maxlength="80" v-model="l.title" class="chatListTitle" v-on:blur="l.saveContent()"/>
+                                    <span class="limitListTitle">{{ l.textLimitTitle }}</span>
                                 </div>
                                 <div>
-                                    <input type="text" placeholder="Subtitle or description" v-model="l.sub" class="chatListSub" v-on:blur="l.saveContent()"/>
+                                    <input type="text" placeholder="Subtitle or description" maxlength="80" v-model="l.sub" class="chatListSub" v-on:blur="l.saveContent()"/>
+                                    <span class="limitListTitle limitSub">{{ l.textLimitSub }}</span>
                                 </div>
                                 <div>
                                     <input type="text" placeholder="URL" v-model="l.url" class="chatListUrl" v-on:blur="l.saveContent()"/>

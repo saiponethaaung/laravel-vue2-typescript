@@ -26,10 +26,12 @@
                         </figure>
                         <div class="chatGalleryContent">
                             <div>
-                                <input type="text" placeholder="Heading (required)" v-model="l.title" v-on:blur="l.saveContent()"/>
+                                <input type="text" placeholder="Heading (required)" maxlength="80" v-model="l.title" v-on:blur="l.saveContent()"/>
+                                <span class="limitGalleryTitle">{{ l.textLimitTitle }}</span>
                             </div>
                             <div>
-                                <input type="text" placeholder="Subtitle or description" v-model="l.sub" v-on:blur="l.saveContent()"/>
+                                <input type="text" placeholder="Subtitle or description" maxlength="80" v-model="l.sub" v-on:blur="l.saveContent()"/>
+                                <span class="limitGalleryTitle limitGalSub">{{ l.textLimitSub }}</span>
                             </div>
                             <div>
                                 <input type="text" placeholder="Url" v-model="l.url" v-on:blur="l.saveContent()"/>

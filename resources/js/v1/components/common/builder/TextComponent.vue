@@ -1,7 +1,12 @@
 <template>
     <div class="componentTypeOne">
         <div class="botTextComponent">
-            <textarea class="textBody" v-model="content.value" v-on:blur="content.saveContent()"></textarea>
+            <textarea class="textBody" maxlength="640" v-model="content.value" v-on:blur="content.saveContent()"></textarea>
+            <div class="limitWord">
+                <span>
+                    <div class="alignWord">{{ textLimit }}</div
+                ></span>
+            </div>
             <div class="textBtn">
                 <div class="addBtn btnCon" v-for="(button, index) in content.buttons" :key="index">
                     <div class="buttonActionGroup" @click="content.btnEditIndex=index">
@@ -57,6 +62,10 @@ export default class TextComponent extends Vue {
                 textarea.style.cssText = 'height:' + (textarea.scrollHeight+10) + 'px';
             },0);
         });
+    }
+
+    get textLimit() {
+        return 640-this.content.value.length;
     }
 }
 </script>

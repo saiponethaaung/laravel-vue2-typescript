@@ -7,7 +7,8 @@
                     <div class="quickReplyValue" @click="closeOtherSection(index);qr.canShow=!qr.canShow;"  v-if="qr.block.length>0">{{ qr.block[0].title }}</div>
                     <div class="quickReplyInfoBox" :class="{'showInfoBox': qr.canShow}">
                         <div class="QRActionName">
-                            <input placeholder="Title" v-model="qr.title" v-on:blur="qr.saveContent()"/>
+                            <input placeholder="Title" maxlength="20" v-model="qr.title" v-on:blur="qr.saveContent()"/>
+                            <span class="limitReplyTitle">{{ qr.textLimitTitle }}</span>
                         </div>
                         <div>
                             <div>

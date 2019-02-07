@@ -22,15 +22,6 @@ pipeline {
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public/test-report/', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
             }
         }
-
-        stage('Docker Destory') {
-            steps {
-                sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf vendor\''
-                sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf public/test-report\''
-                sh 'docker-compose stop'
-                sh 'docker-compose down'
-            }
-        }
             
         stage('Publish Development') {
             steps {
@@ -42,6 +33,10 @@ pipeline {
     post {
         always {
             echo 'This will always run'
+            sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf vendor\''
+            sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf public/test-report\''
+            sh 'docker-compose stop'
+            sh 'docker-compose down'
         }
         success {
             emailextrecipients([developers(), requestor(), upstreamDevelopers()])

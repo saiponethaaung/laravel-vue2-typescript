@@ -35264,14 +35264,60 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
 
 let ProjectListComponent = class ProjectListComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.createBot = false;
+        this.projectName = "";
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__["a" /* default */]();
+    }
+    createProject() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.projectName == "") {
+                alert('Project name is required!');
+                return;
+            }
+            let res = {
+                status: true,
+                mesg: 'Success'
+            };
+            let data = new FormData();
+            data.append('name', this.projectName);
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project`,
+                method: 'post',
+                data: data
+            }).then(res => {
+                this.$store.state.projectList.push(res.data.data);
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.ajaxHandler.globalHandler(err, 'Failed to create a reply!');
+                }
+            });
+            this.createBot = false;
+        });
+    }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
@@ -35630,7 +35676,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -36717,7 +36763,101 @@ var render = function() {
         "div",
         { staticClass: "outerCardList" },
         [
-          _vm._m(2),
+          _c("div", { staticClass: "cardList addBgColor" }, [
+            _c(
+              "div",
+              {
+                staticClass: "addIcon",
+                on: {
+                  click: function($event) {
+                    _vm.createBot = true
+                  }
+                }
+              },
+              [_c("i", { staticClass: "material-icons" }, [_vm._v("add")])]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "btnProject",
+                on: {
+                  click: function($event) {
+                    _vm.createBot = true
+                  }
+                }
+              },
+              [_vm._v("\n                    Create Bot\n                ")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "createProject" }, [
+            _vm.createBot
+              ? _c("div", { staticClass: "popFixedContainer popFixedCenter" }, [
+                  _c(
+                    "div",
+                    { staticClass: "userAttributePop filterAttribute" },
+                    [
+                      _c("div", { staticClass: "createReply" }, [
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "projectInputName" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.projectName,
+                                expression: "projectName"
+                              }
+                            ],
+                            staticClass: "inputName",
+                            attrs: { placeholder: "Enter project name" },
+                            domProps: { value: _vm.projectName },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.projectName = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "alignBtn" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "createBtn",
+                              on: {
+                                click: function($event) {
+                                  _vm.createProject()
+                                }
+                              }
+                            },
+                            [_vm._v("Create")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "createBtn",
+                              on: {
+                                click: function($event) {
+                                  _vm.createBot = false
+                                }
+                              }
+                            },
+                            [_vm._v("Cancel")]
+                          )
+                        ])
+                      ])
+                    ]
+                  )
+                ])
+              : _vm._e()
+          ]),
           _vm._v(" "),
           _vm._l(_vm.$store.state.projectList, function(project, index) {
             return _c("div", { key: index }, [
@@ -36799,13 +36939,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "cardList addBgColor" }, [
-      _c("div", { staticClass: "addIcon" }, [
-        _c("i", { staticClass: "material-icons" }, [_vm._v("add")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "btnProject" }, [
-        _vm._v("\n                    Create Bot\n                ")
+    return _c("div", { staticClass: "createProjectNav" }, [
+      _c("span", { staticClass: "createTitle" }, [
+        _vm._v("Create a new project")
       ])
     ])
   }
@@ -52159,7 +52295,7 @@ var content = __webpack_require__(170);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(172)("044f53b3", content, false, {});
+var update = __webpack_require__(172)("8f8c94da", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags

@@ -56,11 +56,14 @@ class ProjectController extends Controller
         }
         // @codeCoverageIgnoreEnd
 
+        DB::commit();
+
         return response()->json([
             'status' => true,
             'code' => 201,
             'mesg' => 'success',
             'data' => [
+                'id' => md5($project->id),
                 'name' => $project->name
             ]
         ], 201);

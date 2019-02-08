@@ -14778,6 +14778,58 @@ a:hover {
   color: #000000;
 }
 
+.createProject .popFixedContainer .userAttributePop {
+  max-height: 200px;
+  background: #f5f6f7;
+}
+
+.createProject .popFixedContainer .filterAttribute {
+  width: 350px;
+}
+
+.createProjectNav {
+  background-color: #f5f6f7;
+  border-bottom: 1px solid #e5e5e5;
+  line-height: 41px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 5px;
+}
+
+.createProjectNav .createTitle {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.projectInputName {
+  margin: 30px;
+}
+
+.projectInputName .inputName {
+  width: 290px;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+}
+
+.alignBtn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  float: right;
+  margin-right: 20px;
+}
+
+.alignBtn .createBtn {
+  width: 60px;
+  margin-right: 10px;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #c238eb;
+  cursor: pointer;
+}
+
 @font-face {
   font-family: 'project-font';
   src: url(/fonts/Rubik-Regular.ttf?6c980940392587c8d7d325c07965ebda) format("truetype");

@@ -13,6 +13,8 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\ProjectPage;
+use App\Models\ChatBlock;
+use App\Models\ChatBlockSection;
 
 class ProjectController extends Controller
 {
@@ -43,6 +45,27 @@ class ProjectController extends Controller
                 'project_id' => $project->id,
                 'user_id' => Auth::guard('api')->user()->id,
                 'user_type' => 0
+            ]);
+
+            $block = ChatBlock::create([
+                'title' => 'Landing',
+                'is_lock' => true,
+                'project_id' => $project->id,
+                'type' => 1
+            ]);
+
+            ChatBlockSection::create([
+                'block_id' => $block->id,
+                'broadcast_id' => null,
+                'title' => 'Welcome',
+                'order' => 1
+            ]);
+
+            ChatBlockSection::create([
+                'block_id' => $block->id,
+                'broadcast_id' => null,
+                'title' => 'Default Answer',
+                'order' => 2
             ]);
         }
         // @codeCoverageIgnoreStart

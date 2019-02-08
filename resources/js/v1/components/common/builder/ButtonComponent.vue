@@ -4,7 +4,10 @@
             <div class="buttonPopHeading">
                 <p class="buttonPopInfo">If subscriber clicks</p>
                 <div class="actionInfo">
-                    <input type="text" v-model="button.title" v-on:focus="cancelUpdate()" v-on:blur="updateContent()" max="20"/>
+                    <div>
+                        <input type="text" maxlength="20" v-model="button.title" v-on:focus="cancelUpdate()" v-on:blur="updateContent()"/>
+                        <span class="limitBtnTitle">{{ textLimit }}</span>
+                    </div>
                 </div>
             </div>
             <div class="buttonOptions">
@@ -215,6 +218,10 @@ export default class ButtonComponent extends Vue {
     destroyed() {
         // important to clean up!!
         document.removeEventListener('click', this.documentClick);
+    }
+
+    get textLimit() {
+        return 20-this.button.title.length;
     }
 }
 </script>

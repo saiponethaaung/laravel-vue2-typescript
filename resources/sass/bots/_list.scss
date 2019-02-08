@@ -277,6 +277,52 @@
     margin-left: 25px;
 }
 
+.limitListTitle {
+    position: absolute;
+    top: 20px;
+    right: 95px;
+    font-size: 11px;
+    width: 15px;
+    background: #c238eb;
+    text-align: center;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+.limitSub {
+    top: 50px;
+}
+
+.limitGalleryTitle {
+    position: absolute;
+    top: 170px;
+    right: 20px;
+    font-size: 11px;
+    width: 15px;
+    background: #c238eb;
+    text-align: center;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+.limitGalSub {
+    top:200px;
+}
+
+.limitBtnTitle {
+    color: #ffffff;
+    position: absolute;
+    right: 60px;
+    font-size: 11px;
+    top: 52px;
+    background: #e2e;
+    height: 17px;
+    width: 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+}
+
 .galleLoader {
     width: 80px;
 }

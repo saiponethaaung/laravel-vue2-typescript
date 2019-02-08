@@ -38158,7 +38158,6 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
         this.noteList = new __WEBPACK_IMPORTED_MODULE_2__models_inbox_AdminNoteListModel__["a" /* default */]('', 0);
         this.saveReply = false;
         this.createReply = false;
-        this.manageReply = false;
         this.replyList = new __WEBPACK_IMPORTED_MODULE_6__models_inbox_SavedReplyListModel__["a" /* default */]('', 0);
     }
     reloadMesg() {
@@ -39148,7 +39147,10 @@ class SavedReplyListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
         this.userId = userId;
         this.content = "";
         this.messageContent = "";
+        this.searchContent = "";
         this.savedReplyList = [];
+        this.cancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+        this.listLoading = false;
     }
     get savedReplies() {
         return this.savedReplyList;
@@ -39168,23 +39170,39 @@ class SavedReplyListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
     set message(message) {
         this.messageContent = message;
     }
+    get search() {
+        return this.searchContent;
+    }
+    set search(search) {
+        this.searchContent = search;
+    }
     getReply() {
         return __awaiter(this, void 0, void 0, function* () {
             let res = {
                 status: true,
                 mesg: 'Success'
             };
+            this.listLoading = true;
+            this.cancelToken.cancel();
+            this.cancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+            let keyword = "";
+            keyword = this.search;
+            console.log(keyword);
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
-                url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/reply`,
-                method: 'get'
+                url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/reply?keyword=${keyword}`,
+                method: 'get',
+                cancelToken: this.cancelToken.token
             }).then(res => {
+                this.savedReplyList = [];
                 for (let r of res.data.data) {
                     this.savedReplyList.push(new __WEBPACK_IMPORTED_MODULE_1__SavedReplyModel__["a" /* default */](r));
                 }
+                this.listLoading = false;
             }).catch(err => {
                 if (err.response) {
                     res.status = false;
                     res.mesg = this.globalHandler(err, 'Failed to load saved reply list!');
+                    this.listLoading = false;
                 }
             });
             return res;
@@ -39596,11 +39614,8 @@ var render = function() {
                                             {
                                               name: "show",
                                               rawName: "v-show",
-                                              value:
-                                                !_vm.createReply &&
-                                                !_vm.manageReply,
-                                              expression:
-                                                "!createReply && !manageReply"
+                                              value: !_vm.createReply,
+                                              expression: "!createReply"
                                             }
                                           ]
                                         },
@@ -39613,75 +39628,141 @@ var render = function() {
                                             ),
                                             _vm._v(" "),
                                             _c(
-                                              "a",
+                                              "span",
                                               {
                                                 staticClass: "manage",
-                                                attrs: { href: "#" },
                                                 on: {
                                                   click: function($event) {
-                                                    _vm.manageReply = true
+                                                    _vm.saveReply = false
                                                   }
                                                 }
                                               },
-                                              [_vm._v("Manage Replies")]
+                                              [
+                                                _c(
+                                                  "i",
+                                                  {
+                                                    staticClass:
+                                                      "material-icons"
+                                                  },
+                                                  [_vm._v("clear")]
+                                                )
+                                              ]
                                             )
                                           ]),
                                           _vm._v(" "),
-                                          _vm._m(2),
+                                          _c(
+                                            "div",
+                                            { staticClass: "replyText" },
+                                            [
+                                              _c(
+                                                "i",
+                                                {
+                                                  staticClass: "material-icons"
+                                                },
+                                                [_vm._v("search")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c("input", {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value: _vm.replyList.search,
+                                                    expression:
+                                                      "replyList.search"
+                                                  }
+                                                ],
+                                                staticClass: "inputText",
+                                                attrs: {
+                                                  placeholder:
+                                                    "Search saved replies"
+                                                },
+                                                domProps: {
+                                                  value: _vm.replyList.search
+                                                },
+                                                on: {
+                                                  keyup: function($event) {
+                                                    _vm.replyList.getReply(
+                                                      _vm.replyList.search
+                                                    )
+                                                  },
+                                                  input: function($event) {
+                                                    if (
+                                                      $event.target.composing
+                                                    ) {
+                                                      return
+                                                    }
+                                                    _vm.$set(
+                                                      _vm.replyList,
+                                                      "search",
+                                                      $event.target.value
+                                                    )
+                                                  }
+                                                }
+                                              })
+                                            ]
+                                          ),
                                           _vm._v(" "),
                                           _c(
                                             "div",
                                             { staticClass: "savedList" },
                                             [
-                                              _vm._l(
-                                                _vm.replyList.savedReplies,
-                                                function(reply, index) {
-                                                  return [
-                                                    _c(
-                                                      "div",
-                                                      {
-                                                        key: index,
-                                                        staticClass: "subReply"
-                                                      },
-                                                      [
+                                              _vm.replyList.listLoading
+                                                ? [
+                                                    _vm._v(
+                                                      "\n                                        Loading...\n                                    "
+                                                    )
+                                                  ]
+                                                : _vm._l(
+                                                    _vm.replyList.savedReplies,
+                                                    function(reply, index) {
+                                                      return [
                                                         _c(
                                                           "div",
                                                           {
+                                                            key: index,
                                                             staticClass:
-                                                              "replyTitle"
+                                                              "subReply"
                                                           },
                                                           [
-                                                            _vm._v(
-                                                              "\n                                                " +
-                                                                _vm._s(
-                                                                  reply.title
-                                                                ) +
-                                                                "\n                                            "
-                                                            )
-                                                          ]
-                                                        ),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "div",
-                                                          {
-                                                            staticClass:
-                                                              "replyMessage"
-                                                          },
-                                                          [
-                                                            _vm._v(
-                                                              "\n                                                " +
-                                                                _vm._s(
-                                                                  reply.message
-                                                                ) +
-                                                                "\n                                            "
+                                                            _c(
+                                                              "div",
+                                                              {
+                                                                staticClass:
+                                                                  "replyTitle"
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  "\n                                                " +
+                                                                    _vm._s(
+                                                                      reply.title
+                                                                    ) +
+                                                                    "\n                                            "
+                                                                )
+                                                              ]
+                                                            ),
+                                                            _vm._v(" "),
+                                                            _c(
+                                                              "div",
+                                                              {
+                                                                staticClass:
+                                                                  "replyMessage"
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  "\n                                                " +
+                                                                    _vm._s(
+                                                                      reply.message
+                                                                    ) +
+                                                                    "\n                                            "
+                                                                )
+                                                              ]
                                                             )
                                                           ]
                                                         )
                                                       ]
-                                                    )
-                                                  ]
-                                                }
-                                              )
+                                                    }
+                                                  )
                                             ],
                                             2
                                           ),
@@ -39701,25 +39782,6 @@ var render = function() {
                                                   }
                                                 },
                                                 [_vm._v("Create Saved Reply")]
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            { staticClass: "createSavedLink" },
-                                            [
-                                              _c(
-                                                "a",
-                                                {
-                                                  attrs: { href: "#" },
-                                                  on: {
-                                                    click: function($event) {
-                                                      _vm.saveReply = false
-                                                    }
-                                                  }
-                                                },
-                                                [_vm._v("Cancel")]
                                               )
                                             ]
                                           )
@@ -39902,128 +39964,6 @@ var render = function() {
                                             ]
                                           )
                                         ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          directives: [
-                                            {
-                                              name: "show",
-                                              rawName: "v-show",
-                                              value: _vm.manageReply,
-                                              expression: "manageReply"
-                                            }
-                                          ],
-                                          staticClass: "manageReply"
-                                        },
-                                        [
-                                          _vm._m(3),
-                                          _vm._v(" "),
-                                          _vm._m(4),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            { staticClass: "savedList" },
-                                            [
-                                              _vm._l(
-                                                _vm.replyList.savedReplies,
-                                                function(reply, index) {
-                                                  return [
-                                                    _c(
-                                                      "div",
-                                                      {
-                                                        key: index,
-                                                        staticClass: "subReply"
-                                                      },
-                                                      [
-                                                        _c(
-                                                          "div",
-                                                          {
-                                                            staticClass:
-                                                              "replyTitle"
-                                                          },
-                                                          [
-                                                            _vm._v(
-                                                              "\n                                                " +
-                                                                _vm._s(
-                                                                  reply.title
-                                                                ) +
-                                                                "\n                                            "
-                                                            )
-                                                          ]
-                                                        ),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "div",
-                                                          {
-                                                            staticClass:
-                                                              "replyMessage"
-                                                          },
-                                                          [
-                                                            _vm._v(
-                                                              "\n                                                " +
-                                                                _vm._s(
-                                                                  reply.message
-                                                                ) +
-                                                                "\n                                            "
-                                                            )
-                                                          ]
-                                                        )
-                                                      ]
-                                                    )
-                                                  ]
-                                                }
-                                              )
-                                            ],
-                                            2
-                                          ),
-                                          _vm._v(" "),
-                                          _vm._m(5),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            { staticClass: "buttonOption" },
-                                            [
-                                              _c(
-                                                "div",
-                                                { staticClass: "alignBtn" },
-                                                [
-                                                  _c(
-                                                    "button",
-                                                    {
-                                                      staticClass: "btnAction",
-                                                      on: {
-                                                        click: function(
-                                                          $event
-                                                        ) {
-                                                          _vm.manageReply = false
-                                                        }
-                                                      }
-                                                    },
-                                                    [_vm._v("Done")]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "button",
-                                                    {
-                                                      staticClass: "btnAction",
-                                                      on: {
-                                                        click: function(
-                                                          $event
-                                                        ) {
-                                                          ;(_vm.createReply = true),
-                                                            (_vm.manageReply = false)
-                                                        }
-                                                      }
-                                                    },
-                                                    [_vm._v("Create Reply")]
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        ]
                                       )
                                     ]
                                   )
@@ -40050,10 +39990,10 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "attributeTableRoot" }, [
-                            _vm._m(6),
+                            _vm._m(2),
                             _vm._v(" "),
                             _c("table", { staticClass: "attributeTable" }, [
-                              _vm._m(7),
+                              _vm._m(3),
                               _vm._v(" "),
                               _c(
                                 "tbody",
@@ -40090,13 +40030,13 @@ var render = function() {
                                           ])
                                         }
                                       )
-                                    : [_vm._m(8)]
+                                    : [_vm._m(4)]
                                 ],
                                 2
                               )
                             ]),
                             _vm._v(" "),
-                            _vm._m(9)
+                            _vm._m(5)
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "alignNote" }, [
@@ -40234,9 +40174,9 @@ var render = function() {
                           ])
                         ])
                       ]
-                    : [_vm._m(10)]
+                    : [_vm._m(6)]
                 ]
-              : [_vm._m(11)]
+              : [_vm._m(7)]
           ]
     ],
     2
@@ -40261,48 +40201,6 @@ var staticRenderFns = [
       _c("i", { staticClass: "material-icons" }, [
         _vm._v("sentiment_satisfied")
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "replyText" }, [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("search")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "inputText",
-        attrs: { placeholder: "Search saved replies" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "popNav" }, [
-      _c("span", { staticClass: "saved" }, [_vm._v("Saved Replies")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "replyText" }, [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("search")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "inputText",
-        attrs: { placeholder: "Search saved replies" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "createSavedLink" }, [
-      _c("span", [_vm._v("End of saved replies")])
     ])
   },
   function() {
@@ -45269,6 +45167,9 @@ let TextComponent = class TextComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_
             }, 0);
         });
     }
+    get textLimit() {
+        return 640 - this.content.value.length;
+    }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
@@ -45301,6 +45202,7 @@ var render = function() {
           }
         ],
         staticClass: "textBody",
+        attrs: { maxlength: "640" },
         domProps: { value: _vm.content.value },
         on: {
           blur: function($event) {
@@ -45314,6 +45216,14 @@ var render = function() {
           }
         }
       }),
+      _vm._v(" "),
+      _c("div", { staticClass: "limitWord" }, [
+        _c("span", [
+          _c("div", { staticClass: "alignWord" }, [
+            _vm._v(_vm._s(_vm.textLimit))
+          ])
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -45836,6 +45746,12 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
             this.addingNewBtn = false;
         });
     }
+    get textLimitTitle() {
+        return 80 - this.title.length;
+    }
+    get textLimitSub() {
+        return 80 - this.sub.length;
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ListItemModel;
 
@@ -45873,7 +45789,8 @@ var render = function() {
                         staticClass: "chatListTitle",
                         attrs: {
                           type: "text",
-                          placeholder: "Heading (required)"
+                          placeholder: "Heading (required)",
+                          maxlength: "80"
                         },
                         domProps: { value: l.title },
                         on: {
@@ -45887,7 +45804,11 @@ var render = function() {
                             _vm.$set(l, "title", $event.target.value)
                           }
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "limitListTitle" }, [
+                        _vm._v(_vm._s(l.textLimitTitle))
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("div", [
@@ -45903,7 +45824,8 @@ var render = function() {
                         staticClass: "chatListSub",
                         attrs: {
                           type: "text",
-                          placeholder: "Subtitle or description"
+                          placeholder: "Subtitle or description",
+                          maxlength: "80"
                         },
                         domProps: { value: l.sub },
                         on: {
@@ -45917,7 +45839,11 @@ var render = function() {
                             _vm.$set(l, "sub", $event.target.value)
                           }
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "limitListTitle limitSub" }, [
+                        _vm._v(_vm._s(l.textLimitSub))
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("div", [
@@ -46469,6 +46395,12 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
             });
         });
     }
+    get textLimitTitle() {
+        return 80 - this.title.length;
+    }
+    get textLimitSub() {
+        return 80 - this.sub.length;
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = GalleryItemModel;
 
@@ -46555,7 +46487,8 @@ var render = function() {
                       ],
                       attrs: {
                         type: "text",
-                        placeholder: "Heading (required)"
+                        placeholder: "Heading (required)",
+                        maxlength: "80"
                       },
                       domProps: { value: l.title },
                       on: {
@@ -46569,7 +46502,11 @@ var render = function() {
                           _vm.$set(l, "title", $event.target.value)
                         }
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "limitGalleryTitle" }, [
+                      _vm._v(_vm._s(l.textLimitTitle))
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", [
@@ -46584,7 +46521,8 @@ var render = function() {
                       ],
                       attrs: {
                         type: "text",
-                        placeholder: "Subtitle or description"
+                        placeholder: "Subtitle or description",
+                        maxlength: "80"
                       },
                       domProps: { value: l.sub },
                       on: {
@@ -46598,7 +46536,13 @@ var render = function() {
                           _vm.$set(l, "sub", $event.target.value)
                         }
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "limitGalleryTitle limitGalSub" },
+                      [_vm._v(_vm._s(l.textLimitSub))]
+                    )
                   ]),
                   _vm._v(" "),
                   _c("div", [
@@ -47034,6 +46978,9 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
             this.isBtnProcess = false;
         });
     }
+    get textLimitTitle() {
+        return 20 - this.title.length;
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = QuickReplyItemModel;
 
@@ -47105,7 +47052,7 @@ var render = function() {
                             expression: "qr.title"
                           }
                         ],
-                        attrs: { placeholder: "Title" },
+                        attrs: { placeholder: "Title", maxlength: "20" },
                         domProps: { value: qr.title },
                         on: {
                           blur: function($event) {
@@ -47118,7 +47065,11 @@ var render = function() {
                             _vm.$set(qr, "title", $event.target.value)
                           }
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "limitReplyTitle" }, [
+                        _vm._v(_vm._s(qr.textLimitTitle))
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("div", [
@@ -53935,6 +53886,9 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
         // important to clean up!!
         document.removeEventListener('click', this.documentClick);
     }
+    get textLimit() {
+        return 20 - this.button.title.length;
+    }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
@@ -53970,32 +53924,38 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "actionInfo" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.button.title,
-                expression: "button.title"
-              }
-            ],
-            attrs: { type: "text", max: "20" },
-            domProps: { value: _vm.button.title },
-            on: {
-              focus: function($event) {
-                _vm.cancelUpdate()
-              },
-              blur: function($event) {
-                _vm.updateContent()
-              },
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+          _c("div", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.button.title,
+                  expression: "button.title"
                 }
-                _vm.$set(_vm.button, "title", $event.target.value)
+              ],
+              attrs: { type: "text", maxlength: "20" },
+              domProps: { value: _vm.button.title },
+              on: {
+                focus: function($event) {
+                  _vm.cancelUpdate()
+                },
+                blur: function($event) {
+                  _vm.updateContent()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.button, "title", $event.target.value)
+                }
               }
-            }
-          })
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "limitBtnTitle" }, [
+              _vm._v(_vm._s(_vm.textLimit))
+            ])
+          ])
         ])
       ]),
       _vm._v(" "),

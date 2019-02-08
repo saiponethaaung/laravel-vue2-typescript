@@ -163,4 +163,8 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         });
         this.isBtnProcess = false;
     }
+
+    get textLimitTitle() {
+        return 20-this.title.length;
+    }
 }

@@ -40,3 +40,19 @@
         margin-right: 8px;
     }
 }
+
+.limitWord {
+    float: right;
+    margin-top: -45px;
+    margin-right: 20px;
+    overflow: -webkit-paged-x;
+    .alignWord {
+        background: #c238eb;
+        color: #ffffff;
+        height: 18px;
+        width: 30px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 12px;
+    }
+}

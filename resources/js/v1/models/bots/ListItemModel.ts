@@ -200,4 +200,12 @@ export default class ListItemModel extends AjaxErrorHandler{
 
         this.addingNewBtn = false;
     }
+
+    get textLimitTitle() {
+        return 80-this.title.length;
+    }
+
+    get textLimitSub() {
+        return 80-this.sub.length;
+    }
 }

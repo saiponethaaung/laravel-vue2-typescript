@@ -77,17 +77,22 @@
                     <div class="popSavedReply">
                         <div class="popFixedContainer popFixedCenter" v-if="saveReply">
                             <div class="userAttributePop filterAttribute">
-                                <div v-show="!createReply && !manageReply">
+                                <div v-show="!createReply">
                                     <div class="popNav">
                                         <span class="saved">Saved Replies</span>
-                                        <a href="#" class="manage" @click="manageReply = true">Manage Replies</a>
+                                        <span class="manage" @click="saveReply = false">
+                                            <i class="material-icons">clear</i>
+                                        </span>
                                     </div>
                                     <div class="replyText">
                                         <i class="material-icons">search</i>
-                                            <input class="inputText" placeholder="Search saved replies" />
+                                        <input class="inputText" placeholder="Search saved replies" @keyup="replyList.getReply(replyList.search)" v-model="replyList.search" />
                                     </div>
                                     <div class="savedList">
-                                        <template v-for="(reply, index) in replyList.savedReplies">
+                                        <template v-if="replyList.listLoading">
+                                            Loading...
+                                        </template>
+                                        <template v-for="(reply, index) in replyList.savedReplies" v-else>
                                             <div class="subReply" :key="index">
                                                 <div class="replyTitle">
                                                     {{ reply.title }}
@@ -100,9 +105,6 @@
                                     </div>
                                     <div class="createSavedLink">
                                         <a href="#" @click="createReply = true">Create Saved Reply</a>
-                                    </div>
-                                    <div class="createSavedLink">
-                                        <a href="#" @click="saveReply = false">Cancel</a>
                                     </div>
                                 </div>
                                 <div class="createReply" v-show="createReply">
@@ -123,36 +125,6 @@
                                         <div class="alignBtn">
                                             <button class="btnAction" @click="replyList.createReply()">Save</button>
                                             <button class="btnAction" @click="createReply = false">Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="manageReply" v-show="manageReply">
-                                    <div class="popNav">
-                                        <span class="saved">Saved Replies</span>
-                                    </div>
-                                    <div class="replyText">
-                                        <i class="material-icons">search</i>
-                                            <input class="inputText" placeholder="Search saved replies" />
-                                    </div>
-                                    <div class="savedList">
-                                        <template v-for="(reply, index) in replyList.savedReplies">
-                                            <div class="subReply" :key="index">
-                                                <div class="replyTitle">
-                                                    {{ reply.title }}
-                                                </div>
-                                                <div class="replyMessage">
-                                                    {{ reply.message }}
-                                                </div>
-                                            </div>
-                                        </template>
-                                    </div>
-                                    <div class="createSavedLink">
-                                        <span>End of saved replies</span>
-                                    </div>
-                                    <div class="buttonOption">
-                                        <div class="alignBtn">
-                                            <button class="btnAction" @click="manageReply = false">Done</button>
-                                            <button class="btnAction" @click="createReply = true, manageReply = false">Create Reply</button>
                                         </div>
                                     </div>
                                 </div>
@@ -299,7 +271,6 @@ export default class InboxPageComponent extends Vue {
     private noteList: AdminNoteListModel = new AdminNoteListModel('', 0);
     private saveReply: boolean = false;
     private createReply: boolean = false;
-    private manageReply: boolean = false; 
     private replyList: SavedReplyListModel = new SavedReplyListModel('', 0);
     
     @Watch('$store.state.selectedInbox')

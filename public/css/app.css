@@ -11712,6 +11712,23 @@ a:hover {
   margin-right: 8px;
 }
 
+.limitWord {
+  float: right;
+  margin-top: -45px;
+  margin-right: 20px;
+  overflow: -webkit-paged-x;
+}
+
+.limitWord .alignWord {
+  background: #c238eb;
+  color: #ffffff;
+  height: 18px;
+  width: 30px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 12px;
+}
+
 .typingRoot {
   display: inline-block;
   border: 1px solid #e2e2e2;
@@ -12183,6 +12200,56 @@ a:hover {
   margin-left: 25px;
 }
 
+.limitListTitle {
+  position: absolute;
+  top: 20px;
+  right: 95px;
+  font-size: 11px;
+  width: 15px;
+  background: #c238eb;
+  text-align: center;
+  color: #ffffff;
+  border-radius: 5px;
+}
+
+.limitSub {
+  top: 50px;
+}
+
+.limitGalleryTitle {
+  position: absolute;
+  top: 170px;
+  right: 20px;
+  font-size: 11px;
+  width: 15px;
+  background: #c238eb;
+  text-align: center;
+  color: #ffffff;
+  border-radius: 5px;
+}
+
+.limitGalSub {
+  top: 200px;
+}
+
+.limitBtnTitle {
+  color: #ffffff;
+  position: absolute;
+  right: 60px;
+  font-size: 11px;
+  top: 52px;
+  background: #e2e;
+  height: 17px;
+  width: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 5px;
+}
+
 .galleLoader {
   width: 80px;
 }
@@ -12330,6 +12397,18 @@ a:hover {
 
 .attributeNotice {
   font-size: 12px;
+}
+
+.limitReplyTitle {
+  position: absolute;
+  border-radius: 5px;
+  right: 21px;
+  top: 22px;
+  font-size: 11px;
+  background: #c238eb;
+  width: 15px;
+  text-align: center;
+  color: #ffffff;
 }
 
 .userInputRootContainer {
@@ -13174,6 +13253,17 @@ a:hover {
 .popNav .manage {
   float: right;
   margin-right: 10px;
+  margin-top: 3px;
+  color: #e2e2e2;
+  cursor: pointer;
+}
+
+.popNav .manage .material-icons {
+  font-size: 18px;
+}
+
+.popNav .manage:hover {
+  color: #000000;
 }
 
 .replyText {
@@ -13193,6 +13283,10 @@ a:hover {
   max-height: 60%;
   border: 0;
   margin: 10px;
+}
+
+.inputText:focus {
+  outline: none;
 }
 
 .savedList {
@@ -13267,6 +13361,10 @@ a:hover {
   resize: none;
 }
 
+.inputMessage:focus {
+  outline: none;
+}
+
 .buttonOption {
   background: #f5f6f7;
   height: 46px;
@@ -13287,6 +13385,10 @@ a:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  background: transparent;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .createReply .buttonOption .btnAction {

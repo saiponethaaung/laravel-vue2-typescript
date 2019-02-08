@@ -15,7 +15,17 @@ class SavedReplyController extends Controller
     public function getReply(Request $request) 
     {
 
-        $replyList = SavedReply::where('project_id', $request->attributes->get('project')->id)->get();
+        $replyList = SavedReply::query();
+
+        if($request->input('keyword')) {
+            $keyword = $request->input('keyword'); 
+
+            $replyList->where('title', 'like', '%'.$keyword.'%');
+            $replyList = $replyList->get();
+        } else {
+            $replyList->where('project_id', $request->attributes->get('project')->id);
+            $replyList = $replyList->get();
+        }
 
         $res = [];
 

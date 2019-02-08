@@ -39686,30 +39686,7 @@ var render = function() {
                                             ]
                                           )
                                         ]
-                                      : [
-                                          _vm._m(1),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass: "chatInputEmoji",
-                                              on: {
-                                                click: function($event) {
-                                                  _vm.saveReply = true
-                                                }
-                                              }
-                                            },
-                                            [
-                                              _c(
-                                                "i",
-                                                {
-                                                  staticClass: "material-icons"
-                                                },
-                                                [_vm._v("chat")]
-                                              )
-                                            ]
-                                          )
-                                        ]
+                                      : [_vm._m(1), _vm._v(" "), _vm._m(2)]
                                   ]
                                 : [
                                     _c(
@@ -40074,7 +40051,8 @@ var render = function() {
                                                         click: function(
                                                           $event
                                                         ) {
-                                                          _vm.replyList.createReply()
+                                                          _vm.replyList.createReply(),
+                                                            (_vm.createReply = false)
                                                         }
                                                       }
                                                     },
@@ -40126,10 +40104,10 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "attributeTableRoot" }, [
-                            _vm._m(2),
+                            _vm._m(3),
                             _vm._v(" "),
                             _c("table", { staticClass: "attributeTable" }, [
-                              _vm._m(3),
+                              _vm._m(4),
                               _vm._v(" "),
                               _c(
                                 "tbody",
@@ -40166,13 +40144,13 @@ var render = function() {
                                           ])
                                         }
                                       )
-                                    : [_vm._m(4)]
+                                    : [_vm._m(5)]
                                 ],
                                 2
                               )
                             ]),
                             _vm._v(" "),
-                            _vm._m(5)
+                            _vm._m(6)
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "alignNote" }, [
@@ -40310,9 +40288,9 @@ var render = function() {
                           ])
                         ])
                       ]
-                    : [_vm._m(6)]
+                    : [_vm._m(7)]
                 ]
-              : [_vm._m(7)]
+              : [_vm._m(8)]
           ]
     ],
     2
@@ -40337,6 +40315,14 @@ var staticRenderFns = [
       _c("i", { staticClass: "material-icons" }, [
         _vm._v("sentiment_satisfied")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "chatInputEmoji" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("chat")])
     ])
   },
   function() {

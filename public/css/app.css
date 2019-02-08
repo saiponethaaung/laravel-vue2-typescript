@@ -11765,7 +11765,6 @@ a:hover {
 }
 
 .typingInfo figure img {
-  width: 100%;
   height: 100%;
 }
 
@@ -13209,7 +13208,6 @@ a:hover {
 .adminNote .noteContent .userNote {
   margin-left: 40px;
   width: 180px;
-  height: 20px;
   background: #ffffff;
   border: 1px solid #ffffff;
   border-radius: 5px;

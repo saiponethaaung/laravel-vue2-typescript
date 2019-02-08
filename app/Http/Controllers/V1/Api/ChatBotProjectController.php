@@ -28,6 +28,8 @@ use App\Models\ProjectPageUserAttribute;
 
 use App\Http\Controllers\V1\Api\FacebookController;
 
+// @codeCoverageIgnoreStart
+
 class ChatBotProjectController extends Controller
 {
     protected $projectid;
@@ -852,3 +854,5 @@ class ChatBotProjectController extends Controller
         return $res;
     }
 }
+
+// @codeCoverageIgnoreEnd

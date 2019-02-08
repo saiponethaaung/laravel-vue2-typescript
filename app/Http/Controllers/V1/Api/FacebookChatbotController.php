@@ -19,6 +19,8 @@ use App\Http\Controllers\V1\Api\ChatBotProjectController;
 
 use App\Jobs\Facebook\Webhook\ProcessWebhook;
 
+// @codeCoverageIgnoreStart
+
 class FacebookChatbotController extends Controller
 {
     private $token = '';
@@ -680,3 +682,4 @@ class FacebookChatbotController extends Controller
         }
     }
 }
+// @codeCoverageIgnoreEnd

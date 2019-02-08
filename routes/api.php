@@ -43,7 +43,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::delete('/pages/link', 'V1\\Api\\ProjectController@unlinkProject')->name('chatbot.project.page.unlink');
         Route::post('/pages/change-publish-status', 'V1\\Api\\ProjectController@changePublishStatusPage')->name('chatbot.project.page.publish.status');
         
-        Route::get('message-tags', 'V1\\Api\\MessageTagsController@getList');
+        Route::get('message-tags', 'V1\\Api\\MessageTagsController@getList')->name('chatbot.project.message-tags');
 
         Route::group(['prefix' => 'chat-bot'], function() {
             

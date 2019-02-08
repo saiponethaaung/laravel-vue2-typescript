@@ -13,6 +13,8 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Controllers\V1\Api\FacebookController;
 
+// @codeCoverageIgnoreStart
+
 class UserController extends Controller
 {
     public function getProfile(Request $request)
@@ -104,3 +106,5 @@ class UserController extends Controller
         ]);
     }
 }
+
+// @codeCoverageIgnoreEnd

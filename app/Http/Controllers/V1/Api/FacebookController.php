@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 
 use Facebook\Facebook;
 
+// @codeCoverageIgnoreStart
+
 class FacebookController extends Controller
 {
     private $fb;
@@ -408,3 +410,5 @@ class FacebookController extends Controller
         ];
     }
 }
+
+// @codeCoverageIgnoreEnd

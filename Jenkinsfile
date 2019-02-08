@@ -2,6 +2,16 @@ pipeline {
     agent any
 
     stages {
+        stage('Set docker prefix') {
+            steps {
+                script {
+                    def path = (pwd().toLowerCase()).tokenize('/').last();
+                    env.dockerPrefix = path.replaceAll('-', '');
+                    env.dockerPrefix = env.dockerPrefix.replaceAll('_', '');
+                }
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 sh 'docker-compose down'
@@ -11,8 +21,8 @@ pipeline {
         
         stage('Testing') {
             steps {
-                sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'composer install && cp .env.example .env && php artisan key:generate && vendor/bin/phpunit\''
-                sh 'docker cp chatbotsaiapplev1_php_1:/var/www/html/public/test-report /var/www/chatbot-saiapple-v1-report'
+                sh "docker exec ${env.dockerPrefix}_php_1 bash -c 'composer install && cp .env.example .env && php artisan key:generate && vendor/bin/phpunit'"
+                sh "docker cp ${env.dockerPrefix}_php_1:/var/www/html/public/test-report /var/www/chatbot-saiapple-v1-report"
             }
         }
             
@@ -28,8 +38,8 @@ pipeline {
             echo 'This will always run'
             junit 'public/test-report/logfile.xml'
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public/test-report/', reportFiles: 'index.html', reportName: 'Code Coverage Report', reportTitles: ''])
-            sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf vendor\''
-            sh 'docker exec chatbotsaiapplev1_php_1 bash -c \'rm -rf public/test-report\''
+            sh "docker exec ${env.dockerPrefix}_php_1 bash -c 'rm -rf vendor'"
+            sh "docker exec ${env.dockerPrefix}_php_1 bash -c 'rm -rf public/test-report'"
             sh 'docker-compose stop'
             sh 'docker-compose down'
         }

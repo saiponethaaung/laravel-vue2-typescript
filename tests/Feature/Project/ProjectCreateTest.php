@@ -18,7 +18,7 @@ class ProjectCreateTest extends TestCase
      */
     public function testCreateProjectWithoutName()
     {
-        $this->withHeaders([
+        $featureTest = $this->withHeaders([
             'Authorization' => 'Bearer '.$this->token
         ])
         ->json('post', route('chatbot.project.create'))
@@ -36,7 +36,7 @@ class ProjectCreateTest extends TestCase
             'name' => 'new project'
         ];
 
-        $project = $this->withHeaders([
+        $featureTest = $this->withHeaders([
             'Authorization' => 'Bearer '.$this->token
         ])
         ->json('post', route('chatbot.project.create'), $data)

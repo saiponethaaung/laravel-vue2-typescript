@@ -44,7 +44,9 @@ class ProjectController extends Controller
                 'user_id' => Auth::guard('api')->user()->id,
                 'user_type' => 0
             ]);
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -52,6 +54,7 @@ class ProjectController extends Controller
                 'mesg' => 'Failed to create new project!'
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         return response()->json([
             'status' => true,
@@ -90,13 +93,16 @@ class ProjectController extends Controller
 
     public function projectInfo(Request $request)
     {
-        $project = ProjectUser::with(['project', 'project.page'])->where('user_id', Auth::guard('api')->user()->id)->where(DB::raw('md5(project_id)'), $request->projectId)->first();
+        $project = ProjectUser::with(['project', 'project.page'])
+                    ->where('user_id', Auth::guard('api')->user()->id)
+                    ->where('project_id', $request->attributes->get('project')->id)
+                    ->first();
 
         $res = [
             'id' => md5($project->project_id),
             'name' => $project->project->name,
             'image' => '',
-            'isOwner' => $project->user_type!==0 ? false : true,
+            'isOwner' => $project->user_type==0 ? true : false,
             'pageId' => config('facebook.defaultPageId'),
             'testingPageId' => config('facebook.defaultPageId'),
             'pageConnected' => false,
@@ -104,6 +110,7 @@ class ProjectController extends Controller
         ];
 
         if(is_null($project->project->page)==false) {
+            // @codeCoverageIgnoreStart
             $fbc = new FacebookController($project->project->page->token);
             $pageInfo = $fbc->expire();
         
@@ -120,6 +127,7 @@ class ProjectController extends Controller
             $res['pageConnected'] = true;
             $res['publish'] = $project->project->page->publish===1 ? true : false;
             $res['image'] = $pageInfo['data']['picture']['url'];
+            // @codeCoverageIgnoreEnd
         }
 
         return response()->json([
@@ -129,6 +137,7 @@ class ProjectController extends Controller
         ]);
     }
     
+    // @codeCoverageIgnoreStart
     public function getPage(Request $request)
     {
         $fbc = new FacebookController(Auth::guard('api')->user()->facebook_token);
@@ -171,7 +180,6 @@ class ProjectController extends Controller
         ], 200);
     }
 
-    // @codeCoverageIgnoreStart
     public function linkProject(Request $request)
     {
         // Collect id and access_token from post

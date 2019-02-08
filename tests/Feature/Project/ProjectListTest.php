@@ -13,7 +13,7 @@ class ProjectListTest extends TestCase
 {
     public function testGetEmptyProjectList()
     {
-        $project = $this->withHeaders([
+        $featureTest = $this->withHeaders([
                 'Authorization' => 'Bearer '.$this->token
             ])
             ->json('get', route('chatbot.project.list'), [])
@@ -34,7 +34,7 @@ class ProjectListTest extends TestCase
             ]);
         });
 
-        $project = $this->withHeaders([
+        $featureTest = $this->withHeaders([
                 'Authorization' => 'Bearer '.$this->token
             ])
             ->json('get', route('chatbot.project.list'), [])
@@ -60,7 +60,7 @@ class ProjectListTest extends TestCase
     
     public function testGetProjectListUnauthorize()
     {
-        $project = $this->withHeaders([
+        $featureTest = $this->withHeaders([
                 'Authorization' => 'Bearer '.md5($this->token)
             ])
             ->json('get', route('chatbot.project.list'), [])
@@ -75,26 +75,139 @@ class ProjectListTest extends TestCase
 
     public function testGetProjectInfo()
     {
-        factory(Project::class)->create(['user_id' => $this->user->id])->each(function($p) {
-            factory(ProjectUser::class)->create([
-                'project_id' => $p->id,
-                'user_id' => $p->user_id
-            ]);
-        });
         $project = factory(Project::class)->create(['user_id' => $this->user->id]);
-
-        echo "\n";
-        print_r('pro');
-        echo "\n";
-        print_r($project->name);
+        $projectUser = factory(ProjectUser::class)->create([
+            'project_id' => $project->id,
+            'user_id' => $project->user_id,
+            'user_type' => 0
+        ]);
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.md5($this->token)
+            'Authorization' => 'Bearer '.$this->token
         ])
         ->json('get', route('chatbot.project.info', [
             'projectId' => $project->id
-        ]));
+        ]))
+        ->assertStatus(200)
+        ->assertJson([
+            'status' => true,
+            'code' => 200,
+            'data' => [
+                'id' => md5($project->id),
+                'name' => $project->name,
+                'image' => '',
+                'isOwner' => true,
+                'pageId' => config('facebook.defaultPageId'),
+                'testingPageId' => config('facebook.defaultPageId'),
+                'pageConnected' => false,
+                'publish' => false
+            ]
+        ])
+        ->assertJsonStructure([
+            'status',
+            'code',
+            'data' => [
+                'id',
+                'name',
+                'image',
+                'isOwner',
+                'pageId',
+                'testingPageId',
+                'pageConnected',
+                'publish'
+            ]
+        ]);
+    }
 
-        print_r($featureTest);
+    public function testGetProjectInfoNotOwner()
+    {
+        $project = factory(Project::class)->create(['user_id' => $this->user->id]);
+        $projectUser = factory(ProjectUser::class)->create([
+            'project_id' => $project->id,
+            'user_id' => $project->user_id,
+            'user_type' => 1
+        ]);
+
+        $featureTest = $this->withHeaders([
+            'Authorization' => 'Bearer '.$this->token
+        ])
+        ->json('get', route('chatbot.project.info', [
+            'projectId' => $project->id
+        ]))
+        ->assertStatus(200)
+        ->assertJson([
+            'status' => true,
+            'code' => 200,
+            'data' => [
+                'id' => md5($project->id),
+                'name' => $project->name,
+                'image' => '',
+                'isOwner' => false,
+                'pageId' => config('facebook.defaultPageId'),
+                'testingPageId' => config('facebook.defaultPageId'),
+                'pageConnected' => false,
+                'publish' => false
+            ]
+        ])
+        ->assertJsonStructure([
+            'status',
+            'code',
+            'data' => [
+                'id',
+                'name',
+                'image',
+                'isOwner',
+                'pageId',
+                'testingPageId',
+                'pageConnected',
+                'publish'
+            ]
+        ]);
+    }
+
+    public function testChangeProjectStatus()
+    {
+        $project = factory(Project::class)->create(['user_id' => $this->user->id]);
+        $projectUser = factory(ProjectUser::class)->create([
+            'project_id' => $project->id,
+            'user_id' => $project->user_id,
+            'user_type' => 1
+        ]);
+
+        $featureTest = $this->withHeaders([
+            'Authorization' => 'Bearer '.$this->token
+        ])
+        ->json('get', route('chatbot.project.info', [
+            'projectId' => $project->id
+        ]))
+        ->assertStatus(200)
+        ->assertJson([
+            'status' => true,
+            'code' => 200,
+            'data' => [
+                'id' => md5($project->id),
+                'name' => $project->name,
+                'image' => '',
+                'isOwner' => false,
+                'pageId' => config('facebook.defaultPageId'),
+                'testingPageId' => config('facebook.defaultPageId'),
+                'pageConnected' => false,
+                'publish' => false
+            ]
+        ])
+        ->assertJsonStructure([
+            'status',
+            'code',
+            'data' => [
+                'id',
+                'name',
+                'image',
+                'isOwner',
+                'pageId',
+                'testingPageId',
+                'pageConnected',
+                'publish'
+            ]
+        ]);
     }
 }

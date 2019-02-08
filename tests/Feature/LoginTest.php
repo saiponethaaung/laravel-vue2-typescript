@@ -18,7 +18,7 @@ class LoginTest extends TestCase
             'mesg' => 'The email field is required.'
         ];
 
-        $this->post(route('api.login'), [
+        $featureTest = $this->post(route('api.login'), [
             'email' => '',
             'password' => '321123'
         ], ['Accept' => 'application/json'])
@@ -34,7 +34,7 @@ class LoginTest extends TestCase
             'mesg' => 'The password field is required.'
         ];
 
-        $this->post(route('api.login'), [
+        $featureTest = $this->post(route('api.login'), [
             'email' => 'saipone@pixeldirects.com',
             'password' => ''
         ], ['Accept' => 'application/json'])
@@ -50,7 +50,7 @@ class LoginTest extends TestCase
             'mesg' => 'Invalid email or username'
         ];
 
-        $this->post(route('api.login'), [
+        $featureTest = $this->post(route('api.login'), [
             'email' => 'saipone@pixeldirects.com',
             'password' => '321123'
         ], ['Accept' => 'application/json'])
@@ -72,7 +72,7 @@ class LoginTest extends TestCase
             'mesg' => 'Invalid email or username'
         ];
 
-        $this->post(route('api.login'), [
+        $featureTest = $this->post(route('api.login'), [
             'email' => 'saipone@pixeldirects.com',
             'password' => '123'
         ], ['Accept' => 'application/json'])
@@ -88,7 +88,7 @@ class LoginTest extends TestCase
             'password' => bcrypt('321123')
         ]);
 
-        $this->post(route('api.login'), [
+        $featureTest = $this->post(route('api.login'), [
             'email' => 'saipone@pixeldirects.com',
             'password' => '321123'
         ], ['Accept' => 'application/json'])

@@ -18,7 +18,12 @@ class IsProjectValid
      */
     public function handle($request, Closure $next)
     {
-        $project = Project::where(DB::raw('md5(id)'), $request->projectId)->first();
+        $project = [];
+        if(env('APP_ENV')==='testing') {
+            $project = Project::where('id', $request->projectId)->first();
+        } else {
+            $project = Project::where(DB::raw('md5(id)'), $request->projectId)->first();
+        }
 
         if(empty($project)) {
             return response()->json([

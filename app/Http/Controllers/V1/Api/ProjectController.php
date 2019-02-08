@@ -448,7 +448,9 @@ class ProjectController extends Controller
         try {
             $projectPage->publish = $projectPage->publish==1 ? 0 : 1;
             $projectPage->save();
-        } catch(\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch(\Exception $e) {
             // Rollback and send error on failed
             DB::rollback();
             return response()->json([
@@ -458,6 +460,7 @@ class ProjectController extends Controller
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         // commit changes
         DB::commit();

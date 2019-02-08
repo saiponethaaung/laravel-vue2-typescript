@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Faker\Factory as Faker;
 use App\Models\User;
+use App\Models\Project;
+use App\Models\ProjectUser;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -14,6 +16,7 @@ abstract class TestCase extends BaseTestCase
     protected $faker;
     protected $user;
     protected $token;
+    protected $project;
 
     /**
      * Set up the test
@@ -33,6 +36,13 @@ abstract class TestCase extends BaseTestCase
         )->getContent());
 
         $this->token = $token->token;
+
+        $this->project = factory(Project::class)->create(['user_id' => $this->user->id]);
+        $projectUser = factory(ProjectUser::class)->create([
+            'project_id' => $this->project->id,
+            'user_id' => $this->project->user_id,
+            'user_type' => 1
+        ]);
     }
     /**
      * Reset the migrations

@@ -49,7 +49,7 @@ class ChatBotController extends Controller
                 'title' => $block->title,
                 'lock' => $block->is_lock
             ]
-        ]);
+        ], 201);
     }
 
     public function getBlocks(Request $request)

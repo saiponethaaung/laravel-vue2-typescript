@@ -81,14 +81,12 @@ class ProjectListTest extends TestCase
                 'user_id' => $p->user_id
             ]);
         });
-        $project = factory(Project::class)->create(['user_id' => $this->user->id])->each(function($p) {
-            factory(ProjectUser::class)->create([
-                'project_id' => $p->id,
-                'user_id' => $p->user_id
-            ]);
-        });
+        $project = factory(Project::class)->create(['user_id' => $this->user->id]);
 
-        print_r($project);
+        echo "\n";
+        print_r('pro');
+        echo "\n";
+        print_r($project->name);
 
         $featureTest = $this->withHeaders([
             'Authorization' => 'Bearer '.md5($this->token)

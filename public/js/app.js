@@ -53765,7 +53765,7 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("span", { staticClass: "limitButtonTitle" }, [
+            _c("span", { staticClass: "limitBtnTitle" }, [
               _vm._v(_vm._s(_vm.textLimit))
             ])
           ])

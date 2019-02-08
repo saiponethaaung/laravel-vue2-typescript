@@ -279,7 +279,7 @@
 
 .limitListTitle {
     position: absolute;
-    top: 25px;
+    top: 20px;
     right: 95px;
     font-size: 11px;
     width: 15px;
@@ -290,7 +290,7 @@
 }
 
 .limitSub {
-    top: 55px;
+    top: 50px;
 }
 
 .limitGalleryTitle {
@@ -307,4 +307,18 @@
 
 .limitGalSub {
     top:200px;
+}
+
+.limitBtnTitle {
+    color: #ffffff;
+    position: absolute;
+    right: 60px;
+    font-size: 11px;
+    top: 52px;
+    background: #e2e;
+    height: 17px;
+    width: 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
 }

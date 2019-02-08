@@ -6,7 +6,7 @@
                 <div class="actionInfo">
                     <div>
                         <input type="text" maxlength="20" v-model="button.title" v-on:focus="cancelUpdate()" v-on:blur="updateContent()"/>
-                        <span class="limitButtonTitle">{{ textLimit }}</span>
+                        <span class="limitBtnTitle">{{ textLimit }}</span>
                     </div>
                 </div>
             </div>

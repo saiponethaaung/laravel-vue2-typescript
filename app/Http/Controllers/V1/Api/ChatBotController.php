@@ -28,7 +28,9 @@ class ChatBotController extends Controller
                 'is_lock' => false,
                 'type' => 1
             ]);
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -37,6 +39,7 @@ class ChatBotController extends Controller
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 
@@ -111,7 +114,9 @@ class ChatBotController extends Controller
         DB::beginTransaction();
         try {
             ChatBlock::findOrFail($request->blockId)->delete();
-        } catch(\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch(\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -120,6 +125,7 @@ class ChatBotController extends Controller
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
         
@@ -142,7 +148,9 @@ class ChatBotController extends Controller
                 'block_id' => $request->blockId,
                 'order' => ChatBlockSection::where('block_id', $request->blockId)->count()+1
             ]);
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -151,6 +159,7 @@ class ChatBotController extends Controller
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 

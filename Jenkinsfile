@@ -14,7 +14,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker-compose down'
+                sh 'docker stop $(docker ps -aq)'
                 sh 'docker-compose -f docker-compose-jenkins.yml up -d'
             }
         }

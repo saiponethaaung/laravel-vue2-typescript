@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use App\Models\ChatBlock;
+use App\Models\ChatBlockSection;
 
 class ChatBlockTest extends TestCase
 {
@@ -37,6 +38,160 @@ class ChatBlockTest extends TestCase
                     'title',
                     'lock'
                 ]
+            ]);
+    }
+
+    public function testGetAllChatBlock()
+    {
+        $block = factory(ChatBlock::class)->create([
+            'title' => 'Landing',
+            'project_id' => $this->project->id
+        ]);
+
+        factory(ChatBlockSection::class)->create([
+            'block_id' => $block->id,
+            'title' => 'Welcome',
+            'order' => 1
+        ]);
+
+        factory(ChatBlockSection::class)->create([
+            'block_id' => $block->id,
+            'title' => 'Default answer',
+            'order' => 2
+        ]);
+
+        $featureTest = $this->withHeaders([
+                'Authorization' => 'Bearer '.$this->token
+            ])
+            ->json('get', route('chatbot.blocks.get', [
+                'projectId' => $this->project->id
+            ]))
+            ->assertStatus(200)
+            ->assertJson([
+                'status' => true,
+                'code' => 200,
+                'data' => [
+                    [
+                        'block' => [
+                            'id' => $block->id,
+                            'project' => md5($this->project->id),
+                            'title' => 'Landing',
+                            'lock' => false
+                        ],
+                        'sections' => [
+                            [
+                                'title' => 'Welcome'
+                            ],
+                            [
+                                'title' => 'Default answer'
+                            ]
+                        ]
+                    ]
+                ]
+            ])
+            ->assertJsonStructure([
+                'status',
+                'code',
+                'data' => [
+                    '*' => [
+                        'block' => [
+                            'id',
+                            'project',
+                            'title',
+                            'lock'
+                        ],
+                        'sections' => [
+                            '*' => [
+                                'id',
+                                'title'
+                            ]
+                        ]
+                    ]
+                ]
+            ]);
+    }
+
+    public function testProjectNotMember()
+    {
+        $project = factory(\App\Models\Project::class)->create();
+
+        $featureTest = $this->withHeaders([
+                'Authorization' => 'Bearer '.$this->token
+            ])
+            ->json('get', route('chatbot.blocks.get', [
+                'projectId' => $project->id
+            ]))
+            ->assertStatus(422)
+            ->assertJson([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'You are not a memeber of the project!'
+            ])
+            ->assertJsonStructure([
+                'status',
+                'code',
+                'mesg'
+            ]);
+    }
+
+    public function testDeleteChatBlock()
+    {
+        $block = factory(ChatBlock::class)->create([
+            'title' => 'Landing',
+            'project_id' => $this->project->id
+        ]);
+
+        factory(ChatBlockSection::class)->create([
+            'block_id' => $block->id,
+            'title' => 'Welcome',
+            'order' => 1
+        ]);
+
+        factory(ChatBlockSection::class)->create([
+            'block_id' => $block->id,
+            'title' => 'Default answer',
+            'order' => 2
+        ]);
+
+        $featureTest = $this->withHeaders([
+                'Authorization' => 'Bearer '.$this->token
+            ])
+            ->json('delete', route('chatbot.block.delete', [
+                'projectId' => $this->project->id,
+                'blockId' => $block->id
+            ]))
+            ->assertStatus(200)
+            ->assertJson([
+                'status' => true,
+                'code' => 200,
+                'mesg' => 'Success delete'
+            ])
+            ->assertJsonStructure([
+                'status',
+                'code',
+                'mesg'
+            ]);
+    }
+
+    public function testInvalidChatBlock()
+    {
+        $featureTest = $this->withHeaders([
+                'Authorization' => 'Bearer '.$this->token
+            ])
+            ->json('delete', route('chatbot.block.delete', [
+                'projectId' => $this->project->id,
+                'blockId' => rand(2000,3000)
+            ]))
+            ->assertStatus(422)
+            ->assertJson([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Invalid block!'
+            ])
+            ->assertJsonStructure([
+                'status',
+                'code',
+                'mesg'
             ]);
     }
 }

@@ -62,7 +62,7 @@
                                     <div class="chatInputEmoji">
                                         <i class="material-icons">sentiment_satisfied</i>
                                     </div>
-                                    <div class="chatInputEmoji" @click="saveReply=true">
+                                    <div class="chatInputEmoji">
                                         <i class="material-icons">chat</i>
                                     </div>
                                 </template>
@@ -123,7 +123,7 @@
                                     </div>
                                     <div class="buttonOption">
                                         <div class="alignBtn">
-                                            <button class="btnAction" @click="replyList.createReply()">Save</button>
+                                            <button class="btnAction" @click="replyList.createReply(), createReply = false">Save</button>
                                             <button class="btnAction" @click="createReply = false">Cancel</button>
                                         </div>
                                     </div>

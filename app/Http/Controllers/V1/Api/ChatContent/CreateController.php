@@ -59,7 +59,9 @@ class CreateController extends Controller
                     $content = $this->createImage($request);
                     break;
             }
-        } catch(\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch(\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -68,6 +70,7 @@ class CreateController extends Controller
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 
@@ -88,7 +91,7 @@ class CreateController extends Controller
 
         $res = [
             'status' => true,
-            'code' => 200,
+            'code' => 201,
             'data' => [
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,
@@ -120,7 +123,7 @@ class CreateController extends Controller
 
         $res = [
             'status' => true,
-            'code' => 200,
+            'code' => 201,
             'data' => [
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,
@@ -382,7 +385,9 @@ class CreateController extends Controller
                 'order' => 1,
                 'value' => ''
             ]);
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
             DB::rollback();
             return [
                 'status' => false,
@@ -391,12 +396,13 @@ class CreateController extends Controller
                 'debugMesg' => $e->getMessage()
             ];
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 
         return [
             'status' => true,
-            'code' => 200,
+            'code' => 201,
             'data' => [
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,
@@ -499,7 +505,9 @@ class CreateController extends Controller
                 'order' => 1,
                 'validation' => null
             ]);
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
             DB::rollback();
             return [
                 'status' => false,
@@ -508,12 +516,13 @@ class CreateController extends Controller
                 'debugMesg' => $e->getMessage()
             ];
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 
         return [
             'status' => true,
-            'code' => 200,
+            'code' => 201,
             'data' => [
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,

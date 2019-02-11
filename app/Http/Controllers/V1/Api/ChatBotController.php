@@ -170,7 +170,7 @@ class ChatBotController extends Controller
                 'id' => $section->id,
                 'title' => $section->title,
             ]
-        ]);
+        ], 201);
     }
 
     public function updateSection(Request $request)
@@ -196,7 +196,9 @@ class ChatBotController extends Controller
         try {
             $section->title = $input['title'];
             $section->save();
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -205,6 +207,7 @@ class ChatBotController extends Controller
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 
@@ -231,7 +234,9 @@ class ChatBotController extends Controller
 
         try {
             $section->delete();
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -240,6 +245,7 @@ class ChatBotController extends Controller
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 
@@ -269,7 +275,7 @@ class ChatBotController extends Controller
                 $query->where('title', 'like', '%'.$keyword.'%');
             }
         });
-        $list->where(DB::raw('md5(project_id)'), $request->projectId);
+        $list->where('project_id', $request->attributes->get('project')->id);
         $list = $list->get();
 
         $res = [];

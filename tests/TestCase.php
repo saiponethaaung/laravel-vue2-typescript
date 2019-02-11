@@ -9,6 +9,8 @@ use Faker\Factory as Faker;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
+use App\Models\ChatBlock;
+use App\Models\ChatBlockSection;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -17,6 +19,8 @@ abstract class TestCase extends BaseTestCase
     protected $user;
     protected $token;
     protected $project;
+    protected $block;
+    protected $section;
 
     /**
      * Set up the test
@@ -43,6 +47,16 @@ abstract class TestCase extends BaseTestCase
             'user_id' => $this->project->user_id,
             'user_type' => 1
         ]);
+
+        $this->block = factory(ChatBlock::class)->create([
+            'title' => 'Landing',
+            'project_id' => $this->project->id,
+        ]);
+
+        $this->section = factory(ChatBlockSection::class)->create([
+            'block_id' => $this->block->id
+        ]);
+
     }
     /**
      * Reset the migrations

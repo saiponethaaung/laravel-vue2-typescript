@@ -45,7 +45,8 @@ class ChatBlockTest extends TestCase
     {
         $block = factory(ChatBlock::class)->create([
             'title' => 'Landing',
-            'project_id' => $this->project->id
+            'project_id' => $this->project->id,
+            'is_lock' => 1
         ]);
 
         factory(ChatBlockSection::class)->create([
@@ -73,10 +74,23 @@ class ChatBlockTest extends TestCase
                 'data' => [
                     [
                         'block' => [
-                            'id' => $block->id,
+                            'id' => $this->block->id,
                             'project' => md5($this->project->id),
                             'title' => 'Landing',
                             'lock' => false
+                        ],
+                        'sections' => [
+                            [
+                                'title' => $this->section->title
+                            ]
+                        ]
+                    ],
+                    [
+                        'block' => [
+                            'id' => $block->id,
+                            'project' => md5($this->project->id),
+                            'title' => 'Landing',
+                            'lock' => true
                         ],
                         'sections' => [
                             [

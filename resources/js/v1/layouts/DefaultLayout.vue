@@ -13,6 +13,15 @@
                 </li>
                 <li>
                     <router-link 
+                        :to="{name: 'project.ai', params: {projectid: $route.params.projectid}}"
+                        :class="{'activeSection': this.$route.meta.section==='ai'}"    
+                    >
+                        <i class="material-icons">whatshot</i>
+                        <span class="icon-label">Setup AI</span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link 
                         :to="{name: 'project.inbox', params: {projectid: $route.params.projectid}}"
                         :class="{'activeSection': this.$route.meta.section==='inbox'}"    
                     >
@@ -146,14 +155,22 @@
                 </div>
             </section>
             <section id="innnerContent">
-                <div class="sidebar bodySidebar">
-                    <template v-if="!$store.state.validatingProject">
-                        <component :is="dynamicSidebar"></component>
-                    </template>
-                </div>
-                <div class="bodyContent">
-                    <router-view></router-view>
-                </div>
+                <template v-if="undefined!==$route.meta.fullContent && $route.meta.fullContent===true">
+                    <div class="bodyContent fullWidthContent">
+                        <div class="sidebarPlacementBorder"></div>
+                        <router-view></router-view>
+                    </div>
+                </template>
+                <template v-else>
+                    <div class="sidebar bodySidebar">
+                        <template v-if="!$store.state.validatingProject">
+                            <component :is="dynamicSidebar"></component>
+                        </template>
+                    </div>
+                    <div class="bodyContent">
+                        <router-view></router-view>
+                    </div>
+                </template>
             </section>
         </div>
     </div>

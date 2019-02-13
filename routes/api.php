@@ -45,6 +45,11 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         
         Route::get('message-tags', 'V1\\Api\\MessageTagsController@getList')->name('chatbot.project.message-tags');
 
+        Route::group(['prefix' => 'ai-setup'], function() {
+            Route::get('/', 'V1\\Api\\AIController@getList')->name('chatbot.ai.list');
+            Route::post('/', 'V1\\Api\\AIController@create')->name('chatbot.ai.create');
+        });
+
         Route::group(['prefix' => 'chat-bot'], function() {
             
             Route::post('block', 'V1\\Api\\ChatBotController@createBlock')->name('chatbot.block.create');

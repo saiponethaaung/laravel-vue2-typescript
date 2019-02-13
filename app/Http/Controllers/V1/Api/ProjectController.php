@@ -40,33 +40,6 @@ class ProjectController extends Controller
                 'timezone' => '',
                 'user_id' => Auth::guard('api')->user()->id
             ]);
-
-            ProjectUser::create([
-                'project_id' => $project->id,
-                'user_id' => Auth::guard('api')->user()->id,
-                'user_type' => 0
-            ]);
-
-            $block = ChatBlock::create([
-                'title' => 'Landing',
-                'is_lock' => true,
-                'project_id' => $project->id,
-                'type' => 1
-            ]);
-
-            ChatBlockSection::create([
-                'block_id' => $block->id,
-                'broadcast_id' => null,
-                'title' => 'Welcome',
-                'order' => 1
-            ]);
-
-            ChatBlockSection::create([
-                'block_id' => $block->id,
-                'broadcast_id' => null,
-                'title' => 'Default Answer',
-                'order' => 2
-            ]);
         }
         // @codeCoverageIgnoreStart
         catch (\Exception $e) {
@@ -74,6 +47,7 @@ class ProjectController extends Controller
             return response()->json([
                 'status' => false,
                 'code' => 422,
+                'debugMesg' => $e->getMessage(),
                 'mesg' => 'Failed to create new project!'
             ], 422);
         }

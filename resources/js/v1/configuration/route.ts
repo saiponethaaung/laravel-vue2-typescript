@@ -8,6 +8,8 @@ import RouterViewComponent from '../configuration/RouterViewComponent.vue';
 import ProjectListComponent from '../components/ProjectListComponent.vue';
 import ProjectRootComponent from '../components/ProjectRootComponent.vue';
 
+import AIComponent from '../components/ai/AIComponent.vue';
+
 import ProjectConfigrationComponent from '../components/ProjectConfigrationComponent.vue';
 
 import ChatBotComponent from '../components/chatbot/ContentComponent.vue';
@@ -50,6 +52,15 @@ export default new VueRouter({
                         section: 'chatbot'
                     },
                     component: ChatBotComponent
+                },
+                {
+                    path: "ai-setup",
+                    name: "project.ai",
+                    meta: {
+                        section: "ai",
+                        fullContent: true
+                    },
+                    component: AIComponent
                 },
                 {
                     path: "inbox",

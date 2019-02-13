@@ -191,3 +191,8 @@ export interface savedReply {
     message: string;
     time: string;
 }
+
+export interface FilterGroup {
+    id: number,
+    name: string
+}

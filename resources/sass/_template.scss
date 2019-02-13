@@ -77,6 +77,7 @@
                 visibility: hidden;
                 opacity: 0;
                 transition: 300ms opacity;
+                white-space: nowrap;
                 &::before {
                     content: "";
                     position: absolute;
@@ -183,6 +184,18 @@
     .bodyContent {
         width: calc(100% - #{$sidebarControlWidth});
         height: 100%;
+        &.fullWidthContent {
+            width: 100%;
+            position: relative;
+            .sidebarPlacementBorder {
+                position: absolute;
+                top: -1px;
+                left: 0;
+                width: $sidebarControlWidth;
+                height: 1px;
+                background: $borderPrimary;
+            }
+        }
     }
 }
 

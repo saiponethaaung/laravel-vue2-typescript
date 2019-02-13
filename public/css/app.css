@@ -14,6 +14,9 @@
 .broadcastHistoryList .braodcastHistoryHeading,
 .broadcastHistoryList .braodcastHistory,
 .broadcastHistory .bcDate .bchIcon,
+.aiC-Search .aiC-form-label,
+.aiC-groupCon .aiC-groupCon-child.addmore button,
+.aiKeywordBlock,
 .userListTable th.ultDateColumn .ultWrapper,
 .userListTable th.utlSessinColumn .ultWrapper,
 .segmentList .segmentListItem,
@@ -25,7 +28,9 @@
 .broadcastHistory,
 .broadcastHistory .bcDate,
 .broadcastHistory .bchPercentage,
-.broadcastHistory .bchTimestamp {
+.broadcastHistory .bchTimestamp,
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordboxPlaceholder,
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-response .addMoreCon {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -49,7 +54,10 @@
 .statusBtn,
 .broadcastHistoryList .braodcastHistoryHeading,
 .broadcastHistoryList .braodcastHistory,
-.broadcastHistory .bcDate .bchIcon {
+.broadcastHistory .bcDate .bchIcon,
+.aiC-Search .aiC-form-label,
+.aiC-groupCon .aiC-groupCon-child.addmore button,
+.aiKeywordBlock {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -10769,6 +10777,7 @@ a.text-dark:focus {
   opacity: 0;
   -webkit-transition: 300ms opacity;
   transition: 300ms opacity;
+  white-space: nowrap;
 }
 
 #sideMenu #sideNav a .icon-label::before {
@@ -10903,6 +10912,20 @@ a.text-dark:focus {
 #innnerContent .bodyContent {
   width: calc(100% - 352px);
   height: 100%;
+}
+
+#innnerContent .bodyContent.fullWidthContent {
+  width: 100%;
+  position: relative;
+}
+
+#innnerContent .bodyContent.fullWidthContent .sidebarPlacementBorder {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 352px;
+  height: 1px;
+  background: #ebebeb;
 }
 
 .popupContainer {
@@ -14685,7 +14708,8 @@ a:hover {
 
 .bodyList {
   width: 100%;
-  height: 600px;
+  height: calc(100% - 64px);
+  overflow: auto;
   background: #ebebeb;
   display: inline-block;
 }
@@ -14718,6 +14742,9 @@ a:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-top: 30px;
 }
 
 .cardList {
@@ -14730,6 +14757,7 @@ a:hover {
   position: relative;
   margin-left: 40px;
   background: #ffffff;
+  margin-bottom: 30px;
 }
 
 .cardList .addIcon {
@@ -14826,6 +14854,201 @@ a:hover {
   background: #ffffff;
   color: #c238eb;
   cursor: pointer;
+}
+
+.aiContainerRoot {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.aiContainer {
+  width: calc(100% - 352px);
+  margin: 0 auto;
+  padding: 60px 0;
+}
+
+.aiC-headingCon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.aiC-desc {
+  width: calc(100% - 300px);
+  float: left;
+  padding-right: 50px;
+}
+
+.aiC-desc .aiC-desc-heading {
+  font-size: 14px;
+}
+
+.aiC-desc .aiC-desc-description {
+  font-size: 13px;
+  color: #aaaaaa;
+}
+
+.aiC-Search {
+  width: 300px;
+  float: left;
+}
+
+.aiC-Search .aiC-form-label {
+  border: 1px solid #ebebeb;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 5px;
+}
+
+.aiC-Search .aiC-form-label .material-icons {
+  padding: 0 3px 0 5px;
+}
+
+.aiC-Search .aiC-form-label input {
+  border: none;
+  width: 100%;
+  padding: 0 10px 0 5px;
+  height: 100%;
+}
+
+.aiC-groupCon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.aiC-groupCon .aiC-groupCon-child {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background: #ebebeb;
+  color: #aaaaaa;
+  padding: 5px 12px;
+  border-radius: 5px;
+  position: relative;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.aiC-groupCon .aiC-groupCon-child.addmore {
+  padding: 5px;
+}
+
+.aiC-groupCon .aiC-groupCon-child.addmore button {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.aiC-groupCon .aiC-groupCon-child.addmore button .material-icons {
+  font-size: 19px;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content {
+  border: 1px solid #ebebeb;
+  margin-bottom: 30px;
+  border-radius: 5px;
+  padding: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content h5 {
+  font-size: 14px;
+  color: #aaaaaa;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords {
+  float: left;
+  width: calc(100% - 300px);
+  padding-right: 30px;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordSection {
+  position: relative;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordbox {
+  width: 100%;
+  height: 130px;
+  border-radius: 5px;
+  border: 1px solid #ebebeb;
+  padding: 8px 15px;
+  position: relative;
+  z-index: 2;
+  line-height: 36px;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordbox:focus + .keywordboxPlaceholder {
+  display: none;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordboxPlaceholder {
+  position: absolute;
+  top: 8px;
+  left: 15px;
+  color: #aaaaaa;
+  z-index: 1;
+  line-height: 36px;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordboxPlaceholder .material-icons {
+  margin: 0 5px;
+  font-size: 16px;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordboxPlaceholder .aiKeywordBlock {
+  margin: 0;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-response {
+  width: 300px;
+  float: left;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-response ul {
+  padding: 0;
+  list-style: none;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-response li {
+  padding: 10px;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-response .addMoreCon .material-icons {
+  margin-right: 5px;
+  font-size: 20px;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-response .addMoreCon button {
+  color: #2083f0;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.aiKeywordBlock {
+  padding: 0 20px;
+  border: 1px solid #ebebeb;
+  border-radius: 20px;
+  margin-bottom: 15px;
+  height: 36px;
+  line-height: 36px;
 }
 
 @font-face {

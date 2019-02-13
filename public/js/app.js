@@ -32348,34 +32348,37 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_ProjectListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_ProjectListComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ProjectRootComponent_vue__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ProjectRootComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_ProjectRootComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_ProjectConfigrationComponent_vue__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_ProjectConfigrationComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_ProjectConfigrationComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_chatbot_ContentComponent_vue__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_chatbot_ContentComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_chatbot_ContentComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_chatbot_SidebarComponent_vue__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_chatbot_SidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_chatbot_SidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_inbox_InboxPageComponent_vue__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_inbox_InboxPageComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_inbox_InboxPageComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_inbox_InboxPageSidebarComponent_vue__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_inbox_InboxPageSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_inbox_InboxPageSidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_user_UserListComponent_vue__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_user_UserListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_user_UserListComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_user_UserListSidebarComponent_vue__ = __webpack_require__(113);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_user_UserListSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_user_UserListSidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_user_SegmentListComponent_vue__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_user_SegmentListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_user_SegmentListComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListSidebarComponent_vue__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListSidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_broadcast_BroadcastComponent_vue__ = __webpack_require__(123);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_broadcast_BroadcastComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_broadcast_BroadcastComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastSidebarComponent_vue__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastSidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSendNowComponent_vue__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSendNowComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSendNowComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastTriggerComponent_vue__ = __webpack_require__(153);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastTriggerComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastTriggerComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_broadcast_BroadcastScheduleComponent_vue__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_broadcast_BroadcastScheduleComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__components_broadcast_BroadcastScheduleComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_ai_AIComponent_vue__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_ai_AIComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_ai_AIComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_ProjectConfigrationComponent_vue__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_ProjectConfigrationComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_ProjectConfigrationComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_chatbot_ContentComponent_vue__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_chatbot_ContentComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_chatbot_ContentComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_chatbot_SidebarComponent_vue__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_chatbot_SidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_chatbot_SidebarComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_inbox_InboxPageComponent_vue__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_inbox_InboxPageComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_inbox_InboxPageComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_inbox_InboxPageSidebarComponent_vue__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_inbox_InboxPageSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_inbox_InboxPageSidebarComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_user_UserListComponent_vue__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_user_UserListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_user_UserListComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_user_UserListSidebarComponent_vue__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_user_UserListSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_user_UserListSidebarComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListComponent_vue__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_user_SegmentListSidebarComponent_vue__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_user_SegmentListSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_user_SegmentListSidebarComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastComponent_vue__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSidebarComponent_vue__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSidebarComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastSendNowComponent_vue__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastSendNowComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastSendNowComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_broadcast_BroadcastTriggerComponent_vue__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_broadcast_BroadcastTriggerComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__components_broadcast_BroadcastTriggerComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_broadcast_BroadcastScheduleComponent_vue__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_broadcast_BroadcastScheduleComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__components_broadcast_BroadcastScheduleComponent_vue__);
+
 
 
 
@@ -32413,20 +32416,29 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
                     path: "/",
                     name: "project.home",
                     meta: {
-                        sidebar: __WEBPACK_IMPORTED_MODULE_7__components_chatbot_SidebarComponent_vue___default.a,
+                        sidebar: __WEBPACK_IMPORTED_MODULE_8__components_chatbot_SidebarComponent_vue___default.a,
                         section: 'chatbot'
                     },
-                    component: __WEBPACK_IMPORTED_MODULE_6__components_chatbot_ContentComponent_vue___default.a
+                    component: __WEBPACK_IMPORTED_MODULE_7__components_chatbot_ContentComponent_vue___default.a
+                },
+                {
+                    path: "ai-setup",
+                    name: "project.ai",
+                    meta: {
+                        section: "ai",
+                        fullContent: true
+                    },
+                    component: __WEBPACK_IMPORTED_MODULE_5__components_ai_AIComponent_vue___default.a
                 },
                 {
                     path: "inbox",
-                    component: __WEBPACK_IMPORTED_MODULE_8__components_inbox_InboxPageComponent_vue___default.a,
+                    component: __WEBPACK_IMPORTED_MODULE_9__components_inbox_InboxPageComponent_vue___default.a,
                     children: [
                         {
                             path: "/",
                             name: "project.inbox",
                             meta: {
-                                sidebar: __WEBPACK_IMPORTED_MODULE_9__components_inbox_InboxPageSidebarComponent_vue___default.a,
+                                sidebar: __WEBPACK_IMPORTED_MODULE_10__components_inbox_InboxPageSidebarComponent_vue___default.a,
                                 section: 'inbox'
                             }
                         }
@@ -32439,18 +32451,18 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
                         {
                             path: "/",
                             name: "project.users",
-                            component: __WEBPACK_IMPORTED_MODULE_10__components_user_UserListComponent_vue___default.a,
+                            component: __WEBPACK_IMPORTED_MODULE_11__components_user_UserListComponent_vue___default.a,
                             meta: {
-                                sidebar: __WEBPACK_IMPORTED_MODULE_11__components_user_UserListSidebarComponent_vue___default.a,
+                                sidebar: __WEBPACK_IMPORTED_MODULE_12__components_user_UserListSidebarComponent_vue___default.a,
                                 section: 'user'
                             }
                         },
                         {
                             path: "segments",
                             name: "project.users.segments",
-                            component: __WEBPACK_IMPORTED_MODULE_12__components_user_SegmentListComponent_vue___default.a,
+                            component: __WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListComponent_vue___default.a,
                             meta: {
-                                sidebar: __WEBPACK_IMPORTED_MODULE_13__components_user_SegmentListSidebarComponent_vue___default.a,
+                                sidebar: __WEBPACK_IMPORTED_MODULE_14__components_user_SegmentListSidebarComponent_vue___default.a,
                                 section: 'user'
                             }
                         }
@@ -32463,36 +32475,36 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
                         {
                             path: "/",
                             name: "project.broadcast",
-                            component: __WEBPACK_IMPORTED_MODULE_14__components_broadcast_BroadcastComponent_vue___default.a,
+                            component: __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastComponent_vue___default.a,
                             meta: {
-                                sidebar: __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastSidebarComponent_vue___default.a,
+                                sidebar: __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSidebarComponent_vue___default.a,
                                 section: 'broadcast'
                             }
                         },
                         {
                             path: "send",
                             name: "project.broadcast.sendnow",
-                            component: __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSendNowComponent_vue___default.a,
+                            component: __WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastSendNowComponent_vue___default.a,
                             meta: {
-                                sidebar: __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastSidebarComponent_vue___default.a,
+                                sidebar: __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSidebarComponent_vue___default.a,
                                 section: 'broadcast'
                             }
                         },
                         {
                             path: "trigger/:triggerid",
                             name: "project.broadcast.trigger",
-                            component: __WEBPACK_IMPORTED_MODULE_17__components_broadcast_BroadcastTriggerComponent_vue___default.a,
+                            component: __WEBPACK_IMPORTED_MODULE_18__components_broadcast_BroadcastTriggerComponent_vue___default.a,
                             meta: {
-                                sidebar: __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastSidebarComponent_vue___default.a,
+                                sidebar: __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSidebarComponent_vue___default.a,
                                 section: 'broadcast'
                             }
                         },
                         {
                             path: "schedule/:scheduleid",
                             name: "project.broadcast.schedule",
-                            component: __WEBPACK_IMPORTED_MODULE_18__components_broadcast_BroadcastScheduleComponent_vue___default.a,
+                            component: __WEBPACK_IMPORTED_MODULE_19__components_broadcast_BroadcastScheduleComponent_vue___default.a,
                             meta: {
-                                sidebar: __WEBPACK_IMPORTED_MODULE_15__components_broadcast_BroadcastSidebarComponent_vue___default.a,
+                                sidebar: __WEBPACK_IMPORTED_MODULE_16__components_broadcast_BroadcastSidebarComponent_vue___default.a,
                                 section: 'broadcast'
                             }
                         }
@@ -32505,7 +32517,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
                         sidebar: null,
                         section: 'setting'
                     },
-                    component: __WEBPACK_IMPORTED_MODULE_5__components_ProjectConfigrationComponent_vue___default.a
+                    component: __WEBPACK_IMPORTED_MODULE_6__components_ProjectConfigrationComponent_vue___default.a
                 },
             ]
         },
@@ -35676,7 +35688,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -51737,6 +51749,32 @@ var render = function() {
             _c(
               "router-link",
               {
+                class: { activeSection: this.$route.meta.section === "ai" },
+                attrs: {
+                  to: {
+                    name: "project.ai",
+                    params: { projectid: _vm.$route.params.projectid }
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "material-icons" }, [
+                  _vm._v("whatshot")
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "icon-label" }, [_vm._v("Setup AI")])
+              ]
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "li",
+          [
+            _c(
+              "router-link",
+              {
                 class: { activeSection: this.$route.meta.section === "inbox" },
                 attrs: {
                   to: {
@@ -52182,20 +52220,46 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("section", { attrs: { id: "innnerContent" } }, [
-        _c(
-          "div",
-          { staticClass: "sidebar bodySidebar" },
-          [
-            !_vm.$store.state.validatingProject
-              ? [_c(_vm.dynamicSidebar, { tag: "component" })]
-              : _vm._e()
-          ],
-          2
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "bodyContent" }, [_c("router-view")], 1)
-      ])
+      _c(
+        "section",
+        { attrs: { id: "innnerContent" } },
+        [
+          undefined !== _vm.$route.meta.fullContent &&
+          _vm.$route.meta.fullContent === true
+            ? [
+                _c(
+                  "div",
+                  { staticClass: "bodyContent fullWidthContent" },
+                  [
+                    _c("div", { staticClass: "sidebarPlacementBorder" }),
+                    _vm._v(" "),
+                    _c("router-view")
+                  ],
+                  1
+                )
+              ]
+            : [
+                _c(
+                  "div",
+                  { staticClass: "sidebar bodySidebar" },
+                  [
+                    !_vm.$store.state.validatingProject
+                      ? [_c(_vm.dynamicSidebar, { tag: "component" })]
+                      : _vm._e()
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "bodyContent" },
+                  [_c("router-view")],
+                  1
+                )
+              ]
+        ],
+        2
+      )
     ])
   ])
 }
@@ -52281,7 +52345,7 @@ var content = __webpack_require__(170);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(172)("8f8c94da", content, false, {});
+var update = __webpack_require__(172)("044f53b3", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55267,6 +55331,388 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(213)
+/* template */
+var __vue_template__ = __webpack_require__(214)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/ai/AIComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-10a585d1", Component.options)
+  } else {
+    hotAPI.reload("data-v-10a585d1", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 213 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_ai_AIGroupListModel__ = __webpack_require__(216);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+let AIComponent = class AIComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.groups = new __WEBPACK_IMPORTED_MODULE_1__models_ai_AIGroupListModel__["a" /* default */]('');
+    }
+    mounted() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.groups = new __WEBPACK_IMPORTED_MODULE_1__models_ai_AIGroupListModel__["a" /* default */](this.$route.params.projectid);
+            yield this.groups.loadContent();
+        });
+    }
+    beforeDestory() {
+        this.groups.cancelLoadContent();
+    }
+};
+AIComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], AIComponent);
+/* harmony default export */ __webpack_exports__["default"] = (AIComponent);
+
+
+/***/ }),
+/* 214 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "aiContainerRoot" }, [
+    _c(
+      "div",
+      { staticClass: "aiContainer" },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        !_vm.groups.loading
+          ? [
+              _c(
+                "ul",
+                { staticClass: "aiC-groupCon" },
+                [
+                  _vm._l(_vm.groups.groups, function(group, index) {
+                    return [
+                      _c(
+                        "li",
+                        { key: index, staticClass: "aiC-groupCon-child" },
+                        [_vm._v(_vm._s(group.name))]
+                      )
+                    ]
+                  }),
+                  _vm._v(" "),
+                  _vm.groups.creating
+                    ? _c("li", { staticClass: "aiC-groupCon-child addmore" }, [
+                        _vm._v(
+                          "\n                    creating...\n                "
+                        )
+                      ])
+                    : _c("li", { staticClass: "aiC-groupCon-child addmore" }, [
+                        _vm._m(1)
+                      ])
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "aiC-ruleCon" },
+                [
+                  _vm._l(5, function(ic) {
+                    return [
+                      _c(
+                        "div",
+                        { key: ic, staticClass: "aiC-ruleCon-content" },
+                        [_vm._m(2, true), _vm._v(" "), _vm._m(3, true)]
+                      )
+                    ]
+                  }),
+                  _vm._v(" "),
+                  _vm._m(4)
+                ],
+                2
+              )
+            ]
+          : [_vm._v("\n            Loading...\n        ")]
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "aiC-headingCon" }, [
+      _c("div", { staticClass: "aiC-desc" }, [
+        _c("h4", { staticClass: "aiC-desc-heading" }, [
+          _vm._v("Set up how bot replies to text messages")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "aiC-desc-description" }, [
+          _vm._v(
+            "Your bot will understand user phrases similar to those you write on the left and reply with some text or a block."
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "aiC-Search" }, [
+        _c("form", { staticClass: "aiC-form" }, [
+          _c("div", { staticClass: "aiC-form-con" }, [
+            _c("label", { staticClass: "aiC-form-label" }, [
+              _c("i", { staticClass: "material-icons" }, [_vm._v("search")]),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "text", placeholder: "Search keyword or block" }
+              })
+            ])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { attrs: { type: "button" } }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("add")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "aiC-ruleCon-content-keywords" }, [
+      _c("h5", [_vm._v("if user say something similar to")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "keywordSection" }, [
+        _c("div", {
+          staticClass: "keywordbox",
+          attrs: { contenteditable: "true" }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "keywordboxPlaceholder" }, [
+          _c("span", { staticClass: "aiKeywordBlock" }, [_vm._v("hi")]),
+          _vm._v(" "),
+          _c("i", { staticClass: "material-icons" }, [
+            _vm._v("subdirectory_arrow_left")
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "aiKeywordBlock" }, [_vm._v("hello")]),
+          _vm._v(
+            " (press 'enter' to seperate phrases)\n                                "
+          )
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "aiC-ruleCon-content-response" }, [
+      _c("h5", [_vm._v("bot replies with")]),
+      _vm._v(" "),
+      _c("ul", [
+        _c("li", [
+          _c("div", { staticClass: "addMoreCon" }, [
+            _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+            _vm._v(" "),
+            _c("span", [
+              _vm._v("add "),
+              _c("button", { attrs: { type: "button" } }, [_vm._v("Block")]),
+              _vm._v(" or "),
+              _c("button", [_vm._v("Text")]),
+              _vm._v(" reply")
+            ])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { attrs: { type: "button" } }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+      _vm._v(" "),
+      _c("span", [_vm._v("Add AI Rule")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-10a585d1", module.exports)
+  }
+}
+
+/***/ }),
+/* 215 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+
+class AIGroupModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(group) {
+        super();
+        this.group = group;
+    }
+    get id() {
+        return this.group.id;
+    }
+    get name() {
+        return this.group.name;
+    }
+    set name(name) {
+        this.group.name = name;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AIGroupModel;
+
+
+
+/***/ }),
+/* 216 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AIGroupModel__ = __webpack_require__(215);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+class AIGroupListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(projectId) {
+        super();
+        this.projectId = projectId;
+        this.groupModelList = [];
+        this.loadCancelToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.isLoading = false;
+        this.isCreating = false;
+    }
+    get loading() {
+        return this.isLoading;
+    }
+    set loading(loading) {
+        this.isLoading = loading;
+    }
+    get creating() {
+        return this.isCreating;
+    }
+    set creating(creating) {
+        this.isCreating = creating;
+    }
+    get groups() {
+        return this.groupModelList;
+    }
+    set groups(groups) {
+        this.groupModelList = groups;
+    }
+    loadContent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.cancelLoadContent();
+            this.loading = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.projectId}/ai-setup`,
+                method: 'get',
+                cancelToken: this.loadCancelToken.token
+            }).then(res => {
+                for (let i of res.data.data) {
+                    this.groupModelList.push(new __WEBPACK_IMPORTED_MODULE_2__AIGroupModel__["a" /* default */](i));
+                }
+                this.loading = false;
+            });
+        });
+    }
+    cancelLoadContent() {
+        this.loadCancelToken.cancel();
+        this.loadCancelToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AIGroupListModel;
+
+
 
 /***/ })
 /******/ ]);

@@ -1,0 +1,173 @@
+.aiContainerRoot {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.aiContainer {
+    width: calc(100% - #{$sidebarControlWidth});
+    margin: 0 auto;
+    padding: 60px 0;
+}
+
+$aiCSearchWdith: 300px;
+
+.aiC-headingCon {
+    display: flex;
+}
+
+.aiC-desc {
+    width: calc(100% - #{$aiCSearchWdith});
+    float: left;
+    padding-right: 50px;
+    .aiC-desc-heading {
+        font-size: 14px;
+    }
+    .aiC-desc-description {
+        font-size: 13px;
+        color: $secondaryText;
+    }
+}
+
+.aiC-Search {
+    width: $aiCSearchWdith;
+    float: left;
+    .aiC-form-label {
+        @extend %flexJCenter;
+        border: 1px solid $borderPrimary;
+        height: 36px;
+        line-height: 36px;
+        border-radius: 5px;
+        .material-icons {
+            padding: 0 3px 0 5px;
+        }
+        input {
+            border: none;
+            width: 100%;
+            padding: 0 10px 0 5px;
+            height: 100%;
+        }
+    }
+}
+
+.aiC-groupCon {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    .aiC-groupCon-child {
+        margin-right: 10px;
+        margin-bottom: 10px;
+        background: $borderPrimary;
+        color: $secondaryText;
+        padding: 5px 12px;
+        border-radius: 5px;
+        position: relative;
+        font-size: 12px;
+        cursor: pointer;
+        &.addmore {
+            padding: 5px;
+            button {
+                @extend %flexJCenter;
+                background: transparent;
+                padding: 0;
+                margin: 0;
+                border: none;
+                .material-icons {
+                    font-size: 19px;
+                }
+            }
+        }
+    }
+}
+
+.aiC-ruleCon {
+    .aiC-ruleCon-content {
+        border: 1px solid $borderPrimary;
+        margin-bottom: 30px;
+        border-radius: 5px;
+        padding: 20px;
+        display: flex;
+        h5 {
+            font-size: 14px;
+            color: $secondaryText;
+        }
+        .aiC-ruleCon-content-keywords {
+            float: left;
+            width: calc(100% - 300px);
+            padding-right: 30px;
+            .keywordSection {
+                position: relative;
+            }
+            .keywordbox {
+                width: 100%;
+                height: 130px;
+                border-radius: 5px;
+                border: 1px solid $borderPrimary;
+                padding: 8px 15px;
+                position: relative;
+                z-index: 2;
+                line-height: $standardHeight;
+                &:focus + .keywordboxPlaceholder {
+                    display: none;
+                }
+            }
+            .keywordboxPlaceholder {
+                @extend %flexCenter;
+                position: absolute;
+                top: 8px;
+                left: 15px;
+                color: $secondaryText;
+                z-index: 1;
+                line-height: $standardHeight;
+                .material-icons {
+                    margin: 0 5px;
+                    font-size: 16px;
+                }
+                .aiKeywordBlock {
+                    margin: 0;
+                }
+            }
+        }
+        .aiC-ruleCon-content-response {
+            width: 300px;
+            float: left;
+            ul {
+                padding: 0;
+                list-style: none;
+                border: 1px solid $borderPrimary;
+                border-radius: 5px;
+            }
+            li {
+                padding: 10px;
+            }
+            .addMoreCon {
+                @extend %flexCenter;
+                .material-icons {
+                    margin-right: 5px;
+                    font-size: 20px;
+                }
+                button {
+                    color: #2083f0;
+                    background: transparent;
+                    border: none;
+                    padding: 0;
+                    margin: 0;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.aiKeywordBlock {
+    @extend %flexJCenter;
+    padding: 0 20px;
+    border: 1px solid $borderPrimary;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    height: $standardHeight;
+    line-height: $standardHeight;
+}

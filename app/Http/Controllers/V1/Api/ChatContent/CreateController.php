@@ -164,7 +164,7 @@ class CreateController extends Controller
 
         $res = [
             'status' => true,
-            'code' => 200,
+            'code' => 201,
             'data' => [
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,
@@ -216,7 +216,7 @@ class CreateController extends Controller
 
         $res = [
             'status' => true,
-            'code' => 200,
+            'code' => 201,
             'data' => [
                 'id' => (int) $create->id,
                 'type' => (int) $create->type,
@@ -255,7 +255,7 @@ class CreateController extends Controller
 
         $res = [
             'status' => true,
-            'code' => 200,
+            'code' => 201,
             'data' => [
                 'id' => (int) $content->id,
                 'type' => (int) $content->type,
@@ -289,7 +289,9 @@ class CreateController extends Controller
                 'order' => ChatGallery::where('content_id', $request->contentId)->count()+1,
                 'content_id' => $request->contentId
             ]);
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -298,12 +300,13 @@ class CreateController extends Controller
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 
         return response()->json([
             'status' => true,
-            'code' => 200,
+            'code' => 201,
             'mesg' => 'Success',
             'content' => [
                 'id' => $list->id,
@@ -332,7 +335,9 @@ class CreateController extends Controller
                 'order' => ChatGallery::where('content_id', $request->contentId)->count()+1,
                 'content_id' => $request->contentId
             ]);
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -341,12 +346,13 @@ class CreateController extends Controller
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 
         return response()->json([
             'status' => true,
-            'code' => 200,
+            'code' => 201,
             'mesg' => 'Success',
             'content' => [
                 'id' => $list->id,
@@ -451,7 +457,9 @@ class CreateController extends Controller
                 'order' => $total+1,
                 'value' => ''
             ]);
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -460,12 +468,13 @@ class CreateController extends Controller
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 
         return response()->json([
             'status' => true,
-            'code' => 200,
+            'code' => 201,
             'data' => [
                 'id' => $quickReply->id,
                 'title' => '',
@@ -477,7 +486,7 @@ class CreateController extends Controller
                 'content_id' => $request->contentId,
                 'block' => []
             ]
-        ]);
+        ], 201);
     }
 
     public function createUserInput(Request $request)
@@ -561,7 +570,9 @@ class CreateController extends Controller
                 'order' => ChatUserInput::where('content_id', $request->contentId)->count()+1,
                 'validation' => null
             ]);
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -570,6 +581,7 @@ class CreateController extends Controller
                 'debugMesg' => $e->getMessage()
             ], 422);
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 
@@ -701,7 +713,9 @@ class CreateController extends Controller
                 'action_type' => 0,
                 'order' => $order+1
             ]);
-        } catch(\Exceptin $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch(\Exceptin $e) {
             DB::rollback();
             return [
                 'status' => false,
@@ -710,6 +724,7 @@ class CreateController extends Controller
                 'debugMesg' => $e->getMessage()
             ];
         }
+        // @codeCoverageIgnoreEnd
 
         DB::commit();
 

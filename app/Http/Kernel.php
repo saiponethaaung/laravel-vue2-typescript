@@ -71,6 +71,7 @@ class Kernel extends HttpKernel
         'verifySegment' => \App\Http\Middleware\ValidateSegment::class,
         'verifySegmentFilter' => \App\Http\Middleware\ValidateSegmentFilter::class,
         'verifyBroadcast' => \App\Http\Middleware\ValidateBroadcast::class,
+        'verifyAIGroup' => \App\Http\Middleware\AI\ValidateGroupId::class,
     ];
 
     /**

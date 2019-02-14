@@ -178,21 +178,40 @@ export interface messageTag {
 }
 
 export interface adminNote {
-    id: number;
-    name: string;
-    note: string;
-    image: string;
-    time: string;
+    id: number,
+    name: string,
+    note: string,
+    image: string,
+    time: string,
 }
 
 export interface savedReply {
-    id: number;
-    title: string;
-    message: string;
-    time: string;
+    id: number,
+    title: string,
+    message: string,
+    time: string,
 }
 
 export interface FilterGroup {
     id: number,
     name: string
+}
+
+export interface FilterGroupRule {
+    id: number,
+    filters: Array<Filter>,
+    response: Array<FilterResponse>
+}
+
+export interface Filter {
+    id: number,
+    keyword: string
+}
+
+export interface FilterResponse {
+    id: number,
+    type: number,
+    content: string,
+    segmentId: number,
+    segmentName: string
 }

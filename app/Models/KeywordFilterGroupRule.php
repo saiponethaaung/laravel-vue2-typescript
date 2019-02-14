@@ -13,4 +13,14 @@ class KeywordFilterGroupRule extends Model
         'created_by',
         'updated_by'
     ];
+
+    public function filters()
+    {
+        return $this->hasMany('App\Models\KeywordFilter', 'keywords_filters_group_rule_id', 'id');
+    }
+
+    public function response()
+    {
+        return $this->hasMany('App\Models\KeywordFilterResponse', 'keywords_filters_group_rule_id', 'id');
+    }
 }

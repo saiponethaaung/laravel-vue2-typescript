@@ -48,6 +48,14 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         Route::group(['prefix' => 'ai-setup'], function() {
             Route::get('/', 'V1\\Api\\AIController@getList')->name('chatbot.ai.list');
             Route::post('/', 'V1\\Api\\AIController@create')->name('chatbot.ai.create');
+            Route::group(['prefix' => '{kfGroupId}', 'middleware' => 'verifyAIGroup'], function() {
+                Route::put('/', 'V1\\Api\\AIController@updateGroupName')->name('chatbot.ai.group.rename');
+                Route::delete('/', 'V1\\Api\\AIController@deleteGroup')->name('chatbot.ai.group.delete');
+                Route::group(['prefix' => 'rules'], function() {
+                    Route::get('/', 'V1\\Api\\AIController@getRules')->name('chatbot.ai.group.rule.list');
+                    Route::post('/', 'V1\\Api\\AIController@createRule')->name('chatbot.ai.group.rule.create');
+                });
+            });
         });
 
         Route::group(['prefix' => 'chat-bot'], function() {

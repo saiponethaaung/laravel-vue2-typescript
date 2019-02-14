@@ -17,15 +17,21 @@
                     </form>
                 </div>
             </div>
-            <template v-if="!groups.loading">
+            <template v-if="!groupList.loading">
                 <ul class="aiC-groupCon">
-                    <template v-for="(group, index) in groups.groups">
-                        <li class="aiC-groupCon-child" :key="index">{{ group.name }}</li>
+                    <template v-for="(group, index) in groupList.groups">
+                        <ai-group-component
+                            :class="{'activeGroup': index===groupList.active}"
+                            :key="index"
+                            :index="index"
+                            @deleteGroup="deleteGroup(index)"
+                            @activeGroup="activeGroup(index)"
+                            :group="group"></ai-group-component>
                     </template>
-                    <li class="aiC-groupCon-child addmore" v-if="groups.creating">
+                    <li class="aiC-groupCon-child addmore creating" v-if="groupList.creating">
                         creating...
                     </li>
-                    <li class="aiC-groupCon-child addmore" v-else>
+                    <li class="aiC-groupCon-child addmore"  @click="createNewGroup()" v-else>
                         <button type="button">
                             <i class="material-icons">add</i>
                         </button>
@@ -33,36 +39,22 @@
                 </ul>
 
                 <div class="aiC-ruleCon">
-                    <template v-for="ic in 5">
-                        <div class="aiC-ruleCon-content" :key="ic">
-                            <div class="aiC-ruleCon-content-keywords">
-                                <h5>if user say something similar to</h5>
-                                <div class="keywordSection">
-                                    <div contenteditable="true" class="keywordbox"></div>
-                                    <div class="keywordboxPlaceholder">
-                                        <span class="aiKeywordBlock">hi</span>
-                                        <i class="material-icons">subdirectory_arrow_left</i>
-                                        <span class="aiKeywordBlock">hello</span>&nbsp;(press 'enter' to seperate phrases)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="aiC-ruleCon-content-response">
-                                <h5>bot replies with</h5>
-                                <ul>
-                                    <li>
-                                        <div class="addMoreCon">
-                                            <i class="material-icons">add</i>
-                                            <span>add <button type="button">Block</button> or <button>Text</button> reply</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    <template v-if="groupList.groups.length>0">
+                        <template v-for="(rule, index) in groupList.groups[groupList.active].rules">
+                            <ai-rule-component
+                                :rule="rule"
+                                :key="index"></ai-rule-component>
+                        </template>
+                        <template v-if="groupList.groups[groupList.active].creating || groupList.groups[groupList.active].loading">
+                            Loading...
+                        </template>
+                        <template v-else>
+                            <button class="addMoreRule" @click="createNewRule()" type="button">
+                                <i class="material-icons">add</i>
+                                <span>Add AI Rule</span>
+                            </button>
+                        </template>
                     </template>
-                    <button type="button">
-                        <i class="material-icons">add</i>
-                        <span>Add AI Rule</span>
-                    </button>
                 </div>
             </template>
             <template v-else>
@@ -75,19 +67,57 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import AIGroupListModel from '../../models/ai/AIGroupListModel';
+import AiGroupComponent from './AIGroupComponent.vue';
+import AiRuleComponent from './AIRuleComponent.vue';
 
-@Component
+@Component({
+    components: {
+        AiGroupComponent,
+        AiRuleComponent
+    }
+})
 export default class AIComponent extends Vue {
 
-    private groups: AIGroupListModel = new AIGroupListModel('');
+    private groupList: AIGroupListModel = new AIGroupListModel('');
     
     async mounted() {
-        this.groups = new AIGroupListModel(this.$route.params.projectid)
-        await this.groups.loadContent();
+        this.groupList = new AIGroupListModel(this.$route.params.projectid)
+        await this.groupList.loadContent();
+    }
+
+    async createNewGroup() {
+        let create = await this.groupList.createContent();
+
+        if(!create.status) {
+            alert(create.mesg);
+        }
+    }
+
+    async deleteGroup(index: any) {
+        let deleteContent = await this.groupList.deleteContent(index);
+
+        if(!deleteContent.status) {
+            alert(deleteContent.mesg);
+        }
+    }
+
+    activeGroup(index: number) {
+        this.groupList.active = index;
+        if(!this.groupList.groups[index].loaded && !this.groupList.groups[index].loading) {
+            this.groupList.groups[index].loadRule();
+        }
+    }
+
+    async createNewRule() {
+        let createRule = await this.groupList.groups[this.groupList.active].createRule();
+
+        if(!createRule.status) {
+            alert(createRule.mesg);
+        }
     }
 
     beforeDestory() {
-        this.groups.cancelLoadContent();
+        this.groupList.cancelLoadContent();
     }
 }
 </script>

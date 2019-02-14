@@ -201,7 +201,7 @@
 
 .popupContainer {
     position: fixed;
-    z-index: 11;
+    z-index: 13;
     top: 0;
     left: 0;
     background: rgba(0,0,0,0.6);
@@ -210,6 +210,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: auto;
     .defPopCon {
         width: 400px;
         background: $primaryBackground;

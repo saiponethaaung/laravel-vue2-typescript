@@ -5,7 +5,7 @@ export default class AIGroupRule extends AjaxErrorHandler {
     // private rule: FilterGroupRule
 
     constructor(
-        private rule: any,
+        private rule: FilterGroupRule,
         private rootUrl: string
     ) {
         super();
@@ -14,5 +14,7 @@ export default class AIGroupRule extends AjaxErrorHandler {
     get id(): number {
         return this.rule.id;
     }
+
+
 
 }

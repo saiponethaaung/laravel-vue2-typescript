@@ -187,8 +187,17 @@ $aiCSearchWdith: 300px;
                 position: relative;
                 z-index: 2;
                 line-height: $standardHeight;
+                flex-wrap: wrap;
+                overflow: auto;
                 &:focus + .keywordboxPlaceholder {
                     display: none;
+                }
+                .emptyBlock {
+                    border-color: transparent;
+                    width: 30px;
+                }
+                span {
+                    margin-right: 6px;
                 }
             }
             .keywordboxPlaceholder {

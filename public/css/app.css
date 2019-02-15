@@ -15078,10 +15078,22 @@ a:hover {
   position: relative;
   z-index: 2;
   line-height: 36px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  overflow: auto;
 }
 
 .aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordbox:focus + .keywordboxPlaceholder {
   display: none;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordbox .emptyBlock {
+  border-color: transparent;
+  width: 30px;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordbox span {
+  margin-right: 6px;
 }
 
 .aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordboxPlaceholder {

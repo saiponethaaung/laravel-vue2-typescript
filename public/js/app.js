@@ -35688,7 +35688,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -53828,7 +53828,9 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("h6", { staticClass: "projectVendor" }, [
       _vm._v("powered by "),
-      _c("a", { attrs: { href: "javascript:void(0);" } }, [_vm._v("Pixybot")])
+      _c("a", { attrs: { href: "http://pixybots.com", target: "_blank" } }, [
+        _vm._v("Pixybot")
+      ])
     ])
   }
 ]
@@ -53903,7 +53905,7 @@ var content = __webpack_require__(188);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(190)("8f8c94da", content, false, {});
+var update = __webpack_require__(190)("044f53b3", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags

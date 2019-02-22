@@ -11,6 +11,7 @@ class ProjectPage extends Model
     protected $fillable = [
         'project_id',
         'page_id',
+        'page_icon',
         'publish',
         'token'
     ];

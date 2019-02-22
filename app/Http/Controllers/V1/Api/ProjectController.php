@@ -68,7 +68,7 @@ class ProjectController extends Controller
 
     public function list(Request $request)
     {
-        $projects = ProjectUser::with('project')->where('user_id', Auth::guard('api')->user()->id)->get();
+        $projects = ProjectUser::with('project', 'project.page')->where('user_id', Auth::guard('api')->user()->id)->get();
 
         $res = [];
 
@@ -76,7 +76,7 @@ class ProjectController extends Controller
             $parsed = [
                 'id' => md5($project->project_id),
                 'name' => $project->project->name,
-                'page_image' => '',
+                'image' => $project->project->page && $project->project->page->page_icon ? $project->project->page->page_icon : '',
                 'isOwner' => $project->user_type!==0 ? false : true,
                 'pageConnected' => false
             ];
@@ -127,6 +127,9 @@ class ProjectController extends Controller
             $res['pageConnected'] = true;
             $res['publish'] = $project->project->page->publish===1 ? true : false;
             $res['image'] = $pageInfo['data']['picture']['url'];
+            ProjectPage::where('id', $project->project->page->id)->update([
+                'page_icon' => $pageInfo['data']['picture']['url']
+            ]);
             // @codeCoverageIgnoreEnd
         }
 
@@ -276,6 +279,7 @@ class ProjectController extends Controller
         DB::beginTransaction();
         try {
             $projectPage->project_id = $request->attributes->get('project')->id;
+            $projectPage->page_icon = $pageInfo['data']['picture']['url'];
             $projectPage->publish = 0;
             $projectPage->save();
         } catch(\Exception $e) {

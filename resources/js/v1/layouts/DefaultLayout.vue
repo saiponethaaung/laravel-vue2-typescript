@@ -91,7 +91,7 @@
                             </figure>
                             <div class="projectInfo">
                                 <h4 class="projectName">{{ $store.state.projectInfo.name ? $store.state.projectInfo.name : '-' }}</h4>
-                                <h6 class="projectVendor">powered by <a href="javascript:void(0);">Pixybot</a></h6>
+                                <h6 class="projectVendor">powered by <a href="http://pixybots.com" target="_blank">Pixybot</a></h6>
                             </div>
                             <div class="projectNavControl">
                                 <i class="material-icons" v-if="projectOptions">arrow_drop_up</i>

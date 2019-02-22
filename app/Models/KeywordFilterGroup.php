@@ -20,7 +20,7 @@ class KeywordFilterGroup extends Model
 
         static::created(function($kfg) {
             KeywordFilterGroupRule::create([
-                'value' => '',
+                // 'value' => '',
                 'keywords_filters_group_id' => $kfg->id,
                 'created_by' => $kfg->created_by,
                 'updated_by' => $kfg->updated_by

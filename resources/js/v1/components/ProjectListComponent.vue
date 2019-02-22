@@ -15,7 +15,7 @@
     <div>
         <div class="navList">
             <figure>
-                <img src="images/sample/logo.png" class="navIcon"/>
+                <img src="images/icons/Pixybots_Logo.png" class="navIcon"/>
             </figure>
             <div class="navUser">
                 <span class="userIcon"></span>

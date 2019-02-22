@@ -87,7 +87,7 @@
                     <div class="projectList">
                         <div class="projectInfoContainer" ref="projectListDropDown" @click="projectOptions=!projectOptions">
                             <figure class="projectIconWrapper">
-                                <img :src="$store.state.projectInfo.image ? $store.state.projectInfo.image : '/images/sample/logo.png'" class="projectIcon"/>
+                                <img :src="$store.state.projectInfo.image ? $store.state.projectInfo.image : '/images/sample/Image_logo.png'" class="projectIcon"/>
                             </figure>
                             <div class="projectInfo">
                                 <h4 class="projectName">{{ $store.state.projectInfo.name ? $store.state.projectInfo.name : '-' }}</h4>

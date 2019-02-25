@@ -1,7 +1,7 @@
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 import Axios, { CancelTokenSource } from "axios";
 import { FilterGroup } from "../../configuration/interface";
-import AIGroupRule from "./AIGroupRule";
+import AIGroupRuleModel from "./AIGroupRuleModel";
 
 export default class AIGroupModel extends AjaxErrorHandler {
 
@@ -12,7 +12,7 @@ export default class AIGroupModel extends AjaxErrorHandler {
     private ruleLoaded: boolean = false;
     private loadFailed: boolean = false;
     private isCreating: boolean = false;
-    private ruleList: Array<AIGroupRule> = [];
+    private ruleList: Array<AIGroupRuleModel> = [];
 
     constructor(
         private group: FilterGroup,
@@ -49,11 +49,11 @@ export default class AIGroupModel extends AjaxErrorHandler {
         this.showOption = status;
     }
 
-    get rules() : Array<AIGroupRule> {
+    get rules() : Array<AIGroupRuleModel> {
         return this.ruleList;
     }
 
-    set rules(rules: Array<AIGroupRule>) {
+    set rules(rules: Array<AIGroupRuleModel>) {
         this.ruleList = rules;
     }
 
@@ -117,7 +117,7 @@ export default class AIGroupModel extends AjaxErrorHandler {
             console.log('rule list', res.data);
             this.rules = [];
             for(let i of res.data.data) {
-                this.rules.push(new AIGroupRule(i, `${this.rootUrl}/${this.id}/rules`));
+                this.rules.push(new AIGroupRuleModel(i, `${this.rootUrl}/${this.id}/rules`));
             }
             this.ruleLoaded = true;
         }).catch(err => {
@@ -141,7 +141,7 @@ export default class AIGroupModel extends AjaxErrorHandler {
             url: `${this.rootUrl}/${this.id}/rules`,
             method: 'post'
         }).then(res => {
-            this.rules.push(new AIGroupRule(res.data.data, `${this.rootUrl}/${this.id}/rules`));
+            this.rules.push(new AIGroupRuleModel(res.data.data, `${this.rootUrl}/${this.id}/rules`));
         }).catch(err => {
             if (err.response) {
                 res.status = false;

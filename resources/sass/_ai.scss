@@ -170,6 +170,9 @@ $aiCSearchWdith: 300px;
         h5 {
             font-size: 14px;
             color: $secondaryText;
+            b {
+                color: $defaultText;
+            }
         }
         .aiC-ruleCon-content-keywords {
             float: left;
@@ -180,7 +183,7 @@ $aiCSearchWdith: 300px;
             }
             .keywordbox {
                 width: 100%;
-                height: 130px;
+                min-height: 130px;
                 border-radius: 5px;
                 border: 1px solid $borderPrimary;
                 padding: 8px 15px;
@@ -228,6 +231,9 @@ $aiCSearchWdith: 300px;
             }
             li {
                 padding: 10px;
+                &:not(:last-child) {
+                    border-bottom: 1px solid $borderPrimary;
+                }
             }
             .addMoreCon {
                 @extend %flexCenter;
@@ -324,4 +330,39 @@ $aiCSearchWdith: 300px;
 
 .keywordbox {
     display: flex;
+}
+
+.ai-response-text-con {
+    position: relative;
+    overflow: hidden;
+    .ai-response-textarea {
+        min-height: $standardHeight;
+        line-height: $standardHeight;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        resize: none;
+        overflow: hidden;
+        padding: 0 10px;
+        margin: 0;
+        border: none;
+        &:focus {
+            border: 1px solid $borderPrimary;
+            border-radius: 5px;
+        }
+
+        &:focus + .ai-response-text-placeholder {
+            padding-bottom: $standardHeight!important;
+        }
+    }
+    .ai-response-text-placeholder {
+        line-height: $standardHeight;
+        width: 100%;
+        resize: none;
+        overflow: hidden;
+        padding: 0 10px;
+        margin: 0;
+    }
 }

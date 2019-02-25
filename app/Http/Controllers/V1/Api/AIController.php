@@ -8,8 +8,11 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Models\KeywordFilter;
+use App\Models\ChatBlockSection;
 use App\Models\KeywordFilterGroup;
 use App\Models\KeywordFilterGroupRule;
+use App\Models\KeywordFilterResponse;
 
 class AIController extends Controller
 {
@@ -152,7 +155,6 @@ class AIController extends Controller
 
             foreach($rule->filters as $filter) {
                 $parsed['filters'][] = [
-                    'id' => $filter->id,
                     'keyword' => $filter->value
                 ];
             }
@@ -163,7 +165,7 @@ class AIController extends Controller
                     'type' => $response->type,
                     'content' => $response->reply_text,
                     'segmentId' => is_null($response->chat_block_section_id) ? 0 : $response->chat_block_section_id,
-                    'segmentName' => is_null($response->chat_block_section_id) ? 0 : $response->section->title,
+                    'segmentName' => is_null($response->chat_block_section_id) ? '' : $response->section->title,
                 ];
             }
 
@@ -214,6 +216,186 @@ class AIController extends Controller
                 'filters' => [],
                 'response' => []
             ]
+        ]);
+    }
+
+    public function updateKeywords(Request $request)
+    {
+        $keywords = $request->input('keywords');
+
+        DB::beginTransaction();
+
+        try {
+            if(is_null($keywords)) {
+                KeywordFilter::where('keywords_filters_group_rule_id', $request->attributes->get('project_ai_group_rule')->id)
+                    ->delete();
+            } else {
+                $ignoreId = [];
+                foreach($keywords as $keyword) {
+                    $findKeyword = KeywordFilter::where('value', $keyword)
+                        ->where('keywords_filters_group_rule_id', $request->attributes->get('project_ai_group_rule')->id)
+                        ->first();
+
+                    if(empty($findKeyword)) {
+                        $findKeyword = KeywordFilter::create([
+                            'value' => $keyword,
+                            'keywords_filters_group_rule_id' => $request->attributes->get('project_ai_group_rule')->id,
+                            'created_by' => $request->attributes->get('project_user')->id,
+                            'updated_by' => $request->attributes->get('project_user')->id
+                        ]);
+                    }
+
+                    $ignoreId[] = $findKeyword->id;
+                }
+
+                KeywordFilter::whereNotIn('id', $ignoreId)
+                    ->where('keywords_filters_group_rule_id', $request->attributes->get('project_ai_group_rule')->id)
+                    ->delete();
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update keywords for rule!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json($keywords);
+    }
+
+    public function createResponse(Request $request)
+    {
+        $type = $request->input('type');
+
+        if(is_null($type)) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Response type is required!'
+            ], 422);
+        }
+
+        if(!in_array($type, ['text', 'section'])) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Inavlid response type!'
+            ], 422);
+        }
+
+        $response = null;
+
+        DB::beginTransaction();
+
+        try {
+            $response = KeywordFilterResponse::create([
+                'type' => $type=='text' ? 1 : 2,
+                'reply_text' => '',
+                'chat_block_section_id' => null,
+                'created_by' => $request->attributes->get('project_user')->id,
+                'updated_by' => $request->attributes->get('project_user')->id,
+                'keywords_filters_group_rule_id' => $request->attributes->get('project_ai_group_rule')->id
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to create response!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => false,
+            'code' => 201,
+            'mesg' => 'success',
+            'data' => [
+                'id' => $response->id,
+                'type' => $response->type,
+                'content' => '',
+                'segmentId' => 0,
+                'segmentName' => '',
+            ]
+        ]);
+    }
+
+    public function updateResponse(Request $request)
+    {
+        $input = $request->only('content', 'segment');
+        
+        $section = null;
+
+        if(!is_null($input['segment']) && $input['segment']>0 && $request->attributes->get('project_ai_group_rule_response')->type===2) {
+            $section = ChatBlockSection::find($input['segment']);
+            if(empty($section)) {
+                return response()->json([
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => 'Invalid block!'
+                ], 422);
+            }
+
+            $section = $section->id;
+        }
+
+        if($request->attributes->get('project_ai_group_rule_response')->type===1 && (is_null($input['content']) || empty($input['content']))) {
+            $input['content'] = '';
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('project_ai_group_rule_response')->reply_text = $input['content'];
+            $request->attributes->get('project_ai_group_rule_response')->chat_block_section_id = $section;
+            $request->attributes->get('project_ai_group_rule_response')->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update response!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
+        ]);
+    }
+
+    public function deleteResponse(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('project_ai_group_rule_response')->delete();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to delete response!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
         ]);
     }
 }

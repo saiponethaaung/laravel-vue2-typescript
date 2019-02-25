@@ -6,7 +6,7 @@
                 <div
                     contenteditable="true"
                     ref="keywordsCon"
-                    class="keywordbox"
+                    class="keywordbox contentBox"
                     @blur="checkContent()"
                     @focus="checkContentEmpty()"
                     @keyup.prevent="recordKey"
@@ -20,23 +20,46 @@
             </div>
         </div>
         <div class="aiC-ruleCon-content-response">
-            <h5>bot replies with</h5>
+            <h5>bot replies
+                <template v-if="rule.response.length>1">
+                    &nbsp;<b>randomly</b>
+                </template>
+            &nbsp;with</h5>
             <ul>
+                <template v-for="(response, index) in rule.response">
+                    <li :key="index">
+                        <template v-if="response.type===1">
+                            <ai-response-text
+                                :response="response"
+                            ></ai-response-text>
+                        </template>
+                        <template v-if="response.type===2">
+                            <ai-response-section
+                                :response="response"
+                            ></ai-response-section>
+                        </template>
+                        <button type="button" @click="deleteResponse(index)">delete</button>
+                    </li>
+                </template>
+                <li v-if="rule.responseCreating>0">
+                    <div class="addMoreCon">
+                        Loading...
+                    </div>
+                </li>
                 <li>
                     <div class="addMoreCon">
                         <i class="material-icons">add</i>
-                        <span>add <button type="button">Block</button> or <button>Text</button> reply</span>
+                        <span>add <button type="button" @click="createSectionResponse()">Block</button> or <button type="button" @click="createTextResponse()">Text</button> reply</span>
                     </div>
                 </li>
             </ul>
-            {{ keywords }}
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import AIGroupRule from "../../models/ai/AIGroupRule";
+import AIGroupRuleModel from "../../models/ai/AIGroupRuleModel";
 import AiResponseSection from './AIResponseSection.vue';
 import AiResponseText from './AIResponseText.vue';
 
@@ -47,7 +70,7 @@ import AiResponseText from './AIResponseText.vue';
     }
 })
 export default class AIRuleComponent extends Vue {
-    @Prop() rule!: AIGroupRule;
+    @Prop() rule!: AIGroupRuleModel;
     private keywords: string = '';
     private nodeOffset: number = 0;
     private textbox: any = this.$refs.keywordsCon;
@@ -55,21 +78,50 @@ export default class AIRuleComponent extends Vue {
 
     mounted() {
         this.textbox = this.$refs.keywordsCon;
-        console.log(this.textbox);
-        this.checkContent();
+        if(this.rule.filters.length>0) {
+            for(let filter of this.rule.filters) {
+                let span = document.createElement('SPAN');
+                span.innerHTML = filter.keyword;
+                span.className = 'aiKeywordBlock';
+                this.textbox.appendChild(span);
+                this.nodeOffset = 0;
+            }
+        }
+
+        this.checkContent(false);
     }
 
-    checkContent() {
+    async createTextResponse()
+    {
+        let ctr = this.rule.createResponse();
+    }
+
+    async createSectionResponse()
+    {
+        let csr = this.rule.createResponse("section");
+    }
+
+    async checkContent(update=true) {
         this.showPlaceholder = true;
-        console.log('routes', this.$route)
-        console.log(this.textbox)
         if(undefined!==this.textbox) {
-            console.log("not undefined");
+            if(update) {
+                this.rule.filters = [];
+            }
             for(let i=0; i<this.textbox.childNodes.length; i++) {
-                if(this.textbox.childNodes[i].innerText.trim()!=='') {
+                let parsedText = this.textbox.childNodes[i].innerText.trim();
+                if(parsedText!=='') {
+                    if(update) {
+                        this.rule.filters.push({keyword: parsedText});
+                    }
                     this.showPlaceholder = false;
-                    break;
                 }
+            }
+        }
+
+        if(update) {
+            let updateRule = await this.rule.updateFilterValue();
+            if(!updateRule.status) {
+                alert(updateRule.mesg);
             }
         }
     }
@@ -115,15 +167,18 @@ export default class AIRuleComponent extends Vue {
             let sel = window.getSelection();
             let offset = window.getSelection().focusOffset;
             this.nodeOffset = 0;
-            
             // check it have more than 1 keyword box
             if(textbox.childNodes.length>1) {
                 this.getPrevSibling(null===sel.focusNode.previousSibling ? sel.focusNode.parentNode : sel.focusNode.previousSibling);
             }
 
             // get inner content of current node
-            let content = textbox.childNodes[this.nodeOffset].innerText.trim();
-            
+            let content = textbox.childNodes[this.nodeOffset].innerText;
+
+            if(content.length===1) {
+                content = content.trim();
+            }
+
             switch (e.keyCode) {
                 // handle enter key 
                 case 13:
@@ -297,15 +352,16 @@ export default class AIRuleComponent extends Vue {
                 default:
                     // remove empty keyword class
                     textbox.childNodes[this.nodeOffset].className = 'aiKeywordBlock';
+                    let appendContent = e.key==' ' ? '&nbsp;': e.key;
                     // if node is empty replace '&nbsp;' value with inserted value
                     if(content=='&nbsp;' || content=='' || content==' ') {
-                        content = e.key;
+                        content = appendContent;
                     } else {
                         // update content at caret position with user inserted value
-                        content = [content.slice(0, offset), e.key, content.slice(offset)].join('');
+                        content = [content.slice(0, offset), appendContent, content.slice(offset)].join('');
                     }
                     // update node content
-                    textbox.childNodes[this.nodeOffset].innerText = content;
+                    textbox.childNodes[this.nodeOffset].innerHTML = content;
                     if(content.length===1) {
                         offset = 0;
                     }
@@ -318,6 +374,15 @@ export default class AIRuleComponent extends Vue {
             sel.removeAllRanges();
             sel.addRange(range);
             textbox.focus();
+        }
+    }
+
+    async deleteResponse(index: any) {
+        if(confirm("Are you sure you want to delete this response?")) {
+            let deleteResponse = await this.rule.deleteResponse(index);
+            if(!deleteResponse.status) {
+                alert(deleteResponse.mesg);
+            }
         }
     }
 

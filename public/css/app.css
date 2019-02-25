@@ -14,6 +14,7 @@
 .broadcastHistoryList .braodcastHistoryHeading,
 .broadcastHistoryList .braodcastHistory,
 .broadcastHistory .bcDate .bchIcon,
+.navList figure,
 .aiC-Search .aiC-form-label,
 .aiC-groupCon .aiC-groupCon-child.addmore button,
 .aiC-groupCon .aiC-groupCon-child .aiC-groupCon-optionButton,
@@ -31,6 +32,7 @@
 .broadcastHistory .bcDate,
 .broadcastHistory .bchPercentage,
 .broadcastHistory .bchTimestamp,
+.navList,
 .aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordboxPlaceholder,
 .aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-response .addMoreCon {
   display: -webkit-box;
@@ -57,6 +59,7 @@
 .broadcastHistoryList .braodcastHistoryHeading,
 .broadcastHistoryList .braodcastHistory,
 .broadcastHistory .bcDate .bchIcon,
+.navList figure,
 .aiC-Search .aiC-form-label,
 .aiC-groupCon .aiC-groupCon-child.addmore button,
 .aiC-groupCon .aiC-groupCon-child .aiC-groupCon-optionButton,
@@ -14680,20 +14683,23 @@ a:hover {
 .navList {
   height: 64px;
   width: 100%;
-  margin-top: 1%;
+  padding: 0 40px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.navList figure {
+  height: 100%;
 }
 
 .navIcon {
-  width: 10%;
-  height: 10%;
-  margin-left: 42px;
+  height: calc(100% - 30px);
   cursor: pointer;
 }
 
 .navUser {
   float: right;
-  margin-top: -35px;
-  margin-right: 20px;
   cursor: pointer;
 }
 
@@ -14720,7 +14726,9 @@ a:hover {
 }
 
 .bodyList .titleHeight {
-  height: 20%;
+  width: 100%;
+  float: left;
+  display: block;
 }
 
 .titleList {
@@ -14740,6 +14748,7 @@ a:hover {
   border-radius: 5px;
   margin-top: 20px;
   margin-left: 40px;
+  margin-bottom: 30px;
   color: #c238eb;
 }
 
@@ -14749,7 +14758,8 @@ a:hover {
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  margin-top: -30px;
+  width: 100%;
+  float: left;
 }
 
 .cardList {
@@ -14782,6 +14792,11 @@ a:hover {
   color: white;
   cursor: pointer;
   font-size: 50px;
+}
+
+.cardList .addIcon img {
+  width: 40px;
+  height: 40px;
 }
 
 .cardList .btnProject {
@@ -15060,6 +15075,10 @@ a:hover {
   color: #aaaaaa;
 }
 
+.aiC-ruleCon .aiC-ruleCon-content h5 b {
+  color: #000000;
+}
+
 .aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords {
   float: left;
   width: calc(100% - 300px);
@@ -15072,7 +15091,7 @@ a:hover {
 
 .aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-keywords .keywordbox {
   width: 100%;
-  height: 130px;
+  min-height: 130px;
   border-radius: 5px;
   border: 1px solid #ebebeb;
   padding: 8px 15px;
@@ -15129,6 +15148,10 @@ a:hover {
 
 .aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-response li {
   padding: 10px;
+}
+
+.aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-response li:not(:last-child) {
+  border-bottom: 1px solid #ebebeb;
 }
 
 .aiC-ruleCon .aiC-ruleCon-content .aiC-ruleCon-content-response .addMoreCon .material-icons {
@@ -15241,6 +15264,44 @@ a:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.ai-response-text-con {
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-response-text-con .ai-response-textarea {
+  min-height: 36px;
+  line-height: 36px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+  padding: 0 10px;
+  margin: 0;
+  border: none;
+}
+
+.ai-response-text-con .ai-response-textarea:focus {
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+}
+
+.ai-response-text-con .ai-response-textarea:focus + .ai-response-text-placeholder {
+  padding-bottom: 36px !important;
+}
+
+.ai-response-text-con .ai-response-text-placeholder {
+  line-height: 36px;
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+  padding: 0 10px;
+  margin: 0;
 }
 
 @font-face {

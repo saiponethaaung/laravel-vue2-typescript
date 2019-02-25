@@ -54,6 +54,14 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
                 Route::group(['prefix' => 'rules'], function() {
                     Route::get('/', 'V1\\Api\\AIController@getRules')->name('chatbot.ai.group.rule.list');
                     Route::post('/', 'V1\\Api\\AIController@createRule')->name('chatbot.ai.group.rule.create');
+                    Route::group(['prefix' => '{ruleid}', 'middleware' => 'verifyAIGroupRule'], function() {
+                        Route::post('/keywords', 'V1\\Api\\AIController@updateKeywords')->name('chatbot.ai.group.rule.keywords.update');
+                        Route::post('/response', 'V1\\Api\\AIController@createResponse')->name('chatbot.ai.group.rule.response.create');
+                        Route::group(['prefix' => 'response/{responseid}', 'middleware' => 'verifyAIGroupRuleResponse'], function() {
+                            Route::put('/', 'V1\\Api\\AIController@updateResponse')->name('chatbot.ai.group.rule.response.update');
+                            Route::delete('/', 'V1\\Api\\AIController@deleteResponse')->name('chatbot.ai.group.rule.response.delete');
+                        });
+                    });
                 });
             });
         });

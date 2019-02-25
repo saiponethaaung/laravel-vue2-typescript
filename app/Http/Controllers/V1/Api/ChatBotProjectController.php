@@ -25,6 +25,9 @@ use App\Models\FacebookRequestLogs;
 use App\Models\ProjectPageUser;
 use App\Models\ProjectPageUserChat;
 use App\Models\ProjectPageUserAttribute;
+use App\Models\KeywordFilterGroupRule;
+use App\Models\KeywordFilter;
+use App\Models\KeywordFilterResponse;
 
 use App\Http\Controllers\V1\Api\FacebookController;
 
@@ -178,7 +181,13 @@ class ChatBotProjectController extends Controller
         }
         
         if(empty($response)) {
-            $response = $this->getDefault();
+            if(!empty($mesgText)) {
+                $response = $this->aiValidation($mesgText);
+            }
+            // keyword matching start here
+            if(empty($response)) {
+                $response = $this->getDefault();
+            }
         }
 
         $response['userid'] = $this->user->id;
@@ -219,7 +228,40 @@ class ChatBotProjectController extends Controller
     // ai validation
     public function aiValidation($keyword='')
     {
-        
+        $searchKeyword = KeywordFilterGroupRule::selectRaw("*, MATCH (value) AGAINST ('$mesgText') as score")
+        ->whereRaw("MATCH (value) AGAINST ('$mesgText')")
+        ->whereHas('rule', function($query) {
+            $query->whereHas('group', function($query) {
+                $query->where('project_id', $this->projectid);
+            });
+        })
+        ->orderBy('score', 'desc')
+        ->first();
+
+        if(empty($searchKeyword)) {
+            return '';
+        }
+
+        $result = null;
+
+        $response = KeywordFilterResponse::where(function($query) {
+            $query->where('reply_text', '!=', '');
+            $query->orWhereNotNull('chat_block_section_id');
+        })->where('keywords_filters_group_rule_id', $searchKeyword->keywords_filters_group_rule_id)->inRandomOrder()->first();
+
+        if($response->type===1) {
+            $result = [
+                'status' => true,
+                'type' => '',
+                'data' => [
+                    [
+                        "text" => $response->reply_text
+                    ]
+                ]
+            ];
+        } else {
+            $result = $this->getSection($response->chat_block_section_id);
+        }
     }
 
     public function getSection($section)

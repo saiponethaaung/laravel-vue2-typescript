@@ -36766,9 +36766,17 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
+    _c("div", { staticClass: "navList float-left" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "navUser" }, [
+        _c("span", { staticClass: "userIcon" }),
+        _vm._v(" "),
+        _c("span", [_vm._v(_vm._s(_vm.$store.state.user.name))])
+      ])
+    ]),
     _vm._v(" "),
-    _c("div", { staticClass: "bodyList" }, [
+    _c("div", { staticClass: "bodyList float-left" }, [
       _vm._m(1),
       _vm._v(" "),
       _c(
@@ -36871,48 +36879,51 @@ var render = function() {
               : _vm._e()
           ]),
           _vm._v(" "),
-          _vm._l(_vm.$store.state.projectList, function(project, index) {
-            return _c("div", { key: index }, [
-              _c("div", { staticClass: "cardList" }, [
-                _c("div", { staticClass: "addIcon" }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "btnProject" },
-                  [
-                    _vm.loading
-                      ? [
-                          _vm._v(
-                            "\n                            Loading...\n                        "
-                          )
-                        ]
-                      : [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "projectName",
-                              attrs: {
-                                to: {
-                                  name: "project.home",
-                                  params: { projectid: project.id }
-                                }
+          _vm.loading
+            ? [_vm._m(3)]
+            : _vm._l(_vm.$store.state.projectList, function(project, index) {
+                return _c("div", { key: index }, [
+                  _c("div", { staticClass: "cardList" }, [
+                    _c("figure", { staticClass: "addIcon" }, [
+                      _c("img", {
+                        staticClass: "projectIcon",
+                        attrs: {
+                          src: project.image
+                            ? project.image
+                            : "/images/sample/logo.png"
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "btnProject" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "projectName",
+                            attrs: {
+                              to: {
+                                name: "project.home",
+                                params: { projectid: project.id }
                               }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                " +
-                                  _vm._s(project.name) +
-                                  "\n                            "
-                              )
-                            ]
-                          )
-                        ]
-                  ],
-                  2
-                )
-              ])
-            ])
-          })
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(project.name) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ])
+                ])
+              })
         ],
         2
       )
@@ -36924,19 +36935,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "navList" }, [
-      _c("figure", [
-        _c("img", {
-          staticClass: "navIcon",
-          attrs: { src: "images/icons/Pixybots_Logo.png" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "navUser" }, [
-        _c("span", { staticClass: "userIcon" }),
-        _vm._v(" "),
-        _c("span", [_vm._v("TESTING USER")])
-      ])
+    return _c("figure", [
+      _c("img", {
+        staticClass: "navIcon",
+        attrs: { src: "images/icons/Pixybots_Logo.png" }
+      })
     ])
   },
   function() {
@@ -36954,6 +36957,24 @@ var staticRenderFns = [
     return _c("div", { staticClass: "createProjectNav" }, [
       _c("span", { staticClass: "createTitle" }, [
         _vm._v("Create a new project")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("div", { staticClass: "cardList" }, [
+        _c("figure", { staticClass: "addIcon" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "btnProject" }, [
+          _c("span", { staticClass: "projectName" }, [
+            _vm._v(
+              "\n                                Loading...\n                            "
+            )
+          ])
+        ])
       ])
     ])
   }
@@ -37315,7 +37336,9 @@ class AIGroupListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
                 for (let i of res.data.data) {
                     this.groups.push(new __WEBPACK_IMPORTED_MODULE_2__AIGroupModel__["a" /* default */](i, this.rootUrl));
                 }
-                yield this.groups[0].loadRule();
+                if (this.groups.length > 0) {
+                    yield this.groups[0].loadRule();
+                }
                 this.loading = false;
             }));
         });
@@ -37379,7 +37402,7 @@ class AIGroupListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AIGroupRule__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AIGroupRuleModel__ = __webpack_require__(230);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -37484,7 +37507,7 @@ class AIGroupModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
                 console.log('rule list', res.data);
                 this.rules = [];
                 for (let i of res.data.data) {
-                    this.rules.push(new __WEBPACK_IMPORTED_MODULE_2__AIGroupRule__["a" /* default */](i, `${this.rootUrl}/${this.id}/rules`));
+                    this.rules.push(new __WEBPACK_IMPORTED_MODULE_2__AIGroupRuleModel__["a" /* default */](i, `${this.rootUrl}/${this.id}/rules`));
                 }
                 this.ruleLoaded = true;
             }).catch(err => {
@@ -37506,7 +37529,7 @@ class AIGroupModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
                 url: `${this.rootUrl}/${this.id}/rules`,
                 method: 'post'
             }).then(res => {
-                this.rules.push(new __WEBPACK_IMPORTED_MODULE_2__AIGroupRule__["a" /* default */](res.data.data, `${this.rootUrl}/${this.id}/rules`));
+                this.rules.push(new __WEBPACK_IMPORTED_MODULE_2__AIGroupRuleModel__["a" /* default */](res.data.data, `${this.rootUrl}/${this.id}/rules`));
             }).catch(err => {
                 if (err.response) {
                     res.status = false;
@@ -37523,28 +37546,7 @@ class AIGroupModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
 
 
 /***/ }),
-/* 79 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
-
-class AIGroupRule extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
-    // private rule: FilterGroupRule
-    constructor(rule, rootUrl) {
-        super();
-        this.rule = rule;
-        this.rootUrl = rootUrl;
-    }
-    get id() {
-        return this.rule.id;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = AIGroupRule;
-
-
-
-/***/ }),
+/* 79 */,
 /* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -37939,6 +37941,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 
 
 
@@ -37952,22 +37962,51 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
     }
     mounted() {
         this.textbox = this.$refs.keywordsCon;
-        console.log(this.textbox);
-        this.checkContent();
-    }
-    checkContent() {
-        this.showPlaceholder = true;
-        console.log('routes', this.$route);
-        console.log(this.textbox);
-        if (undefined !== this.textbox) {
-            console.log("not undefined");
-            for (let i = 0; i < this.textbox.childNodes.length; i++) {
-                if (this.textbox.childNodes[i].innerText.trim() !== '') {
-                    this.showPlaceholder = false;
-                    break;
-                }
+        if (this.rule.filters.length > 0) {
+            for (let filter of this.rule.filters) {
+                let span = document.createElement('SPAN');
+                span.innerHTML = filter.keyword;
+                span.className = 'aiKeywordBlock';
+                this.textbox.appendChild(span);
+                this.nodeOffset = 0;
             }
         }
+        this.checkContent(false);
+    }
+    createTextResponse() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let ctr = this.rule.createResponse();
+        });
+    }
+    createSectionResponse() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let csr = this.rule.createResponse("section");
+        });
+    }
+    checkContent(update = true) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.showPlaceholder = true;
+            if (undefined !== this.textbox) {
+                if (update) {
+                    this.rule.filters = [];
+                }
+                for (let i = 0; i < this.textbox.childNodes.length; i++) {
+                    let parsedText = this.textbox.childNodes[i].innerText.trim();
+                    if (parsedText !== '') {
+                        if (update) {
+                            this.rule.filters.push({ keyword: parsedText });
+                        }
+                        this.showPlaceholder = false;
+                    }
+                }
+            }
+            if (update) {
+                let updateRule = yield this.rule.updateFilterValue();
+                if (!updateRule.status) {
+                    alert(updateRule.mesg);
+                }
+            }
+        });
     }
     checkContentEmpty() {
         // Check keyword section have any node
@@ -38011,7 +38050,10 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                 this.getPrevSibling(null === sel.focusNode.previousSibling ? sel.focusNode.parentNode : sel.focusNode.previousSibling);
             }
             // get inner content of current node
-            let content = textbox.childNodes[this.nodeOffset].innerText.trim();
+            let content = textbox.childNodes[this.nodeOffset].innerText;
+            if (content.length === 1) {
+                content = content.trim();
+            }
             switch (e.keyCode) {
                 // handle enter key 
                 case 13:
@@ -38185,16 +38227,17 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                 default:
                     // remove empty keyword class
                     textbox.childNodes[this.nodeOffset].className = 'aiKeywordBlock';
+                    let appendContent = e.key == ' ' ? '&nbsp;' : e.key;
                     // if node is empty replace '&nbsp;' value with inserted value
                     if (content == '&nbsp;' || content == '' || content == ' ') {
-                        content = e.key;
+                        content = appendContent;
                     }
                     else {
                         // update content at caret position with user inserted value
-                        content = [content.slice(0, offset), e.key, content.slice(offset)].join('');
+                        content = [content.slice(0, offset), appendContent, content.slice(offset)].join('');
                     }
                     // update node content
-                    textbox.childNodes[this.nodeOffset].innerText = content;
+                    textbox.childNodes[this.nodeOffset].innerHTML = content;
                     if (content.length === 1) {
                         offset = 0;
                     }
@@ -38207,6 +38250,16 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
             sel.addRange(range);
             textbox.focus();
         }
+    }
+    deleteResponse(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to delete this response?")) {
+                let deleteResponse = yield this.rule.deleteResponse(index);
+                if (!deleteResponse.status) {
+                    alert(deleteResponse.mesg);
+                }
+            }
+        });
     }
     getPrevSibling(winSel) {
         if (null !== winSel.previousSibling) {
@@ -38289,9 +38342,65 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 
 let AIResponseSection = class AIResponseSection extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.blockKeyword = '';
+        this.blockList = [];
+    }
+    delBlock() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let selectedSegment = this.response.segmentId;
+            this.response.segmentId = 0;
+            let update = yield this.response.updateContent();
+            if (!update.status) {
+                alert(update.mesg);
+                this.response.segmentId = selectedSegment;
+            }
+            else {
+                this.response.segmentName = '';
+            }
+        });
+    }
+    loadSuggestion() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let suggestion = yield this.response.searchSections(this.blockKeyword, this.$route.params.projectid);
+            if (suggestion.type === 'cancel')
+                return;
+            if (suggestion.status === false) {
+                alert(suggestion.mesg);
+                return;
+            }
+            this.blockList = suggestion.data;
+        });
+    }
+    addBlock(block, section) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let selectedSegment = this.response.segmentId;
+            this.response.segmentId = this.blockList[block].contents[section].id;
+            let update = yield this.response.updateContent();
+            if (!update.status) {
+                alert(update.mesg);
+                this.response.segmentId = selectedSegment;
+            }
+            else {
+                this.response.segmentName = this.blockList[block].contents[section].title;
+            }
+        });
+    }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], AIResponseSection.prototype, "response", void 0);
 AIResponseSection = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
 ], AIResponseSection);
@@ -38306,7 +38415,104 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    Section reply\n")])
+  return _c(
+    "div",
+    [
+      _vm.response.segmentId > 0
+        ? [
+            _c("div", { staticClass: "selectedBlockCon" }, [
+              _c("div", { staticClass: "selectedLinkedBlock" }, [
+                _c("span", { staticClass: "slbText" }, [
+                  _vm._v(_vm._s(_vm.response.segmentName))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "slbDel",
+                    on: {
+                      click: function($event) {
+                        _vm.delBlock()
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("delete")
+                    ])
+                  ]
+                )
+              ])
+            ])
+          ]
+        : [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.blockKeyword,
+                  expression: "blockKeyword"
+                }
+              ],
+              attrs: { type: "text", placeholder: "Block name" },
+              domProps: { value: _vm.blockKeyword },
+              on: {
+                keyup: function($event) {
+                  _vm.loadSuggestion()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.blockKeyword = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.blockList.length > 0
+              ? [
+                  _c(
+                    "div",
+                    { staticClass: "sugContainer" },
+                    _vm._l(_vm.blockList, function(b, index) {
+                      return _c(
+                        "div",
+                        { key: index, staticClass: "sugBlock" },
+                        [
+                          _c("div", { staticClass: "sugBlockTitle" }, [
+                            _vm._v(_vm._s(b.title))
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "sugBlockSec" },
+                            _vm._l(b.contents, function(s, sindex) {
+                              return _c(
+                                "div",
+                                {
+                                  key: sindex,
+                                  staticClass: "sugBlockSecTitle",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.addBlock(index, sindex)
+                                    }
+                                  }
+                                },
+                                [_vm._v(_vm._s(s.title))]
+                              )
+                            })
+                          )
+                        ]
+                      )
+                    })
+                  )
+                ]
+              : _vm._e()
+          ]
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38378,9 +38584,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 
 let AIResponseText = class AIResponseText extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    updateContent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let update = yield this.response.updateContent();
+            if (!update.status) {
+                alert(update.mesg);
+            }
+        });
+    }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], AIResponseText.prototype, "response", void 0);
 AIResponseText = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
 ], AIResponseText);
@@ -38395,7 +38620,39 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    Text Reply\n")])
+  return _c("div", { staticClass: "ai-response-text-con" }, [
+    _c("textarea", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.response.content,
+          expression: "response.content"
+        }
+      ],
+      staticClass: "ai-response-textarea",
+      attrs: { placeholder: "Reply text here" },
+      domProps: { value: _vm.response.content },
+      on: {
+        blur: function($event) {
+          _vm.updateContent()
+        },
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.$set(_vm.response, "content", $event.target.value)
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("div", {
+      staticClass: "ai-response-text-placeholder",
+      domProps: {
+        innerHTML: _vm._s(_vm.response.content.replace(/\n/g, "<br />"))
+      }
+    })
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38422,7 +38679,7 @@ var render = function() {
       _c("div", { staticClass: "keywordSection" }, [
         _c("div", {
           ref: "keywordsCon",
-          staticClass: "keywordbox",
+          staticClass: "keywordbox contentBox",
           attrs: { contenteditable: "true" },
           on: {
             blur: function($event) {
@@ -38460,35 +38717,111 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "aiC-ruleCon-content-response" }, [
-      _c("h5", [_vm._v("bot replies with")]),
+      _c(
+        "h5",
+        [
+          _vm._v("bot replies\n            "),
+          _vm.rule.response.length > 1
+            ? [_vm._v("\n                 "), _c("b", [_vm._v("randomly")])]
+            : _vm._e(),
+          _vm._v("\n         with")
+        ],
+        2
+      ),
       _vm._v(" "),
-      _vm._m(0),
-      _vm._v("\n        " + _vm._s(_vm.keywords) + "\n    ")
+      _c(
+        "ul",
+        [
+          _vm._l(_vm.rule.response, function(response, index) {
+            return [
+              _c(
+                "li",
+                { key: index },
+                [
+                  response.type === 1
+                    ? [
+                        _c("ai-response-text", {
+                          attrs: { response: response }
+                        })
+                      ]
+                    : _vm._e(),
+                  _vm._v(" "),
+                  response.type === 2
+                    ? [
+                        _c("ai-response-section", {
+                          attrs: { response: response }
+                        })
+                      ]
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          _vm.deleteResponse(index)
+                        }
+                      }
+                    },
+                    [_vm._v("delete")]
+                  )
+                ],
+                2
+              )
+            ]
+          }),
+          _vm._v(" "),
+          _vm.rule.responseCreating > 0
+            ? _c("li", [
+                _c("div", { staticClass: "addMoreCon" }, [
+                  _vm._v("\n                    Loading...\n                ")
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("li", [
+            _c("div", { staticClass: "addMoreCon" }, [
+              _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+              _vm._v(" "),
+              _c("span", [
+                _vm._v("add "),
+                _c(
+                  "button",
+                  {
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.createSectionResponse()
+                      }
+                    }
+                  },
+                  [_vm._v("Block")]
+                ),
+                _vm._v(" or "),
+                _c(
+                  "button",
+                  {
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.createTextResponse()
+                      }
+                    }
+                  },
+                  [_vm._v("Text")]
+                ),
+                _vm._v(" reply")
+              ])
+            ])
+          ])
+        ],
+        2
+      )
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [
-        _c("div", { staticClass: "addMoreCon" }, [
-          _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-          _vm._v(" "),
-          _c("span", [
-            _vm._v("add "),
-            _c("button", { attrs: { type: "button" } }, [_vm._v("Block")]),
-            _vm._v(" or "),
-            _c("button", [_vm._v("Text")]),
-            _vm._v(" reply")
-          ])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -56891,6 +57224,232 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AIGroupRuleResponseModel__ = __webpack_require__(231);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+class AIGroupRuleModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(rule, rootUrl) {
+        super();
+        this.rule = rule;
+        this.rootUrl = rootUrl;
+        this.valueUpdating = false;
+        this.createCount = 0;
+        this.responseModel = [];
+        let response = this.rule.response;
+        this.rule.response = [];
+        for (let i of response) {
+            this.response.push(new __WEBPACK_IMPORTED_MODULE_2__AIGroupRuleResponseModel__["a" /* default */](i, this.rootUrl + "/" + this.id + "/response"));
+        }
+    }
+    get id() {
+        return this.rule.id;
+    }
+    get filters() {
+        return this.rule.filters;
+    }
+    set filters(filters) {
+        this.rule.filters = filters;
+    }
+    get response() {
+        return this.responseModel;
+    }
+    set response(response) {
+        this.responseModel = response;
+    }
+    get responseCreating() {
+        return this.createCount;
+    }
+    set responseCreating(count) {
+        this.createCount = count;
+    }
+    updateFilterValue() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            this.valueUpdating = true;
+            let data = new FormData();
+            for (let index in this.filters) {
+                data.append(`keywords[${index}]`, this.filters[index].keyword);
+            }
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl}/${this.id}/keywords`,
+                method: 'post',
+                data: data
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to update filter keywords!');
+                }
+            });
+            this.valueUpdating = false;
+            return res;
+        });
+    }
+    createResponse(type = "text") {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            this.responseCreating++;
+            let data = new FormData();
+            data.append('type', type);
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl}/${this.id}/response`,
+                method: 'post',
+                data: data
+            }).then(res => {
+                this.response.push(new __WEBPACK_IMPORTED_MODULE_2__AIGroupRuleResponseModel__["a" /* default */](res.data.data, this.rootUrl + "/" + this.id + "/response"));
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to create response!');
+                }
+            });
+            this.responseCreating--;
+            return res;
+        });
+    }
+    deleteResponse(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl}/${this.id}/response/${this.response[index].id}`,
+                method: 'delete',
+            }).then(res => {
+                this.response.splice(index, 1);
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to delete response!');
+                }
+            });
+            return res;
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AIGroupRuleModel;
+
+
+
+/***/ }),
+/* 231 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+class AIGroupRuleResponseModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(response, rootUrl) {
+        super();
+        this.response = response;
+        this.rootUrl = rootUrl;
+        this.update = false;
+    }
+    get id() {
+        return this.response.id;
+    }
+    get content() {
+        return this.response.content;
+    }
+    set content(content) {
+        this.response.content = content;
+    }
+    get type() {
+        return this.response.type;
+    }
+    get segmentId() {
+        return this.response.segmentId;
+    }
+    set segmentId(segmentId) {
+        this.response.segmentId = segmentId;
+    }
+    get segmentName() {
+        return this.response.segmentName;
+    }
+    set segmentName(segmentName) {
+        this.response.segmentName = segmentName;
+    }
+    get updating() {
+        return this.update;
+    }
+    set updating(updating) {
+        this.update = updating;
+    }
+    updateContent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: 'success'
+            };
+            this.updating = true;
+            let data = new FormData();
+            data.append('content', this.content);
+            data.append('segment', this.segmentId.toString());
+            data.append('_method', 'put');
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `${this.rootUrl}/${this.id}`,
+                data: data,
+                method: 'post'
+            }).then(res => {
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to update response content!');
+                }
+            });
+            this.updating = false;
+            return res;
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AIGroupRuleResponseModel;
+
+
 
 /***/ })
 /******/ ]);

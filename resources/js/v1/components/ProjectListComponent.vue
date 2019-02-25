@@ -13,16 +13,16 @@
         </template>
     </div> -->
     <div>
-        <div class="navList">
+        <div class="navList float-left">
             <figure>
                 <img src="images/icons/Pixybots_Logo.png" class="navIcon"/>
             </figure>
             <div class="navUser">
                 <span class="userIcon"></span>
-                <span>TESTING USER</span>
+                <span>{{ $store.state.user.name }}</span>
             </div>
         </div>
-        <div class="bodyList">
+        <div class="bodyList float-left">
             <div class="titleHeight">                
                 <div class="titleList">Dashboard</div>
             </div>
@@ -53,21 +53,33 @@
                         </div>
                     </div>
                 </div>
-                <div v-for="(project, index) in $store.state.projectList" :key="index">
-                    <div class="cardList">
-                        <div class="addIcon"></div>
-                        <div class="btnProject">
-                            <template v-if="loading">
-                                Loading...
-                            </template>
-                            <template v-else>
+                <template v-if="loading">
+                    <div>
+                        <div class="cardList">
+                            <figure class="addIcon">
+                            </figure>
+                            <div class="btnProject">
+                                <span class="projectName">
+                                    Loading...
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template v-else>
+                    <div v-for="(project, index) in $store.state.projectList" :key="index">
+                        <div class="cardList">
+                            <figure class="addIcon">
+                                <img :src="project.image ? project.image : '/images/sample/logo.png'" class="projectIcon"/>
+                            </figure>
+                            <div class="btnProject">
                                 <router-link class="projectName" :to="{name: 'project.home', params: { projectid: project.id }}">
                                     {{ project.name }}
                                 </router-link>
-                            </template>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </template>
             </div>
         </div>
     </div>

@@ -62,7 +62,9 @@ export default class AIGroupListModel extends AjaxErrorHandler {
             for(let i of res.data.data) {
                 this.groups.push(new AIGroupModel(i, this.rootUrl));
             }
-            await this.groups[0].loadRule();
+            if(this.groups.length>0) {
+                await this.groups[0].loadRule();
+            }
             this.loading = false;
         });
     }

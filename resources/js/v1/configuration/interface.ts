@@ -1,4 +1,5 @@
 import ChatBlockSectionModel from "../models/ChatBlockSectionModel";
+import AIGroupRuleResponseModel from "../models/ai/AIGroupRuleResponseModel";
 
 export interface ChatBlock {
     id: number,
@@ -204,7 +205,6 @@ export interface FilterGroupRule {
 }
 
 export interface Filter {
-    id: number,
     keyword: string
 }
 

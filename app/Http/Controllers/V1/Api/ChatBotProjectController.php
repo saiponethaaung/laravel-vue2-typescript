@@ -228,15 +228,29 @@ class ChatBotProjectController extends Controller
     // ai validation
     public function aiValidation($keyword='')
     {
-        $searchKeyword = KeywordFilterGroupRule::selectRaw("*, MATCH (value) AGAINST ('$mesgText') as score")
-        ->whereRaw("MATCH (value) AGAINST ('$mesgText')")
+        $searchKeyword = KeywordFilter::where("value", $keyword)
         ->whereHas('rule', function($query) {
             $query->whereHas('group', function($query) {
                 $query->where('project_id', $this->projectid);
             });
         })
-        ->orderBy('score', 'desc')
         ->first();
+        // $searchKeyword = KeywordFilter::selectRaw("*, MATCH (value) AGAINST ('$keyword') as score")
+        // ->whereRaw("MATCH (value) AGAINST ('$keyword')")
+        // ->whereHas('rule', function($query) {
+        //     $query->whereHas('group', function($query) {
+        //         $query->where('project_id', $this->projectid);
+        //     });
+        // })
+        // ->orderBy('score', 'desc')
+        // ->first();
+
+        FacebookRequestLogs::create([
+            'data' => json_encode([
+                'section' => 'ai',
+                'data' => $searchKeyword
+            ])
+        ]);
 
         if(empty($searchKeyword)) {
             return '';
@@ -255,13 +269,21 @@ class ChatBotProjectController extends Controller
                 'type' => '',
                 'data' => [
                     [
-                        "text" => $response->reply_text
+                        'status' => true,
+                        'mesg' => '',
+                        'type' => 1,
+                        'content_id' => null,
+                        'data' => [
+                            'text' => $response->reply_text
+                        ]
                     ]
                 ]
             ];
         } else {
             $result = $this->getSection($response->chat_block_section_id);
         }
+
+        return $result;
     }
 
     public function getSection($section)

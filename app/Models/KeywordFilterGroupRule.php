@@ -16,7 +16,7 @@ class KeywordFilterGroupRule extends Model
 
     public function group()
     {
-        return $this->hasOne('App\Models\KeywordGroup', 'id', 'keywords_filters_group_id');
+        return $this->hasOne('App\Models\KeywordFilterGroup', 'id', 'keywords_filters_group_id');
     }
 
     public function filters()

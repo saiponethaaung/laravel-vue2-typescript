@@ -14,4 +14,9 @@ class KeywordFilter extends Model
         'created_by',
         'updated_by'
     ];
+
+    public function rule()
+    {
+        return $this->hasOne('App\Models\KeywordFilterGroupRule', 'id', 'keywords_filters_group_rule_id');
+    }
 }

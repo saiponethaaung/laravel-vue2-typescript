@@ -358,6 +358,7 @@ $aiCSearchWdith: 300px;
         }
     }
     .ai-response-text-placeholder {
+        min-height: $standardHeight;
         line-height: $standardHeight;
         width: 100%;
         resize: none;

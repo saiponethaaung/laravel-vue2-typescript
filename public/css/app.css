@@ -15296,6 +15296,7 @@ a:hover {
 }
 
 .ai-response-text-con .ai-response-text-placeholder {
+  min-height: 36px;
   line-height: 36px;
   width: 100%;
   resize: none;

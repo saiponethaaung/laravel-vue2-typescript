@@ -11,6 +11,12 @@
     margin: 0;
     width: calc(100% - 40px);
     float: left;
+    border: none;
+    &:focus {
+        border: 1px solid $borderPrimary;
+        border-radius: 5px;
+        padding: 0 10px;
+    }
 }
 
 .chatBlockControl {
@@ -41,7 +47,6 @@
 }
 
 .contentRoot {
-    padding-top: 20px;
     overflow: auto;
     height: inherit;
 }

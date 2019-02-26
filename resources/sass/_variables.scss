@@ -99,6 +99,13 @@ $standardContentPadding: 30px;
     @extend %boxBorder;
 }
 
+%standardInput {
+    @extend %boxBorder;
+    height: $standardHeight;
+    line-height: $standardHeight;
+    padding: 0 10px;
+}
+
 %figureFlexCenter {
     figure {
         @extend %flexJCenter;

@@ -29,3 +29,32 @@
         }
     }
 }
+
+.configSidebarLink {
+    height: 50px!important;
+    margin-bottom: 10px!important;
+
+    a {
+        @extend %flexCenter;
+        justify-content: flex-start;
+        text-align: left;
+        width: 100%;
+        height: inherit;
+        line-height: inherit;
+        width: 100%;
+        padding: 0 15px;
+        font-size: 14px;
+        color: $secondaryText;
+        &.activeSetting {
+            color: $activeText;
+            font-weight: bold;
+        }
+    }
+}
+
+.adminInviteForm {
+    width: 350px;
+    background: $primaryBackground;
+    @extend %boxBorder;
+    padding: 15px 30px;
+}

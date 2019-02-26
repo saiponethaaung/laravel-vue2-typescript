@@ -48,8 +48,8 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import Axios,{ CancelTokenSource } from 'axios';
-import ProjectPage from '../models/ProjectPage';
-import AjaxErrorHandler from '../utils/AjaxErrorHandler';
+import ProjectPage from '../../models/ProjectPage';
+import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 
 @Component
 export default class ProjectConfigrationComponent extends Vue {

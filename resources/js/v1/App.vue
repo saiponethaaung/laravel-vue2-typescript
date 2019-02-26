@@ -9,7 +9,14 @@
             </template>
         </template>
         <template v-else>
-            <login v-if="!$store.state.autheticating"></login>
+            <template v-if="!$store.state.autheticating">
+                <template v-if="$route.name==='register' || $route.name==='verify'">
+                    <router-view></router-view>
+                </template>
+                <template v-else>
+                    <login-component></login-component>
+                </template>
+            </template>
         </template>
         <template v-if="$store.state.autheticating">
             <div class="floatingLoading">
@@ -24,14 +31,14 @@
 import Vue from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
 import DefaultLayout from './layouts/DefaultLayout.vue';
-import Login from './non-member/Login.vue';
+import LoginComponent from './non-member/LoginComponent.vue';
 import Axios,{ CancelTokenSource } from 'axios';
 import AjaxErrorHandler from './utils/AjaxErrorHandler';
 
 @Component({
     components: {
         DefaultLayout,
-        Login
+        LoginComponent
     }
 })
 export default class App extends Vue {

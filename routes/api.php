@@ -20,6 +20,8 @@ use Illuminate\Http\Request;
 Route::any('/queue-tester', 'TestController@startQueue');
 
 Route::post('/user/login', 'V1\\Api\\UserAuthController@login')->name('api.login');
+Route::post('/user/register', 'V1\\Api\\UserAuthController@register')->name('api.register');
+Route::post('/user/verify', 'V1\\Api\\UserAuthController@verifyToken')->name('api.verify');
 
 Route::any('/facebook/chatbot/$2y$12$uyP735FKW7vuSYmlAEhF/OOoo1vCaWZN7zIEeFEhYbAw2qv8X4ffe', 'V1\\Api\\FacebookChatbotController@index');
 
@@ -74,6 +76,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 
             Route::group(['prefix' => 'block/{blockId}', 'middleware' => 'verifyChatBlock'], function() {
 
+                Route::put('/', 'V1\\Api\\ChatBotController@updateBlock')->name('chatbot.block.update');
                 Route::delete('/', 'V1\\Api\\ChatBotController@deleteBlock')->name('chatbot.block.delete');
                 Route::post('section', 'V1\\Api\\ChatBotController@createSection')->name('chatbot.section.create');
 
@@ -282,6 +285,10 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
                     Route::post('value', 'V1\\Api\\ChatUserController@updateUserAttributeValue');
                 });
             });
+        });
+
+        Route::group(['prefix' => 'member'], function() {
+            Route::post('/', 'V1\\Api\\ProjectController@inviteMember')->name('chatbot.project.member.invite');
         });
     });
 });

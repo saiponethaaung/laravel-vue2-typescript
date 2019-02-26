@@ -50,7 +50,7 @@
                         <span class="icon-label">Broadcast</span>
                     </router-link>
                 </li>
-                <li>
+                <!-- <li>
                     <router-link 
                         :to="{name: 'project.home', params: {projectid: $route.params.projectid}}"
                         :class="{'activeSection': this.$route.meta.section==='plugin'}"    
@@ -61,7 +61,7 @@
                         </figure>
                         <span class="icon-label">Plugin</span>
                     </router-link>
-                </li>
+                </li> -->
                 <li>
                     <router-link 
                         :to="{name: 'project.configuration', params: {projectid: $route.params.projectid}}"

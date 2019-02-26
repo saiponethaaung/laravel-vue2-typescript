@@ -25,7 +25,7 @@ import AjaxErrorHandler from '../utils/AjaxErrorHandler';
 import Axios from 'axios';
 
 @Component
-export default class Login extends Vue {
+export default class LoginComponent extends Vue {
 
     private loading: boolean = false;
     private loginData: any = {
@@ -46,10 +46,18 @@ export default class Login extends Vue {
             data: data,
             method: "POST"
         }).then((res) => {
-            this.$store.commit('setToken', {
-                token: res.data.token
-            });
-            window.location.reload();
+            if(res.data.isVerify) {
+                this.$store.commit('setToken', {
+                    token: res.data.token
+                });
+                if(this.$route.name==='login') {
+                    window.location.assign('/');
+                } else {
+                    window.location.reload();
+                }
+            } else {
+                this.$router.push({name: 'verify'});
+            }
         }).catch((err) => {
             let mesg = this.ajaxHandler.globalHandler(err, 'Failed to login!');
             alert(mesg);

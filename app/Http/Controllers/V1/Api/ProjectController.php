@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\Api;
 
 use DB;
+use Mail;
 use Auth;
 use Validator;
 
@@ -13,8 +14,13 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\ProjectPage;
+use App\Models\ProjectInvite as ProjectInviteModel;
+use App\Models\ProjectInviteEmail;
 use App\Models\ChatBlock;
 use App\Models\ChatBlockSection;
+
+use App\Mail\MemberInviteWithProject;
+use App\Notifications\ProjectInvite;
 
 class ProjectController extends Controller
 {
@@ -477,4 +483,104 @@ class ProjectController extends Controller
         ]);
     }
 
+    public function inviteMember(Request $request)
+    {
+        $input = $request->only('email', 'role');
+
+        $validator = Validator::make($input, [
+            'email' => 'required|email',
+            'role' => 'required|in:1,2'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        $user = User::where('email', $input['email'])->first();
+        $inviteType = 0;
+        $userInfo = '';
+
+        if(empty($user)) {
+            $isInvited = ProjectInviteModel::where('email', $input['email'])
+                ->where('project_id', $request->attributes->get('project')->id)
+                ->first();
+
+            if(!empty($isInvited)) {
+                return response()->json([
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => $input['email'].' is already invited!'
+                ], 422);
+            }
+        } else {
+            $isInvited = ProjectUser::where('user_id', $user->id)
+                ->where('project_id', $request->attributes->get('project')->id)
+                ->first();
+            if(!empty($isInvited)) {
+                return response()->json([
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => $input['email'].' is already a member!'
+                ], 422);
+            }
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $projectInviteStatus = 0;
+            $projectInvite = ProjectInviteModel::create([
+                'email' => $input['email'],
+                'user_id' => empty($user) ? null : $user->id,
+                'role' => $input['role'],
+                'project_id' => $request->attributes->get('project')->id,
+                'status' => 0
+            ]);
+
+            ProjectInviteEmail::create([
+                'status' => 1,
+                'project_invite_id' => $projectInvite->id,
+                'project_user_id' => $request->attributes->get('project_user')->id
+            ]);
+
+            if(empty($user)) {
+                Mail::to($input['email'])->send(new MemberInviteWithProject($input['email'], $request->attributes->get('project')->name));
+            } else {
+                ProjectUser::create([
+                    'project_id' => $request->attributes->get('project')->id,
+                    'user_id' => $user->id,
+                    'user_type' => $input['role']
+                ]);
+                
+                $user->notify(new ProjectInvite());
+                $projectInviteStatus = 1;
+            }
+
+            $projectInvite->status = $projectInviteStatus;
+            $projectInvite->save();
+        } catch(\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to invite new member!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 201,
+            'data' => [
+                'type' => 1,
+                'info' => [],
+            ],
+        ]);
+    }
 }

@@ -113,7 +113,7 @@ class ChatBotController extends Controller
     {
         DB::beginTransaction();
         try {
-            ChatBlock::findOrFail($request->blockId)->delete();
+            $request->attributes->get('chatBlock')->delete();
         }
         // @codeCoverageIgnoreStart
         catch(\Exception $e) {
@@ -133,6 +133,57 @@ class ChatBotController extends Controller
             'status' => true,
             'code' => 200,
             'mesg' => 'Success delete'
+        ]);
+    }
+
+    public function updateBlock(Request $request)
+    {
+        if($request->attributes->get('chatBlock')->is_lock) { 
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'This block cannot be delete!'
+            ], 422);
+        }
+
+        $input = $request->only('title');
+
+        $validator = Validator::make($input, [
+            'title' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('chatBlock')->title = $input['title'];
+            $request->attributes->get('chatBlock')->save();
+        }
+        // @codeCoverageIgnoreStart
+        catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update block title!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+        // @codeCoverageIgnoreEnd
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
         ]);
     }
 

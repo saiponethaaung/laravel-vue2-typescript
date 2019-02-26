@@ -10,7 +10,11 @@ import ProjectRootComponent from '../components/ProjectRootComponent.vue';
 
 import AIComponent from '../components/ai/AIComponent.vue';
 
-import ProjectConfigrationComponent from '../components/ProjectConfigrationComponent.vue';
+import ProjectConfigrationComponent from '../components/setting/ProjectConfigrationComponent.vue';
+import SettingSidebarComponent from '../components/setting/SettingSidebarComponent.vue';
+import AdminComponent from '../components/setting/AdminComponent.vue';
+import PersistentMenuComponent from '../components/setting/PersistentMenuComponent.vue';
+import ProfileComponent from '../components/setting/ProfileComponent.vue';
 
 import ChatBotComponent from '../components/chatbot/ContentComponent.vue';
 import ChatBotSidebar from '../components/chatbot/SidebarComponent.vue';
@@ -29,6 +33,9 @@ import BroadcastSendNowComponent from '../components/broadcast/BroadcastSendNowC
 import BroadcastTriggerComponent from '../components/broadcast/BroadcastTriggerComponent.vue';
 import BroadcastScheduleComponent from '../components/broadcast/BroadcastScheduleComponent.vue';
 
+import RegisterComponent from '../non-member/RegisterComponent.vue';
+import VerifyEmailComponent from '../non-member/VerifyEmailComponent.vue';
+
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -36,17 +43,32 @@ export default new VueRouter({
     mode: 'history',
     routes: [
         {
-            path: "/",
-            name: "home",
+            path: '/',
+            name: 'home',
             component: ProjectListComponent
         },
         {
-            path: "/:projectid",
+            path: '/login',
+            name: 'login',
+            component: ProjectListComponent
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: RegisterComponent
+        },
+        {
+            path: '/verification',
+            name: 'verify',
+            component: VerifyEmailComponent
+        },
+        {
+            path: '/:projectid',
             component: ProjectRootComponent,
             children: [
                 {
-                    path: "/",
-                    name: "project.home",
+                    path: '/',
+                    name: 'project.home',
                     meta: {
                         sidebar: ChatBotSidebar,
                         section: 'chatbot'
@@ -54,21 +76,21 @@ export default new VueRouter({
                     component: ChatBotComponent
                 },
                 {
-                    path: "ai-setup",
-                    name: "project.ai",
+                    path: 'ai-setup',
+                    name: 'project.ai',
                     meta: {
-                        section: "ai",
+                        section: 'ai',
                         fullContent: true
                     },
                     component: AIComponent
                 },
                 {
-                    path: "inbox",
+                    path: 'inbox',
                     component: InboxPageComponent,
                     children: [
                         {
-                            path: "/",
-                            name: "project.inbox",
+                            path: '/',
+                            name: 'project.inbox',
                             meta: {
                                 sidebar: InboxPageSidebarComponent,
                                 section: 'inbox'
@@ -77,12 +99,12 @@ export default new VueRouter({
                     ]
                 },
                 {
-                    path: "users",
+                    path: 'users',
                     component: RouterViewComponent,
                     children: [
                         {
-                            path: "/",
-                            name: "project.users",
+                            path: '/',
+                            name: 'project.users',
                             component: UserListComponent,
                             meta: {
                                 sidebar: UserListSidebarComponent,
@@ -90,8 +112,8 @@ export default new VueRouter({
                             }
                         },
                         {
-                            path: "segments",
-                            name: "project.users.segments",
+                            path: 'segments',
+                            name: 'project.users.segments',
                             component: UserSegmentListComponent,
                             meta: {
                                 sidebar: UserSegmentListSidebarComponent,
@@ -101,12 +123,12 @@ export default new VueRouter({
                     ]
                 },
                 {
-                    path: "broadcast",
+                    path: 'broadcast',
                     component: RouterViewComponent,
                     children: [
                         {
-                            path: "/",
-                            name: "project.broadcast",
+                            path: '/',
+                            name: 'project.broadcast',
                             component: BroadcastComponent,
                             meta: {
                                 sidebar: BroadcastSidebarComponent,
@@ -114,8 +136,8 @@ export default new VueRouter({
                             }
                         },
                         {
-                            path: "send",
-                            name: "project.broadcast.sendnow",
+                            path: 'send',
+                            name: 'project.broadcast.sendnow',
                             component: BroadcastSendNowComponent,
                             meta: {
                                 sidebar: BroadcastSidebarComponent,
@@ -123,8 +145,8 @@ export default new VueRouter({
                             }
                         },
                         {
-                            path: "trigger/:triggerid",
-                            name: "project.broadcast.trigger",
+                            path: 'trigger/:triggerid',
+                            name: 'project.broadcast.trigger',
                             component: BroadcastTriggerComponent,
                             meta: {
                                 sidebar: BroadcastSidebarComponent,
@@ -132,8 +154,8 @@ export default new VueRouter({
                             }
                         },
                         {
-                            path: "schedule/:scheduleid",
-                            name: "project.broadcast.schedule",
+                            path: 'schedule/:scheduleid',
+                            name: 'project.broadcast.schedule',
                             component: BroadcastScheduleComponent,
                             meta: {
                                 sidebar: BroadcastSidebarComponent,
@@ -143,13 +165,50 @@ export default new VueRouter({
                     ]
                 },
                 {
-                    path: "configuration",
-                    name: "project.configuration",
-                    meta: {
-                        sidebar: null,
-                        section: 'setting'
-                    },
-                    component: ProjectConfigrationComponent
+                    path: 'setting',
+                    component: RouterViewComponent,
+                    children: [
+                        {
+                            path: '/',
+                            name: 'project.configuration',
+                            meta: {
+                                sidebar: SettingSidebarComponent,
+                                section: 'setting',
+                                sidebarSection: 'connected-page'
+                            },
+                            component: ProjectConfigrationComponent
+                        },
+                        {
+                            path: 'persistent-menu',
+                            name: 'project.configuration.persistent-menu',
+                            meta: {
+                                sidebar: SettingSidebarComponent,
+                                section: 'setting',
+                                sidebarSection: 'persistent-menu'
+                            },
+                            component: PersistentMenuComponent
+                        },
+                        {
+                            path: 'admins',
+                            name: 'project.configuration.admins',
+                            meta: {
+                                sidebar: SettingSidebarComponent,
+                                section: 'setting',
+                                sidebarSection: 'admins'
+                            },
+                            component: AdminComponent
+                        },
+                        {
+                            path: 'profile',
+                            name: 'project.configuration.profile',
+                            meta: {
+                                sidebar: SettingSidebarComponent,
+                                section: 'setting',
+                                sidebarSection: 'profile'
+                            },
+                            component: ProfileComponent
+                        }
+                    ]
                 },
             ]
         },

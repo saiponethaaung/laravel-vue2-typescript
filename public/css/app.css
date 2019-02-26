@@ -9,6 +9,8 @@
 .floatingLoading,
 .popFixedCenter,
 .userAttributePop .uaBodyCon table .attrDel,
+.popContainer form .formHeading button,
+.popProcessing,
 .triggerAttribute .sddListCon,
 .statusBtn,
 .broadcastHistoryList .braodcastHistoryHeading,
@@ -20,12 +22,14 @@
 .aiC-groupCon .aiC-groupCon-child .aiC-groupCon-optionButton,
 .aiKeywordBlock,
 .aiC-group-confirmDelCon .aiC-group-delHeadingCon .aiC-group-delClose,
+.configSidebarLink a,
 .userListTable th.ultDateColumn .ultWrapper,
 .userListTable th.utlSessinColumn .ultWrapper,
 .segmentList .segmentListItem,
 .segmentTitleCon,
 .assignList,
 .userAttributePop .uaFooterCon,
+.popContainer form .formHeading,
 .bchColumn,
 .broadcastHistoryHeading,
 .broadcastHistory,
@@ -54,6 +58,8 @@
 .floatingLoading,
 .popFixedCenter,
 .userAttributePop .uaBodyCon table .attrDel,
+.popContainer form .formHeading button,
+.popProcessing,
 .triggerAttribute .sddListCon,
 .statusBtn,
 .broadcastHistoryList .braodcastHistoryHeading,
@@ -96,9 +102,19 @@
 .bccRepeat .sddListCon,
 .triggerAttribute input,
 .triggerAttribute .sddListCon,
+.popContainer form label select,
+.popContainer form label input,
+.adminInviteForm,
 .dayPicker ul {
   border: 1px solid #ebebeb;
   border-radius: 5px;
+}
+
+.popContainer form label select,
+.popContainer form label input {
+  height: 36px;
+  line-height: 36px;
+  padding: 0 10px;
 }
 
 .userListControlCon .userListOptionCon .uloButton figure,
@@ -11019,6 +11035,10 @@ a:hover {
   line-height: 36px;
 }
 
+.divider20 {
+  height: 20px;
+}
+
 .chatBotHeading {
   font-size: 18px;
   font-weight: bold;
@@ -11032,6 +11052,13 @@ a:hover {
   margin: 0;
   width: calc(100% - 40px);
   float: left;
+  border: none;
+}
+
+.chatBlockHeading:focus {
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  padding: 0 10px;
 }
 
 .chatBlockControl {
@@ -11076,7 +11103,6 @@ a:hover {
 }
 
 .contentRoot {
-  padding-top: 20px;
   overflow: auto;
   height: inherit;
 }
@@ -12689,6 +12715,36 @@ a:hover {
   width: 100%;
 }
 
+.configSidebarLink {
+  height: 50px !important;
+  margin-bottom: 10px !important;
+}
+
+.configSidebarLink a {
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  text-align: left;
+  width: 100%;
+  height: inherit;
+  line-height: inherit;
+  width: 100%;
+  padding: 0 15px;
+  font-size: 14px;
+  color: #aaaaaa;
+}
+
+.configSidebarLink a.activeSetting {
+  color: #c238eb;
+  font-weight: bold;
+}
+
+.adminInviteForm {
+  width: 350px;
+  background: #ffffff;
+  padding: 15px 30px;
+}
+
 .chatSbHeaderOption {
   display: block;
   width: 100%;
@@ -14149,6 +14205,63 @@ a:hover {
   margin-top: 0px;
 }
 
+.popContainer form .formHeading {
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 36px;
+  line-height: 36px;
+  margin-bottom: 5px;
+}
+
+.popContainer form .formHeading h5 {
+  height: inherit;
+  line-height: inherit;
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+
+.popContainer form .formHeading button {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.popContainer form .formHeading button .material-icons {
+  font-size: 20px;
+}
+
+.popContainer form label {
+  width: 100%;
+}
+
+.popContainer form label span {
+  display: block;
+  height: 36px;
+  line-height: 36px;
+  width: 100%;
+}
+
+.popContainer form label select,
+.popContainer form label input {
+  width: 100%;
+}
+
+.popProcessing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  color: #fff;
+}
+
 .btnClick {
   cursor: pointer;
   height: 40px;
@@ -14516,6 +14629,7 @@ a:hover {
   line-height: 30px;
   height: 30px;
   font-size: 14px;
+  margin-bottom: 5px;
 }
 
 .bcs .btnClick {

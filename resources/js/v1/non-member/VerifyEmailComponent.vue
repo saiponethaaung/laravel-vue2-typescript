@@ -1,0 +1,61 @@
+<template>
+    <div>
+        <form @submit.prevent="registerNow()">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required v-model="verifyData.email" :disabled="loading"/>
+            </div>
+            <div class="form-group">
+                <label for="code">Verification Code</label>
+                <input type="text" id="code" required v-model="verifyData.code" :disabled="loading"/>
+            </div>
+            <template v-if="loading">
+                Loading...
+            </template>
+            <template v-else>
+                <button>Register</button>
+            </template>
+        </form>
+    </div>    
+</template>
+
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
+import AjaxErrorHandler from '../utils/AjaxErrorHandler';
+import Axios from 'axios';
+
+@Component
+export default class VerifyEmailComponent extends Vue {
+
+    private loading: boolean = false;
+    private verifyData: any = {
+        email: "",
+        code: ""
+    };
+    private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
+
+    async registerNow() {
+        this.loading = true;
+
+        let data = new FormData();
+        data.append('email', this.verifyData.email);
+        data.append('code', this.verifyData.code);
+
+        await Axios({
+            url: "/api/user/verify",
+            data: data,
+            method: "POST"
+        }).then(res => {
+            this.$router.push({name: 'login'});
+        }).catch(err => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to verify!');
+                alert(mesg);
+            }
+        });
+
+        this.loading = false;
+    }
+}
+</script>
+

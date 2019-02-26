@@ -27,12 +27,33 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
+        'image',
         'email_verified_at',
         'password',
         'remember_token',
         'created_at',
         'updated_at'
     ];
+
+    public static function boot() {
+        parent::boot();
+        
+        static::created(function($user) {
+            $invites = ProjectInvite::where('email', $user->email)->where('status', 0)->get();
+
+            foreach($invites as $invite) {
+                ProjectUser::create([
+                    'project_id' => $invite->project_id,
+                    'user_id' => $user->id,
+                    'user_type' => $invite->role
+                ]);
+                
+                $invite->user_id = $user->id;
+                $invite->status = 0;
+                $invite->save();
+            }
+        });
+    }
 
     public function projectPage()
     {

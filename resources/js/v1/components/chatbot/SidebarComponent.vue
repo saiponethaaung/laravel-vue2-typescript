@@ -7,7 +7,12 @@
             </template>
             <template v-else>
                 <div v-for="(block, index) in blocks" :key="index" class="chatBlock">
-                    <h5 class="chatBlockHeading">{{ block.title }}</h5>
+                    <template v-if="block.lock">
+                        <h5 class="chatBlockHeading">{{ block.title }}</h5>
+                    </template>
+                    <template v-else>
+                        <input type="text" v-model="block.title" @blur="updateBlock(index)" class="chatBlockHeading" :disabled="block.updating"/>
+                    </template>
                     <div v-if="!block.lock" class="chatBlockControl">
                         <button @click="delBlockIndex=index">
                             <i class="material-icons">delete</i>
@@ -177,6 +182,13 @@ export default class SidebarComponent extends Vue {
         });
         
         this.creating = false;
+    }
+
+    async updateBlock(index: any) {
+        let update = await this.blocks[index].updateBlock();
+        if(!update.status) {
+            alert(update.mesg);
+        }
     }
 
 }

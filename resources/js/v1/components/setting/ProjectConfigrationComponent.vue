@@ -60,8 +60,12 @@ export default class ProjectConfigrationComponent extends Vue {
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
 
     async mounted() {
-        if(this.$store.state.projectInfo.isOwner && this.$store.state.user.facebook_connected) {
-            await this.loadPages();
+        if(this.$store.state.projectInfo.isOwner) {
+            if(this.$store.state.user.facebook_connected) {
+                await this.loadPages();
+            }
+        } else {
+            this.$router.push({name: 'project.configuration.persistent-menu'});
         }
     }
 

@@ -84,6 +84,7 @@ class ProjectController extends Controller
                 'name' => $project->project->name,
                 'image' => $project->project->page && $project->project->page->page_icon ? $project->project->page->page_icon : '',
                 'isOwner' => $project->user_type!==0 ? false : true,
+                'role' => $project->user_type,
                 'pageConnected' => false
             ];
 
@@ -109,6 +110,7 @@ class ProjectController extends Controller
             'name' => $project->project->name,
             'image' => '',
             'isOwner' => $project->user_type==0 ? true : false,
+            'role' => $project->user_type,
             'pageId' => config('facebook.defaultPageId'),
             'testingPageId' => config('facebook.defaultPageId'),
             'pageConnected' => false,
@@ -310,6 +312,7 @@ class ProjectController extends Controller
                 'name' => $request->attributes->get('project')->name,
                 'image' => $pageInfo['data']['picture']['url'],
                 'isOwner' => true,
+                'role' => 0,
                 'pageId' => $projectPage->id,
                 'testingPageId' => config('facebook.defaultPageId'),
                 'pageConnected' => true,
@@ -431,6 +434,7 @@ class ProjectController extends Controller
                 'name' => $request->attributes->get('project')->name,
                 'image' => '',
                 'isOwner' => true,
+                'role' => 0,
                 'pageId' => config('facebook.defaultPageId'),
                 'testingPageId' => config('facebook.defaultPageId'),
                 'pageConnected' => false,
@@ -556,7 +560,7 @@ class ProjectController extends Controller
                     'user_type' => $input['role']
                 ]);
                 
-                $user->notify(new ProjectInvite());
+                $user->notify(new ProjectInvite($user, $request->attributes->get('project')->name));
                 $projectInviteStatus = 1;
             }
 

@@ -10,15 +10,18 @@ use Illuminate\Notifications\Messages\MailMessage;
 class ProjectInvite extends Notification
 {
     use Queueable;
+    protected $user;
+    protected $project;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user, $project)
     {
-        //
+        $this->user = $user;
+        $this->project = $project;
     }
 
     /**
@@ -41,9 +44,10 @@ class ProjectInvite extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject('Project Invite')
+                    ->line('Hi '.$this->user->name.',')
+                    ->line('You are invited to mangage "'.$this->project.'" bot.')
+                    ->action('Login', url('/login'));
     }
 
     /**

@@ -19,9 +19,9 @@ class LoginTest extends TestCase
         ];
 
         $featureTest = $this->post(route('api.login'), [
-            'email' => '',
-            'password' => '321123'
-        ], ['Accept' => 'application/json'])
+                'email' => '',
+                'password' => '321123'
+            ], ['Accept' => 'application/json'])
             ->assertStatus(422)
             ->assertJson($err);
     }
@@ -35,9 +35,9 @@ class LoginTest extends TestCase
         ];
 
         $featureTest = $this->post(route('api.login'), [
-            'email' => 'saipone@pixeldirects.com',
-            'password' => ''
-        ], ['Accept' => 'application/json'])
+                'email' => 'saipone@pixeldirects.com',
+                'password' => ''
+            ], ['Accept' => 'application/json'])
             ->assertStatus(422)
             ->assertJson($err);
     }
@@ -51,9 +51,9 @@ class LoginTest extends TestCase
         ];
 
         $featureTest = $this->post(route('api.login'), [
-            'email' => 'saipone@pixeldirects.com',
-            'password' => '321123'
-        ], ['Accept' => 'application/json'])
+                'email' => 'saipone@pixeldirects.com',
+                'password' => '321123'
+            ], ['Accept' => 'application/json'])
             ->assertStatus(422)
             ->assertJson($err);
     }
@@ -73,25 +73,26 @@ class LoginTest extends TestCase
         ];
 
         $featureTest = $this->post(route('api.login'), [
-            'email' => 'saipone@pixeldirects.com',
-            'password' => '123'
-        ], ['Accept' => 'application/json'])
+                'email' => 'saipone@pixeldirects.com',
+                'password' => '123'
+            ], ['Accept' => 'application/json'])
             ->assertStatus(422)
             ->assertJson($err);
     }
     
     public function testUserLogin()
     {
-        User::create([
+        $user = User::create([
             'name' => 'Sai Pone Tha Aung',
             'email' => 'saipone@pixeldirects.com',
-            'password' => bcrypt('321123')
+            'password' => bcrypt('321123'),
+            'email_verified_at' => date('Y-m-d H:i:s'),
         ]);
 
         $featureTest = $this->post(route('api.login'), [
-            'email' => 'saipone@pixeldirects.com',
-            'password' => '321123'
-        ], ['Accept' => 'application/json'])
+                'email' => 'saipone@pixeldirects.com',
+                'password' => '321123'
+            ], ['Accept' => 'application/json'])
             ->assertStatus(200)
             ->assertJsonStructure([
                 'status',

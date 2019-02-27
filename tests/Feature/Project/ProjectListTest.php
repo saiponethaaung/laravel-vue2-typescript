@@ -51,8 +51,9 @@ class ProjectListTest extends TestCase
                     '*' => [
                         'id',
                         'name',
-                        'page_image',
+                        'image',
                         'isOwner',
+                        'role',
                         'pageConnected'
                     ]
                 ]
@@ -98,6 +99,7 @@ class ProjectListTest extends TestCase
                 'name' => $project->name,
                 'image' => '',
                 'isOwner' => true,
+                'role' => 0,
                 'pageId' => config('facebook.defaultPageId'),
                 'testingPageId' => config('facebook.defaultPageId'),
                 'pageConnected' => false,
@@ -112,6 +114,7 @@ class ProjectListTest extends TestCase
                 'name',
                 'image',
                 'isOwner',
+                'role',
                 'pageId',
                 'testingPageId',
                 'pageConnected',
@@ -123,11 +126,11 @@ class ProjectListTest extends TestCase
     public function testGetProjectInfoNotOwner()
     {
         $project = factory(Project::class)->create(['user_id' => $this->user->id]);
-        $projectUser = factory(ProjectUser::class)->create([
-            'project_id' => $project->id,
-            'user_id' => $project->user_id,
-            'user_type' => 1
-        ]);
+        $projectUser = ProjectUser::where('project_id', $project->id)
+            ->where('user_id', $project->user_id)->first();
+
+        $projectUser->user_type = 1;
+        $projectUser->save();
 
         $featureTest = $this->withHeaders([
             'Authorization' => 'Bearer '.$this->token
@@ -144,6 +147,7 @@ class ProjectListTest extends TestCase
                 'name' => $project->name,
                 'image' => '',
                 'isOwner' => false,
+                'role' => 1,
                 'pageId' => config('facebook.defaultPageId'),
                 'testingPageId' => config('facebook.defaultPageId'),
                 'pageConnected' => false,
@@ -158,6 +162,7 @@ class ProjectListTest extends TestCase
                 'name',
                 'image',
                 'isOwner',
+                'role',
                 'pageId',
                 'testingPageId',
                 'pageConnected',

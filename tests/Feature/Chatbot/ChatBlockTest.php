@@ -57,7 +57,7 @@ class ChatBlockTest extends TestCase
 
         factory(ChatBlockSection::class)->create([
             'block_id' => $block->id,
-            'title' => 'Default answer',
+            'title' => 'Default Answer',
             'order' => 2
         ]);
 
@@ -77,11 +77,14 @@ class ChatBlockTest extends TestCase
                             'id' => $this->block->id,
                             'project' => md5($this->project->id),
                             'title' => 'Landing',
-                            'lock' => false
+                            'lock' => true
                         ],
                         'sections' => [
                             [
-                                'title' => $this->section->title
+                                'title' => 'Welcome'
+                            ],
+                            [
+                                'title' => 'Default Answer'
                             ]
                         ]
                     ],
@@ -97,7 +100,7 @@ class ChatBlockTest extends TestCase
                                 'title' => 'Welcome'
                             ],
                             [
-                                'title' => 'Default answer'
+                                'title' => 'Default Answer'
                             ]
                         ]
                     ]

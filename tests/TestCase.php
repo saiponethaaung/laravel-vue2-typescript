@@ -42,20 +42,10 @@ abstract class TestCase extends BaseTestCase
         $this->token = $token->token;
 
         $this->project = factory(Project::class)->create(['user_id' => $this->user->id]);
-        $projectUser = factory(ProjectUser::class)->create([
-            'project_id' => $this->project->id,
-            'user_id' => $this->project->user_id,
-            'user_type' => 1
-        ]);
+  
+        $this->block = ChatBlock::where('title', 'Landing')->where('project_id', $this->project->id)->first();
 
-        $this->block = factory(ChatBlock::class)->create([
-            'title' => 'Landing',
-            'project_id' => $this->project->id,
-        ]);
-
-        $this->section = factory(ChatBlockSection::class)->create([
-            'block_id' => $this->block->id
-        ]);
+        $this->section = ChatBlockSection::where('block_id', $this->block->id)->first();
 
     }
     /**

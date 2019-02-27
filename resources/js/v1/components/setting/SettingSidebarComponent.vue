@@ -11,7 +11,7 @@
                 <span>Project Setting</span>
             </div>
         </div>
-        <div class="btnClick configSidebarLink">
+        <div class="btnClick configSidebarLink" v-if="$store.state.projectInfo.isOwner">
             <router-link :to="{name: 'project.configuration'}" :class="{'activeSetting': $route.meta.sidebarSection==='connected-page'}">
                 Connected Page
             </router-link>
@@ -21,7 +21,7 @@
                 Persistent Menu
             </router-link>
         </div>
-        <div class="btnClick configSidebarLink">
+        <div class="btnClick configSidebarLink" v-if="$store.state.projectInfo.role<2">
             <router-link :to="{name: 'project.configuration.admins'}" :class="{'activeSetting': $route.meta.sidebarSection==='admins'}">
                 Admins
             </router-link>

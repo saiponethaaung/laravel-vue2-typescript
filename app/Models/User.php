@@ -39,7 +39,7 @@ class User extends Authenticatable
         parent::boot();
         
         static::created(function($user) {
-            $invites = ProjectInvite::where('email', $user->email)->where('status', 0)->get();
+            $invites = ProjectInvite::where('email', $user->email)->where('status', 1)->get();
 
             foreach($invites as $invite) {
                 ProjectUser::create([

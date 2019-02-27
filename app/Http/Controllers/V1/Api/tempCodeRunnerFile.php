@@ -539,13 +539,13 @@ class ProjectController extends Controller
         $type = 1;
 
         try {
-            $projectInviteStatus = 1;
+            $projectInviteStatus = 0;
             $projectInvite = ProjectInviteModel::create([
                 'email' => $input['email'],
                 'user_id' => empty($user) ? null : $user->id,
                 'role' => $input['role'],
                 'project_id' => $request->attributes->get('project')->id,
-                'status' => 1
+                'status' => 0
             ]);
 
             ProjectInviteEmail::create([
@@ -560,7 +560,6 @@ class ProjectController extends Controller
                     'id' => $projectInvite->id,
                     'email' => $input['email'],
                     'role' => $input['role'],
-                    'invited_on' => date('M d, Y')
                 ];
             } else {
                 $projectUser = ProjectUser::create([
@@ -570,7 +569,7 @@ class ProjectController extends Controller
                 ]);
                 
                 $user->notify(new ProjectInvite($user, $request->attributes->get('project')->name));
-                $projectInviteStatus = 0;
+                $projectInviteStatus = 1;
                 $info = [
                     'id' => $projectUser->id,
                     'name' => $user->name,
@@ -635,7 +634,7 @@ class ProjectController extends Controller
     public function getAllInvite(Request $request)
     {
         $projectInvites = ProjectInviteModel::where('project_id', $request->attributes->get('project')->id)
-            ->where('status', 1)
+            ->where('status', 0)
             ->get();
 
         $res = [];

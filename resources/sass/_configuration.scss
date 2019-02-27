@@ -58,3 +58,21 @@
     @extend %boxBorder;
     padding: 15px 30px;
 }
+
+.ultWrapper {
+    @extend %flexJCenter;
+    height: inherit;
+    float: left;
+    padding-right: 15px;
+    figure {
+        @extend %flexJCenter;
+        height: inherit;
+        overflow: hidden;
+        margin-right: 10px;
+        img {
+            height: calc(100% - 10px);
+            border-radius: 3px;
+            background-origin: 1px solid $borderPrimary;
+        }
+    }
+}

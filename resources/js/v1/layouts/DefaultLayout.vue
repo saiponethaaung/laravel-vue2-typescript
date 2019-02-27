@@ -137,7 +137,7 @@
                         <button v-if="$store.state.fbSdk" @click="fbLogin" type="button" class="headerButtonTypeOne">Connect facebook account</button>
                     </template>
                     <template v-if="undefined!==$store.state.projectInfo.id">
-                        <div v-if="!testNow && canTest" type="button" class="testChatBotBtn" :class="{'hideTest': hideTest}">
+                        <div v-if="!testNow && canTest" class="testChatBotBtn" :class="{'hideTest': hideTest}">
                             Test this bot
                             <div class="fb-send-to-messenger" 
                                 messenger_app_id="1155102521322007" 

@@ -39915,6 +39915,13 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             email: "",
             role: 0
         };
+        this.adminList = [];
+        this.inviteList = [];
+        this.showSection = 1;
+    }
+    mounted() {
+        this.getMembers();
+        this.getInviets();
     }
     sendAnInvite() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -39948,6 +39955,50 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             this.inviting = false;
         });
     }
+    getRole(role) {
+        let roleName = '';
+        switch (role) {
+            case 1:
+                roleName = 'Admin';
+                break;
+            default:
+                roleName = 'Manager';
+                break;
+        }
+        return roleName;
+    }
+    getMembers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$route.params.projectid}/member`,
+                method: 'get'
+            }).then(res => {
+                this.adminList = res.data.data;
+            }).catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
+                    alert(mesg);
+                }
+            });
+            this.inviting = false;
+        });
+    }
+    getInviets() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$route.params.projectid}/member/invite`,
+                method: 'get'
+            }).then(res => {
+                this.inviteList = res.data.data;
+            }).catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
+                    alert(mesg);
+                }
+            });
+            this.inviting = false;
+        });
+    }
 };
 AdminComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -39968,10 +40019,6 @@ var render = function() {
       _c("h5", [_vm._v("Admins")]),
       _vm._v(" "),
       _c("div", [
-        _c("button", { attrs: { type: "buton" } }, [_vm._v("Activate")]),
-        _vm._v(" "),
-        _c("button", { attrs: { type: "buton" } }, [_vm._v("Deactivate")]),
-        _vm._v(" "),
         _c(
           "button",
           {
@@ -39987,7 +40034,144 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _vm._m(0),
+    _c("div", [
+      _c("ul", [
+        _c(
+          "li",
+          {
+            on: {
+              click: function($event) {
+                _vm.showSection = 1
+              }
+            }
+          },
+          [_vm._v("Members")]
+        ),
+        _vm._v(" "),
+        _c(
+          "li",
+          {
+            on: {
+              click: function($event) {
+                _vm.showSection = 2
+              }
+            }
+          },
+          [_vm._v("Pending invite")]
+        )
+      ]),
+      _vm._v(" "),
+      _vm.showSection == 1
+        ? _c("div", [
+            _vm._v("\n            admin list\n            "),
+            _c("table", { staticClass: "userListTable" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.adminList, function(admin, index) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [
+                      _c("div", { staticClass: "ultWrapper" }, [
+                        _vm._m(1, true),
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(admin.name) +
+                            "\n                                "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "utlGenderColumn" }, [
+                      _c("div", { staticClass: "ultWrapper" }, [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(admin.email) +
+                            "\n                                "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("div", { staticClass: "ultWrapper" }, [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(_vm.getRole(admin.role)) +
+                            "\n                                "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "ultDateColumn" }, [
+                      _c("div", { staticClass: "ultWrapper" }, [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(admin.invited_on) +
+                            "\n                                "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(2, true),
+                    _vm._v(" "),
+                    _vm._m(3, true)
+                  ])
+                })
+              )
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.showSection == 2
+        ? _c("div", [
+            _vm._v("\n            Invite list\n            "),
+            _c("table", { staticClass: "userListTable" }, [
+              _vm._m(4),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.inviteList, function(invite, index) {
+                  return _c("tr", { key: index }, [
+                    _c("td", { staticClass: "utlGenderColumn" }, [
+                      _c("div", { staticClass: "ultWrapper" }, [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(invite.email) +
+                            "\n                                "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("div", { staticClass: "ultWrapper" }, [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(_vm.getRole(invite.role)) +
+                            "\n                                "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "ultDateColumn" }, [
+                      _c("div", { staticClass: "ultWrapper" }, [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(invite.invited_on) +
+                            "\n                                "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(5, true),
+                    _vm._v(" "),
+                    _vm._m(6, true)
+                  ])
+                })
+              )
+            ])
+          ])
+        : _vm._e()
+    ]),
     _vm._v(" "),
     _vm.openAdminInvite
       ? _c(
@@ -40152,11 +40336,137 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("ul", [
-        _c("li", [_vm._v("Members")]),
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [
+          _c("div", { staticClass: "ultWrapper" }, [
+            _vm._v(
+              "\n                                Name\n                            "
+            )
+          ])
+        ]),
         _vm._v(" "),
-        _c("li", [_vm._v("Pending invite")])
+        _c("th", { staticClass: "utlGenderColumn" }, [
+          _c("div", { staticClass: "ultWrapper" }, [
+            _vm._v(
+              "\n                                Email\n                            "
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("th", [
+          _c("div", { staticClass: "ultWrapper" }, [
+            _vm._v(
+              "\n                                Role\n                            "
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "ultDateColumn" }, [
+          _c("div", { staticClass: "ultWrapper" }, [
+            _vm._v(
+              "\n                                Invited on\n                                "
+            ),
+            _c("i", { staticClass: "material-icons" }, [
+              _vm._v("arrow_drop_down")
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "editColumn", attrs: { colspan: "2" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("figure", [
+      _c("img", { attrs: { src: "/images/sample/logo.png" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "utlIconColumn" }, [
+      _c("div", { staticClass: "ultWrapper iconCenter" }, [
+        _c("i", { staticClass: "material-icons ultEditIcon" }, [
+          _vm._v("create")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "utlIconColumn" }, [
+      _c("div", { staticClass: "ultWrapper iconCenter" }, [
+        _c("i", { staticClass: "material-icons ultEditIcon" }, [
+          _vm._v("delete_forever")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticClass: "utlGenderColumn" }, [
+          _c("div", { staticClass: "ultWrapper" }, [
+            _vm._v(
+              "\n                                Email\n                            "
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("th", [
+          _c("div", { staticClass: "ultWrapper" }, [
+            _vm._v(
+              "\n                                Role\n                            "
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "ultDateColumn" }, [
+          _c("div", { staticClass: "ultWrapper" }, [
+            _vm._v(
+              "\n                                Invited on\n                                "
+            ),
+            _c("i", { staticClass: "material-icons" }, [
+              _vm._v("arrow_drop_down")
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "editColumn", attrs: { colspan: "2" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "utlIconColumn" }, [
+      _c("div", { staticClass: "ultWrapper iconCenter" }, [
+        _c("i", { staticClass: "material-icons ultEditIcon" }, [
+          _vm._v("create")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "utlIconColumn" }, [
+      _c("div", { staticClass: "ultWrapper iconCenter" }, [
+        _c("i", { staticClass: "material-icons ultEditIcon" }, [
+          _vm._v("delete_forever")
+        ])
       ])
     ])
   }
@@ -55547,8 +55857,7 @@ var render = function() {
                         "div",
                         {
                           staticClass: "testChatBotBtn",
-                          class: { hideTest: _vm.hideTest },
-                          attrs: { type: "button" }
+                          class: { hideTest: _vm.hideTest }
                         },
                         [
                           _vm._v(

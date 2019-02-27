@@ -2,6 +2,8 @@
 .segmentList .segmentListItem .segmentActionIcon .saiWrapper figure,
 #sideMenu #sideNav a figure,
 .typingInfo figure,
+.ultWrapper,
+.ultWrapper figure,
 .userListTable .ultChecker,
 .userListTable .iconCenter,
 .listFilterCon .filterRemoveCheck,
@@ -51,6 +53,8 @@
 .segmentList .segmentListItem .segmentActionIcon .saiWrapper figure,
 #sideMenu #sideNav a figure,
 .typingInfo figure,
+.ultWrapper,
+.ultWrapper figure,
 .userListTable .ultChecker,
 .userListTable .iconCenter,
 .listFilterCon .filterRemoveCheck,
@@ -12743,6 +12747,24 @@ a:hover {
   width: 350px;
   background: #ffffff;
   padding: 15px 30px;
+}
+
+.ultWrapper {
+  height: inherit;
+  float: left;
+  padding-right: 15px;
+}
+
+.ultWrapper figure {
+  height: inherit;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.ultWrapper figure img {
+  height: calc(100% - 10px);
+  border-radius: 3px;
+  background-origin: 1px solid #ebebeb;
 }
 
 .chatSbHeaderOption {

@@ -289,6 +289,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 
         Route::group(['prefix' => 'member'], function() {
             Route::post('/', 'V1\\Api\\ProjectController@inviteMember')->name('chatbot.project.member.invite');
+            Route::get('/', 'V1\\Api\\ProjectController@getAllMembers')->name('chatbot.project.member.list');
+            Route::get('/invite', 'V1\\Api\\ProjectController@getAllInvite')->name('chatbot.project.member.invite.list');
         });
     });
 });

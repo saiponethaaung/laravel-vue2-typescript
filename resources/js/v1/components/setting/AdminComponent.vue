@@ -3,16 +3,151 @@
         <div>
             <h5>Admins</h5>
             <div>
-                <button type="buton">Activate</button>
-                <button type="buton">Deactivate</button>
                 <button type="button" @click="openAdminInvite=true">Invite</button>
             </div>
         </div>
         <div>
             <ul>
-                <li>Members</li>
-                <li>Pending invite</li>
+                <li @click="showSection=1">Members</li>
+                <li @click="showSection=2">Pending invite</li>
             </ul>
+            <div v-if="showSection==1">
+                admin list
+                <table class="userListTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="ultWrapper">
+                                    Name
+                                </div>
+                            </th>
+                            <th class="utlGenderColumn">
+                                <div class="ultWrapper">
+                                    Email
+                                </div>
+                            </th>
+                            <th>
+                                <div class="ultWrapper">
+                                    Role
+                                </div>
+                            </th>
+                            <th class="ultDateColumn">
+                                <div class="ultWrapper">
+                                    Invited on
+                                    <i class="material-icons">arrow_drop_down</i>
+                                </div>
+                            </th>
+                            <th colspan="2" class="editColumn"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <template v-if="userLoading"> -->
+                            <!-- <tr>
+                                <td colspan="7">Loading...</td>
+                            </tr>
+                        </template>
+                        <template v-else> -->
+                            <tr v-for="(admin, index) in adminList" :key="index">
+                                <td>
+                                    <div class="ultWrapper">
+                                        <figure>
+                                            <img src="/images/sample/logo.png"/>
+                                        </figure>
+                                        {{ admin.name }}
+                                    </div>
+                                </td>
+                                <td class="utlGenderColumn">
+                                    <div class="ultWrapper">
+                                        {{ admin.email }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ultWrapper">
+                                        {{ getRole(admin.role) }}
+                                    </div>
+                                </td>
+                                <td class="ultDateColumn">
+                                    <div class="ultWrapper">
+                                        {{ admin.invited_on }}
+                                    </div>
+                                </td>
+                                <td class="utlIconColumn">
+                                    <div class="ultWrapper iconCenter">
+                                        <i class="material-icons ultEditIcon">create</i>
+                                    </div>
+                                </td>
+                                <td class="utlIconColumn">
+                                    <div class="ultWrapper iconCenter">
+                                        <i class="material-icons ultEditIcon">delete_forever</i>
+                                    </div>
+                                </td>
+                            </tr>
+                        <!-- </template> -->
+                    </tbody>
+                </table>
+            </div>
+            <div v-if="showSection==2">
+                Invite list
+                <table class="userListTable">
+                    <thead>
+                        <tr>
+                            <th class="utlGenderColumn">
+                                <div class="ultWrapper">
+                                    Email
+                                </div>
+                            </th>
+                            <th>
+                                <div class="ultWrapper">
+                                    Role
+                                </div>
+                            </th>
+                            <th class="ultDateColumn">
+                                <div class="ultWrapper">
+                                    Invited on
+                                    <i class="material-icons">arrow_drop_down</i>
+                                </div>
+                            </th>
+                            <th colspan="2" class="editColumn"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <template v-if="userLoading"> -->
+                            <!-- <tr>
+                                <td colspan="7">Loading...</td>
+                            </tr>
+                        </template>
+                        <template v-else> -->
+                            <tr v-for="(invite, index) in inviteList" :key="index">
+                                <td class="utlGenderColumn">
+                                    <div class="ultWrapper">
+                                        {{ invite.email }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ultWrapper">
+                                        {{ getRole(invite.role) }}
+                                    </div>
+                                </td>
+                                <td class="ultDateColumn">
+                                    <div class="ultWrapper">
+                                        {{ invite.invited_on }}
+                                    </div>
+                                </td>
+                                <td class="utlIconColumn">
+                                    <div class="ultWrapper iconCenter">
+                                        <i class="material-icons ultEditIcon">create</i>
+                                    </div>
+                                </td>
+                                <td class="utlIconColumn">
+                                    <div class="ultWrapper iconCenter">
+                                        <i class="material-icons ultEditIcon">delete_forever</i>
+                                    </div>
+                                </td>
+                            </tr>
+                        <!-- </template> -->
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="popFixedContainer popFixedCenter popContainer" v-if="openAdminInvite">
             <div class="adminInviteForm">
@@ -64,6 +199,14 @@ export default class AdminComponent extends Vue {
         email: "",
         role: 0
     };
+    private adminList: Array<any> = [];
+    private inviteList: Array<any> = [];
+    private showSection: number = 1;
+
+    mounted() {
+        this.getMembers();
+        this.getInviets();
+    }
 
     private async sendAnInvite() {
         if(this.memberInfo.email==="") {
@@ -92,7 +235,55 @@ export default class AdminComponent extends Vue {
             data: data,
             method: 'post'
         }).then(res => {
+            
+        }).catch(err => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
+                alert(mesg);
+            }
+        });
 
+        this.inviting = false;
+    }
+
+    private getRole(role: number) {
+        let roleName = '';
+        
+        switch (role) {
+            case 1:
+                roleName = 'Admin';
+                break;
+        
+            default:
+                roleName = 'Manager';
+                break;
+        }
+
+        return roleName;
+    }
+
+    private async getMembers() {
+        await Axios({
+            url: `/api/v1/project/${this.$route.params.projectid}/member`,
+            method: 'get'
+        }).then(res => {
+            this.adminList = res.data.data;
+        }).catch(err => {
+            if(err.response) {
+                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
+                alert(mesg);
+            }
+        });
+
+        this.inviting = false;
+    }
+
+    private async getInviets() {
+        await Axios({
+            url: `/api/v1/project/${this.$route.params.projectid}/member/invite`,
+            method: 'get'
+        }).then(res => {
+            this.inviteList = res.data.data;
         }).catch(err => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');

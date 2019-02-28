@@ -291,6 +291,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
             Route::post('/', 'V1\\Api\\ProjectController@inviteMember')->name('chatbot.project.member.invite');
             Route::get('/', 'V1\\Api\\ProjectController@getAllMembers')->name('chatbot.project.member.list');
             Route::get('/invite', 'V1\\Api\\ProjectController@getAllInvite')->name('chatbot.project.member.invite.list');
+            Route::delete('/invite/{inviteId}', 'V1\\Api\\ProjectController@cancelInvite')->name('chatbot.project.member.invite.cancel');
+            Route::delete('/{projectUserId}', 'V1\\Api\\ProjectController@deleteMember')->name('chatbot.project.member.delete');
         });
     });
 });

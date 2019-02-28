@@ -76,3 +76,54 @@
         }
     }
 }
+
+.adminHeadingCon {
+    @extend %flexCenterJSB;
+    margin-bottom: 15px;
+    h5 {
+        margin: 0;
+    }
+    .adminHeadingAction {
+        .inviteMemberButton {
+            @extend %flexJCenter;
+            border: none;
+            background: transparent;
+            color: $actionBtn1;
+            cursor: pointer;
+
+            .material-icons {
+                font-size: 18px;
+                margin-right: 5px;
+            }
+
+            &:focus,
+            &:active {
+                outline: none;
+            }
+        }
+    }
+}
+
+.activeMSection {
+    font-weight: bold;
+    color: $activeText;
+}
+
+.sectionList {
+    @extend %flexCenter;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-size: 14px;
+    li {
+        height: $standardHeight;
+        line-height: $standardHeight;
+        &:not(.sectionSeparator) {
+            cursor: pointer;
+        }
+    }
+}
+
+.sectionSeparator {
+    padding: 0 10px;
+}

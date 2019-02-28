@@ -656,4 +656,94 @@ class ProjectController extends Controller
             'data' => $res
         ]);
     }
+
+    public function cancelInvite(Request $request)
+    {
+        $inviteId = $request->inviteId;
+        
+        if(is_null($inviteId)) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Invitation id is required!'
+            ], 422);
+        }
+
+        $invite = ProjectInviteModel::where('status', 1)->find($inviteId);
+
+        if(empty($invite)) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Invalid invitation id!'
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $invite->delete();
+        } catch(\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to canceled invite!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+        
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
+        ]);
+    }
+
+    public function deleteMember(Request $request)
+    {
+        $projectuserid = $request->projectUserId;
+        
+        if(is_null($projectuserid)) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Member id is required!'
+            ], 422);
+        }
+
+        $projectUser = ProjectUser::where('user_type', '!=', 0)->find($projectuserid);
+
+        if(empty($projectUser)) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Invalid member id!'
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $projectUser->delete();
+        } catch(\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to delete member!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+        
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
+        ]);
+    }
 }

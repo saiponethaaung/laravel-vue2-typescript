@@ -80,6 +80,11 @@ $standardContentPadding: 30px;
     justify-content: center;
 }
 
+%flexCenterJSB {
+    @extend %flexCenter;
+    justify-content: space-between;
+}
+
 %inlineFlexCenter {
     display: inline-flex;
     align-items: center;

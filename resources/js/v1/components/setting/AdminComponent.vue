@@ -1,18 +1,21 @@
 <template>
-    <div>
-        <div>
+    <div class="userListRoot">
+        <div class="adminHeadingCon">
             <h5>Admins</h5>
-            <div>
-                <button type="button" @click="openAdminInvite=true">Invite</button>
+            <div class="adminHeadingAction">
+                <button type="button" class="inviteMemberButton" @click="openAdminInvite=true">
+                    <i class="material-icons">add</i>
+                    <span>Invite</span>
+                </button>
             </div>
         </div>
         <div>
-            <ul>
-                <li @click="showSection=1">Members</li>
-                <li @click="showSection=2">Pending invite</li>
+            <ul class="sectionList">
+                <li @click="showSection=1" :class="{'activeMSection': showSection===1}">Members ({{ adminList.length }})</li>
+                <li class="sectionSeparator">|</li>
+                <li @click="showSection=2" :class="{'activeMSection': showSection===2}">Pending invite ({{ inviteList.length }})</li>
             </ul>
-            <div v-if="showSection==1">
-                admin list
+            <div class="memberListCon" v-if="showSection==1">
                 <table class="userListTable">
                     <thead>
                         <tr>
@@ -34,60 +37,66 @@
                             <th class="ultDateColumn">
                                 <div class="ultWrapper">
                                     Invited on
-                                    <i class="material-icons">arrow_drop_down</i>
+                                    <!-- <i class="material-icons">arrow_drop_down</i> -->
                                 </div>
                             </th>
-                            <th colspan="2" class="editColumn"></th>
+                            <th colspan="1" class="editColumn"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <template v-if="userLoading"> -->
-                            <!-- <tr>
-                                <td colspan="7">Loading...</td>
+                        <template v-if="memberLoading">
+                            <tr>
+                                <td colspan="6">Loading...</td>
                             </tr>
                         </template>
-                        <template v-else> -->
-                            <tr v-for="(admin, index) in adminList" :key="index">
-                                <td>
-                                    <div class="ultWrapper">
-                                        <figure>
-                                            <img src="/images/sample/logo.png"/>
-                                        </figure>
-                                        {{ admin.name }}
-                                    </div>
-                                </td>
-                                <td class="utlGenderColumn">
-                                    <div class="ultWrapper">
-                                        {{ admin.email }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="ultWrapper">
-                                        {{ getRole(admin.role) }}
-                                    </div>
-                                </td>
-                                <td class="ultDateColumn">
-                                    <div class="ultWrapper">
-                                        {{ admin.invited_on }}
-                                    </div>
-                                </td>
-                                <td class="utlIconColumn">
-                                    <div class="ultWrapper iconCenter">
-                                        <i class="material-icons ultEditIcon">create</i>
-                                    </div>
-                                </td>
-                                <td class="utlIconColumn">
-                                    <div class="ultWrapper iconCenter">
-                                        <i class="material-icons ultEditIcon">delete_forever</i>
-                                    </div>
-                                </td>
-                            </tr>
-                        <!-- </template> -->
+                        <template v-else>
+                            <template v-if="adminList.length>0">
+                                <tr v-for="(admin, index) in adminList" :key="index">
+                                    <td>
+                                        <div class="ultWrapper">
+                                            <figure>
+                                                <img src="/images/sample/logo.png"/>
+                                            </figure>
+                                            {{ admin.name }}
+                                        </div>
+                                    </td>
+                                    <td class="utlGenderColumn">
+                                        <div class="ultWrapper">
+                                            {{ admin.email }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="ultWrapper">
+                                            {{ getRole(admin.role) }}
+                                        </div>
+                                    </td>
+                                    <td class="ultDateColumn">
+                                        <div class="ultWrapper">
+                                            {{ admin.invited_on }}
+                                        </div>
+                                    </td>
+                                    <!-- <td class="utlIconColumn">
+                                        <div class="ultWrapper iconCenter">
+                                            <i class="material-icons ultEditIcon">create</i>
+                                        </div>
+                                    </td> -->
+                                    <td class="utlIconColumn">
+                                        <div class="ultWrapper iconCenter">
+                                            <i class="material-icons ultEditIcon" @click="deleteMember(index)">delete_forever</i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template v-else>
+                                <tr>
+                                    <td colspan="6">There is no member.</td>
+                                </tr>
+                            </template>
+                        </template>
                     </tbody>
                 </table>
             </div>
-            <div v-if="showSection==2">
-                Invite list
+            <div class="memberListCon" v-if="showSection==2">
                 <table class="userListTable">
                     <thead>
                         <tr>
@@ -107,44 +116,46 @@
                                     <i class="material-icons">arrow_drop_down</i>
                                 </div>
                             </th>
-                            <th colspan="2" class="editColumn"></th>
+                            <th class="editColumn"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <template v-if="userLoading"> -->
-                            <!-- <tr>
-                                <td colspan="7">Loading...</td>
+                        <template v-if="inviteLoading">
+                            <tr>
+                                <td colspan="4">Loading...</td>
                             </tr>
                         </template>
-                        <template v-else> -->
-                            <tr v-for="(invite, index) in inviteList" :key="index">
-                                <td class="utlGenderColumn">
-                                    <div class="ultWrapper">
-                                        {{ invite.email }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="ultWrapper">
-                                        {{ getRole(invite.role) }}
-                                    </div>
-                                </td>
-                                <td class="ultDateColumn">
-                                    <div class="ultWrapper">
-                                        {{ invite.invited_on }}
-                                    </div>
-                                </td>
-                                <td class="utlIconColumn">
-                                    <div class="ultWrapper iconCenter">
-                                        <i class="material-icons ultEditIcon">create</i>
-                                    </div>
-                                </td>
-                                <td class="utlIconColumn">
-                                    <div class="ultWrapper iconCenter">
-                                        <i class="material-icons ultEditIcon">delete_forever</i>
-                                    </div>
-                                </td>
-                            </tr>
-                        <!-- </template> -->
+                        <template v-else>
+                            <template v-if="inviteList.length>0">
+                                <tr v-for="(invite, index) in inviteList" :key="index">
+                                    <td class="utlGenderColumn">
+                                        <div class="ultWrapper">
+                                            {{ invite.email }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="ultWrapper">
+                                            {{ getRole(invite.role) }}
+                                        </div>
+                                    </td>
+                                    <td class="ultDateColumn">
+                                        <div class="ultWrapper">
+                                            {{ invite.invited_on }}
+                                        </div>
+                                    </td>
+                                    <td class="utlIconColumn">
+                                        <div class="ultWrapper iconCenter">
+                                            <i class="material-icons ultEditIcon" @click="cancelInvite(index)">delete_forever</i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template v-else>
+                                <tr>
+                                    <td colspan="4">There is no pending invite.</td>
+                                </tr>
+                            </template>
+                        </template>
                     </tbody>
                 </table>
             </div>
@@ -202,6 +213,8 @@ export default class AdminComponent extends Vue {
     private adminList: Array<any> = [];
     private inviteList: Array<any> = [];
     private showSection: number = 1;
+    private inviteLoading: boolean = false;
+    private memberLoading: boolean = false;
 
     mounted() {
         this.getMembers();
@@ -235,7 +248,11 @@ export default class AdminComponent extends Vue {
             data: data,
             method: 'post'
         }).then(res => {
-            
+            if(res.data.data.type==1) {
+                this.inviteList.push(res.data.data.info);
+            } else {
+                this.adminList.push(res.data.data.info);
+            }
         }).catch(err => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
@@ -263,6 +280,8 @@ export default class AdminComponent extends Vue {
     }
 
     private async getMembers() {
+        this.memberLoading = true;
+
         await Axios({
             url: `/api/v1/project/${this.$route.params.projectid}/member`,
             method: 'get'
@@ -275,10 +294,12 @@ export default class AdminComponent extends Vue {
             }
         });
 
-        this.inviting = false;
+        this.memberLoading = false;
     }
 
     private async getInviets() {
+        this.inviteLoading = true;
+
         await Axios({
             url: `/api/v1/project/${this.$route.params.projectid}/member/invite`,
             method: 'get'
@@ -291,7 +312,39 @@ export default class AdminComponent extends Vue {
             }
         });
 
-        this.inviting = false;
+        this.inviteLoading = false;
+    }
+
+    private async cancelInvite(index: any) {
+        if(confirm("Are you sure you want to cancel this invitation?")) {
+            await Axios({
+                url: `/api/v1/project/${this.$route.params.projectid}/member/invite/${this.inviteList[index].id}`,
+                method: 'delete'
+            }).then(res => {
+                this.inviteList.splice(index, 1);
+            }).catch(err => {
+                if(err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to cancel an invitation!');
+                    alert(mesg);
+                }
+            });
+        }
+    }
+
+    private async deleteMember(index: any) {
+        if(confirm("Are you sure you want to delete this member?")) {
+            await Axios({
+                url: `/api/v1/project/${this.$route.params.projectid}/member/${this.adminList[index].id}`,
+                method: 'delete'
+            }).then(res => {
+                this.adminList.splice(index, 1);
+            }).catch(err => {
+                if(err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to delete a member!');
+                    alert(mesg);
+                }
+            });
+        }
     }
 }
 </script>

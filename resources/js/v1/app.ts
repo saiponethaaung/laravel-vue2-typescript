@@ -51,6 +51,8 @@ Axios.interceptors.response.use(
 );
 
 router.beforeEach(async (to, from, next) => {
+    let proceedNext = true;
+
     if(store.state.token!==null) {
         Axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.token}`;
 
@@ -63,9 +65,13 @@ router.beforeEach(async (to, from, next) => {
             url: '/api/v1/user',
             cancelToken: userLoadingToken.token
         }).then((res) => {
-            console.log('res', res);
-            store.state.isLogin = true;
-            store.state.user = res.data;
+            if(to.name==='login' || to.name==='register' || to.name==='verify') {
+                proceedNext = false;
+                router.push({name: 'home'});
+            } else {
+                store.state.isLogin = true;
+                store.state.user = res.data;
+            }
         }).catch(err => {
             if(err.response) {
                 let mesg = ajaxHandler.globalHandler(err, 'Failed to authenticate!');
@@ -73,9 +79,11 @@ router.beforeEach(async (to, from, next) => {
             }
         });
 
-        store.state.autheticating = false;
+        if(proceedNext) {
+            store.state.autheticating = false;
+        }
     }
-
+    
     next();
 });
 

@@ -24,7 +24,8 @@ class IsProjectMember
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'mesg' => 'You are not a memeber of the project!'
+                'mesg' => 'You are not a memeber of the project!',
+                'redirectHome' => true
             ], 422);
         }
 

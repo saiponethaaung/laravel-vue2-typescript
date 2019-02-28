@@ -20,7 +20,9 @@ use App\Models\ChatBlock;
 use App\Models\ChatBlockSection;
 
 use App\Mail\MemberInviteWithProject;
+use App\Mail\ProjectInviteCancelNonMember;
 use App\Notifications\ProjectInvite;
+use App\Notifications\ProjectInviteCancel;
 
 class ProjectController extends Controller
 {
@@ -682,7 +684,9 @@ class ProjectController extends Controller
         DB::beginTransaction();
 
         try {
+            $email = $invite->email;
             $invite->delete();
+            Mail::to($email)->send(new ProjectInviteCancelNonMember($email, $request->attributes->get('project')->name));
         } catch(\Exception $e) {
             DB::rollback();
             return response()->json([
@@ -724,10 +728,13 @@ class ProjectController extends Controller
             ], 422);
         }
 
+        $user = User::find($projectUser->user_id);
+
         DB::beginTransaction();
 
         try {
             $projectUser->delete();
+            $user->notify(new ProjectInviteCancel($user, $request->attributes->get('project')->name));
         } catch(\Exception $e) {
             DB::rollback();
             return response()->json([

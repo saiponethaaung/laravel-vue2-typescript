@@ -24604,6 +24604,7 @@ function logoutResponseHandler(error) {
 }
 __WEBPACK_IMPORTED_MODULE_14_axios___default.a.interceptors.response.use(response => response, logoutResponseHandler);
 __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */].beforeEach((to, from, next) => __awaiter(this, void 0, void 0, function* () {
+    let proceedNext = true;
     if (__WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.token !== null) {
         __WEBPACK_IMPORTED_MODULE_14_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.token}`;
         userLoadingToken.cancel();
@@ -24613,16 +24614,23 @@ __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */].beforeEach
             url: '/api/v1/user',
             cancelToken: userLoadingToken.token
         }).then((res) => {
-            console.log('res', res);
-            __WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.isLogin = true;
-            __WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.user = res.data;
+            if (to.name === 'login' || to.name === 'register' || to.name === 'verify') {
+                proceedNext = false;
+                __WEBPACK_IMPORTED_MODULE_2__configuration_route__["a" /* default */].push({ name: 'home' });
+            }
+            else {
+                __WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.isLogin = true;
+                __WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.user = res.data;
+            }
         }).catch(err => {
             if (err.response) {
                 let mesg = ajaxHandler.globalHandler(err, 'Failed to authenticate!');
                 alert(mesg);
             }
         });
-        __WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.autheticating = false;
+        if (proceedNext) {
+            __WEBPACK_IMPORTED_MODULE_3__configuration_store__["a" /* default */].state.autheticating = false;
+        }
     }
     next();
 }));
@@ -37152,6 +37160,9 @@ let ProjectRootComponent = class ProjectRootComponent extends __WEBPACK_IMPORTED
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to validate project!');
                     alert(mesg);
+                    if (undefined !== err.response.data.redirectHome && err.response.data.redirectHome) {
+                        this.$router.push({ name: 'home' });
+                    }
                 }
             });
             this.$store.commit('setProjectStatus', {

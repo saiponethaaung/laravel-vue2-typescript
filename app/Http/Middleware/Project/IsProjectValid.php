@@ -29,7 +29,8 @@ class IsProjectValid
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'mesg' => 'Invalid project id!'
+                'mesg' => 'Invalid project id!',
+                'redirectHome' => true
             ], 422);
         }
 

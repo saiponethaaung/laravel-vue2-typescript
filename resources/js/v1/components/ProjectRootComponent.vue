@@ -37,6 +37,9 @@ export default class ProjectRootComponent extends Vue {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to validate project!');
                 alert(mesg);
+                if(undefined!==err.response.data.redirectHome && err.response.data.redirectHome) {
+                    this.$router.push({name: 'home'});
+                }
             }
         });
             

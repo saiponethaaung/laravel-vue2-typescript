@@ -45,7 +45,7 @@ class SendEmailVerificationToken extends Notification
     {
         return (new MailMessage)
                     ->subject('Email verification code')
-                    ->line('Hi '.$this->user->name.',')
+                    ->greeting('Hi '.$this->user->name.',')
                     ->line('Your verification code is '.$this->token);
     }
 

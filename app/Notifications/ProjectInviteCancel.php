@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ProjectInvite extends Notification
+class ProjectInviteCancel extends Notification
 {
     use Queueable;
     protected $user;
@@ -44,10 +44,9 @@ class ProjectInvite extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Project Invite')
+                    ->subject('Remove from project member')
                     ->greeting('Hi '.$this->user->name.',')
-                    ->line('You are invited to mangage "'.$this->project.'" bot.')
-                    ->action('Login', url('/login'));
+                    ->line('You are remove from "'.$this->project.'" bot member.');
     }
 
     /**

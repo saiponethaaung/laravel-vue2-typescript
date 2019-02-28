@@ -253,6 +253,9 @@ export default class AdminComponent extends Vue {
             } else {
                 this.adminList.push(res.data.data.info);
             }
+            this.openAdminInvite = false;
+            this.memberInfo.email = '';
+            this.memberInfo.role = 0;
         }).catch(err => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');

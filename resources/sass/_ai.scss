@@ -367,3 +367,32 @@ $aiCSearchWdith: 300px;
         margin: 0;
     }
 }
+
+.responseDelete{
+    @extend %flexJCenter;
+    border: 1px solid $borderPrimary;
+    background: $primaryBackground;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    position: absolute;
+    top: 16px;
+    right: -10px;
+    opacity: 0;
+    visibility: hidden;
+    cursor: pointer;
+    .material-icons {
+        font-size: 14px;
+        color: $secondaryText;
+    }
+}
+
+.responseList {
+    position: relative;
+    &:hover {
+        .responseDelete {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}

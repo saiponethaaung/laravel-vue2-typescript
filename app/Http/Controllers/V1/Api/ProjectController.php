@@ -186,6 +186,10 @@ class ProjectController extends Controller
             $res[] = $parsed;
         }
 
+        usort($res, function($a, $b) {
+            return $a['currentProject'] < $b['currentProject'];
+        });
+
         return response()->json([
             'status' => true,
             'code' => 200,

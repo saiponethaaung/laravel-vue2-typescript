@@ -21,12 +21,12 @@ class SavedReplyController extends Controller
             $keyword = $request->input('keyword'); 
 
             $replyList->where('title', 'like', '%'.$keyword.'%');
-            $replyList = $replyList->get();
         } else {
             $replyList->where('project_id', $request->attributes->get('project')->id);
-            $replyList = $replyList->get();
         }
-
+        
+        $replyList = $replyList->get();
+        
         $res = [];
 
         foreach($replyList as $reply) {

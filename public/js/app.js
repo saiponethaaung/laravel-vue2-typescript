@@ -39032,7 +39032,7 @@ var render = function() {
             return [
               _c(
                 "li",
-                { key: index },
+                { key: index, staticClass: "responseList" },
                 [
                   response.type === 1
                     ? [
@@ -39053,6 +39053,7 @@ var render = function() {
                   _c(
                     "button",
                     {
+                      staticClass: "responseDelete",
                       attrs: { type: "button" },
                       on: {
                         click: function($event) {
@@ -39060,7 +39061,11 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("delete")]
+                    [
+                      _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("delete")
+                      ])
+                    ]
                   )
                 ],
                 2
@@ -39359,6 +39364,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_ProjectPage__ = __webpack_require__(96);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue__ = __webpack_require__(249);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -39373,6 +39380,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -39440,6 +39448,9 @@ let ProjectConfigrationComponent = class ProjectConfigrationComponent extends __
                 this.pages[index].connected = true;
                 this.pages[index].currentProject = true;
                 this.$store.commit('setProjectInfo', { project: res.data.data });
+                this.pages.sort(function (a, b) {
+                    return a.currentProject < b.currentProject;
+                });
             }).catch((err) => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to connect a page!');
@@ -39461,6 +39472,9 @@ let ProjectConfigrationComponent = class ProjectConfigrationComponent extends __
                 this.pages[index].connected = false;
                 this.pages[index].currentProject = false;
                 this.$store.commit('setProjectInfo', { project: res.data.data });
+                this.pages.sort(function (a, b) {
+                    return a.currentProject < b.currentProject;
+                });
             }).catch((err) => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to disconnect a page!');
@@ -39471,7 +39485,11 @@ let ProjectConfigrationComponent = class ProjectConfigrationComponent extends __
     }
 };
 ProjectConfigrationComponent = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
+        components: {
+            PageListComponent: __WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue___default.a
+        }
+    })
 ], ProjectConfigrationComponent);
 /* harmony default export */ __webpack_exports__["default"] = (ProjectConfigrationComponent);
 
@@ -39527,13 +39545,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "inheritHFW ovAuto" },
+    { staticClass: "inheritHFW ovAuto pageListRootCon" },
     [
       _vm.$store.state.projectInfo.isOwner
         ? [
             _vm.$store.state.user.facebook_connected
               ? [
-                  _vm._v("\n            Connect a facebook page\n            "),
+                  _c("h5", [_vm._v("Connected page")]),
+                  _vm._v(" "),
                   _vm.pages.length > 0
                     ? [
                         _c(
@@ -39544,61 +39563,23 @@ var render = function() {
                               "li",
                               { key: index, staticClass: "page" },
                               [
-                                _c("div", { staticClass: "pageRoot" }, [
-                                  _c("figure", { staticClass: "pageImage" }, [
-                                    _c("img", { attrs: { src: p.image } })
-                                  ]),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "pageInfo" },
-                                    [
-                                      _c("p", [_vm._v(_vm._s(p.name))]),
-                                      _vm._v(" "),
-                                      p.currentProject
-                                        ? [
-                                            _c(
-                                              "button",
-                                              {
-                                                staticClass: "float-right",
-                                                on: {
-                                                  click: function($event) {
-                                                    _vm.disconnectPage(index)
-                                                  }
-                                                }
-                                              },
-                                              [_vm._v("Disconnect")]
-                                            )
-                                          ]
-                                        : p.connected
-                                        ? [
-                                            _c(
-                                              "span",
-                                              { staticClass: "float-right" },
-                                              [_vm._v("Connected")]
-                                            )
-                                          ]
-                                        : _vm.currentPage == -1
-                                        ? [
-                                            _c(
-                                              "button",
-                                              {
-                                                staticClass: "float-right",
-                                                on: {
-                                                  click: function($event) {
-                                                    _vm.connectPage(index)
-                                                  }
-                                                }
-                                              },
-                                              [_vm._v("Connect")]
-                                            )
-                                          ]
-                                        : _vm._e()
-                                    ],
-                                    2
-                                  )
-                                ])
-                              ]
+                                _c("page-list-component", {
+                                  attrs: {
+                                    page: p,
+                                    currentPage: _vm.currentPage,
+                                    index: index
+                                  },
+                                  on: {
+                                    disconnectPage: function($event) {
+                                      _vm.disconnectPage(index)
+                                    },
+                                    connectPage: function($event) {
+                                      _vm.connectPage(index)
+                                    }
+                                  }
+                                })
+                              ],
+                              1
                             )
                           })
                         )
@@ -39619,9 +39600,7 @@ var render = function() {
                 ]
               : [_vm._v("\n            Connect a facebook account\n        ")]
           ]
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", [_vm._v("\n        setting\n    ")])
+        : _vm._e()
     ],
     2
   )
@@ -59161,6 +59140,238 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(250)
+/* template */
+var __vue_template__ = __webpack_require__(251)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/setting/PageListComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-87700244", Component.options)
+  } else {
+    hotAPI.reload("data-v-87700244", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 250 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+let PageList = class PageList extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.openDropDown = false;
+    }
+    disconnectPage() {
+        return this.index;
+    }
+    connectPage() {
+        return this.index;
+    }
+    documentClick(e) {
+        let el = this.$refs.selectAction;
+        let target = e.target;
+        if ((el !== target) && !el.contains(target)) {
+            this.openDropDown = false;
+            return null;
+        }
+    }
+    created() {
+        document.addEventListener('click', this.documentClick);
+    }
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener('click', this.documentClick);
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], PageList.prototype, "page", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], PageList.prototype, "index", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], PageList.prototype, "currentPage", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('disconnectPage')
+], PageList.prototype, "disconnectPage", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('connectPage')
+], PageList.prototype, "connectPage", null);
+PageList = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], PageList);
+/* harmony default export */ __webpack_exports__["default"] = (PageList);
+
+
+/***/ }),
+/* 251 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "pageRoot",
+      class: { connectedPage: _vm.page.currentProject }
+    },
+    [
+      _c("figure", { staticClass: "pageImage" }, [
+        _c("img", { attrs: { src: _vm.page.image } })
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "pageInfo" },
+        [
+          _c("p", [_vm._v(_vm._s(_vm.page.name))]),
+          _vm._v(" "),
+          _vm.page.currentProject
+            ? [
+                _c("div", { staticClass: "pageAction connectedBtn" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "pageActionInfoCon",
+                      on: {
+                        click: function($event) {
+                          _vm.openDropDown = true
+                        }
+                      }
+                    },
+                    [
+                      _c("span", [_vm._v("Connected")]),
+                      _vm._v(" "),
+                      _c("i", { staticClass: "material-icons" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm.openDropDown
+                              ? "arrow_drop_up"
+                              : "arrow_drop_down"
+                          )
+                        )
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.openDropDown
+                    ? _c(
+                        "ul",
+                        { ref: "selectAction", staticClass: "pageInfoActions" },
+                        [
+                          _c(
+                            "li",
+                            {
+                              on: {
+                                click: function($event) {
+                                  _vm.disconnectPage()
+                                  _vm.openDropDown = false
+                                }
+                              }
+                            },
+                            [_vm._v("Diconnect")]
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ])
+              ]
+            : _vm.currentPage == -1 && _vm.page.connected
+            ? [
+                _c("div", { staticClass: "pageAction" }, [
+                  _vm._v("Connected on other bot")
+                ])
+              ]
+            : _vm.currentPage == -1
+            ? [
+                _c(
+                  "div",
+                  {
+                    staticClass: "pageAction headerButtonTypeOne connectBtn",
+                    on: {
+                      click: function($event) {
+                        _vm.connectPage()
+                      }
+                    }
+                  },
+                  [_vm._v("Connect")]
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-87700244", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

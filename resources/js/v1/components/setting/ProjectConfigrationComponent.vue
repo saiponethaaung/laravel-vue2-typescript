@@ -1,28 +1,18 @@
 <template>
-    <div class="inheritHFW ovAuto">
+    <div class="inheritHFW ovAuto pageListRootCon">
         <template v-if="$store.state.projectInfo.isOwner">
             <template v-if="$store.state.user.facebook_connected">
-                Connect a facebook page
+                <h5>Connected page</h5>
                 <template v-if="pages.length>0">
                     <ul class="pageList">
                         <li v-for="(p, index) in pages" :key="index" class="page">
-                            <div class="pageRoot">
-                                <figure class="pageImage">
-                                    <img :src="p.image"/>
-                                </figure>
-                                <div class="pageInfo">
-                                    <p>{{ p.name }}</p>
-                                    <template v-if="p.currentProject">
-                                        <button class="float-right" @click="disconnectPage(index)">Disconnect</button>
-                                    </template>
-                                    <template v-else-if="p.connected">
-                                        <span class="float-right">Connected</span>
-                                    </template>
-                                    <template v-else-if="currentPage==-1">
-                                        <button class="float-right" @click="connectPage(index)">Connect</button>
-                                    </template>
-                                </div>
-                            </div>
+                            <page-list-component
+                                :page="p"
+                                :currentPage="currentPage"
+                                :index="index"
+                                @disconnectPage="disconnectPage(index)"
+                                @connectPage="connectPage(index)"
+                            ></page-list-component>
                         </li>
                     </ul>
                 </template>
@@ -39,9 +29,6 @@
                 Connect a facebook account
             </template>
         </template>
-        <div>
-            setting
-        </div>
     </div>    
 </template>
 
@@ -50,8 +37,13 @@ import {Component, Vue} from 'vue-property-decorator';
 import Axios,{ CancelTokenSource } from 'axios';
 import ProjectPage from '../../models/ProjectPage';
 import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
+import PageListComponent from './PageListComponent.vue';
 
-@Component
+@Component({
+    components: {
+        PageListComponent
+    }
+})
 export default class ProjectConfigrationComponent extends Vue {
     
     private pages: Array<ProjectPage> = [];
@@ -114,6 +106,10 @@ export default class ProjectConfigrationComponent extends Vue {
             this.pages[index].connected = true;
             this.pages[index].currentProject = true;
             this.$store.commit('setProjectInfo', { project: res.data.data});
+
+            this.pages.sort(function(a: any, b: any) : any {
+                return a.currentProject<b.currentProject;
+            });
         }).catch((err) => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to connect a page!');
@@ -135,6 +131,10 @@ export default class ProjectConfigrationComponent extends Vue {
             this.pages[index].connected = false;
             this.pages[index].currentProject = false;
             this.$store.commit('setProjectInfo', { project: res.data.data});
+
+            this.pages.sort(function(a: any, b: any) : any {
+                return a.currentProject<b.currentProject;
+            });
         }).catch((err) => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to disconnect a page!');

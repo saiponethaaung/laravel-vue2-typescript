@@ -3,6 +3,8 @@
 #sideMenu #sideNav a figure,
 .conentItem .optionSection .deleteAction,
 .typingInfo figure,
+.pageRoot .pageAction,
+.pageRoot .connectedBtn .pageActionInfoCon,
 .ultWrapper,
 .ultWrapper figure,
 .adminHeadingCon .adminHeadingAction .inviteMemberButton,
@@ -26,6 +28,7 @@
 .aiC-groupCon .aiC-groupCon-child .aiC-groupCon-optionButton,
 .aiKeywordBlock,
 .aiC-group-confirmDelCon .aiC-group-delHeadingCon .aiC-group-delClose,
+.responseDelete,
 .builderSectionInfo,
 .adminHeadingCon,
 .configSidebarLink a,
@@ -59,6 +62,8 @@
 #sideMenu #sideNav a figure,
 .conentItem .optionSection .deleteAction,
 .typingInfo figure,
+.pageRoot .pageAction,
+.pageRoot .connectedBtn .pageActionInfoCon,
 .ultWrapper,
 .ultWrapper figure,
 .adminHeadingCon .adminHeadingAction .inviteMemberButton,
@@ -81,7 +86,8 @@
 .aiC-groupCon .aiC-groupCon-child.addmore button,
 .aiC-groupCon .aiC-groupCon-child .aiC-groupCon-optionButton,
 .aiKeywordBlock,
-.aiC-group-confirmDelCon .aiC-group-delHeadingCon .aiC-group-delClose {
+.aiC-group-confirmDelCon .aiC-group-delHeadingCon .aiC-group-delClose,
+.responseDelete {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -12680,30 +12686,38 @@ a:hover {
   visibility: visible;
 }
 
+.pageListRootCon {
+  padding: 15px 30px;
+}
+
 .pageList {
   list-style: none;
-  padding: 15px;
+  padding: 15px 0;
 }
 
 .pageRoot {
-  padding: 15px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 75px;
+  padding: 15px;
 }
 
 .pageRoot .pageImage {
   width: 50px;
-  height: 50px;
+  height: 100%;
   margin: 0;
 }
 
 .pageRoot .pageImage img {
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .pageRoot .pageInfo {
@@ -12717,11 +12731,52 @@ a:hover {
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .pageRoot .pageInfo p {
   margin-bottom: 0;
-  width: 100%;
+}
+
+.pageRoot .pageAction {
+  height: 100%;
+}
+
+.pageRoot .connectedBtn {
+  position: relative;
+}
+
+.pageRoot .connectedBtn .pageActionInfoCon {
+  color: #c238eb;
+  cursor: pointer;
+}
+
+.pageRoot .connectedBtn .pageInfoActions {
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+  list-style: none;
+}
+
+.pageRoot .connectedBtn .pageInfoActions li {
+  padding: 5px 15px;
+  cursor: pointer;
+}
+
+.pageRoot .connectBtn {
+  cursor: pointer;
+}
+
+.pageRoot.connectedPage {
+  border: 1px solid #c238eb;
+  border-radius: 5px;
 }
 
 .configSidebarLink {
@@ -15492,6 +15547,34 @@ a:hover {
   overflow: hidden;
   padding: 0 10px;
   margin: 0;
+}
+
+.responseDelete {
+  border: 1px solid #ebebeb;
+  background: #ffffff;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  position: absolute;
+  top: 16px;
+  right: -10px;
+  opacity: 0;
+  visibility: hidden;
+  cursor: pointer;
+}
+
+.responseDelete .material-icons {
+  font-size: 14px;
+  color: #aaaaaa;
+}
+
+.responseList {
+  position: relative;
+}
+
+.responseList:hover .responseDelete {
+  opacity: 1;
+  visibility: visible;
 }
 
 @font-face {

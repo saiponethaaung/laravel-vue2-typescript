@@ -27,7 +27,7 @@
             &nbsp;with</h5>
             <ul>
                 <template v-for="(response, index) in rule.response">
-                    <li :key="index">
+                    <li :key="index" class="responseList">
                         <template v-if="response.type===1">
                             <ai-response-text
                                 :response="response"
@@ -38,7 +38,9 @@
                                 :response="response"
                             ></ai-response-section>
                         </template>
-                        <button type="button" @click="deleteResponse(index)">delete</button>
+                        <button class="responseDelete" type="button" @click="deleteResponse(index)">
+                            <i class="material-icons">delete</i>
+                        </button>
                     </li>
                 </template>
                 <li v-if="rule.responseCreating>0">

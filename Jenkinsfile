@@ -8,6 +8,7 @@ pipeline {
                     def path = (pwd().toLowerCase()).tokenize('/').last();
                     env.dockerPrefix = path.replaceAll('-', '');
                     env.dockerPrefix = env.dockerPrefix.replaceAll('_', '');
+                    env.dockerPrefix = env.dockerPrefix.replaceAll(' ', '');
                 }
             }
         }
@@ -45,11 +46,21 @@ pipeline {
         }
         success {
             emailextrecipients([developers(), requestor(), upstreamDevelopers()])
-            echo 'This will run only if successful'
+            emailext (
+                subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                    <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            )
         }
         failure {
             emailextrecipients([brokenTestsSuspects(), culprits(), developers(), requestor(), brokenBuildSuspects(), upstreamDevelopers()])
-            echo 'This will run only if failed'
+            emailext (
+                subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                    <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            )
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'

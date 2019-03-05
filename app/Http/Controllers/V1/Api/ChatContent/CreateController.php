@@ -587,7 +587,7 @@ class CreateController extends Controller
 
         return response()->json([
             'status' => true,
-            'code' => 200,
+            'code' => 201,
             'data' => [
                 'id' => $userInput->id,
                 'question' => '',
@@ -614,9 +614,11 @@ class CreateController extends Controller
 
         $res = $this->createButton($request, $total, $request->attributes->get('chatBlockSectionContent')->id);
 
+        // @codeCoverageIgnoreStart
         if($res['status']===false) {
             return response()->json($res, $res['code']);
         }
+        // @codeCoverageIgnoreEnd
 
         return response()->json([
             'status' => true,
@@ -638,9 +640,11 @@ class CreateController extends Controller
 
         $res = $this->createButton($request, $total, null, $request->galleryid);
 
+        // @codeCoverageIgnoreStart
         if($res['status']===false) {
             return response()->json($res, $res['code']);
         }
+        // @codeCoverageIgnoreEnd
 
         return response()->json([
             'status' => true,
@@ -662,9 +666,11 @@ class CreateController extends Controller
 
         $res = $this->createButton($request, 1, $request->attributes->get('chatBlockSectionContent')->id);
 
+        // @codeCoverageIgnoreStart
         if($res['status']===false) {
             return response()->json($res, $res['code']);
         }
+        // @codeCoverageIgnoreEnd
 
         return response()->json([
             'status' => true,
@@ -686,9 +692,11 @@ class CreateController extends Controller
 
         $res = $this->createButton($request, 1, null, $request->listid);
 
+        // @codeCoverageIgnoreStart
         if($res['status']===false) {
             return response()->json($res, $res['code']);
         }
+        // @codeCoverageIgnoreEnd
 
         return response()->json([
             'status' => true,

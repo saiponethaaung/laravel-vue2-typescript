@@ -11,9 +11,9 @@ use App\Models\ChatBlockSection;
 
 class ChatbotCreateContentTest extends TestCase
 {
-    public function testCreateTextContent()
+    public function createTextContentRequest()
     {
-        $featureTest = $this->withHeaders([
+        return $this->withHeaders([
             'Authorization' => 'Bearer '.$this->token
         ])
         ->json('post', route('chatbot.content.create', [
@@ -22,7 +22,11 @@ class ChatbotCreateContentTest extends TestCase
             'sectionId' => $this->section->id
         ]), [
             'type' => 1
-        ])
+        ]);
+    }
+    public function testCreateTextContent()
+    {
+        $featureTest = $this->createTextContentRequest()
         ->assertStatus(201)
         ->assertJson([
             'status' => true,
@@ -569,6 +573,192 @@ class ChatbotCreateContentTest extends TestCase
                     ]
                 ]
             ]
+        ]);
+    }
+
+    public function testCreateNewUserInput()
+    {
+        $userInput = json_decode($this->createUserInputRequest()->getContent(), true);
+        $featureTest = $this->withHeaders([
+            'Authorization' => 'Bearer '.$this->token
+        ])
+        ->json('post', route('chatbot.content.ui.create', [
+            'projectId' => $this->project->id,
+            'blockId' => $this->block->id,
+            'sectionId' => $this->section->id,
+            'contentId' => $userInput['data']['id']
+        ]))
+        ->assertJson([
+            'status' => true,
+            'code' => 201,
+            'data' => [
+                'question' => '',
+                'attribute' => [
+                    'title' => '',
+                ],
+                'content_id' => (int) $userInput['data']['content'][0]['id'],
+                'validation' => 0
+            ]
+        ])
+        ->assertJsonStructure([
+            'status',
+            'code',
+            'data' => [
+                'id',
+                'question',
+                'attribute' => [
+                    'id',
+                    'title',
+                ],
+                'content_id',
+                'validation'
+            ]
+        ]);
+    }
+
+    public function createTextButton($textContentId)
+    {
+        return $this->withHeaders([
+            'Authorization' => 'Bearer '.$this->token
+        ])
+        ->json('post', route('chatbot.content.text.button.create', [
+            'projectId' => $this->project->id,
+            'blockId' => $this->block->id,
+            'sectionId' => $this->section->id,
+            'contentId' => $textContentId
+        ]));
+    }
+
+    public function testCreateTextButton()
+    {
+        $textContent = json_decode($this->createTextContentRequest()->getContent(), true);
+
+        $featureTest = $this->createTextButton($textContent['data']['id'])
+        ->assertStatus(201)
+        ->assertJson([
+            'status' => true,
+            'code' => 201,
+            'button' => [
+                'type' => 0,
+                'title' => '',
+                'block' => [],
+                'url' => '',
+                'phone' => [
+                    'countryCode' => 95,
+                    'number' => null
+                ]
+            ]
+        ])
+        ->assertJsonStructure([
+            'status',
+            'code',
+            'button' => [
+                'id',
+                'type',
+                'title',
+                'block',
+                'url',
+                'phone' => [
+                    'countryCode',
+                    'number',
+                ]
+            ]
+        ]);
+    }
+
+    public function testCreateTextButtonOverThree()
+    {
+        $textContent = json_decode($this->createTextContentRequest()->getContent(), true);
+
+        $this->createTextButton($textContent['data']['id']);
+        $this->createTextButton($textContent['data']['id']);
+        $this->createTextButton($textContent['data']['id']);
+
+        $featureTest = $this->createTextButton($textContent['data']['id'])
+        ->assertStatus(422)
+        ->assertJson([
+            'status' => false,
+            'code' => 422,
+            'mesg' => 'Text button at it\'s limit!'
+        ])
+        ->assertJsonStructure([
+            'status',
+            'code',
+            'mesg'
+        ]);
+    }
+
+    
+    public function createGalleryButton($galleryContentId, $galleryId)
+    {
+        return $this->withHeaders([
+            'Authorization' => 'Bearer '.$this->token
+        ])
+        ->json('post', route('chatbot.content.gallery.button.create', [
+            'projectId' => $this->project->id,
+            'blockId' => $this->block->id,
+            'sectionId' => $this->section->id,
+            'contentId' => $galleryContentId,
+            'galleryId' => $galleryId
+        ]));
+    }
+
+    public function testCreateGalleryButton()
+    {
+        $galleryContent = json_decode($this->createGalleryRequest()->getContent(), true);
+
+        $featureTest = $this->createGalleryButton($galleryContent['data']['id'], $galleryContent['data']['content'][0]['id'])
+        ->assertStatus(201)
+        ->assertJson([
+            'status' => true,
+            'code' => 201,
+            'button' => [
+                'type' => 0,
+                'title' => '',
+                'block' => [],
+                'url' => '',
+                'phone' => [
+                    'countryCode' => 95,
+                    'number' => null
+                ]
+            ]
+        ])
+        ->assertJsonStructure([
+            'status',
+            'code',
+            'button' => [
+                'id',
+                'type',
+                'title',
+                'block',
+                'url',
+                'phone' => [
+                    'countryCode',
+                    'number',
+                ]
+            ]
+        ]);
+    }
+
+    public function testCreateGalleryButtonOverThree()
+    {
+        $galleryContent = json_decode($this->createGalleryRequest()->getContent(), true);
+
+        $this->createGalleryButton($galleryContent['data']['id'], $galleryContent['data']['content'][0]['id']);
+        $this->createGalleryButton($galleryContent['data']['id'], $galleryContent['data']['content'][0]['id']);
+        $this->createGalleryButton($galleryContent['data']['id'], $galleryContent['data']['content'][0]['id']);
+
+        $featureTest = $this->createGalleryButton($galleryContent['data']['id'], $galleryContent['data']['content'][0]['id'])
+        ->assertStatus(422)
+        ->assertJson([
+            'status' => false,
+            'code' => 422,
+            'mesg' => 'Gallery button at it\'s limit!'
+        ])
+        ->assertJsonStructure([
+            'status',
+            'code',
+            'mesg'
         ]);
     }
 }

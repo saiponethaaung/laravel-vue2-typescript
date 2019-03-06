@@ -40,7 +40,7 @@
                         <div class="chatGalleryButtons">
                             <div class="addBtn btnCon" v-for="(button, sindex) in l.buttons" :key="sindex">
                                 <div class="buttonActionGroup" @click="l.btnEdit=sindex">
-                                    <div class="buttonName">{{ button.title ? button.title : 'New Button' }}</div>
+                                    <div class="buttonName">{{ button.title ? button.title : 'Button Name' }}</div>
                                     <div class="buttonActionName" v-if="button.type===0 && button.block.length>0">{{ button.block[0].title }}</div>
                                     <div class="buttonActionName" v-if="button.type===1 && button.url">{{ button.url }}</div>
                                     <div class="buttonActionName" v-if="button.type===2 && button.phone.number">{{ button.phone.number }}</div>

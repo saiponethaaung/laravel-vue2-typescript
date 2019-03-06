@@ -123,7 +123,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
                             Route::put('/{galleId}', 'V1\\Api\\ChatContent\\UpdateController@updateGallery')->name('chatbot.content.gallery.item.update');
                             Route::delete('/{galleId}', 'V1\\Api\\ChatContent\\DeleteController@deleteGalleryItem')->name('chatbot.content.gallery.item.delete');
                             Route::post('/{galleId}/image', 'V1\\Api\\ChatContent\\UpdateController@uploadGalleryImage')->name('chatbot.content.gallery.image.upload');
-                            Route::delete('/{galleId}/image', 'V1\\Api\\ChatContent\\deleteController@deleteGalleryImage')->name('chatbot.content.gallery.image.delete');
+                            Route::delete('/{galleId}/image', 'V1\\Api\\ChatContent\\DeleteController@deleteGalleryImage')->name('chatbot.content.gallery.image.delete');
                         });
 
                         Route::group(['prefix' => 'quick-reply'], function() {

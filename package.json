@@ -31,6 +31,7 @@
         "material-design-icons": "^3.0.1",
         "v-calendar": "^0.9.7",
         "vue-masonry": "^0.11.6",
-        "vue-router": "^3.0.1"
+        "vue-router": "^3.0.1",
+        "vuedraggable": "^2.19.1"
     }
 }

@@ -687,7 +687,6 @@ class ChatbotCreateContentTest extends TestCase
             'mesg'
         ]);
     }
-
     
     public function createGalleryButton($galleryContentId, $galleryId)
     {
@@ -754,6 +753,78 @@ class ChatbotCreateContentTest extends TestCase
             'status' => false,
             'code' => 422,
             'mesg' => 'Gallery button at it\'s limit!'
+        ])
+        ->assertJsonStructure([
+            'status',
+            'code',
+            'mesg'
+        ]);
+    }
+    
+    public function createListButton($listContentId, $listId)
+    {
+        return $this->withHeaders([
+            'Authorization' => 'Bearer '.$this->token
+        ])
+        ->json('post', route('chatbot.content.list.itme.button.create', [
+                'projectId' => $this->project->id,
+                'blockId' => $this->block->id,
+                'sectionId' => $this->section->id,
+                'contentId' => $listContentId,
+                'galleryId' => $listId
+            ]));
+    }
+
+    public function testCreateListButton()
+    {
+        $listContent = json_decode($this->createListRequest()->getContent(), true);
+
+        // print_r($listContent);
+        $featureTest = $this->createListButton($listContent['data']['id'], $listContent['data']['content']['content'][0]['id'])
+        ->assertStatus(201)
+        ->assertJson([
+            'status' => true,
+            'code' => 201,
+            'button' => [
+                'type' => 0,
+                'title' => '',
+                'block' => [],
+                'url' => '',
+                'phone' => [
+                    'countryCode' => 95,
+                    'number' => null
+                ]
+            ]
+        ])
+        ->assertJsonStructure([
+            'status',
+            'code',
+            'button' => [
+                'id',
+                'type',
+                'title',
+                'block',
+                'url',
+                'phone' => [
+                    'countryCode',
+                    'number',
+                ]
+            ]
+        ]);
+    }
+
+    public function testCreateListButtonOverThree()
+    {
+        $listContent = json_decode($this->createListRequest()->getContent(), true);
+
+        $this->createListButton($listContent['data']['id'], $listContent['data']['content'][0]['id']);
+
+        $featureTest = $this->createListButton($listContent['data']['id'], $listContent['data']['content']['content'][0]['id'])
+        ->assertStatus(422)
+        ->assertJson([
+            'status' => false,
+            'code' => 422,
+            'mesg' => 'List item button at it\'s limit!'
         ])
         ->assertJsonStructure([
             'status',

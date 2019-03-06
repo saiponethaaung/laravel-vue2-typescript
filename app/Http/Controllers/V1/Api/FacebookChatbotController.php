@@ -304,8 +304,17 @@ class FacebookChatbotController extends Controller
                             ]
                         ]);
                     }
+
+                    $nextSkip = false;
+                    $index = -1;
                     
                     foreach($messages['data'] as $mesg) {
+                        $index++;
+
+                        if($nextSkip) {
+                            $nextSkip = false;
+                            continue;
+                        }
 
                         if($mesg['status']===false) continue;
 
@@ -330,7 +339,9 @@ class FacebookChatbotController extends Controller
                             'content_type' => $mesg['type']
                         ];
 
-                        switch($mesg['type']) {
+                        $type = $mesg['type'];
+
+                        switch($type) {
                             case(1):
                             case(5):
                             case(6):
@@ -402,7 +413,7 @@ class FacebookChatbotController extends Controller
                         'data' => json_encode([
                             'error' => true,
                             'data' => $e->getMessage(),
-                            'raw' => $e
+                            'raw' => $e->getTraceAsString()
                         ])
                     ]);
                 }

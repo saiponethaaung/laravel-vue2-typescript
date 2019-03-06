@@ -19,9 +19,11 @@
                         </button>
                     </div>
                     <div class="chatBlockContentList">
-                        <div v-for="(section, sIndex) in block.sections" :key="sIndex" class="chatBlockContent"  @click="selectedBlock=`${index}-${sIndex}`" :class="{'selectedBlock': selectedBlock===`${index}-${sIndex}`}">
-                            {{ section.title }}
-                        </div>
+                        <!-- <draggable v-model="block.sections" draggable=".chatBlockContent"> -->
+                            <div v-for="(section, sIndex) in block.sections" :key="section.id" class="chatBlockContent"  @click="selectedBlock=`${index}-${sIndex}`" :class="{'selectedBlock': selectedBlock===`${index}-${sIndex}`}">
+                                {{ section.title }}
+                            </div>
+                        <!-- </draggable> -->
                         <template v-if="!block.lock">
                             <div v-if="!block.isSecCreating" class="chatBlockContent addMore" @click="block.createNewSection()">
                                 <i class="material-icons">add</i>

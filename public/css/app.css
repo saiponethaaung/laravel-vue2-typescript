@@ -11618,6 +11618,10 @@ a:hover {
   font-size: 18px;
 }
 
+.conentItem .optionSection.handle {
+  top: 30px;
+}
+
 .builderSectionInfo {
   padding-top: 30px;
   padding-left: 30px;

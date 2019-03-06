@@ -35,6 +35,7 @@ class Project extends Model
                 'block_id' => $block->id,
                 'broadcast_id' => null,
                 'title' => 'Welcome',
+                'type' => 1,
                 'order' => 1
             ]);
 
@@ -42,6 +43,7 @@ class Project extends Model
                 'block_id' => $block->id,
                 'broadcast_id' => null,
                 'title' => 'Default Answer',
+                'type' => 2,
                 'order' => 2
             ]);
 

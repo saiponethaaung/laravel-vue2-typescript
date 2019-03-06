@@ -5,28 +5,39 @@
                 <div>{{ section.title }}</div>
             </template>
             <template v-else>
-                <input type="text" v-model="section.title" v-on:blur="updateSection"/>
+                <input type="text" v-model="section.title" v-on:blur="updateSection">
                 <div class="deleteAction" @click="delSection()">
                     <i class="material-icons">delete</i>
                 </div>
             </template>
         </div>
-        <div class="contentList">
-            <div v-for="(content, index) in contents" :key="index" class="conentItem" :class="{'deleting': content.isDeleting}">
-                <div class="optionSection">
-                    <div class="deleteAction" @click="delItem(index)">
-                        <i class="material-icons">delete</i>
-                    </div>
-                </div>
-                <component :is="getComponent(content.type)" :content="content"></component>
-                <template v-if="content.isDeleting">
-                    <div class="componentDeleting">
-                        <div class="deletingContainer">
+        <draggable v-model="contents" class="contentList" handle=".handle" ghost-class="ghost">
+            <transition-group>
+                <div
+                    v-for="(content, index) in contents"
+                    :key="content.id+'-'+index"
+                    class="conentItem"
+                    :class="{'deleting': content.isDeleting}"
+                >
+                    <div class="optionSection">
+                        <div class="deleteAction" @click="delItem(index)">
+                            <i class="material-icons">delete</i>
                         </div>
                     </div>
-                </template>
-            </div>
-        </div>
+                    <div class="optionSection handle">
+                        <div class="deleteAction">
+                            <i class="material-icons">unfold_more</i>
+                        </div>
+                    </div>
+                    <component :is="getComponent(content.type)" :content="content"></component>
+                    <template v-if="content.isDeleting">
+                        <div class="componentDeleting">
+                            <div class="deletingContainer"></div>
+                        </div>
+                    </template>
+                </div>
+            </transition-group>
+        </draggable>
         <div v-for="i in creating" :key="i">
             <div class="creatingNewComponent">
                 <div class="loadingInnerConV1">
@@ -66,10 +77,10 @@
                         <i class="material-icons">insert_photo</i>
                         <span class="contentActionName">Image</span>
                     </li>
-                    <li class="contentActionList" v-if="!isBroadcast">
+                    <!-- <li class="contentActionList" v-if="!isBroadcast">
                         <i class="material-icons">stars</i>
                         <span class="contentActionName">Plugins</span>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </div>
@@ -78,25 +89,25 @@
 
 
 <script lang="ts">
-import { Component, Watch, Prop, Vue } from 'vue-property-decorator';
-import Axios,{ CancelTokenSource } from 'axios';
-import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
+import { Component, Watch, Prop, Vue } from "vue-property-decorator";
+import Axios, { CancelTokenSource } from "axios";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
-import TextComponent from './builder/TextComponent.vue';
-import TypingComponent from './builder/TypingComponent.vue';
-import ListComponent from './builder/ListComponent.vue';
-import GalleryComponent from './builder/GalleryComponent.vue';
-import QuickReplyComponent from './builder/QuickReplyComponent.vue';
-import UserInputComponent from './builder/UserInputComponent.vue';
-import ImageComponent from './builder/ImageComponent.vue';
+import TextComponent from "./builder/TextComponent.vue";
+import TypingComponent from "./builder/TypingComponent.vue";
+import ListComponent from "./builder/ListComponent.vue";
+import GalleryComponent from "./builder/GalleryComponent.vue";
+import QuickReplyComponent from "./builder/QuickReplyComponent.vue";
+import UserInputComponent from "./builder/UserInputComponent.vue";
+import ImageComponent from "./builder/ImageComponent.vue";
 
-import TextContentModel from '../../models/bots/TextContentModel';
-import TypingContentModel from '../../models/bots/TypingContentModel';
-import ListContentModel from '../../models/bots/ListContentModel';
-import GalleryContentModel from '../../models/bots/GalleryContentModel';
-import QuickReplyContentModel from '../../models/bots/QuickReplyContentModel';
-import UserInputContentModel from '../../models/bots/UserInputContentModel';
-import ImageContentModel from '../../models/bots/ImageContentModel';
+import TextContentModel from "../../models/bots/TextContentModel";
+import TypingContentModel from "../../models/bots/TypingContentModel";
+import ListContentModel from "../../models/bots/ListContentModel";
+import GalleryContentModel from "../../models/bots/GalleryContentModel";
+import QuickReplyContentModel from "../../models/bots/QuickReplyContentModel";
+import UserInputContentModel from "../../models/bots/UserInputContentModel";
+import ImageContentModel from "../../models/bots/ImageContentModel";
 
 @Component({
     components: {
@@ -114,95 +125,106 @@ export default class BuilderComponent extends Vue {
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private creating: number = 0;
     private sectionToken: CancelTokenSource = Axios.CancelToken.source();
-    private urlPath: string = '';
+    private urlPath: string = "";
     private sectionid: number = -1;
 
     @Prop({
         type: Array,
         default: []
-    }) value!: Array<any>;
+    })
+    value!: Array<any>;
 
     @Prop({
         type: Boolean,
         default: false
-    }) isBroadcast!: boolean;
+    })
+    isBroadcast!: boolean;
 
     @Prop() section!: any;
 
     mounted() {
-        this.urlPath = this.isBroadcast ? `broadcast/${this.section.broadcast}`: `chat-bot/block/${this.$store.state.chatBot.block}`;
+        this.urlPath = this.isBroadcast
+            ? `broadcast/${this.section.broadcast}`
+            : `chat-bot/block/${this.$store.state.chatBot.block}`;
 
-        for(let i in this.value) {
+        for (let i in this.value) {
             this.buildConetnt(this.value[i]);
         }
     }
 
     async addText() {
         await this.appendComponent({
-            name: 'Text section',
+            name: "Text section",
             type: 1
         });
     }
 
     async addTyping() {
         await this.appendComponent({
-            name: 'Typing section',
+            name: "Typing section",
             type: 2
         });
     }
 
     async addQuickReply() {
         await this.appendComponent({
-            name: 'Quick Reply section',
+            name: "Quick Reply section",
             type: 3
         });
     }
 
     async addUserInput() {
         await this.appendComponent({
-            name: 'User Input section',
+            name: "User Input section",
             type: 4
         });
     }
 
     async addList() {
         await this.appendComponent({
-            name: 'List section',
+            name: "List section",
             type: 5
         });
     }
-    
+
     async addGallery() {
         await this.appendComponent({
-            name: 'Gallery section',
+            name: "Gallery section",
             type: 6
         });
     }
-    
+
     async addImage() {
         await this.appendComponent({
-            name: 'Image section',
+            name: "Image section",
             type: 7
         });
     }
 
     async appendComponent(content: any) {
         let data = new FormData();
-        data.append('type', content.type);
+        data.append("type", content.type);
 
         this.creating++;
         await Axios({
-            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}/content`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${
+                this.urlPath
+            }/section/${this.section.id}/content`,
             data: data,
-            method: 'post'
-        }).then((res: any) => {
-            this.buildConetnt(res.data.data);
-        }).catch((err: any) => {
-            let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new content!');
-            alert(mesg);
-        });
+            method: "post"
+        })
+            .then((res: any) => {
+                this.buildConetnt(res.data.data);
+            })
+            .catch((err: any) => {
+                let mesg = this.ajaxHandler.globalHandler(
+                    err,
+                    "Failed to create new content!"
+                );
+                alert(mesg);
+            });
 
-        if(this.creating>0) {
+        if (this.creating > 0) {
             this.creating--;
         } else {
             this.creating = 0;
@@ -210,32 +232,38 @@ export default class BuilderComponent extends Vue {
     }
 
     private buildConetnt(value: any) {
-        switch(value.type) {
-            case(1):
+        switch (value.type) {
+            case 1:
                 this.contents.push(new TextContentModel(value, this.urlPath));
                 break;
 
-            case(2):
+            case 2:
                 this.contents.push(new TypingContentModel(value, this.urlPath));
                 break;
 
-            case(3):
-                this.contents.push(new QuickReplyContentModel(value, this.urlPath));
+            case 3:
+                this.contents.push(
+                    new QuickReplyContentModel(value, this.urlPath)
+                );
                 break;
 
-            case(4):
-                this.contents.push(new UserInputContentModel(value, this.urlPath));
+            case 4:
+                this.contents.push(
+                    new UserInputContentModel(value, this.urlPath)
+                );
                 break;
 
-            case(5):
+            case 5:
                 this.contents.push(new ListContentModel(value, this.urlPath));
                 break;
 
-            case(6):
-                this.contents.push(new GalleryContentModel(value, this.urlPath));
+            case 6:
+                this.contents.push(
+                    new GalleryContentModel(value, this.urlPath)
+                );
                 break;
 
-            case(7):
+            case 7:
                 this.contents.push(new ImageContentModel(value, this.urlPath));
                 break;
         }
@@ -244,32 +272,32 @@ export default class BuilderComponent extends Vue {
     private getComponent(type: number) {
         let component = null;
 
-        switch(type) {
-            case(1):
+        switch (type) {
+            case 1:
                 component = TextComponent;
                 break;
 
-            case(2):
+            case 2:
                 component = TypingComponent;
                 break;
 
-            case(3):
+            case 3:
                 component = QuickReplyComponent;
                 break;
 
-            case(4):
+            case 4:
                 component = UserInputComponent;
                 break;
 
-            case(5):
+            case 5:
                 component = ListComponent;
                 break;
 
-            case(6):
+            case 6:
                 component = GalleryComponent;
                 break;
 
-            case(7):
+            case 7:
                 component = ImageComponent;
                 break;
         }
@@ -277,21 +305,30 @@ export default class BuilderComponent extends Vue {
         return component;
     }
 
-    async delItem(index:number) {
-        if(confirm('Are you sure you want to delete?')) {
+    async delItem(index: number) {
+        if (confirm("Are you sure you want to delete?")) {
             this.contents[index].isDeleting = true;
             await Axios({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}/content/${this.contents[index].contentId}`,
-                method: 'delete'
-            }).then((res) => {
-                this.contents.splice(index, 1);   
-            }).catch((err) => {
-                if(err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to delete message!');
-                    alert(mesg);
-                    this.contents[index].isDeleting = false;
-                }
-            });
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${
+                    this.urlPath
+                }/section/${this.section.id}/content/${
+                    this.contents[index].contentId
+                }`,
+                method: "delete"
+            })
+                .then(res => {
+                    this.contents.splice(index, 1);
+                })
+                .catch(err => {
+                    if (err.response) {
+                        let mesg = this.ajaxHandler.globalHandler(
+                            err,
+                            "Failed to delete message!"
+                        );
+                        alert(mesg);
+                        this.contents[index].isDeleting = false;
+                    }
+                });
         }
     }
 
@@ -300,44 +337,62 @@ export default class BuilderComponent extends Vue {
         this.sectionToken = Axios.CancelToken.source();
 
         let data = new FormData();
-        data.append('title', this.section.title);
-        data.append('_method', 'put');
+        data.append("title", this.section.title);
+        data.append("_method", "put");
 
         await Axios({
-            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${
+                this.urlPath
+            }/section/${this.section.id}`,
             data: data,
-            method: 'post',
+            method: "post",
             cancelToken: this.sectionToken.token
-        }).then((res) => {
-            this.$store.commit('updateChatBot', {
-                block: this.$store.state.chatBot.block,
-                section: this.$store.state.chatBot.section,
-                title: this.section.title
-            });
-        }).catch((err) => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to update block title!');
-                alert(mesg);
-            }
-        });
-    }
-
-    async delSection() {
-        if(confirm('Are you sure you want to delete this block with it\'s content?')) {
-            await Axios({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}`,
-                method: 'delete',
-            }).then((res) => {
-                this.$store.commit('deleteChatBot', {
+        })
+            .then(res => {
+                this.$store.commit("updateChatBot", {
                     block: this.$store.state.chatBot.block,
                     section: this.$store.state.chatBot.section,
+                    title: this.section.title
                 });
-            }).catch((err) => {
-                if(err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to update block title!');
+            })
+            .catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to update block title!"
+                    );
                     alert(mesg);
                 }
             });
+    }
+
+    async delSection() {
+        if (
+            confirm(
+                "Are you sure you want to delete this block with it's content?"
+            )
+        ) {
+            await Axios({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${
+                    this.urlPath
+                }/section/${this.section.id}`,
+                method: "delete"
+            })
+                .then(res => {
+                    this.$store.commit("deleteChatBot", {
+                        block: this.$store.state.chatBot.block,
+                        section: this.$store.state.chatBot.section
+                    });
+                })
+                .catch(err => {
+                    if (err.response) {
+                        let mesg = this.ajaxHandler.globalHandler(
+                            err,
+                            "Failed to update block title!"
+                        );
+                        alert(mesg);
+                    }
+                });
         }
     }
 }

@@ -32909,12 +32909,6 @@ var render = function() {
               _vm.$set(_vm.content, "value", $event.target.value)
             }
           }
-        }),
-        _vm._v(" "),
-        _c("div", {
-          domProps: {
-            innerHTML: _vm._s(_vm.content.value.replace(/\n/g, "<br />"))
-          }
         })
       ]),
       _vm._v(" "),

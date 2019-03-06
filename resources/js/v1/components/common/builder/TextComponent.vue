@@ -8,7 +8,7 @@
                     v-model="content.value"
                     v-on:blur="content.saveContent()"
                 ></textarea>
-                <div v-html="content.value.replace(/\n/g, '<br />')"></div>
+                <!-- <div v-html="content.value.replace(/\n/g, '<br />')"></div> -->
             </div>
             <div class="limitWord">
                 <span>

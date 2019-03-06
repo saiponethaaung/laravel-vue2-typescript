@@ -813,23 +813,23 @@ class ChatbotCreateContentTest extends TestCase
         ]);
     }
 
-    public function testCreateListButtonOverThree()
-    {
-        $listContent = json_decode($this->createListRequest()->getContent(), true);
+    // public function testCreateListButtonOverThree()
+    // {
+    //     $listContent = json_decode($this->createListRequest()->getContent(), true);
 
-        $this->createListButton($listContent['data']['id'], $listContent['data']['content'][0]['id']);
+    //     $this->createListButton($listContent['data']['id'], $listContent['data']['content'][0]['id']);
 
-        $featureTest = $this->createListButton($listContent['data']['id'], $listContent['data']['content']['content'][0]['id'])
-        ->assertStatus(422)
-        ->assertJson([
-            'status' => false,
-            'code' => 422,
-            'mesg' => 'List item button at it\'s limit!'
-        ])
-        ->assertJsonStructure([
-            'status',
-            'code',
-            'mesg'
-        ]);
-    }
+    //     $featureTest = $this->createListButton($listContent['data']['id'], $listContent['data']['content']['content'][0]['id'])
+    //     ->assertStatus(422)
+    //     ->assertJson([
+    //         'status' => false,
+    //         'code' => 422,
+    //         'mesg' => 'List item button at it\'s limit!'
+    //     ])
+    //     ->assertJsonStructure([
+    //         'status',
+    //         'code',
+    //         'mesg'
+    //     ]);
+    // }
 }

@@ -11,7 +11,13 @@
                 </div>
             </template>
         </div>
-        <draggable v-model="contents" class="contentList" handle=".handle" ghost-class="ghost">
+        <draggable
+            v-model="contents"
+            class="contentList"
+            handle=".handle"
+            ghost-class="ghost"
+            @end="updateSectionContentOrder"
+        >
             <transition-group>
                 <div
                     v-for="(content, index) in contents"
@@ -87,7 +93,6 @@
     </div>
 </template>
 
-
 <script lang="ts">
 import { Component, Watch, Prop, Vue } from "vue-property-decorator";
 import Axios, { CancelTokenSource } from "axios";
@@ -125,6 +130,7 @@ export default class BuilderComponent extends Vue {
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private creating: number = 0;
     private sectionToken: CancelTokenSource = Axios.CancelToken.source();
+    private orderToken: CancelTokenSource = Axios.CancelToken.source();
     private urlPath: string = "";
     private sectionid: number = -1;
 
@@ -360,6 +366,36 @@ export default class BuilderComponent extends Vue {
                     let mesg = this.ajaxHandler.globalHandler(
                         err,
                         "Failed to update block title!"
+                    );
+                    alert(mesg);
+                }
+            });
+    }
+
+    async updateSectionContentOrder() {
+        console.log("updating section content order");
+        this.orderToken.cancel();
+        this.orderToken = Axios.CancelToken.source();
+
+        let data = new FormData();
+        for (let i in this.contents) {
+            console.log("content id", this.contents[i].contentId);
+            data.append("contents[" + i + "]", this.contents[i].contentId);
+        }
+
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${
+                this.urlPath
+            }/section/${this.section.id}/content/order`,
+            data: data,
+            method: "post",
+            cancelToken: this.orderToken.token
+        })
+            .catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to update content order!"
                     );
                     alert(mesg);
                 }

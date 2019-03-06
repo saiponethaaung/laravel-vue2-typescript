@@ -32027,11 +32027,10 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
         this.updateToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
     }
     closeContent(status) { }
-    ;
     documentClick(e) {
         let el = this.$refs.textBtn;
         let target = e.target;
-        if ((el !== target) && !el.contains(target)) {
+        if (el !== target && !el.contains(target)) {
             this.updateContent();
             setTimeout(() => {
                 this.closeContent(true);
@@ -32043,7 +32042,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
     loadSuggestion() {
         return __awaiter(this, void 0, void 0, function* () {
             let suggestion = yield this.ajaxHandler.searchSections(this.blockKeyword, this.projectid);
-            if (suggestion.type === 'cancel')
+            if (suggestion.type === "cancel")
                 return;
             if (suggestion.status === false) {
                 alert(suggestion.mesg);
@@ -32058,22 +32057,24 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
             this.blockToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
             this.saveBlock = true;
             let data = new FormData();
-            data.append('section', this.blockList[block].contents[section].id.toString());
-            data.append('_method', 'put');
+            data.append("section", this.blockList[block].contents[section].id.toString());
+            data.append("_method", "put");
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `${this.rootUrl}/${this.button.id}/block`,
                 data: data,
-                method: 'post',
+                method: "post",
                 cancelToken: this.blockToken.token
-            }).then((res) => {
+            })
+                .then((res) => {
                 this.button.block.push({
                     id: this.blockList[block].contents[section].id,
                     title: this.blockList[block].contents[section].title
                 });
                 this.blockList = [];
-            }).catch((err) => {
+            })
+                .catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to connect a block!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to connect a block!");
                     alert(mesg);
                 }
             });
@@ -32085,12 +32086,14 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
             this.deleteBlock = true;
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `${this.rootUrl}/${this.button.id}/block`,
-                method: 'delete'
-            }).then((res) => {
+                method: "delete"
+            })
+                .then((res) => {
                 this.button.block = [];
-            }).catch((err) => {
+            })
+                .catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to delete a block!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to delete a block!");
                     alert(mesg);
                 }
             });
@@ -32101,24 +32104,25 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
         this.updateToken.cancel();
         this.updateToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
     }
-    updateContent() {
+    updateContent(close = false) {
         return __awaiter(this, void 0, void 0, function* () {
             this.updateToken.cancel();
             this.updateToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
             let data = new FormData();
-            data.append('title', this.button.title);
-            data.append('url', this.button.url);
-            data.append('number', this.button.phone.number ? this.button.phone.number.toString() : '');
-            data.append('type', this.button.type.toString());
-            data.append('_method', 'put');
+            data.append("title", this.button.title);
+            data.append("url", this.button.url);
+            data.append("number", this.button.phone.number ? this.button.phone.number.toString() : "");
+            data.append("type", this.button.type.toString());
+            data.append("_method", "put");
             __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `${this.rootUrl}/${this.button.id}`,
                 data: data,
-                method: 'post',
+                method: "post",
                 cancelToken: this.updateToken.token
-            }).then((res) => {
+            })
+                .then(res => {
                 if (this.button.type === 0) {
-                    this.button.url = '';
+                    this.button.url = "";
                     this.button.phone.number = null;
                 }
                 else if (this.button.type === 1) {
@@ -32127,22 +32131,26 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
                 }
                 else if (this.button.type === 2) {
                     this.button.block = [];
-                    this.button.url = '';
+                    this.button.url = "";
                 }
-            }).catch((err) => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to update button!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to update button!");
                     alert(mesg);
                 }
             });
+            if (close) {
+                this.closeContent(true);
+            }
         });
     }
     created() {
-        document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
     get textLimit() {
         return 20 - this.button.title.length;
@@ -32158,7 +32166,7 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], ButtonComponent.prototype, "projectid", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('closeContent')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("closeContent")
 ], ButtonComponent.prototype, "closeContent", null);
 ButtonComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -32177,9 +32185,7 @@ var render = function() {
   return _c("div", { ref: "textBtn", staticClass: "btnComponentTypeOne" }, [
     _c("div", { staticClass: "buttonPopContent" }, [
       _c("div", { staticClass: "buttonPopHeading" }, [
-        _c("p", { staticClass: "buttonPopInfo" }, [
-          _vm._v("If subscriber clicks")
-        ]),
+        _c("p", { staticClass: "buttonPopInfo" }, [_vm._v("Button Name")]),
         _vm._v(" "),
         _c("div", { staticClass: "actionInfo" }, [
           _c("div", [
@@ -32200,6 +32206,15 @@ var render = function() {
                 },
                 blur: function($event) {
                   _vm.updateContent()
+                },
+                keyup: function($event) {
+                  if (
+                    !("button" in $event) &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  _vm.updateContent(true)
                 },
                 input: function($event) {
                   if ($event.target.composing) {
@@ -32230,13 +32245,7 @@ var render = function() {
                   }
                 }
               },
-              [
-                _c("span", { staticClass: "optionContent" }, [
-                  _vm._v(
-                    "\n                            Blocks\n                        "
-                  )
-                ])
-              ]
+              [_c("span", { staticClass: "optionContent" }, [_vm._v("Blocks")])]
             ),
             _vm._v(" "),
             _c(
@@ -32249,13 +32258,7 @@ var render = function() {
                   }
                 }
               },
-              [
-                _c("span", { staticClass: "optionContent" }, [
-                  _vm._v(
-                    "\n                            Url\n                        "
-                  )
-                ])
-              ]
+              [_c("span", { staticClass: "optionContent" }, [_vm._v("Url")])]
             ),
             _vm._v(" "),
             _c(
@@ -32270,9 +32273,7 @@ var render = function() {
               },
               [
                 _c("span", { staticClass: "optionContent" }, [
-                  _vm._v(
-                    "\n                            Phone call\n                        "
-                  )
+                  _vm._v("Phone call")
                 ])
               ]
             )
@@ -32284,9 +32285,7 @@ var render = function() {
                   "div",
                   { staticClass: "optionValue" },
                   [
-                    _vm._v(
-                      "\n                        they receive the block\n                        "
-                    ),
+                    _vm._v("they receive the block\n                        "),
                     _vm.button.block.length > 0
                       ? [
                           _c("div", { staticClass: "selectedBlockCon" }, [
@@ -32586,6 +32585,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__["a" /* default */]();
         this.creating = 0;
         this.sectionToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.orderToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
         this.urlPath = "";
         this.sectionid = -1;
     }
@@ -32774,6 +32774,30 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                 .catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, "Failed to update block title!");
+                    alert(mesg);
+                }
+            });
+        });
+    }
+    updateSectionContentOrder() {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("updating section content order");
+            this.orderToken.cancel();
+            this.orderToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            let data = new FormData();
+            for (let i in this.contents) {
+                console.log("content id", this.contents[i].contentId);
+                data.append("contents[" + i + "]", this.contents[i].contentId);
+            }
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}/content/order`,
+                data: data,
+                method: "post",
+                cancelToken: this.orderToken.token
+            })
+                .catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to update content order!");
                     alert(mesg);
                 }
             });
@@ -33910,9 +33934,9 @@ GalleryComponent = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -33923,17 +33947,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 
-class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */] {
     constructor(content, rootUrl) {
         super();
         this.rootUrl = '';
         this.updating = false;
         this.uploading = false;
-        this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-        this.imageToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+        this.imageToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.buttonCreating = false;
         this.buttonEdit = -1;
-        this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.rootUrl = rootUrl;
         this.content = content;
     }
@@ -33985,14 +34009,14 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
     saveContent() {
         return __awaiter(this, void 0, void 0, function* () {
             this.saveToken.cancel();
-            this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             this.isUpdating = true;
             let data = new FormData();
             data.append('title', this.title);
             data.append('sub', this.sub);
             data.append('url', this.url);
             data.append('_method', 'put');
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}`,
                 data: data,
                 method: 'post',
@@ -34009,11 +34033,11 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
     imageUpload(e) {
         return __awaiter(this, void 0, void 0, function* () {
             this.imageToken.cancel();
-            this.imageToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.imageToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             this.isUploading = true;
             let data = new FormData();
             data.append('image', e.target.files[0]);
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}/image`,
                 data: data,
                 method: 'post',
@@ -34045,8 +34069,8 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
         return __awaiter(this, void 0, void 0, function* () {
             this.addingNewBtn = true;
             this.buttonToken.cancel();
-            this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl.replace('/gallery', '')}/button/gallery/${this.id}`,
                 method: 'post',
                 cancelToken: this.buttonToken.token
@@ -34063,7 +34087,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
     }
     delButton(index) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl.replace('/gallery', '')}/button/${this.buttons[index].id}`,
                 method: 'delete',
             }).then((res) => {
@@ -34078,14 +34102,14 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
     }
     delImage(index) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}/image`,
                 method: 'delete',
             }).then((res) => {
                 this.content.image = '';
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete a button!');
+                    let mesg = this.globalHandler(err, 'Failed to delete an image!');
                     alert(mesg);
                 }
             });
@@ -35602,6 +35626,7 @@ var render = function() {
         {
           staticClass: "contentList",
           attrs: { handle: ".handle", "ghost-class": "ghost" },
+          on: { end: _vm.updateSectionContentOrder },
           model: {
             value: _vm.contents,
             callback: function($$v) {
@@ -50327,32 +50352,40 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
         this.creating = false;
         this.blockLoading = false;
         this.blocks = [];
-        this.selectedBlock = "";
+        this.selectedBlock = 0;
+        this.cancelBlockOrder = __WEBPACK_IMPORTED_MODULE_3_axios___default.a.CancelToken.source();
     }
     mounted() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.loadBlocks();
         });
     }
-    selectBlock() {
-        if (this.selectedBlock === "") {
-            this.$store.commit('selectChatBot', { block: -1, section: -1 });
+    removeSelected() {
+        if (this.selectedBlock === 0) {
+            this.$store.commit("selectChatBot", {
+                block: -1,
+                section: -1
+            });
         }
-        else {
-            let blockSection = this.selectedBlock.split("-");
-            this.$store.commit('selectChatBot', { block: this.blocks[blockSection[0]].id, section: this.blocks[blockSection[0]].sections[blockSection[1]].id });
-        }
+    }
+    selectBlock(index, sindex) {
+        this.$store.commit("selectChatBot", {
+            block: this.blocks[index].id,
+            section: this.blocks[index].sections[sindex].id
+        });
+        this.selectedBlock = this.blocks[index].sections[sindex].id;
     }
     deleteChatBlock() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.delBlockIndex == -1 || undefined === this.blocks[this.delBlockIndex])
+            if (this.delBlockIndex == -1 ||
+                undefined === this.blocks[this.delBlockIndex])
                 return;
             if (this.blocks[this.delBlockIndex].canDelete) {
                 let deleteBlock = yield this.blocks[this.delBlockIndex].deleteBlock();
                 if (deleteBlock.status) {
                     this.blocks.splice(this.delBlockIndex, 1);
-                    this.selectedBlock = "";
-                    this.$store.commit('selectChatBot', { block: -1, section: -1 });
+                    this.selectedBlock = 0;
+                    this.$store.commit("selectChatBot", { block: -1, section: -1 });
                 }
                 else {
                     alert(deleteBlock.mesg);
@@ -50367,17 +50400,19 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
     }
     deleteSection() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.$store.state.delBot.section == -1 && this.$store.state.delBot.block == -1)
+            if (this.$store.state.delBot.section == -1 &&
+                this.$store.state.delBot.block == -1)
                 return null;
             for (let i in this.blocks) {
                 if (this.blocks[i].id != this.$store.state.delBot.block)
                     continue;
                 for (let s in this.blocks[i].sections) {
-                    if (this.blocks[i].sections[s].id != this.$store.state.delBot.section)
+                    if (this.blocks[i].sections[s].id !=
+                        this.$store.state.delBot.section)
                         continue;
                     this.blocks[i].sections.splice(parseInt(s), 1);
-                    this.selectedBlock = "";
-                    this.$store.commit('selectChatBot', { block: -1, section: -1 });
+                    this.selectedBlock = 0;
+                    this.$store.commit("selectChatBot", { block: -1, section: -1 });
                     break;
                 }
                 break;
@@ -50386,13 +50421,15 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
     }
     updateSectionTitle() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.$store.state.updateBot.section == -1 && this.$store.state.updateBot.block == -1)
+            if (this.$store.state.updateBot.section == -1 &&
+                this.$store.state.updateBot.block == -1)
                 return null;
             for (let i in this.blocks) {
                 if (this.blocks[i].id != this.$store.state.updateBot.block)
                     continue;
                 for (let s in this.blocks[i].sections) {
-                    if (this.blocks[i].sections[s].id != this.$store.state.updateBot.section)
+                    if (this.blocks[i].sections[s].id !=
+                        this.$store.state.updateBot.section)
                         continue;
                     this.blocks[i].sections[s].title = this.$store.state.updateBot.title;
                     break;
@@ -50408,12 +50445,13 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
             this.blockLoading = true;
             yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/blocks`
-            }).then((res) => {
+            })
+                .then((res) => {
                 for (let chatBlock of res.data.data) {
                     this.blocks.push(new __WEBPACK_IMPORTED_MODULE_2__models_ChatBlockModel__["a" /* default */](chatBlock.block, chatBlock.sections));
                 }
-            }).catch((err) => {
-            });
+            })
+                .catch((err) => { });
             this.blockLoading = false;
         });
     }
@@ -50423,10 +50461,11 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
             yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block`,
                 method: "POST"
-            }).then((res) => {
+            })
+                .then((res) => {
                 this.blocks.push(new __WEBPACK_IMPORTED_MODULE_2__models_ChatBlockModel__["a" /* default */](res.data.data, []));
-            }).catch((err) => {
-            });
+            })
+                .catch((err) => { });
             this.creating = false;
         });
     }
@@ -50438,18 +50477,53 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
             }
         });
     }
+    updateSectionOrder(index) {
+        let data = new FormData();
+        for (let i in this.blocks[index].sections) {
+            data.append(`sections[${i}]`, this.blocks[index].sections[i].id.toString());
+        }
+        __WEBPACK_IMPORTED_MODULE_3_axios___default()({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.blocks[index].id}/section/order`,
+            data: data,
+            method: "POST"
+        }).catch(err => {
+            if (err.response) {
+                alert("Failed to order!");
+            }
+        });
+    }
+    updateBlockOrder() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let data = new FormData();
+            for (let i in this.blocks) {
+                data.append(`blocks[${i}]`, this.blocks[i].id.toString());
+            }
+            this.cancelBlockOrder.cancel();
+            this.cancelBlockOrder = __WEBPACK_IMPORTED_MODULE_3_axios___default.a.CancelToken.source();
+            yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/order`,
+                data: data,
+                cancelToken: this.cancelBlockOrder.token,
+                method: "POST"
+            }).catch(err => {
+                if (err.response) {
+                    alert("Failed to order!");
+                }
+            });
+        });
+    }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('selectedBlock')
-], SidebarComponent.prototype, "selectBlock", null);
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("selectedBlock")
+], SidebarComponent.prototype, "removeSelected", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('delBlockIndex')
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("delBlockIndex")
 ], SidebarComponent.prototype, "deleteChatBlock", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$store.state.delBot')
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.delBot")
 ], SidebarComponent.prototype, "deleteSection", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$store.state.updateBot')
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.updateBot")
 ], SidebarComponent.prototype, "updateSectionTitle", null);
 SidebarComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */]
@@ -50641,12 +50715,23 @@ var render = function() {
     [
       _c("h3", { staticClass: "chatBotHeading" }, [_vm._v("Chatbot")]),
       _vm._v(" "),
-      _c(
-        "div",
-        [
-          _vm.blockLoading
-            ? [_vm._v("\n            Loading...\n        ")]
-            : [
+      _vm.blockLoading
+        ? [_vm._v("Loading...")]
+        : [
+            _c(
+              "draggable",
+              {
+                attrs: { handle: "orderBlock" },
+                on: { end: _vm.updateBlockOrder },
+                model: {
+                  value: _vm.blocks,
+                  callback: function($$v) {
+                    _vm.blocks = $$v
+                  },
+                  expression: "blocks"
+                }
+              },
+              [
                 _vm._l(_vm.blocks, function(block, index) {
                   return _c(
                     "div",
@@ -50656,7 +50741,31 @@ var render = function() {
                         ? [
                             _c("h5", { staticClass: "chatBlockHeading" }, [
                               _vm._v(_vm._s(block.title))
-                            ])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "chatBlockContentList" },
+                              _vm._l(block.sections, function(section, sIndex) {
+                                return _c(
+                                  "div",
+                                  {
+                                    key: sIndex,
+                                    staticClass: "chatBlockContent",
+                                    class: {
+                                      selectedBlock:
+                                        _vm.selectedBlock == section.id
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.selectBlock(index, sIndex)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(section.title))]
+                                )
+                              })
+                            )
                           ]
                         : [
                             _c("input", {
@@ -50682,71 +50791,84 @@ var render = function() {
                                   _vm.$set(block, "title", $event.target.value)
                                 }
                               }
-                            })
-                          ],
-                      _vm._v(" "),
-                      !block.lock
-                        ? _c("div", { staticClass: "chatBlockControl" }, [
-                            _c(
-                              "button",
-                              {
-                                on: {
-                                  click: function($event) {
-                                    _vm.delBlockIndex = index
+                            }),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "chatBlockControl" }, [
+                              _c(
+                                "button",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      _vm.delBlockIndex = index
+                                    }
                                   }
-                                }
-                              },
-                              [
-                                _c("i", { staticClass: "material-icons" }, [
-                                  _vm._v("delete")
-                                ])
-                              ]
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "chatBlockContentList" },
-                        [
-                          _vm._l(block.sections, function(section, sIndex) {
-                            return _c(
-                              "div",
+                                },
+                                [
+                                  _c("i", { staticClass: "material-icons" }, [
+                                    _vm._v("delete")
+                                  ])
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "draggable",
                               {
-                                key: section.id,
-                                staticClass: "chatBlockContent",
-                                class: {
-                                  selectedBlock:
-                                    _vm.selectedBlock === index + "-" + sIndex
+                                staticClass: "chatBlockContentList",
+                                attrs: {
+                                  draggable: ".sortCBC",
+                                  filter: ".ignore-block"
                                 },
                                 on: {
-                                  click: function($event) {
-                                    _vm.selectedBlock = index + "-" + sIndex
+                                  end: function($event) {
+                                    _vm.updateSectionOrder(index)
                                   }
+                                },
+                                model: {
+                                  value: block.sections,
+                                  callback: function($$v) {
+                                    _vm.$set(block, "sections", $$v)
+                                  },
+                                  expression: "block.sections"
                                 }
                               },
                               [
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(section.title) +
-                                    "\n                        "
-                                )
-                              ]
-                            )
-                          }),
-                          _vm._v(" "),
-                          !block.lock
-                            ? [
+                                _vm._l(block.sections, function(
+                                  section,
+                                  sIndex
+                                ) {
+                                  return _c(
+                                    "div",
+                                    {
+                                      key: index + "-" + sIndex,
+                                      staticClass: "chatBlockContent sortCBC",
+                                      class: {
+                                        selectedBlock:
+                                          _vm.selectedBlock == section.id
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.selectBlock(index, sIndex)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(section.title))]
+                                  )
+                                }),
+                                _vm._v(" "),
                                 !block.isSecCreating
                                   ? _c(
                                       "div",
                                       {
-                                        staticClass: "chatBlockContent addMore",
+                                        staticClass:
+                                          "chatBlockContent addMore ignore-block",
+                                        attrs: { slot: "footer" },
                                         on: {
                                           click: function($event) {
                                             block.createNewSection()
                                           }
-                                        }
+                                        },
+                                        slot: "footer"
                                       },
                                       [
                                         _c(
@@ -50759,7 +50881,10 @@ var render = function() {
                                   : _c(
                                       "div",
                                       {
-                                        staticClass: "chatBlockContent addMore"
+                                        staticClass:
+                                          "chatBlockContent addMore ignore-block",
+                                        attrs: { slot: "footer" },
+                                        slot: "footer"
                                       },
                                       [
                                         _c(
@@ -50769,18 +50894,17 @@ var render = function() {
                                         )
                                       ]
                                     )
-                              ]
-                            : _vm._e()
-                        ],
-                        2
-                      )
+                              ],
+                              2
+                            )
+                          ]
                     ],
                     2
                   )
                 }),
                 _vm._v(" "),
                 _vm.creating
-                  ? [_vm._v("\n                Creating...\n            ")]
+                  ? [_vm._v("Creating...")]
                   : [
                       _c(
                         "button",
@@ -50796,10 +50920,10 @@ var render = function() {
                         ]
                       )
                     ]
-              ]
-        ],
-        2
-      ),
+              ],
+              2
+            )
+          ],
       _vm._v(" "),
       _vm.showDelConfirm
         ? [
@@ -50821,12 +50945,12 @@ var render = function() {
               _c("div", { staticClass: "delPopContent" }, [
                 _c("p", { staticClass: "delPopHeading" }, [
                   _vm._v(
-                    "\n                    Are you sure you want to delete the "
+                    "\n                    Are you sure you want to delete the\n                    "
                   ),
                   _c("b", [
                     _vm._v(_vm._s(_vm.blocks[_vm.delBlockIndex].title))
                   ]),
-                  _vm._v("?"),
+                  _vm._v("?\n                    "),
                   _c("br"),
                   _vm._v(" "),
                   _c("span", { staticClass: "noticeList" }, [
@@ -50843,13 +50967,7 @@ var render = function() {
                     sub,
                     index
                   ) {
-                    return _c("li", { key: index }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(sub.title) +
-                          "\n                    "
-                      )
-                    ])
+                    return _c("li", { key: index }, [_vm._v(_vm._s(sub.title))])
                   })
                 )
               ]),

@@ -1,8 +1,8 @@
-import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
-import { galleryContent, buttonContent } from "../../configuration/interface";
 import Axios, { CancelTokenSource } from "axios";
+import { buttonContent, galleryContent } from "../../configuration/interface";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
-export default class GalleryItemModel extends AjaxErrorHandler{
+export default class GalleryItemModel extends AjaxErrorHandler {
 
     private rootUrl: string = '';
     private content: galleryContent;
@@ -21,11 +21,11 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         this.content = content;
     }
 
-    get id() : number {
+    get id(): number {
         return this.content.id;
     }
 
-    get title() : string {
+    get title(): string {
         return this.content.title;
     }
 
@@ -33,7 +33,7 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         this.content.title = title;
     }
 
-    get sub() : string {
+    get sub(): string {
         return this.content.sub;
     }
 
@@ -41,7 +41,7 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         this.content.sub = sub;
     }
 
-    get url() : string {
+    get url(): string {
         return this.content.url;
     }
 
@@ -49,7 +49,7 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         this.content.url = url;
     }
 
-    get image() : string {
+    get image(): string {
         return this.content.image;
     }
 
@@ -60,12 +60,12 @@ export default class GalleryItemModel extends AjaxErrorHandler{
     get buttons(): Array<buttonContent> {
         return this.content.button;
     }
-    
+
     set buttons(buttons: Array<buttonContent>) {
         this.content.button = buttons;
     }
-    
-    get isUpdating() : boolean {
+
+    get isUpdating(): boolean {
         return this.updating;
     }
 
@@ -73,7 +73,7 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         this.updating = status;
     }
 
-    get isUploading() : boolean {
+    get isUploading(): boolean {
         return this.uploading;
     }
 
@@ -99,7 +99,7 @@ export default class GalleryItemModel extends AjaxErrorHandler{
             method: 'post',
             cancelToken: this.saveToken.token
         }).catch((err: any) => {
-            if(err.response) {
+            if (err.response) {
                 let mesg = this.globalHandler(err, 'Failed to update list!');
                 alert(mesg);
             }
@@ -124,7 +124,7 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         }).then((res: any) => {
             this.image = res.data.image;
         }).catch((err: any) => {
-            if(err.response) {
+            if (err.response) {
                 let mesg = this.globalHandler(err, 'Failed to update list!');
                 alert(mesg);
             }
@@ -133,7 +133,7 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         this.isUploading = false;
     }
 
-    get addingNewBtn() : boolean {
+    get addingNewBtn(): boolean {
         return this.buttonCreating;
     }
 
@@ -141,7 +141,7 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         this.buttonCreating = status;
     }
 
-    get btnEdit() : number {
+    get btnEdit(): number {
         return this.buttonEdit;
     }
 
@@ -162,7 +162,7 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         }).then((res) => {
             this.content.button.push(res.data.button);
         }).catch((err) => {
-            if(err.response) {
+            if (err.response) {
                 let mesg = this.globalHandler(err, 'Failed to create new button!');
                 alert(mesg);
             }
@@ -178,13 +178,13 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         }).then((res) => {
             this.buttons.splice(index, 1);
         }).catch((err) => {
-            if(err.response) {
+            if (err.response) {
                 let mesg = this.globalHandler(err, 'Failed to delete a button!');
                 alert(mesg);
             }
         });
     }
-    
+
     async delImage(index: number) {
         await Axios({
             url: `${this.rootUrl}/${this.id}/image`,
@@ -192,18 +192,18 @@ export default class GalleryItemModel extends AjaxErrorHandler{
         }).then((res) => {
             this.content.image = '';
         }).catch((err) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to delete a button!');
+            if (err.response) {
+                let mesg = this.globalHandler(err, 'Failed to delete an image!');
                 alert(mesg);
             }
         });
     }
 
     get textLimitTitle() {
-        return 80-this.title.length;
+        return 80 - this.title.length;
     }
 
     get textLimitSub() {
-        return 80-this.sub.length;
+        return 80 - this.sub.length;
     }
 }

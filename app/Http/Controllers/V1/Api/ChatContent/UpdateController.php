@@ -23,6 +23,42 @@ use App\Models\ChatButtonBlock;
 
 class UpdateController extends Controller
 {
+    public function updateContentsOrder(Request $request)
+    {
+        $contentid = $request->input('contents');
+
+        if(!is_null($contentid) && !empty($contentid)) {
+            DB::beginTransaction();
+
+            try {
+                $order = 1;
+                foreach($contentid as $id) {
+                    $content = CBSC::find($id);
+                    if(!empty($content)) {
+                        $content->order = $order++;
+                        $content->save();
+                    }
+                }
+            } catch(\Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => 'Failed to update content order!',
+                    'debugMesg' => $e->getMessage()
+                ], 422);
+            }
+
+            DB::commit();
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Order updated!'
+        ]);
+    }
+
     public function updateContent(Request $request)
     {
         $res = null;

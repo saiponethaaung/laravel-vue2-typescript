@@ -187,6 +187,41 @@ class ChatBotController extends Controller
         ]);
     }
 
+    public function updateBlockOrder(Request $request)
+    {
+        $blockid = $request->input('blocks');
+
+        if(!is_null($blockid) && !empty($blockid)) {
+            DB::beginTransaction();
+
+            try {
+                $order = 1;
+                foreach($blockid as $id) {
+                    $block = ChatBlock::find($id);
+                    if(!empty($block)) {
+                        $block->order = $order++;
+                        $block->save();
+                    }
+                }
+            } catch(\Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => 'Failed to update block order!',
+                    'debugMesg' => $e->getMessage()
+                ], 422);
+            }
+
+            DB::commit();
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Order updated!'
+        ]);
+    }
     public function createSection(Request $request)
     {
         $section = null;
@@ -266,6 +301,42 @@ class ChatBotController extends Controller
             'status' => true,
             'code' => 200,
             'mesg' => 'success'
+        ]);
+    }
+
+    public function updateSectionOrder(Request $request)
+    {
+        $sectionid = $request->input('sections');
+
+        if(!is_null($sectionid) && !empty($sectionid)) {
+            DB::beginTransaction();
+
+            try {
+                $order = 1;
+                foreach($sectionid as $id) {
+                    $section = ChatBlockSection::find($id);
+                    if(!empty($section)) {
+                        $section->order = $order++;
+                        $section->save();
+                    }
+                }
+            } catch(\Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => 'Failed to update section order!',
+                    'debugMesg' => $e->getMessage()
+                ], 422);
+            }
+
+            DB::commit();
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Order updated!'
         ]);
     }
 

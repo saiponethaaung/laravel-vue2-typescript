@@ -23,7 +23,7 @@ class GetController extends Controller
 {
     public function getContents(Request $request)
     {
-        $contents = CBSC::where('section_id', $request->attributes->get('chatBlockSection')->id)->orderBy('id', 'asc')->get();
+        $contents = CBSC::where('section_id', $request->attributes->get('chatBlockSection')->id)->orderBy('order', 'asc')->get();
 
         $res = [];
 

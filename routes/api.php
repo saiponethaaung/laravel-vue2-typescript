@@ -73,12 +73,14 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
             Route::post('block', 'V1\\Api\\ChatBotController@createBlock')->name('chatbot.block.create');
             Route::get('blocks', 'V1\\Api\\ChatBotController@getBlocks')->name('chatbot.blocks.get');
             Route::get('blocks/search', 'V1\\Api\\ChatBotController@searchSection')->name('chatbot.section.search');
+            Route::post('blocks/order', 'V1\\Api\\ChatBotController@updateBlockOrder')->name('chatbot.block.update.order');
 
             Route::group(['prefix' => 'block/{blockId}', 'middleware' => 'verifyChatBlock'], function() {
 
                 Route::put('/', 'V1\\Api\\ChatBotController@updateBlock')->name('chatbot.block.update');
                 Route::delete('/', 'V1\\Api\\ChatBotController@deleteBlock')->name('chatbot.block.delete');
                 Route::post('section', 'V1\\Api\\ChatBotController@createSection')->name('chatbot.section.create');
+                Route::post('section/order', 'V1\\Api\\ChatBotController@updateSectionOrder')->name('chatbot.section.update.order');
 
                 Route::group(['prefix' => 'section/{sectionId}', 'middleware' => 'verifyChatBlockSection'], function() {
                     Route::put('/', 'V1\\Api\\ChatBotController@updateSection')->name('chatbot.section.update');
@@ -89,9 +91,10 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 
                     Route::get('/', 'V1\\Api\\ChatContent\\GetController@getContents')->name('chatbot.content.get');
                     Route::post('/', 'V1\\Api\\ChatContent\\CreateController@createContents')->name('chatbot.content.create');
+                    Route::post('/order', 'V1\\Api\\ChatContent\\UpdateController@updateContentsOrder')->name('chatbot.content.order');
                     
                     Route::group(['prefix' => '{contentId}', 'middleware' => 'verifychatBlockSectionContent'], function() {
-                    
+                        
                         Route::put('/', 'V1\\Api\\ChatContent\\UpdateController@updateContent')->name('chatbot.content.update');
                         Route::delete('/', 'V1\\Api\\ChatContent\\DeleteController@deleteContent')->name('chatbot.content.delete');
                         Route::post('/image', 'V1\\Api\\ChatContent\\GetController@getContent')->name('chatbot.content.image.upload');
@@ -180,7 +183,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 
                     Route::get('/', 'V1\\Api\\ChatContent\\GetController@getContents')->name('broadcast.chatbot.content.get');
                     Route::post('/', 'V1\\Api\\ChatContent\\CreateController@createContents')->name('broadcast.chatbot.content.create');
-                    
+                    Route::post('/order', 'V1\\Api\\ChatContent\\UpdateController@updateContentsOrder')->name('broadcast.chatbot.content.order');
+
                     Route::group(['prefix' => '{contentId}', 'middleware' => 'verifychatBlockSectionContent'], function() {
                     
                         Route::put('/', 'V1\\Api\\ChatContent\\UpdateController@updateContent')->name('broadcast.chatbot.content.update');

@@ -1,14 +1,14 @@
 <template>
     <div class="componentTypeOne">
         <div class="botTextComponent">
-            <div>
+            <div class="btcTextRootCon">
                 <textarea
                     class="textBody"
                     maxlength="640"
                     v-model="content.value"
                     v-on:blur="content.saveContent()"
                 ></textarea>
-                <!-- <div v-html="content.value.replace(/\n/g, '<br />')"></div> -->
+                <div class="btcPlaceholder" v-html="content.value.replace(/\n/g, '<br />')"></div>
             </div>
             <div class="limitWord">
                 <span>
@@ -75,15 +75,14 @@ export default class TextComponent extends Vue {
     content!: TextContentModel;
 
     mounted() {
-        let textarea: any = this.$el.querySelector("textarea");
-
-        textarea.addEventListener("keydown", function() {
-            setTimeout(function() {
-                textarea.style.cssText = "height:auto; padding:0";
-                textarea.style.cssText =
-                    "height:" + (textarea.scrollHeight + 10) + "px";
-            }, 0);
-        });
+        // let textarea: any = this.$el.querySelector("textarea");
+        // textarea.addEventListener("keydown", function() {
+        //     setTimeout(function() {
+        //         textarea.style.cssText = "height:auto; padding:0";
+        //         textarea.style.cssText =
+        //             "height:" + (textarea.scrollHeight + 10) + "px";
+        //     }, 0);
+        // });
     }
 
     get textLimit() {

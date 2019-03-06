@@ -32851,14 +32851,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 let TextComponent = class TextComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     mounted() {
-        let textarea = this.$el.querySelector("textarea");
-        textarea.addEventListener("keydown", function () {
-            setTimeout(function () {
-                textarea.style.cssText = "height:auto; padding:0";
-                textarea.style.cssText =
-                    "height:" + (textarea.scrollHeight + 10) + "px";
-            }, 0);
-        });
+        // let textarea: any = this.$el.querySelector("textarea");
+        // textarea.addEventListener("keydown", function() {
+        //     setTimeout(function() {
+        //         textarea.style.cssText = "height:auto; padding:0";
+        //         textarea.style.cssText =
+        //             "height:" + (textarea.scrollHeight + 10) + "px";
+        //     }, 0);
+        // });
     }
     get textLimit() {
         return 640 - this.content.value.length;
@@ -32885,7 +32885,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "componentTypeOne" }, [
     _c("div", { staticClass: "botTextComponent" }, [
-      _c("div", [
+      _c("div", { staticClass: "btcTextRootCon" }, [
         _c("textarea", {
           directives: [
             {
@@ -32908,6 +32908,13 @@ var render = function() {
               }
               _vm.$set(_vm.content, "value", $event.target.value)
             }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "btcPlaceholder",
+          domProps: {
+            innerHTML: _vm._s(_vm.content.value.replace(/\n/g, "<br />"))
           }
         })
       ]),

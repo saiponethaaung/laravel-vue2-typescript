@@ -1,0 +1,42 @@
+.nonMemberComponent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.nonMemberFormRoot {
+    background: #fff;
+    width: 300px;
+    overflow: hidden;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    figure {
+        text-align: center;
+        margin: 20px 0;
+        img {
+            width: 130px;
+        }
+    }
+
+    .form-group {
+        padding: 0 30px;
+        label {
+            display: block;
+            font-size: 13px;
+        }
+        input {
+            height: 30px;
+            line-height: 30px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #e2e2e2;
+        }
+    }
+}
+
+.nonMemberFormNote {
+    font-size: 12px;
+}

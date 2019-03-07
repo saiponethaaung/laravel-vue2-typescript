@@ -1,10 +1,10 @@
-import ChatBlockContentModel from "../ChatBlockContentModel";
-import { galleryContent } from "../../configuration/interface";
-import GalleryItemModel from "./GalleryItemModel";
 import Axios, { CancelTokenSource } from "axios";
+import { galleryContent } from "../../configuration/interface";
+import ChatBlockContentModel from "../ChatBlockContentModel";
+import GalleryItemModel from "./GalleryItemModel";
 
 export default class GalleryContentModel extends ChatBlockContentModel {
-    
+
     private rootUrl: string;
     private galleryContent: Array<GalleryItemModel> = [];
     private creating: boolean = false;
@@ -13,7 +13,7 @@ export default class GalleryContentModel extends ChatBlockContentModel {
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
-        for(let i of content.content) {
+        for (let i of content.content) {
             this.buildGalleryItem(i);
         }
     }
@@ -22,11 +22,11 @@ export default class GalleryContentModel extends ChatBlockContentModel {
         this.galleryContent.push(new GalleryItemModel(content, `${this.rootUrl}/gallery`));
     }
 
-    get url() : string {
+    get url(): string {
         return this.rootUrl;
     }
 
-    get item() : Array<GalleryItemModel> {
+    get item(): Array<GalleryItemModel> {
         return this.galleryContent;
     }
 
@@ -51,8 +51,9 @@ export default class GalleryContentModel extends ChatBlockContentModel {
         }).then((res: any) => {
             this.buildGalleryItem(res.data.content);
         }).catch((err: any) => {
-            let mesg = this.globalHandler(err, 'Failed to create new list!');
-            alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to create new list!');
+            }
         });
 
         this.isCreating = false;
@@ -65,9 +66,8 @@ export default class GalleryContentModel extends ChatBlockContentModel {
         }).then((res) => {
             this.item.splice(index, 1);
         }).catch((err) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to delete a card!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to delete a card!');
             }
         });
     }

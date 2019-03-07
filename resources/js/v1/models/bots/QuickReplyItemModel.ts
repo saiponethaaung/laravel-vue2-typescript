@@ -1,6 +1,6 @@
-import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
-import { quickReplyContent, blockSuggestion } from "../../configuration/interface";
 import Axios, { CancelTokenSource } from "axios";
+import { blockSuggestion, quickReplyContent } from "../../configuration/interface";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
 export default class QuickReplyItemModel extends AjaxErrorHandler {
 
@@ -10,6 +10,7 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
     private suggestion: Array<blockSuggestion> = [];
     private blockToken: CancelTokenSource = Axios.CancelToken.source();
     private btnProcessing: boolean = false;
+    public errorMesg: string = '';
 
     constructor(
         private content: quickReplyContent,
@@ -19,11 +20,11 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         super();
     }
 
-    get id() : number {
+    get id(): number {
         return this.content.id;
     }
 
-    get title() : string {
+    get title(): string {
         return this.content.title;
     }
 
@@ -31,7 +32,7 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         this.content.title = title;
     }
 
-    get canShow() : boolean {
+    get canShow(): boolean {
         return this.show;
     }
 
@@ -39,15 +40,15 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         this.show = status;
     }
 
-    get attribute() : string {
+    get attribute(): string {
         return this.content.attribute.title;
     }
 
-    set attribute(title: string){
+    set attribute(title: string) {
         this.content.attribute.title = title;
     }
 
-    get value() : string {
+    get value(): string {
         return this.content.attribute.value;
     }
 
@@ -55,7 +56,7 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         this.content.attribute.value = value;
     }
 
-    get blockKey() : string {
+    get blockKey(): string {
         return this.keyword;
     }
 
@@ -63,19 +64,19 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         this.keyword = keyword;
     }
 
-    get block() : any {
+    get block(): any {
         return this.content.block;
     }
 
-    get blockList() : Array<blockSuggestion> {
+    get blockList(): Array<blockSuggestion> {
         return this.suggestion;
     }
 
-    get isBtnProcess() : boolean {
+    get isBtnProcess(): boolean {
         return this.btnProcessing;
     }
 
-    set isBtnProcess(status: boolean){
+    set isBtnProcess(status: boolean) {
         this.btnProcessing = status;
     }
 
@@ -97,9 +98,8 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         }).then((res: any) => {
             this.content.attribute.id = res.data.data.attribute;
         }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to update quick reply!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to update quick reply!');
             }
         });
     }
@@ -107,9 +107,9 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
     async loadSuggestion() {
         let suggestion = await this.searchSections(this.blockKey, this.projectId);
 
-        if(suggestion.type==='cancel') return;
+        if (suggestion.type === 'cancel') return;
 
-        if(suggestion.status===false) {
+        if (suggestion.status === false) {
             alert(suggestion.mesg);
             return;
         }
@@ -136,12 +136,11 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
                 id: this.suggestion[block].contents[section].id,
                 title: this.suggestion[block].contents[section].title
             });
-    
+
             this.suggestion = [];
         }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to connect a block!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to connect a block!');
             }
         });
 
@@ -156,15 +155,14 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         }).then((res) => {
             this.content.block = [];
         }).catch((err) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to delete a block!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to delete a block!');
             }
         });
         this.isBtnProcess = false;
     }
 
     get textLimitTitle() {
-        return 20-this.title.length;
+        return 20 - this.title.length;
     }
 }

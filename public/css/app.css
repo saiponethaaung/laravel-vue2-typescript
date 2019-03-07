@@ -11063,6 +11063,17 @@ a:hover {
   height: 20px;
 }
 
+.defaultBtn {
+  height: 36px;
+  line-height: 36px;
+  padding: 0 25px;
+  border-radius: 5px;
+  border: 1px solid #c238eb;
+  background: #c238eb;
+  color: #fff;
+  cursor: pointer;
+}
+
 .chatBotHeading {
   font-size: 18px;
   font-weight: bold;
@@ -11074,12 +11085,14 @@ a:hover {
   font-size: 14px;
   line-height: 30px;
   margin: 0;
-  width: calc(100% - 40px);
+  max-width: calc(100% - 40px);
+  width: auto;
   float: left;
   border: none;
 }
 
 .chatBlockHeading:focus {
+  width: calc(100% - 40px);
   border: 1px solid #ebebeb;
   border-radius: 5px;
   padding: 0 10px;
@@ -11089,7 +11102,7 @@ a:hover {
   width: 40px;
   height: 30px;
   line-height: 30px;
-  float: left;
+  float: right;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -11753,6 +11766,15 @@ a:hover {
   width: 100%;
 }
 
+.btcTextRootCon .limitWord {
+  position: absolute;
+  margin: 0;
+  right: 20px;
+  bottom: 5px;
+  opacity: 0;
+  visibility: hidden;
+}
+
 .textBody {
   resize: none;
   padding: 3px;
@@ -11763,6 +11785,7 @@ a:hover {
   left: 0;
   margin: 15px;
   border: none;
+  overflow: hidden;
 }
 
 .textBody:focus {
@@ -11776,11 +11799,17 @@ a:hover {
   padding: 3px 3px 30px;
 }
 
+.textBody:focus + .limitWord {
+  visibility: visible;
+  opacity: 1;
+}
+
 .btcPlaceholder {
   padding: 3px;
   width: calc(100% - 30px);
   margin: 15px;
   border: 1px solid transparent;
+  word-wrap: break-word;
 }
 
 .textBtn {
@@ -12582,7 +12611,7 @@ a:hover {
 }
 
 .userInputQuestion {
-  width: calc(100% - 310px);
+  width: calc(100% - 320px);
   padding-right: 10px;
 }
 
@@ -12604,7 +12633,7 @@ a:hover {
 }
 
 .userInputAttribute {
-  width: 190px;
+  width: 200px;
   padding: 0px 10px;
 }
 
@@ -14419,6 +14448,31 @@ a:hover {
   color: #fff;
 }
 
+.ecMesg {
+  padding: 15px 30px;
+  font-size: 13px;
+}
+
+.ecBtnCon {
+  height: 36px;
+  line-height: 36px;
+  border-top: 1px solid #ebebeb;
+}
+
+.ecBtn {
+  border: none;
+  width: 100%;
+  background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.ecBtn:focus,
+.ecBtn:hover,
+.ecBtn:active {
+  outline: none;
+}
+
 .btnClick {
   cursor: pointer;
   height: 40px;
@@ -15600,6 +15654,59 @@ a:hover {
 .responseList:hover .responseDelete {
   opacity: 1;
   visibility: visible;
+}
+
+.nonMemberComponent {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.nonMemberFormRoot {
+  background: #fff;
+  width: 300px;
+  overflow: hidden;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+}
+
+.nonMemberFormRoot figure {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.nonMemberFormRoot figure img {
+  width: 130px;
+}
+
+.nonMemberFormRoot .form-group {
+  padding: 0 30px;
+}
+
+.nonMemberFormRoot .form-group label {
+  display: block;
+  font-size: 13px;
+}
+
+.nonMemberFormRoot .form-group input {
+  height: 30px;
+  line-height: 30px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #e2e2e2;
+}
+
+.nonMemberFormNote {
+  font-size: 12px;
 }
 
 @font-face {

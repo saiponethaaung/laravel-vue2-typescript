@@ -13,6 +13,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
     private buttonCreating: boolean = false;
     private buttonEdit: number = -1;
     private buttonToken: CancelTokenSource = Axios.CancelToken.source();
+    public errorMesg: string = '';
 
 
     constructor(content: galleryContent, rootUrl: string) {
@@ -100,8 +101,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
             cancelToken: this.saveToken.token
         }).catch((err: any) => {
             if (err.response) {
-                let mesg = this.globalHandler(err, 'Failed to update list!');
-                alert(mesg);
+                this.errorMesg = this.globalHandler(err, 'Failed to update list!');
             }
         });
 
@@ -125,8 +125,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
             this.image = res.data.image;
         }).catch((err: any) => {
             if (err.response) {
-                let mesg = this.globalHandler(err, 'Failed to update list!');
-                alert(mesg);
+                this.errorMesg = this.globalHandler(err, 'Failed to update list!');
             }
         });
 
@@ -163,8 +162,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
             this.content.button.push(res.data.button);
         }).catch((err) => {
             if (err.response) {
-                let mesg = this.globalHandler(err, 'Failed to create new button!');
-                alert(mesg);
+                this.errorMesg = this.globalHandler(err, 'Failed to create new button!');
             }
         });
 
@@ -179,8 +177,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
             this.buttons.splice(index, 1);
         }).catch((err) => {
             if (err.response) {
-                let mesg = this.globalHandler(err, 'Failed to delete a button!');
-                alert(mesg);
+                this.errorMesg = this.globalHandler(err, 'Failed to delete a button!');
             }
         });
     }
@@ -193,8 +190,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
             this.content.image = '';
         }).catch((err) => {
             if (err.response) {
-                let mesg = this.globalHandler(err, 'Failed to delete an image!');
-                alert(mesg);
+                this.errorMesg = this.globalHandler(err, 'Failed to delete an image!');
             }
         });
     }

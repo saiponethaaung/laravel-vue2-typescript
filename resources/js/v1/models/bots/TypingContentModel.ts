@@ -1,12 +1,12 @@
+import Axios, { CancelTokenSource } from "axios";
 import { typingContent } from "../../configuration/interface";
 import ChatBlockContentModel from "../ChatBlockContentModel";
-import Axios, { CancelTokenSource } from "axios";
 
 export default class TypingContentModel extends ChatBlockContentModel {
 
     private typingContent: typingContent;
     private saveToken: CancelTokenSource = Axios.CancelToken.source();
-    
+
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
         this.typingContent = {
@@ -14,7 +14,7 @@ export default class TypingContentModel extends ChatBlockContentModel {
         };
     }
 
-    get duration() : number {
+    get duration(): number {
         return this.typingContent.duration;
     }
 
@@ -32,16 +32,15 @@ export default class TypingContentModel extends ChatBlockContentModel {
         data.append('_method', 'put');
 
         this.isUpdating = true;
-        
+
         await Axios({
             url: `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`,
             data: data,
             method: 'post',
             cancelToken: this.saveToken.token
         }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to update typing duration!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to update typing duration!');
             }
         });
 

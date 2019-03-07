@@ -32,8 +32,8 @@ class CreateChatBlockSectionContentTable extends Migration
             $table->unsignedInteger('section_id')->nullable();
             $table->unsignedInteger('order')->default(0);
             $table->unsignedInteger('type')->default(0);
-            $table->string('text')->nullable();
-            $table->string('content')->nullable();
+            $table->string('text', 640)->nullable();
+            $table->string('content', 640)->nullable();
             $table->text('image')->nullable();
             $table->unsignedInteger('duration')->default(5);
             $table->timestamps();

@@ -1,7 +1,7 @@
+import Axios from "axios";
+import { quickReplyContent } from "../../configuration/interface";
 import ChatBlockContentModel from "../ChatBlockContentModel";
 import QuickReplyItemModel from "./QuickReplyItemModel";
-import { quickReplyContent } from "../../configuration/interface";
-import Axios from "axios";
 
 export default class QuickReplyContentModel extends ChatBlockContentModel {
 
@@ -9,11 +9,11 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
     private creating: boolean = false;
     private rootUrl: string = '';
     private delChild: number = -1;
-    
+
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}/quick-reply`;
-        for(let i of content.content) {
+        for (let i of content.content) {
             this.buildQuickReplyItem(i);
         }
     }
@@ -22,7 +22,7 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
         this.quickReplyContent.push(new QuickReplyItemModel(content, this.rootUrl, this.project));
     }
 
-    get item() : Array<QuickReplyItemModel> {
+    get item(): Array<QuickReplyItemModel> {
         return this.quickReplyContent;
     }
 
@@ -30,7 +30,7 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
         this.quickReplyContent = quickReply;
     }
 
-    get isCreating() : boolean {
+    get isCreating(): boolean {
         return this.creating;
     }
 
@@ -38,7 +38,7 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
         this.creating = status;
     }
 
-    get isChildDeleting() : number {
+    get isChildDeleting(): number {
         return this.delChild;
     }
 
@@ -55,13 +55,14 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
         }).then((res: any) => {
             this.buildQuickReplyItem(res.data.data);
         }).catch((err: any) => {
-            let mesg = this.globalHandler(err, 'Failed to create new quick reply!');
-            alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to create new quick reply!');
+            }
         });
 
         this.isCreating = false;
     }
-    
+
     async delItem(index: number) {
         this.isChildDeleting = index;
         await Axios({
@@ -70,9 +71,8 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
         }).then((res) => {
             this.item.splice(index, 1);
         }).catch((err) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to delete a quick reply!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to delete a quick reply!');
             }
         });
         this.isChildDeleting = -1;

@@ -5,7 +5,12 @@
                 <div>{{ section.title }}</div>
             </template>
             <template v-else>
-                <input type="text" v-model="section.title" v-on:blur="updateSection">
+                <input
+                    type="text"
+                    v-model="section.title"
+                    v-on:keyup.enter="updateSection"
+                    v-on:blur="updateSection"
+                >
                 <div class="deleteAction" @click="delSection()">
                     <i class="material-icons">delete</i>
                 </div>
@@ -15,7 +20,7 @@
             v-model="contents"
             class="contentList"
             handle=".handle"
-            ghost-class="ghost"
+            lock-axis="y"
             @end="updateSectionContentOrder"
         >
             <transition-group>
@@ -40,6 +45,12 @@
                         <div class="componentDeleting">
                             <div class="deletingContainer"></div>
                         </div>
+                    </template>
+                    <template v-if="content.errorMesg!==''">
+                        <error-component
+                            :mesg="content.errorMesg"
+                            @closeError="content.errorMesg=''"
+                        ></error-component>
                     </template>
                 </div>
             </transition-group>
@@ -370,6 +381,8 @@ export default class BuilderComponent extends Vue {
                     alert(mesg);
                 }
             });
+
+        document.getElementsByTagName("body")[0].focus();
     }
 
     async updateSectionContentOrder() {
@@ -390,16 +403,15 @@ export default class BuilderComponent extends Vue {
             data: data,
             method: "post",
             cancelToken: this.orderToken.token
-        })
-            .catch(err => {
-                if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(
-                        err,
-                        "Failed to update content order!"
-                    );
-                    alert(mesg);
-                }
-            });
+        }).catch(err => {
+            if (err.response) {
+                let mesg = this.ajaxHandler.globalHandler(
+                    err,
+                    "Failed to update content order!"
+                );
+                alert(mesg);
+            }
+        });
     }
 
     async delSection() {

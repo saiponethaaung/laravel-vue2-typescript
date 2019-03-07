@@ -1,6 +1,6 @@
-import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
-import { userInputContent } from "../../configuration/interface";
 import Axios, { CancelTokenSource } from "axios";
+import { userInputContent } from "../../configuration/interface";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
 export default class UserInputItemModel extends AjaxErrorHandler {
 
@@ -8,6 +8,7 @@ export default class UserInputItemModel extends AjaxErrorHandler {
     private rootUrl: string;
     private showValidation: boolean = false;
     private saveToken: CancelTokenSource = Axios.CancelToken.source();
+    public errorMesg: string = '';
 
     constructor(content: userInputContent, rootUrl: string) {
         super();
@@ -15,11 +16,11 @@ export default class UserInputItemModel extends AjaxErrorHandler {
         this.rootUrl = rootUrl;
     }
 
-    get id() : number {
+    get id(): number {
         return this.content.id;
     }
 
-    get question() : string {
+    get question(): string {
         return this.content.question;
     }
 
@@ -27,7 +28,7 @@ export default class UserInputItemModel extends AjaxErrorHandler {
         this.content.question = question;
     }
 
-    get validation() : number {
+    get validation(): number {
         return this.content.validation;
     }
 
@@ -35,7 +36,7 @@ export default class UserInputItemModel extends AjaxErrorHandler {
         this.content.validation = validation;
     }
 
-    get attribute() : string {
+    get attribute(): string {
         return this.content.attribute.title;
     }
 
@@ -43,7 +44,7 @@ export default class UserInputItemModel extends AjaxErrorHandler {
         this.content.attribute.title = attribute;
     }
 
-    get showVal() : boolean {
+    get showVal(): boolean {
         return this.showValidation;
     }
 
@@ -67,9 +68,8 @@ export default class UserInputItemModel extends AjaxErrorHandler {
             method: 'post',
             cancelToken: this.saveToken.token
         }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to update user input!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to update user input!');
             }
         });
     }

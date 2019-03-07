@@ -1,8 +1,8 @@
-import ChatBlockContentModel from "../ChatBlockContentModel";
 import Axios, { CancelTokenSource } from "axios";
-import ListItemModel from "./ListItemModel";
-import { listContent, buttonContent } from "../../configuration/interface";
+import { buttonContent, listContent } from "../../configuration/interface";
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
+import ChatBlockContentModel from "../ChatBlockContentModel";
+import ListItemModel from "./ListItemModel";
 
 export default class ListContentModel extends ChatBlockContentModel {
 
@@ -19,7 +19,7 @@ export default class ListContentModel extends ChatBlockContentModel {
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
-        for(let i in content.content.content) {
+        for (let i in content.content.content) {
             this.buildListItem(content.content.content[i]);
         }
         this.listButton = content.content.button;
@@ -29,11 +29,11 @@ export default class ListContentModel extends ChatBlockContentModel {
         this.listContent.push(new ListItemModel(content, `${this.rootUrl}/list`));
     }
 
-    get url() : string {
+    get url(): string {
         return this.rootUrl;
     }
 
-    get item() : Array<ListItemModel> {
+    get item(): Array<ListItemModel> {
         return this.listContent;
     }
 
@@ -49,7 +49,7 @@ export default class ListContentModel extends ChatBlockContentModel {
         this.creating = status;
     }
 
-    get addingNewBtn() : boolean {
+    get addingNewBtn(): boolean {
         return this.buttonCreating;
     }
 
@@ -57,7 +57,7 @@ export default class ListContentModel extends ChatBlockContentModel {
         this.buttonCreating = status;
     }
 
-    get button() : null | buttonContent{
+    get button(): null | buttonContent {
         return this.listButton;
     }
 
@@ -65,7 +65,7 @@ export default class ListContentModel extends ChatBlockContentModel {
         this.listButton = button;
     }
 
-    get btnEdit() : boolean {
+    get btnEdit(): boolean {
         return this.buttonEdit;
     }
 
@@ -86,9 +86,8 @@ export default class ListContentModel extends ChatBlockContentModel {
         }).then((res) => {
             this.listButton = res.data.button;
         }).catch((err) => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
             }
         });
 
@@ -96,16 +95,15 @@ export default class ListContentModel extends ChatBlockContentModel {
     }
 
     async delButton() {
-        if(this.button!==null) {
+        if (this.button !== null) {
             await Axios({
                 url: `${this.rootUrl}/button/${this.button.id}`,
                 method: 'delete',
             }).then((res) => {
                 this.button = null;
             }).catch((err) => {
-                if(err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete a button!');
-                    alert(mesg);
+                if (err.response) {
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete a button!');
                 }
             });
         }
@@ -120,8 +118,9 @@ export default class ListContentModel extends ChatBlockContentModel {
         }).then((res: any) => {
             this.buildListItem(res.data.content);
         }).catch((err: any) => {
-            let mesg = this.globalHandler(err, 'Failed to create new list!');
-            alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to create new list!');
+            }
         });
 
         this.isCreating = false;
@@ -134,9 +133,8 @@ export default class ListContentModel extends ChatBlockContentModel {
         }).then((res) => {
             this.item.splice(index, 1);
         }).catch((err) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to delete a list!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to delete a list!');
             }
         });
     }

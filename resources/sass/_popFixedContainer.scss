@@ -201,3 +201,27 @@ $userPopFooter: 60px;
     border-radius: 5px;
     color: #fff;
 }
+
+.ecMesg {
+    padding: 15px 30px;
+    font-size: 13px;
+}
+
+.ecBtnCon {
+    height: $standardHeight;
+    line-height: $standardHeight;
+    border-top: 1px solid $borderPrimary;
+}
+
+.ecBtn {
+    border: none;
+    width: 100%;
+    background: transparent;
+    font-size: 13px;
+    cursor: pointer;
+    &:focus,
+    &:hover,
+    &:active {
+        outline: none;
+    }
+}

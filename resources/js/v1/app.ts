@@ -4,7 +4,6 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
 import Axios, { CancelTokenSource } from 'axios';
 import { Calendar, DatePicker, setupCalendar } from 'v-calendar';
 import Vue from 'vue';
@@ -14,6 +13,7 @@ import App from './App.vue';
 import AttributeSelectorComponent from './components/common/AttributeSelectorComponent.vue';
 import ButtonComponent from './components/common/builder/ButtonComponent.vue';
 import BuilderComponent from './components/common/BuilderComponent.vue';
+import ErrorComponent from './components/common/ErrorComponent.vue';
 import FullScreenLoadingComponent from './components/common/FullScreenLoadingComponent.vue';
 import LoadingComponent from './components/common/LoadingComponent.vue';
 import PopupComponent from './components/common/PopupComponent.vue';
@@ -99,6 +99,7 @@ router.beforeEach(async (to, from, next) => {
 Vue.component('app', App);
 Vue.component('draggable', draggable);
 Vue.component('popup-component', PopupComponent);
+Vue.component('error-component', ErrorComponent);
 Vue.component('loading-component', LoadingComponent);
 Vue.component('builder-component', BuilderComponent);
 Vue.component('button-component', ButtonComponent);

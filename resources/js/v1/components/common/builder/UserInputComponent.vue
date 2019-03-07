@@ -8,7 +8,9 @@
                     </div>
                     <span class="uihText">User Input</span>
                 </div>
-                <p class="userInputDesc">Ask bot users questions and save their responses to user attributes. You can then utilize user attributes in broadcasting user filters.</p>
+                <p
+                    class="userInputDesc"
+                >Ask bot users questions and save their responses to user attributes. You can then utilize user attributes in broadcasting user filters.</p>
                 <div>
                     <ul class="userInputList" ref="dropdownMenu">
                         <li class="userInputHeading">
@@ -21,31 +23,50 @@
                         <li v-for="(ui, index) in content.item" :key="index" class="userInputCon">
                             <div class="userInputForm">
                                 <div class="userInputQuestion">
-                                    <input type="text" v-model="ui.question" v-on:blur="ui.saveContent()"/>
+                                    <input
+                                        type="text"
+                                        v-model="ui.question"
+                                        v-on:blur="ui.saveContent()"
+                                    >
                                 </div>
                                 <div class="userInputValidation">
                                     <div class="userInputValidationCon">
-                                        <div class="userInputValidationValue" @click="ui.showVal=!ui.showVal;closeOtherSection(index)">{{ validation[ui.validation] }}</div>
+                                        <div
+                                            class="userInputValidationValue"
+                                            @click="ui.showVal=!ui.showVal;closeOtherSection(index)"
+                                        >{{ validation[ui.validation] }}</div>
                                         <ul class="userInputValidationOption" v-if="ui.showVal">
-                                            <li v-for="(v, vindex) in validation" :key="vindex" @click="ui.validation=vindex;ui.showVal=false;ui.saveContent();">{{ v }}</li>
+                                            <li
+                                                v-for="(v, vindex) in validation"
+                                                :key="vindex"
+                                                @click="ui.validation=vindex;ui.showVal=false;ui.saveContent();"
+                                            >{{ v }}</li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="userInputAttribute">
-                                    <input type="text" v-model="ui.attribute" v-on:blur="ui.saveContent()"/>
+                                    <input
+                                        type="text"
+                                        v-model="ui.attribute"
+                                        v-on:blur="ui.saveContent()"
+                                    >
                                 </div>
                             </div>
                             <div class="delIcon" @click="content.delItem(index)">
                                 <i class="material-icons">delete</i>
                             </div>
+                            <template v-if="ui.errorMesg!==''">
+                                <error-component :mesg="ui.errorMesg" @closeError="ui.errorMesg=''"></error-component>
+                            </template>
                         </li>
                     </ul>
                     <div>
-                        <template v-if="content.isCreating">
-                            Creating...
-                        </template>
+                        <template v-if="content.isCreating">Creating...</template>
                         <template v-else>
-                            <button @click="createNewUserInput()">+ Add Fields</button>
+                            <button class="addMoreRule" @click="createNewUserInput()">
+                                <i class="material-icons">add</i>
+                                <span>Add Fields</span>
+                            </button>
                         </template>
                     </div>
                 </div>
@@ -55,48 +76,44 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch, Prop, Vue } from 'vue-property-decorator';
-import UserInputContentModel from '../../../models/bots/UserInputContentModel';
+import { Component, Watch, Prop, Vue } from "vue-property-decorator";
+import UserInputContentModel from "../../../models/bots/UserInputContentModel";
 
 @Component
 export default class UserInputComponent extends Vue {
     @Prop({
-        type: UserInputContentModel,
-    }) content!: UserInputContentModel;
+        type: UserInputContentModel
+    })
+    content!: UserInputContentModel;
 
-    private validation: Array<string> = [
-        'None',
-        'Phone',
-        'Email',
-        'Number' 
-    ];
+    private validation: Array<string> = ["None", "Phone", "Email", "Number"];
 
     async createNewUserInput() {
         this.content.createUserInpt();
     }
 
-    documentClick(e: any){
+    documentClick(e: any) {
         let el: any = this.$refs.dropdownMenu;
         let target = e.target;
-        if (( el !== target) && !el.contains(target)) {
-          this.closeOtherSection(-1);
+        if (el !== target && !el.contains(target)) {
+            this.closeOtherSection(-1);
         }
     }
 
     closeOtherSection(index: any) {
-        for(let i in this.content.item) {
-            if(i==index) continue;
+        for (let i in this.content.item) {
+            if (i == index) continue;
             this.content.item[i].showVal = false;
         }
     }
 
     created() {
-      document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
 
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 }
 </script>

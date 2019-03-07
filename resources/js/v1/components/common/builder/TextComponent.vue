@@ -1,19 +1,19 @@
 <template>
-    <div class="componentTypeOne">
+    <div class="componentTypeOne" ref="textcon">
         <div class="botTextComponent">
             <div class="btcTextRootCon">
                 <textarea
                     class="textBody"
                     maxlength="640"
                     v-model="content.value"
-                    v-on:blur="content.saveContent()"
+                    v-on:blur="saveContent()"
                 ></textarea>
+                <div class="limitWord">
+                    <span>
+                        <div class="alignWord">{{ textLimit }}</div>
+                    </span>
+                </div>
                 <div class="btcPlaceholder" v-html="content.value.replace(/\n/g, '<br />')"></div>
-            </div>
-            <div class="limitWord">
-                <span>
-                    <div class="alignWord">{{ textLimit }}</div>
-                </span>
             </div>
             <div class="textBtn">
                 <div class="addBtn btnCon" v-for="(button, index) in content.buttons" :key="index">
@@ -87,6 +87,12 @@ export default class TextComponent extends Vue {
 
     get textLimit() {
         return 640 - this.content.value.length;
+    }
+
+    saveContent() {
+        this.content.saveContent();
+        let ae: any = document.activeElement;
+        ae = null;
     }
 }
 </script>

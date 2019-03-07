@@ -1,9 +1,8 @@
-import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
-import { listContent, buttonContent } from "../../configuration/interface";
-import ListContentModel from "./ListContentModel";
 import Axios, { CancelTokenSource } from "axios";
+import { buttonContent, listContent } from "../../configuration/interface";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
-export default class ListItemModel extends AjaxErrorHandler{
+export default class ListItemModel extends AjaxErrorHandler {
 
     private content: listContent;
     private rootUrl: String = '';
@@ -14,6 +13,7 @@ export default class ListItemModel extends AjaxErrorHandler{
     private buttonCreating: boolean = false;
     private buttonEdit: boolean = false;
     private buttonToken: CancelTokenSource = Axios.CancelToken.source();
+    public errorMesg: string = '';
 
     constructor(content: listContent, rootUrl: string) {
         super();
@@ -21,11 +21,11 @@ export default class ListItemModel extends AjaxErrorHandler{
         this.rootUrl = rootUrl;
     }
 
-    get id() : number {
+    get id(): number {
         return this.content.id;
     }
 
-    get title() : string {
+    get title(): string {
         return this.content.title;
     }
 
@@ -33,7 +33,7 @@ export default class ListItemModel extends AjaxErrorHandler{
         this.content.title = title;
     }
 
-    get sub() : string {
+    get sub(): string {
         return this.content.sub;
     }
 
@@ -41,7 +41,7 @@ export default class ListItemModel extends AjaxErrorHandler{
         this.content.sub = sub;
     }
 
-    get url() : string {
+    get url(): string {
         return this.content.url;
     }
 
@@ -49,7 +49,7 @@ export default class ListItemModel extends AjaxErrorHandler{
         this.content.url = url;
     }
 
-    get button() : null | buttonContent{
+    get button(): null | buttonContent {
         return this.content.button;
     }
 
@@ -57,7 +57,7 @@ export default class ListItemModel extends AjaxErrorHandler{
         this.content.button = button;
     }
 
-    get image() : string {
+    get image(): string {
         return this.content.image;
     }
 
@@ -65,7 +65,7 @@ export default class ListItemModel extends AjaxErrorHandler{
         this.content.image = image;
     }
 
-    get isUpdating() : boolean {
+    get isUpdating(): boolean {
         return this.updating;
     }
 
@@ -73,7 +73,7 @@ export default class ListItemModel extends AjaxErrorHandler{
         this.updating = status;
     }
 
-    get isUploading() : boolean {
+    get isUploading(): boolean {
         return this.uploading;
     }
 
@@ -99,16 +99,15 @@ export default class ListItemModel extends AjaxErrorHandler{
             method: 'post',
             cancelToken: this.saveToken.token
         }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to update list!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to update list!');
             }
         });
 
         this.isUpdating = false;
     }
 
-    get addingNewBtn() : boolean {
+    get addingNewBtn(): boolean {
         return this.buttonCreating;
     }
 
@@ -116,7 +115,7 @@ export default class ListItemModel extends AjaxErrorHandler{
         this.buttonCreating = status;
     }
 
-    get btnEdit() : boolean {
+    get btnEdit(): boolean {
         return this.buttonEdit;
     }
 
@@ -140,9 +139,8 @@ export default class ListItemModel extends AjaxErrorHandler{
         }).then((res: any) => {
             this.image = res.data.image;
         }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to update list!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to update list!');
             }
         });
 
@@ -156,24 +154,22 @@ export default class ListItemModel extends AjaxErrorHandler{
         }).then((res: any) => {
             this.image = '';
         }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to delete an image!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to delete an image!');
             }
         });
     }
 
     async delButton() {
-        if(this.button!==null) {
+        if (this.button !== null) {
             await Axios({
                 url: `${this.rootUrl.replace('/list', '')}/button/${this.button.id}`,
                 method: 'delete',
             }).then((res) => {
                 this.button = null;
             }).catch((err) => {
-                if(err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete a button!');
-                    alert(mesg);
+                if (err.response) {
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete a button!');
                 }
             });
         }
@@ -192,9 +188,8 @@ export default class ListItemModel extends AjaxErrorHandler{
         }).then((res) => {
             this.button = res.data.button;
         }).catch((err) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to create new button!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to create new button!');
             }
         });
 
@@ -202,10 +197,10 @@ export default class ListItemModel extends AjaxErrorHandler{
     }
 
     get textLimitTitle() {
-        return 80-this.title.length;
+        return 80 - this.title.length;
     }
 
     get textLimitSub() {
-        return 80-this.sub.length;
+        return 80 - this.sub.length;
     }
 }

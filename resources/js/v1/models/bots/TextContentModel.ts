@@ -1,10 +1,10 @@
-import Axios, { CancelToken, CancelTokenSource } from "axios";
-import { textContent, BotContent, buttonContent } from "../../configuration/interface";
-import ChatBlockContentModel from "../ChatBlockContentModel";
+import Axios, { CancelTokenSource } from "axios";
+import { buttonContent, textContent } from "../../configuration/interface";
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
+import ChatBlockContentModel from "../ChatBlockContentModel";
 
 export default class TextContentModel extends ChatBlockContentModel {
-    
+
     private rootUrl: string;
     private textContent: textContent;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
@@ -22,11 +22,11 @@ export default class TextContentModel extends ChatBlockContentModel {
         };
     }
 
-    get url() : string {
+    get url(): string {
         return this.rootUrl;
     }
 
-    get value() : string {
+    get value(): string {
         return this.textContent.content;
     }
 
@@ -34,11 +34,11 @@ export default class TextContentModel extends ChatBlockContentModel {
         this.textContent.content = content;
     }
 
-    get type() : number {
+    get type(): number {
         return 1;
     }
 
-    get buttons() : Array<buttonContent>{
+    get buttons(): Array<buttonContent> {
         return this.textContent.button;
     }
 
@@ -46,11 +46,11 @@ export default class TextContentModel extends ChatBlockContentModel {
         this.textContent.button = buttons;
     }
 
-    get showBtn() : boolean {
-        return this.textContent.button.length<3;
+    get showBtn(): boolean {
+        return this.textContent.button.length < 3;
     }
 
-    get addingNewBtn() : boolean {
+    get addingNewBtn(): boolean {
         return this.buttonCreating;
     }
 
@@ -58,7 +58,7 @@ export default class TextContentModel extends ChatBlockContentModel {
         this.buttonCreating = status;
     }
 
-    get btnEditIndex() : number {
+    get btnEditIndex(): number {
         return this.buttonEditIndex;
     }
 
@@ -79,9 +79,8 @@ export default class TextContentModel extends ChatBlockContentModel {
         }).then((res) => {
             this.textContent.button.push(res.data.button);
         }).catch((err) => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
             }
         });
 
@@ -95,9 +94,8 @@ export default class TextContentModel extends ChatBlockContentModel {
         }).then((res) => {
             this.buttons.splice(index, 1);
         }).catch((err) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to delete a button!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to delete a button!');
             }
         });
     }
@@ -105,7 +103,7 @@ export default class TextContentModel extends ChatBlockContentModel {
     async saveContent() {
         this.saveToken.cancel();
         this.saveToken = Axios.CancelToken.source();
-        
+
         this.isUpdating = true;
 
         let data = new FormData();
@@ -119,9 +117,8 @@ export default class TextContentModel extends ChatBlockContentModel {
             method: 'post',
             cancelToken: this.saveToken.token
         }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to save text content!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to save text content!');
             }
         });
 

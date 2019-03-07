@@ -1,11 +1,12 @@
-import AjaxErrorHandler from "../utils/AjaxErrorHandler";
 import { BotContent } from "../configuration/interface";
+import AjaxErrorHandler from "../utils/AjaxErrorHandler";
 
 export default class ChatBlockContentModel extends AjaxErrorHandler {
-    private content : BotContent;
+    private content: BotContent;
     private updating: boolean = false;
     private deleting: boolean = false;
-    protected baseUrl: string = "";
+    protected baseUrl: string = '';
+    public errorMesg: string = '';
 
     constructor(content: any, baseUrl: string) {
         super();
@@ -19,23 +20,23 @@ export default class ChatBlockContentModel extends AjaxErrorHandler {
         };
     }
 
-    get contentId() : number {
+    get contentId(): number {
         return this.content.id;
     }
 
-    get section() : number {
+    get section(): number {
         return this.content.section;
     }
 
-    get block() : number {
+    get block(): number {
         return this.content.block;
     }
 
-    get type() : number {
+    get type(): number {
         return this.content.type;
     }
 
-    get isUpdating() : boolean {
+    get isUpdating(): boolean {
         return this.updating;
     }
 
@@ -43,7 +44,7 @@ export default class ChatBlockContentModel extends AjaxErrorHandler {
         this.updating = status;
     }
 
-    get isDeleting() : boolean {
+    get isDeleting(): boolean {
         return this.deleting;
     }
 

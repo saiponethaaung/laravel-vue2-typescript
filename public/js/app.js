@@ -11683,7 +11683,8 @@ class ChatBlockContentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxError
         super();
         this.updating = false;
         this.deleting = false;
-        this.baseUrl = "";
+        this.baseUrl = '';
+        this.errorMesg = '';
         this.baseUrl = baseUrl;
         this.content = {
             id: content.id,
@@ -12053,8 +12054,8 @@ process.umask = function() { return 0; };
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentModel__ = __webpack_require__(6);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -12066,10 +12067,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__["a" /* default */] {
+class TextContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentModel__["a" /* default */] {
     constructor(content, baseUrl) {
         super(content, baseUrl);
-        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__["a" /* default */]();
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */]();
         this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.buttonCreating = false;
@@ -12126,8 +12127,7 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
                 this.textContent.button.push(res.data.button);
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
-                    alert(mesg);
+                    this.errorMesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
                 }
             });
             this.addingNewBtn = false;
@@ -12142,8 +12142,7 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
                 this.buttons.splice(index, 1);
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete a button!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete a button!');
                 }
             });
         });
@@ -12164,8 +12163,7 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
                 cancelToken: this.saveToken.token
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to save text content!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to save text content!');
                 }
             });
             this.isUpdating = false;
@@ -12181,9 +12179,9 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMode
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__ = __webpack_require__(6);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -12194,10 +12192,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 
-class TypingContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
+class TypingContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__["a" /* default */] {
     constructor(content, baseUrl) {
         super(content, baseUrl);
-        this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.typingContent = {
             duration: content.content.duration
         };
@@ -12211,21 +12209,20 @@ class TypingContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMo
     saveDuration() {
         return __awaiter(this, void 0, void 0, function* () {
             this.saveToken.cancel();
-            this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             let data = new FormData();
             data.append('duration', this.duration.toString());
             data.append('type', this.type.toString());
             data.append('_method', 'put');
             this.isUpdating = true;
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`,
                 data: data,
                 method: 'post',
                 cancelToken: this.saveToken.token
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to update typing duration!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to update typing duration!');
                 }
             });
             this.isUpdating = false;
@@ -12241,11 +12238,11 @@ class TypingContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMo
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ListItemModel__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentModel__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ListItemModel__ = __webpack_require__(94);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -12258,7 +12255,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
+class ListContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentModel__["a" /* default */] {
     constructor(content, baseUrl) {
         super(content, baseUrl);
         this.rootUrl = "";
@@ -12266,10 +12263,10 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
         this.listButton = null;
         this.creating = false;
         this.buttonEdit = false;
-        this.orderToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.orderToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.buttonCreating = false;
-        this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__["a" /* default */]();
+        this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */]();
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         for (let i in content.content.content) {
             this.buildListItem(content.content.content[i]);
@@ -12277,7 +12274,7 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
         this.listButton = content.content.button;
     }
     buildListItem(content) {
-        this.listContent.push(new __WEBPACK_IMPORTED_MODULE_2__ListItemModel__["a" /* default */](content, `${this.rootUrl}/list`));
+        this.listContent.push(new __WEBPACK_IMPORTED_MODULE_3__ListItemModel__["a" /* default */](content, `${this.rootUrl}/list`));
     }
     get url() {
         return this.rootUrl;
@@ -12316,8 +12313,8 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
         return __awaiter(this, void 0, void 0, function* () {
             this.addingNewBtn = true;
             this.buttonToken.cancel();
-            this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/button/list`,
                 method: 'post',
                 cancelToken: this.buttonToken.token
@@ -12325,8 +12322,7 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
                 this.listButton = res.data.button;
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
-                    alert(mesg);
+                    this.errorMesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
                 }
             });
             this.addingNewBtn = false;
@@ -12335,15 +12331,14 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
     delButton() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.button !== null) {
-                yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                     url: `${this.rootUrl}/button/${this.button.id}`,
                     method: 'delete',
                 }).then((res) => {
                     this.button = null;
                 }).catch((err) => {
                     if (err.response) {
-                        let mesg = this.globalHandler(err, 'Failed to delete a button!');
-                        alert(mesg);
+                        this.errorMesg = this.globalHandler(err, 'Failed to delete a button!');
                     }
                 });
             }
@@ -12352,29 +12347,29 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
     createList() {
         return __awaiter(this, void 0, void 0, function* () {
             this.isCreating = true;
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/list`,
                 method: 'post'
             }).then((res) => {
                 this.buildListItem(res.data.content);
             }).catch((err) => {
-                let mesg = this.globalHandler(err, 'Failed to create new list!');
-                alert(mesg);
+                if (err.response) {
+                    this.errorMesg = this.globalHandler(err, 'Failed to create new list!');
+                }
             });
             this.isCreating = false;
         });
     }
     delItem(index) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/list/${this.item[index].id}`,
                 method: 'delete',
             }).then((res) => {
                 this.item.splice(index, 1);
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete a list!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete a list!');
                 }
             });
         });
@@ -12389,10 +12384,10 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMode
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__GalleryItemModel__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__GalleryItemModel__ = __webpack_require__(97);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -12404,19 +12399,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
+class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__["a" /* default */] {
     constructor(content, baseUrl) {
         super(content, baseUrl);
         this.galleryContent = [];
         this.creating = false;
-        this.orderToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+        this.orderToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         for (let i of content.content) {
             this.buildGalleryItem(i);
         }
     }
     buildGalleryItem(content) {
-        this.galleryContent.push(new __WEBPACK_IMPORTED_MODULE_1__GalleryItemModel__["a" /* default */](content, `${this.rootUrl}/gallery`));
+        this.galleryContent.push(new __WEBPACK_IMPORTED_MODULE_2__GalleryItemModel__["a" /* default */](content, `${this.rootUrl}/gallery`));
     }
     get url() {
         return this.rootUrl;
@@ -12436,29 +12431,29 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentM
     createGallery() {
         return __awaiter(this, void 0, void 0, function* () {
             this.isCreating = true;
-            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/gallery`,
                 method: 'post'
             }).then((res) => {
                 this.buildGalleryItem(res.data.content);
             }).catch((err) => {
-                let mesg = this.globalHandler(err, 'Failed to create new list!');
-                alert(mesg);
+                if (err.response) {
+                    this.errorMesg = this.globalHandler(err, 'Failed to create new list!');
+                }
             });
             this.isCreating = false;
         });
     }
     delItem(index) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/gallery/${this.item[index].id}`,
                 method: 'delete',
             }).then((res) => {
                 this.item.splice(index, 1);
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete a card!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete a card!');
                 }
             });
         });
@@ -12473,10 +12468,10 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentM
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__QuickReplyItemModel__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__QuickReplyItemModel__ = __webpack_require__(100);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -12488,7 +12483,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
+class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__["a" /* default */] {
     constructor(content, baseUrl) {
         super(content, baseUrl);
         this.quickReplyContent = [];
@@ -12501,7 +12496,7 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConte
         }
     }
     buildQuickReplyItem(content) {
-        this.quickReplyContent.push(new __WEBPACK_IMPORTED_MODULE_1__QuickReplyItemModel__["a" /* default */](content, this.rootUrl, this.project));
+        this.quickReplyContent.push(new __WEBPACK_IMPORTED_MODULE_2__QuickReplyItemModel__["a" /* default */](content, this.rootUrl, this.project));
     }
     get item() {
         return this.quickReplyContent;
@@ -12524,14 +12519,15 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConte
     createQuickReply() {
         return __awaiter(this, void 0, void 0, function* () {
             this.isCreating = true;
-            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: this.rootUrl,
                 method: 'post'
             }).then((res) => {
                 this.buildQuickReplyItem(res.data.data);
             }).catch((err) => {
-                let mesg = this.globalHandler(err, 'Failed to create new quick reply!');
-                alert(mesg);
+                if (err.response) {
+                    this.errorMesg = this.globalHandler(err, 'Failed to create new quick reply!');
+                }
             });
             this.isCreating = false;
         });
@@ -12539,15 +12535,14 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConte
     delItem(index) {
         return __awaiter(this, void 0, void 0, function* () {
             this.isChildDeleting = index;
-            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.item[index].id}`,
                 method: 'delete',
             }).then((res) => {
                 this.item.splice(index, 1);
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete a quick reply!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete a quick reply!');
                 }
             });
             this.isChildDeleting = -1;
@@ -12563,10 +12558,10 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConte
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__UserInputItemModel__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UserInputItemModel__ = __webpack_require__(103);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -12578,7 +12573,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
+class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__["a" /* default */] {
     constructor(content, baseUrl) {
         super(content, baseUrl);
         this.userInputContent = [];
@@ -12590,7 +12585,7 @@ class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConten
         }
     }
     buildUserInputItem(content) {
-        this.userInputContent.push(new __WEBPACK_IMPORTED_MODULE_1__UserInputItemModel__["a" /* default */](content, this.rootUrl));
+        this.userInputContent.push(new __WEBPACK_IMPORTED_MODULE_2__UserInputItemModel__["a" /* default */](content, this.rootUrl));
     }
     get item() {
         return this.userInputContent;
@@ -12607,15 +12602,14 @@ class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConten
     createUserInpt() {
         return __awaiter(this, void 0, void 0, function* () {
             this.isCreating = true;
-            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: this.rootUrl,
                 method: 'post'
             }).then((res) => {
                 this.buildUserInputItem(res.data.data);
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to create new user input!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to create new user input!');
                 }
             });
             this.isCreating = false;
@@ -12623,15 +12617,14 @@ class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConten
     }
     delItem(index) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.item[index].id}`,
                 method: 'delete',
             }).then((res) => {
                 this.item.splice(index, 1);
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete a user input!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete a user input!');
                 }
             });
         });
@@ -12646,9 +12639,9 @@ class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockConten
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__ = __webpack_require__(6);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -12659,14 +12652,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 
-class ImageContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentModel__["a" /* default */] {
+class ImageContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentModel__["a" /* default */] {
     constructor(content, baseUrl) {
         super(content, baseUrl);
         this.imageContent = {
             image: ''
         };
         this.uploading = false;
-        this.imageToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.imageToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.imageContent.image = content.content.image;
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}/image`;
     }
@@ -12685,11 +12678,11 @@ class ImageContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMod
     imageUpload(e) {
         return __awaiter(this, void 0, void 0, function* () {
             this.imageToken.cancel();
-            this.imageToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.imageToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             this.isUploading = true;
             let data = new FormData();
             data.append('image', e.target.files[0]);
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}`,
                 data: data,
                 method: 'post',
@@ -12698,8 +12691,7 @@ class ImageContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMod
                 this.image = res.data.image;
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to update list!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to update list!');
                 }
             });
             this.isUploading = false;
@@ -12707,15 +12699,14 @@ class ImageContentModel extends __WEBPACK_IMPORTED_MODULE_0__ChatBlockContentMod
     }
     delImage() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}`,
                 method: 'delete',
             }).then((res) => {
                 this.image = '';
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete an image!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete an image!');
                 }
             });
         });
@@ -24543,25 +24534,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_builder_ButtonComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_common_builder_ButtonComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_common_FullScreenLoadingComponent_vue__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_common_FullScreenLoadingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_common_FullScreenLoadingComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_common_LoadingComponent_vue__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_common_LoadingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_common_LoadingComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_common_PopupComponent_vue__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_common_PopupComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_common_PopupComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_common_SpinnerDropDownComponent_vue__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_common_SpinnerDropDownComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_common_SpinnerDropDownComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_common_TimeInputComponent_vue__ = __webpack_require__(117);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_common_TimeInputComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_common_TimeInputComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__configuration_bootstrap__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__configuration_route__ = __webpack_require__(123);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__configuration_store__ = __webpack_require__(241);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_common_ErrorComponent_vue__ = __webpack_require__(254);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_common_ErrorComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_common_ErrorComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_common_FullScreenLoadingComponent_vue__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_common_FullScreenLoadingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_common_FullScreenLoadingComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_common_LoadingComponent_vue__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_common_LoadingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_common_LoadingComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_common_PopupComponent_vue__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_common_PopupComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_common_PopupComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_common_SpinnerDropDownComponent_vue__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_common_SpinnerDropDownComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_common_SpinnerDropDownComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_common_TimeInputComponent_vue__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_common_TimeInputComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_common_TimeInputComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__configuration_bootstrap__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__configuration_route__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__configuration_store__ = __webpack_require__(241);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -24570,10 +24558,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
 
 
 
 // import { VueMasonryPlugin } from 'vue-masonry';
+
 
 
 
@@ -24593,12 +24587,12 @@ Object(__WEBPACK_IMPORTED_MODULE_1_v_calendar__["setupCalendar"])({
 });
 let eventHub = new __WEBPACK_IMPORTED_MODULE_2_vue__["default"]();
 let userLoadingToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
-let ajaxHandler = new __WEBPACK_IMPORTED_MODULE_16__utils_AjaxErrorHandler__["a" /* default */]();
+let ajaxHandler = new __WEBPACK_IMPORTED_MODULE_17__utils_AjaxErrorHandler__["a" /* default */]();
 window.fbSdkLoaded = false;
 function logoutResponseHandler(error) {
     // if has response show the error
     if (error.response.status === 401) {
-        __WEBPACK_IMPORTED_MODULE_15__configuration_store__["a" /* default */].state.commit('logout');
+        __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.commit('logout');
         return;
     }
     else {
@@ -24606,24 +24600,24 @@ function logoutResponseHandler(error) {
     }
 }
 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.interceptors.response.use(response => response, logoutResponseHandler);
-__WEBPACK_IMPORTED_MODULE_14__configuration_route__["a" /* default */].beforeEach((to, from, next) => __awaiter(this, void 0, void 0, function* () {
+__WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */].beforeEach((to, from, next) => __awaiter(this, void 0, void 0, function* () {
     let proceedNext = true;
-    if (__WEBPACK_IMPORTED_MODULE_15__configuration_store__["a" /* default */].state.token !== null) {
-        __WEBPACK_IMPORTED_MODULE_0_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_15__configuration_store__["a" /* default */].state.token}`;
+    if (__WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.token !== null) {
+        __WEBPACK_IMPORTED_MODULE_0_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.token}`;
         userLoadingToken.cancel();
         userLoadingToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
-        __WEBPACK_IMPORTED_MODULE_15__configuration_store__["a" /* default */].state.autheticating = true;
+        __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.autheticating = true;
         yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
             url: '/api/v1/user',
             cancelToken: userLoadingToken.token
         }).then((res) => {
             if (to.name === 'login' || to.name === 'register' || to.name === 'verify') {
                 proceedNext = false;
-                __WEBPACK_IMPORTED_MODULE_14__configuration_route__["a" /* default */].push({ name: 'home' });
+                __WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */].push({ name: 'home' });
             }
             else {
-                __WEBPACK_IMPORTED_MODULE_15__configuration_store__["a" /* default */].state.isLogin = true;
-                __WEBPACK_IMPORTED_MODULE_15__configuration_store__["a" /* default */].state.user = res.data;
+                __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.isLogin = true;
+                __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.user = res.data;
             }
         }).catch(err => {
             if (err.response) {
@@ -24632,7 +24626,7 @@ __WEBPACK_IMPORTED_MODULE_14__configuration_route__["a" /* default */].beforeEac
             }
         });
         if (proceedNext) {
-            __WEBPACK_IMPORTED_MODULE_15__configuration_store__["a" /* default */].state.autheticating = false;
+            __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.autheticating = false;
         }
     }
     next();
@@ -24648,19 +24642,20 @@ __WEBPACK_IMPORTED_MODULE_14__configuration_route__["a" /* default */].beforeEac
 // Vue.prototype.$eventHub = new Vue();
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('app', __WEBPACK_IMPORTED_MODULE_4__App_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('draggable', __WEBPACK_IMPORTED_MODULE_3_vuedraggable___default.a);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('popup-component', __WEBPACK_IMPORTED_MODULE_10__components_common_PopupComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('loading-component', __WEBPACK_IMPORTED_MODULE_9__components_common_LoadingComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('popup-component', __WEBPACK_IMPORTED_MODULE_11__components_common_PopupComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('error-component', __WEBPACK_IMPORTED_MODULE_8__components_common_ErrorComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('loading-component', __WEBPACK_IMPORTED_MODULE_10__components_common_LoadingComponent_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('builder-component', __WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('button-component', __WEBPACK_IMPORTED_MODULE_6__components_common_builder_ButtonComponent_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('attribute-selector-component', __WEBPACK_IMPORTED_MODULE_5__components_common_AttributeSelectorComponent_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('v-calendar', __WEBPACK_IMPORTED_MODULE_1_v_calendar__["Calendar"]);
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('v-date-picker', __WEBPACK_IMPORTED_MODULE_1_v_calendar__["DatePicker"]);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('dropdown-keybase-component', __WEBPACK_IMPORTED_MODULE_11__components_common_SpinnerDropDownComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('time-input-component', __WEBPACK_IMPORTED_MODULE_12__components_common_TimeInputComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('fullscreen-loading-component', __WEBPACK_IMPORTED_MODULE_8__components_common_FullScreenLoadingComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('dropdown-keybase-component', __WEBPACK_IMPORTED_MODULE_12__components_common_SpinnerDropDownComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('time-input-component', __WEBPACK_IMPORTED_MODULE_13__components_common_TimeInputComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('fullscreen-loading-component', __WEBPACK_IMPORTED_MODULE_9__components_common_FullScreenLoadingComponent_vue___default.a);
 new __WEBPACK_IMPORTED_MODULE_2_vue__["default"]({
-    router: __WEBPACK_IMPORTED_MODULE_14__configuration_route__["a" /* default */],
-    store: __WEBPACK_IMPORTED_MODULE_15__configuration_store__["a" /* default */],
+    router: __WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */],
+    store: __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */],
     el: '#app',
 });
 
@@ -31022,29 +31017,31 @@ let LoginComponent = class LoginComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
         return __awaiter(this, void 0, void 0, function* () {
             this.loading = true;
             let data = new FormData();
-            data.append('email', this.loginData.email);
-            data.append('password', this.loginData.password);
+            data.append("email", this.loginData.email);
+            data.append("password", this.loginData.password);
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: "/api/user/login",
                 data: data,
                 method: "POST"
-            }).then((res) => {
+            })
+                .then(res => {
                 if (res.data.isVerify) {
-                    this.$store.commit('setToken', {
+                    this.$store.commit("setToken", {
                         token: res.data.token
                     });
-                    if (this.$route.name === 'login') {
-                        window.location.assign('/');
+                    if (this.$route.name === "login") {
+                        window.location.assign("/");
                     }
                     else {
                         window.location.reload();
                     }
                 }
                 else {
-                    this.$router.push({ name: 'verify' });
+                    this.$router.push({ name: "verify" });
                 }
-            }).catch((err) => {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to login!');
+            })
+                .catch(err => {
+                let mesg = this.ajaxHandler.globalHandler(err, "Failed to login!");
                 alert(mesg);
             });
             this.loading = false;
@@ -31065,87 +31062,132 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.loginNow($event)
+  return _c("div", { staticClass: "nonMemberComponent" }, [
+    _c("div", { staticClass: "nonMemberFormRoot" }, [
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.loginNow($event)
+            }
           }
-        }
-      },
-      [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+        },
+        [
+          _vm._m(0),
           _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.loginData.email,
-                expression: "loginData.email"
-              }
-            ],
-            attrs: {
-              type: "email",
-              id: "email",
-              required: "",
-              disabled: _vm.loading
-            },
-            domProps: { value: _vm.loginData.email },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.loginData.email,
+                  expression: "loginData.email"
                 }
-                _vm.$set(_vm.loginData, "email", $event.target.value)
+              ],
+              attrs: {
+                type: "email",
+                id: "email",
+                required: "",
+                disabled: _vm.loading
+              },
+              domProps: { value: _vm.loginData.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.loginData, "email", $event.target.value)
+                }
               }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "password" } }, [_vm._v("Password")]),
+            })
+          ]),
           _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.loginData.password,
-                expression: "loginData.password"
-              }
-            ],
-            attrs: {
-              type: "password",
-              id: "password",
-              required: "",
-              disabled: _vm.loading
-            },
-            domProps: { value: _vm.loginData.password },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "password" } }, [_vm._v("Password")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.loginData.password,
+                  expression: "loginData.password"
                 }
-                _vm.$set(_vm.loginData, "password", $event.target.value)
+              ],
+              attrs: {
+                type: "password",
+                id: "password",
+                required: "",
+                disabled: _vm.loading
+              },
+              domProps: { value: _vm.loginData.password },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.loginData, "password", $event.target.value)
+                }
               }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _vm.loading
-          ? [_vm._v("\n            Loading...\n        ")]
-          : [_c("button", [_vm._v("Login")])]
-      ],
-      2
-    )
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "p",
+              { staticClass: "nonMemberFormNote" },
+              [
+                _vm._v("Not a member? Register\n                    "),
+                _c("router-link", { attrs: { to: { name: "register" } } }, [
+                  _vm._v("here")
+                ])
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form-group text-center" },
+            [
+              _vm.loading
+                ? [_vm._v("Loading...")]
+                : [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "defaultBtn loginBtn",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Login")]
+                    )
+                  ]
+            ],
+            2
+          )
+        ]
+      )
+    ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("figure", [
+      _c("img", {
+        staticClass: "navIcon",
+        attrs: { src: "/images/icons/logo.png" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -32777,6 +32819,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     alert(mesg);
                 }
             });
+            document.getElementsByTagName("body")[0].focus();
         });
     }
     updateSectionContentOrder() {
@@ -32794,8 +32837,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                 data: data,
                 method: "post",
                 cancelToken: this.orderToken.token
-            })
-                .catch(err => {
+            }).catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, "Failed to update content order!");
                     alert(mesg);
@@ -32887,6 +32929,11 @@ let TextComponent = class TextComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_
     get textLimit() {
         return 640 - this.content.value.length;
     }
+    saveContent() {
+        this.content.saveContent();
+        let ae = document.activeElement;
+        ae = null;
+    }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
@@ -32907,7 +32954,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "componentTypeOne" }, [
+  return _c("div", { ref: "textcon", staticClass: "componentTypeOne" }, [
     _c("div", { staticClass: "botTextComponent" }, [
       _c("div", { staticClass: "btcTextRootCon" }, [
         _c("textarea", {
@@ -32924,7 +32971,7 @@ var render = function() {
           domProps: { value: _vm.content.value },
           on: {
             blur: function($event) {
-              _vm.content.saveContent()
+              _vm.saveContent()
             },
             input: function($event) {
               if ($event.target.composing) {
@@ -32935,20 +32982,20 @@ var render = function() {
           }
         }),
         _vm._v(" "),
+        _c("div", { staticClass: "limitWord" }, [
+          _c("span", [
+            _c("div", { staticClass: "alignWord" }, [
+              _vm._v(_vm._s(_vm.textLimit))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
         _c("div", {
           staticClass: "btcPlaceholder",
           domProps: {
             innerHTML: _vm._s(_vm.content.value.replace(/\n/g, "<br />"))
           }
         })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "limitWord" }, [
-        _c("span", [
-          _c("div", { staticClass: "alignWord" }, [
-            _vm._v(_vm._s(_vm.textLimit))
-          ])
-        ])
       ]),
       _vm._v(" "),
       _c(
@@ -33291,9 +33338,9 @@ ListComponent = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -33304,17 +33351,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 
-class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+class ListItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */] {
     constructor(content, rootUrl) {
         super();
         this.rootUrl = '';
         this.updating = false;
         this.uploading = false;
-        this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-        this.imageToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+        this.imageToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.buttonCreating = false;
         this.buttonEdit = false;
-        this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+        this.errorMesg = '';
         this.content = content;
         this.rootUrl = rootUrl;
     }
@@ -33366,22 +33414,21 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
     saveContent() {
         return __awaiter(this, void 0, void 0, function* () {
             this.saveToken.cancel();
-            this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             this.isUpdating = true;
             let data = new FormData();
             data.append('title', this.title);
             data.append('sub', this.sub);
             data.append('url', this.url);
             data.append('_method', 'put');
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}`,
                 data: data,
                 method: 'post',
                 cancelToken: this.saveToken.token
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to update list!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to update list!');
                 }
             });
             this.isUpdating = false;
@@ -33402,11 +33449,11 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
     imageUpload(e) {
         return __awaiter(this, void 0, void 0, function* () {
             this.imageToken.cancel();
-            this.imageToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.imageToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             this.isUploading = true;
             let data = new FormData();
             data.append('image', e.target.files[0]);
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}/image`,
                 data: data,
                 method: 'post',
@@ -33415,8 +33462,7 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
                 this.image = res.data.image;
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to update list!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to update list!');
                 }
             });
             this.isUploading = false;
@@ -33424,15 +33470,14 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
     }
     delImage(e) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}/image`,
                 method: 'delete',
             }).then((res) => {
                 this.image = '';
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete an image!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete an image!');
                 }
             });
         });
@@ -33440,15 +33485,14 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
     delButton() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.button !== null) {
-                yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                     url: `${this.rootUrl.replace('/list', '')}/button/${this.button.id}`,
                     method: 'delete',
                 }).then((res) => {
                     this.button = null;
                 }).catch((err) => {
                     if (err.response) {
-                        let mesg = this.globalHandler(err, 'Failed to delete a button!');
-                        alert(mesg);
+                        this.errorMesg = this.globalHandler(err, 'Failed to delete a button!');
                     }
                 });
             }
@@ -33458,8 +33502,8 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
         return __awaiter(this, void 0, void 0, function* () {
             this.addingNewBtn = true;
             this.buttonToken.cancel();
-            this.buttonToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl.replace('/list', '')}/button/list/${this.id}`,
                 method: 'post',
                 cancelToken: this.buttonToken.token
@@ -33467,8 +33511,7 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
                 this.button = res.data.button;
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to create new button!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to create new button!');
                 }
             });
             this.addingNewBtn = false;
@@ -33500,259 +33543,285 @@ var render = function() {
         { staticClass: "chatListRoot" },
         [
           _vm._l(_vm.content.item, function(l, index) {
-            return _c("li", { key: index, staticClass: "chatListItem" }, [
-              _c("div", { staticClass: "chatListContent" }, [
-                _c("div", { staticClass: "chatListInfo" }, [
-                  _c("div", { staticClass: "chatListInput" }, [
-                    _c("div", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: l.title,
-                            expression: "l.title"
-                          }
-                        ],
-                        staticClass: "chatListTitle",
-                        attrs: {
-                          type: "text",
-                          placeholder: "Heading (required)",
-                          maxlength: "80"
-                        },
-                        domProps: { value: l.title },
-                        on: {
-                          blur: function($event) {
-                            l.saveContent()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+            return _c(
+              "li",
+              { key: index, staticClass: "chatListItem" },
+              [
+                _c("div", { staticClass: "chatListContent" }, [
+                  _c("div", { staticClass: "chatListInfo" }, [
+                    _c("div", { staticClass: "chatListInput" }, [
+                      _c("div", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: l.title,
+                              expression: "l.title"
                             }
-                            _vm.$set(l, "title", $event.target.value)
+                          ],
+                          staticClass: "chatListTitle",
+                          attrs: {
+                            type: "text",
+                            placeholder: "Heading (required)",
+                            maxlength: "80"
+                          },
+                          domProps: { value: l.title },
+                          on: {
+                            blur: function($event) {
+                              l.saveContent()
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(l, "title", $event.target.value)
+                            }
                           }
-                        }
-                      }),
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "limitListTitle" }, [
+                          _vm._v(_vm._s(l.textLimitTitle))
+                        ])
+                      ]),
                       _vm._v(" "),
-                      _c("span", { staticClass: "limitListTitle" }, [
-                        _vm._v(_vm._s(l.textLimitTitle))
+                      _c("div", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: l.sub,
+                              expression: "l.sub"
+                            }
+                          ],
+                          staticClass: "chatListSub",
+                          attrs: {
+                            type: "text",
+                            placeholder: "Subtitle or description",
+                            maxlength: "80"
+                          },
+                          domProps: { value: l.sub },
+                          on: {
+                            blur: function($event) {
+                              l.saveContent()
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(l, "sub", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "limitListTitle limitSub" }, [
+                          _vm._v(_vm._s(l.textLimitSub))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: l.url,
+                              expression: "l.url"
+                            }
+                          ],
+                          staticClass: "chatListUrl",
+                          attrs: { type: "text", placeholder: "URL" },
+                          domProps: { value: l.url },
+                          on: {
+                            blur: function($event) {
+                              l.saveContent()
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(l, "url", $event.target.value)
+                            }
+                          }
+                        })
                       ])
                     ]),
                     _vm._v(" "),
-                    _c("div", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: l.sub,
-                            expression: "l.sub"
-                          }
+                    _c("div", { staticClass: "chatListImage" }, [
+                      _c(
+                        "figure",
+                        [
+                          l.image
+                            ? [
+                                _c("div", { staticClass: "listItemImageCon" }, [
+                                  _c("img", { attrs: { src: l.image } })
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "hoverOptions" }, [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "removeIcon",
+                                      on: {
+                                        click: function($event) {
+                                          l.delImage()
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "i",
+                                        { staticClass: "material-icons" },
+                                        [_vm._v("close")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("span", [_vm._v("remove")])
+                                    ]
+                                  )
+                                ])
+                              ]
+                            : [
+                                _c("label", [
+                                  _c("i", { staticClass: "material-icons" }, [
+                                    _vm._v("photo_camera")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    attrs: { type: "file" },
+                                    on: {
+                                      change: function($event) {
+                                        l.imageUpload($event)
+                                      }
+                                    }
+                                  })
+                                ])
+                              ]
                         ],
-                        staticClass: "chatListSub",
-                        attrs: {
-                          type: "text",
-                          placeholder: "Subtitle or description",
-                          maxlength: "80"
-                        },
-                        domProps: { value: l.sub },
-                        on: {
-                          blur: function($event) {
-                            l.saveContent()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(l, "sub", $event.target.value)
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "limitListTitle limitSub" }, [
-                        _vm._v(_vm._s(l.textLimitSub))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: l.url,
-                            expression: "l.url"
-                          }
-                        ],
-                        staticClass: "chatListUrl",
-                        attrs: { type: "text", placeholder: "URL" },
-                        domProps: { value: l.url },
-                        on: {
-                          blur: function($event) {
-                            l.saveContent()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(l, "url", $event.target.value)
-                          }
-                        }
-                      })
+                        2
+                      )
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "chatListImage" }, [
-                    _c(
-                      "figure",
-                      [
-                        l.image
-                          ? [
-                              _c("div", { staticClass: "listItemImageCon" }, [
-                                _c("img", { attrs: { src: l.image } })
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "hoverOptions" }, [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "removeIcon",
-                                    on: {
-                                      click: function($event) {
-                                        l.delImage()
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", { staticClass: "material-icons" }, [
-                                      _vm._v("close")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("span", [_vm._v("remove")])
-                                  ]
-                                )
-                              ])
-                            ]
-                          : [
-                              _c("label", [
-                                _c("i", { staticClass: "material-icons" }, [
-                                  _vm._v("photo_camera")
-                                ]),
-                                _vm._v(" "),
-                                _c("input", {
-                                  attrs: { type: "file" },
-                                  on: {
-                                    change: function($event) {
-                                      l.imageUpload($event)
-                                    }
-                                  }
-                                })
-                              ])
-                            ]
-                      ],
-                      2
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                l.addingNewBtn
-                  ? _c("div", { staticClass: "chatListButton noborder" }, [
-                      _vm._v("Creating...")
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                !l.addingNewBtn && l.button == null
-                  ? _c(
-                      "div",
-                      {
-                        staticClass: "chatListButton",
-                        on: {
-                          click: function($event) {
-                            l.addButton()
+                  l.addingNewBtn
+                    ? _c("div", { staticClass: "chatListButton noborder" }, [
+                        _vm._v("Creating...")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  !l.addingNewBtn && l.button == null
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "chatListButton",
+                          on: {
+                            click: function($event) {
+                              l.addButton()
+                            }
                           }
-                        }
-                      },
-                      [_vm._v("Add Button")]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                l.button !== null
-                  ? _c(
-                      "div",
-                      { staticClass: "chatListButton" },
-                      [
-                        _c(
-                          "div",
-                          {
-                            on: {
-                              click: function($event) {
-                                l.btnEdit = true
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                l.button.title ? l.button.title : "Button Name"
-                              )
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "delIcon",
-                            on: {
-                              click: function($event) {
-                                l.delButton()
-                              }
-                            }
-                          },
-                          [
-                            _c("i", { staticClass: "material-icons" }, [
-                              _vm._v("delete")
-                            ])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        l.btnEdit
-                          ? _c("button-component", {
-                              attrs: {
-                                rootUrl: _vm.content.url + "/button",
-                                button: l.button,
-                                projectid: _vm.content.project
-                              },
+                        },
+                        [_vm._v("Add Button")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  l.button !== null
+                    ? _c(
+                        "div",
+                        { staticClass: "chatListButton" },
+                        [
+                          _c(
+                            "div",
+                            {
                               on: {
-                                closeContent: function(status) {
-                                  if (status && l.btnEdit === true) {
-                                    l.btnEdit = false
-                                  }
+                                click: function($event) {
+                                  l.btnEdit = true
                                 }
                               }
-                            })
-                          : _vm._e()
-                      ],
-                      1
-                    )
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "clear" }),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "delIcon chatListItemDelIcon",
-                  on: {
-                    click: function($event) {
-                      _vm.content.delItem(index)
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  l.button.title
+                                    ? l.button.title
+                                    : "Button Name"
+                                )
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "delIcon",
+                              on: {
+                                click: function($event) {
+                                  l.delButton()
+                                }
+                              }
+                            },
+                            [
+                              _c("i", { staticClass: "material-icons" }, [
+                                _vm._v("delete")
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          l.btnEdit
+                            ? _c("button-component", {
+                                attrs: {
+                                  rootUrl: _vm.content.url + "/button",
+                                  button: l.button,
+                                  projectid: _vm.content.project
+                                },
+                                on: {
+                                  closeContent: function(status) {
+                                    if (status && l.btnEdit === true) {
+                                      l.btnEdit = false
+                                    }
+                                  }
+                                }
+                              })
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "clear" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "delIcon chatListItemDelIcon",
+                    on: {
+                      click: function($event) {
+                        _vm.content.delItem(index)
+                      }
                     }
-                  }
-                },
-                [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
-              )
-            ])
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("delete")
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                l.errorMesg !== ""
+                  ? [
+                      _c("error-component", {
+                        attrs: { mesg: l.errorMesg },
+                        on: {
+                          closeError: function($event) {
+                            l.errorMesg = ""
+                          }
+                        }
+                      })
+                    ]
+                  : _vm._e()
+              ],
+              2
+            )
           }),
           _vm._v(" "),
           _vm.content.isCreating
@@ -33871,7 +33940,7 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-                  _vm._v("Add Button\n      ")
+                  _vm._v("Add Button\n            ")
                 ]
               )
             : _vm._e(),
@@ -33920,7 +33989,7 @@ let GalleryComponent = class GalleryComponent extends __WEBPACK_IMPORTED_MODULE_
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
-        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_GalleryContentModel__["a" /* default */],
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_GalleryContentModel__["a" /* default */]
     })
 ], GalleryComponent.prototype, "content", void 0);
 GalleryComponent = __decorate([
@@ -33958,6 +34027,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
         this.buttonCreating = false;
         this.buttonEdit = -1;
         this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+        this.errorMesg = '';
         this.rootUrl = rootUrl;
         this.content = content;
     }
@@ -34023,8 +34093,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
                 cancelToken: this.saveToken.token
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to update list!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to update list!');
                 }
             });
             this.isUpdating = false;
@@ -34046,8 +34115,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
                 this.image = res.data.image;
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to update list!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to update list!');
                 }
             });
             this.isUploading = false;
@@ -34078,8 +34146,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
                 this.content.button.push(res.data.button);
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to create new button!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to create new button!');
                 }
             });
             this.addingNewBtn = false;
@@ -34094,8 +34161,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
                 this.buttons.splice(index, 1);
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete a button!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete a button!');
                 }
             });
         });
@@ -34109,8 +34175,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
                 this.content.image = '';
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete an image!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete an image!');
                 }
             });
         });
@@ -34141,296 +34206,316 @@ var render = function() {
         { staticClass: "galleListRoot" },
         [
           _vm._l(_vm.content.item, function(l, index) {
-            return _c("li", { key: index, staticClass: "galleListItem" }, [
-              _c("div", { staticClass: "chatGalleryContainer" }, [
-                _c(
-                  "figure",
-                  { staticClass: "chatGalleryImage" },
-                  [
-                    l.image
-                      ? [
-                          _c("div", { staticClass: "imageCon" }, [
-                            _c("img", { attrs: { src: l.image } })
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "hoverOptions" }, [
+            return _c(
+              "li",
+              { key: index, staticClass: "galleListItem" },
+              [
+                _c("div", { staticClass: "chatGalleryContainer" }, [
+                  _c(
+                    "figure",
+                    { staticClass: "chatGalleryImage" },
+                    [
+                      l.image
+                        ? [
+                            _c("div", { staticClass: "imageCon" }, [
+                              _c("img", { attrs: { src: l.image } })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "hoverOptions" }, [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "removeIcon",
+                                  on: {
+                                    click: function($event) {
+                                      l.delImage()
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", { staticClass: "material-icons" }, [
+                                    _vm._v("close")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("span", [_vm._v("remove")])
+                                ]
+                              )
+                            ])
+                          ]
+                        : [
+                            _c("label", [
+                              _c("i", { staticClass: "material-icons" }, [
+                                _vm._v("photo_camera")
+                              ]),
+                              _vm._v(" "),
+                              _c("input", {
+                                attrs: { type: "file" },
+                                on: {
+                                  change: function($event) {
+                                    l.imageUpload($event)
+                                  }
+                                }
+                              })
+                            ])
+                          ]
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "chatGalleryContent" }, [
+                    _c("div", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: l.title,
+                            expression: "l.title"
+                          }
+                        ],
+                        attrs: {
+                          type: "text",
+                          placeholder: "Heading (required)",
+                          maxlength: "80"
+                        },
+                        domProps: { value: l.title },
+                        on: {
+                          blur: function($event) {
+                            l.saveContent()
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(l, "title", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "limitGalleryTitle" }, [
+                        _vm._v(_vm._s(l.textLimitTitle))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: l.sub,
+                            expression: "l.sub"
+                          }
+                        ],
+                        attrs: {
+                          type: "text",
+                          placeholder: "Subtitle or description",
+                          maxlength: "80"
+                        },
+                        domProps: { value: l.sub },
+                        on: {
+                          blur: function($event) {
+                            l.saveContent()
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(l, "sub", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        { staticClass: "limitGalleryTitle limitGalSub" },
+                        [_vm._v(_vm._s(l.textLimitSub))]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: l.url,
+                            expression: "l.url"
+                          }
+                        ],
+                        attrs: { type: "text", placeholder: "Url" },
+                        domProps: { value: l.url },
+                        on: {
+                          blur: function($event) {
+                            l.saveContent()
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(l, "url", $event.target.value)
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "chatGalleryButtons" },
+                    [
+                      _vm._l(l.buttons, function(button, sindex) {
+                        return _c(
+                          "div",
+                          { key: sindex, staticClass: "addBtn btnCon" },
+                          [
                             _c(
                               "div",
                               {
-                                staticClass: "removeIcon",
+                                staticClass: "buttonActionGroup",
                                 on: {
                                   click: function($event) {
-                                    l.delImage()
+                                    l.btnEdit = sindex
+                                  }
+                                }
+                              },
+                              [
+                                _c("div", { staticClass: "buttonName" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      button.title
+                                        ? button.title
+                                        : "Button Name"
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                button.type === 0 && button.block.length > 0
+                                  ? _c(
+                                      "div",
+                                      { staticClass: "buttonActionName" },
+                                      [_vm._v(_vm._s(button.block[0].title))]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                button.type === 1 && button.url
+                                  ? _c(
+                                      "div",
+                                      { staticClass: "buttonActionName" },
+                                      [_vm._v(_vm._s(button.url))]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                button.type === 2 && button.phone.number
+                                  ? _c(
+                                      "div",
+                                      { staticClass: "buttonActionName" },
+                                      [_vm._v(_vm._s(button.phone.number))]
+                                    )
+                                  : _vm._e()
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass: "delIcon",
+                                on: {
+                                  click: function($event) {
+                                    l.delButton(sindex)
                                   }
                                 }
                               },
                               [
                                 _c("i", { staticClass: "material-icons" }, [
-                                  _vm._v("close")
-                                ]),
-                                _vm._v(" "),
-                                _c("span", [_vm._v("remove")])
+                                  _vm._v("delete")
+                                ])
                               ]
-                            )
-                          ])
-                        ]
-                      : [
-                          _c("label", [
-                            _c("i", { staticClass: "material-icons" }, [
-                              _vm._v("photo_camera")
-                            ]),
+                            ),
                             _vm._v(" "),
-                            _c("input", {
-                              attrs: { type: "file" },
-                              on: {
-                                change: function($event) {
-                                  l.imageUpload($event)
-                                }
-                              }
-                            })
+                            l.btnEdit === sindex
+                              ? _c("button-component", {
+                                  attrs: {
+                                    rootUrl: _vm.content.url + "/button",
+                                    button: button,
+                                    projectid: _vm.content.project
+                                  },
+                                  on: {
+                                    closeContent: function(status) {
+                                      if (status && l.btnEdit === sindex) {
+                                        l.btnEdit = -1
+                                      }
+                                    }
+                                  }
+                                })
+                              : _vm._e()
+                          ],
+                          1
+                        )
+                      }),
+                      _vm._v(" "),
+                      l.addingNewBtn
+                        ? _c("div", { staticClass: "addBtn btnCon" }, [
+                            _vm._v("Creating...")
                           ])
-                        ]
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "chatGalleryContent" }, [
-                  _c("div", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: l.title,
-                          expression: "l.title"
-                        }
-                      ],
-                      attrs: {
-                        type: "text",
-                        placeholder: "Heading (required)",
-                        maxlength: "80"
-                      },
-                      domProps: { value: l.title },
-                      on: {
-                        blur: function($event) {
-                          l.saveContent()
-                        },
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(l, "title", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "limitGalleryTitle" }, [
-                      _vm._v(_vm._s(l.textLimitTitle))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: l.sub,
-                          expression: "l.sub"
-                        }
-                      ],
-                      attrs: {
-                        type: "text",
-                        placeholder: "Subtitle or description",
-                        maxlength: "80"
-                      },
-                      domProps: { value: l.sub },
-                      on: {
-                        blur: function($event) {
-                          l.saveContent()
-                        },
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(l, "sub", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "limitGalleryTitle limitGalSub" },
-                      [_vm._v(_vm._s(l.textLimitSub))]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: l.url,
-                          expression: "l.url"
-                        }
-                      ],
-                      attrs: { type: "text", placeholder: "Url" },
-                      domProps: { value: l.url },
-                      on: {
-                        blur: function($event) {
-                          l.saveContent()
-                        },
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(l, "url", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "chatGalleryButtons" },
-                  [
-                    _vm._l(l.buttons, function(button, sindex) {
-                      return _c(
-                        "div",
-                        { key: sindex, staticClass: "addBtn btnCon" },
-                        [
-                          _c(
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !l.addingNewBtn && l.buttons.length < 3
+                        ? _c(
                             "div",
                             {
-                              staticClass: "buttonActionGroup",
+                              staticClass: "addBtn",
                               on: {
                                 click: function($event) {
-                                  l.btnEdit = sindex
-                                }
-                              }
-                            },
-                            [
-                              _c("div", { staticClass: "buttonName" }, [
-                                _vm._v(
-                                  _vm._s(
-                                    button.title ? button.title : "Button Name"
-                                  )
-                                )
-                              ]),
-                              _vm._v(" "),
-                              button.type === 0 && button.block.length > 0
-                                ? _c(
-                                    "div",
-                                    { staticClass: "buttonActionName" },
-                                    [_vm._v(_vm._s(button.block[0].title))]
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              button.type === 1 && button.url
-                                ? _c(
-                                    "div",
-                                    { staticClass: "buttonActionName" },
-                                    [_vm._v(_vm._s(button.url))]
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              button.type === 2 && button.phone.number
-                                ? _c(
-                                    "div",
-                                    { staticClass: "buttonActionName" },
-                                    [_vm._v(_vm._s(button.phone.number))]
-                                  )
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "delIcon",
-                              on: {
-                                click: function($event) {
-                                  l.delButton(sindex)
+                                  l.addButton()
                                 }
                               }
                             },
                             [
                               _c("i", { staticClass: "material-icons" }, [
-                                _vm._v("delete")
-                              ])
+                                _vm._v("add")
+                              ]),
+                              _vm._v("Add Button\n                        ")
                             ]
-                          ),
-                          _vm._v(" "),
-                          l.btnEdit === sindex
-                            ? _c("button-component", {
-                                attrs: {
-                                  rootUrl: _vm.content.url + "/button",
-                                  button: button,
-                                  projectid: _vm.content.project
-                                },
-                                on: {
-                                  closeContent: function(status) {
-                                    if (status && l.btnEdit === sindex) {
-                                      l.btnEdit = -1
-                                    }
-                                  }
-                                }
-                              })
-                            : _vm._e()
-                        ],
-                        1
-                      )
-                    }),
-                    _vm._v(" "),
-                    l.addingNewBtn
-                      ? _c("div", { staticClass: "addBtn btnCon" }, [
-                          _vm._v("Creating...")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !l.addingNewBtn && l.buttons.length < 3
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "addBtn",
-                            on: {
-                              click: function($event) {
-                                l.addButton()
-                              }
-                            }
-                          },
-                          [
-                            _c("i", { staticClass: "material-icons" }, [
-                              _vm._v("add")
-                            ]),
-                            _vm._v("Add Button\n                        ")
-                          ]
-                        )
-                      : _vm._e()
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "delIcon",
-                    on: {
-                      click: function($event) {
-                        _vm.content.delItem(index)
+                          )
+                        : _vm._e()
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "delIcon",
+                      on: {
+                        click: function($event) {
+                          _vm.content.delItem(index)
+                        }
                       }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("delete")
-                    ])
-                  ]
-                )
-              ])
-            ])
+                    },
+                    [
+                      _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("delete")
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                l.errorMesg !== ""
+                  ? [
+                      _c("error-component", {
+                        attrs: { mesg: l.errorMesg },
+                        on: {
+                          closeError: function($event) {
+                            l.errorMesg = ""
+                          }
+                        }
+                      })
+                    ]
+                  : _vm._e()
+              ],
+              2
+            )
           }),
           _vm._v(" "),
           _vm.content.item.length < 10
@@ -34512,7 +34597,7 @@ let QuickReplyComponent = class QuickReplyComponent extends __WEBPACK_IMPORTED_M
     documentClick(e) {
         let el = this.$refs.dropdownMenu;
         let target = e.target;
-        if ((el !== target) && !el.contains(target)) {
+        if (el !== target && !el.contains(target)) {
             this.closeOtherSection(-1);
         }
     }
@@ -34524,16 +34609,16 @@ let QuickReplyComponent = class QuickReplyComponent extends __WEBPACK_IMPORTED_M
         }
     }
     created() {
-        document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
-        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_QuickReplyContentModel__["a" /* default */],
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_QuickReplyContentModel__["a" /* default */]
     })
 ], QuickReplyComponent.prototype, "content", void 0);
 QuickReplyComponent = __decorate([
@@ -34547,9 +34632,9 @@ QuickReplyComponent = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -34560,7 +34645,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 
-class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */] {
     constructor(content, rootUrl, projectId) {
         super();
         this.content = content;
@@ -34568,10 +34653,11 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
         this.projectId = projectId;
         this.show = false;
         this.keyword = '';
-        this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.suggestion = [];
-        this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.blockToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.btnProcessing = false;
+        this.errorMesg = '';
     }
     get id() {
         return this.content.id;
@@ -34621,13 +34707,13 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
     saveContent() {
         return __awaiter(this, void 0, void 0, function* () {
             this.saveToken.cancel();
-            this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             let data = new FormData();
             data.append('title', this.title);
             data.append('attribute', this.attribute);
             data.append('value', this.value);
             data.append('_method', 'put');
-            __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}`,
                 data: data,
                 method: 'post',
@@ -34636,8 +34722,7 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
                 this.content.attribute.id = res.data.data.attribute;
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to update quick reply!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to update quick reply!');
                 }
             });
         });
@@ -34657,11 +34742,11 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
     addBlock(block, section) {
         return __awaiter(this, void 0, void 0, function* () {
             this.blockToken.cancel();
-            this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.blockToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             this.isBtnProcess = true;
             let data = new FormData();
             data.append('section', this.suggestion[block].contents[section].id.toString());
-            __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}/block`,
                 data: data,
                 method: 'post',
@@ -34674,8 +34759,7 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
                 this.suggestion = [];
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to connect a block!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to connect a block!');
                 }
             });
             this.isBtnProcess = false;
@@ -34684,15 +34768,14 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
     delButton(index) {
         return __awaiter(this, void 0, void 0, function* () {
             this.isBtnProcess = true;
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}/block`,
                 method: 'delete',
             }).then((res) => {
                 this.content.block = [];
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to delete a block!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to delete a block!');
                 }
             });
             this.isBtnProcess = false;
@@ -35011,6 +35094,19 @@ var render = function() {
               _vm._v(" "),
               _vm.content.isChildDeleting === index
                 ? [_vm._m(3, true)]
+                : _vm._e(),
+              _vm._v(" "),
+              qr.errorMesg !== ""
+                ? [
+                    _c("error-component", {
+                      attrs: { mesg: qr.errorMesg },
+                      on: {
+                        closeError: function($event) {
+                          qr.errorMesg = ""
+                        }
+                      }
+                    })
+                  ]
                 : _vm._e()
             ],
             2
@@ -35021,7 +35117,7 @@ var render = function() {
           ? _c("li", [
               _vm.content.isCreating
                 ? _c("div", { staticClass: "quickReplyCapsule qrAddMore" }, [
-                    _vm._v("\n                Creating...\n            ")
+                    _vm._v("Creating...")
                   ])
                 : _c(
                     "div",
@@ -35113,12 +35209,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let UserInputComponent = class UserInputComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.validation = [
-            'None',
-            'Phone',
-            'Email',
-            'Number'
-        ];
+        this.validation = ["None", "Phone", "Email", "Number"];
     }
     createNewUserInput() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -35128,7 +35219,7 @@ let UserInputComponent = class UserInputComponent extends __WEBPACK_IMPORTED_MOD
     documentClick(e) {
         let el = this.$refs.dropdownMenu;
         let target = e.target;
-        if ((el !== target) && !el.contains(target)) {
+        if (el !== target && !el.contains(target)) {
             this.closeOtherSection(-1);
         }
     }
@@ -35140,16 +35231,16 @@ let UserInputComponent = class UserInputComponent extends __WEBPACK_IMPORTED_MOD
         }
     }
     created() {
-        document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
-        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_UserInputContentModel__["a" /* default */],
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_UserInputContentModel__["a" /* default */]
     })
 ], UserInputComponent.prototype, "content", void 0);
 UserInputComponent = __decorate([
@@ -35163,9 +35254,9 @@ UserInputComponent = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -35176,11 +35267,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 
-class UserInputItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+class UserInputItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */] {
     constructor(content, rootUrl) {
         super();
         this.showValidation = false;
-        this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+        this.errorMesg = '';
         this.content = content;
         this.rootUrl = rootUrl;
     }
@@ -35214,21 +35306,20 @@ class UserInputItemModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHan
     saveContent() {
         return __awaiter(this, void 0, void 0, function* () {
             this.saveToken.cancel();
-            this.saveToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             let data = new FormData();
             data.append('question', this.question);
             data.append('attribute', this.attribute);
             data.append('validation', this.validation.toString());
             data.append('_method', 'put');
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}`,
                 data: data,
                 method: 'post',
                 cancelToken: this.saveToken.token
             }).catch((err) => {
                 if (err.response) {
-                    let mesg = this.globalHandler(err, 'Failed to update user input!');
-                    alert(mesg);
+                    this.errorMesg = this.globalHandler(err, 'Failed to update user input!');
                 }
             });
         });
@@ -35265,119 +35356,137 @@ var render = function() {
               _vm._m(1),
               _vm._v(" "),
               _vm._l(_vm.content.item, function(ui, index) {
-                return _c("li", { key: index, staticClass: "userInputCon" }, [
-                  _c("div", { staticClass: "userInputForm" }, [
-                    _c("div", { staticClass: "userInputQuestion" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: ui.question,
-                            expression: "ui.question"
-                          }
-                        ],
-                        attrs: { type: "text" },
-                        domProps: { value: ui.question },
-                        on: {
-                          blur: function($event) {
-                            ui.saveContent()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                return _c(
+                  "li",
+                  { key: index, staticClass: "userInputCon" },
+                  [
+                    _c("div", { staticClass: "userInputForm" }, [
+                      _c("div", { staticClass: "userInputQuestion" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: ui.question,
+                              expression: "ui.question"
                             }
-                            _vm.$set(ui, "question", $event.target.value)
+                          ],
+                          attrs: { type: "text" },
+                          domProps: { value: ui.question },
+                          on: {
+                            blur: function($event) {
+                              ui.saveContent()
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(ui, "question", $event.target.value)
+                            }
                           }
-                        }
-                      })
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "userInputValidation" }, [
+                        _c("div", { staticClass: "userInputValidationCon" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "userInputValidationValue",
+                              on: {
+                                click: function($event) {
+                                  ui.showVal = !ui.showVal
+                                  _vm.closeOtherSection(index)
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(_vm.validation[ui.validation]))]
+                          ),
+                          _vm._v(" "),
+                          ui.showVal
+                            ? _c(
+                                "ul",
+                                { staticClass: "userInputValidationOption" },
+                                _vm._l(_vm.validation, function(v, vindex) {
+                                  return _c(
+                                    "li",
+                                    {
+                                      key: vindex,
+                                      on: {
+                                        click: function($event) {
+                                          ui.validation = vindex
+                                          ui.showVal = false
+                                          ui.saveContent()
+                                        }
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(v))]
+                                  )
+                                })
+                              )
+                            : _vm._e()
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "userInputAttribute" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: ui.attribute,
+                              expression: "ui.attribute"
+                            }
+                          ],
+                          attrs: { type: "text" },
+                          domProps: { value: ui.attribute },
+                          on: {
+                            blur: function($event) {
+                              ui.saveContent()
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(ui, "attribute", $event.target.value)
+                            }
+                          }
+                        })
+                      ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "userInputValidation" }, [
-                      _c("div", { staticClass: "userInputValidationCon" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "userInputValidationValue",
+                    _c(
+                      "div",
+                      {
+                        staticClass: "delIcon",
+                        on: {
+                          click: function($event) {
+                            _vm.content.delItem(index)
+                          }
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("delete")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    ui.errorMesg !== ""
+                      ? [
+                          _c("error-component", {
+                            attrs: { mesg: ui.errorMesg },
                             on: {
-                              click: function($event) {
-                                ui.showVal = !ui.showVal
-                                _vm.closeOtherSection(index)
+                              closeError: function($event) {
+                                ui.errorMesg = ""
                               }
                             }
-                          },
-                          [_vm._v(_vm._s(_vm.validation[ui.validation]))]
-                        ),
-                        _vm._v(" "),
-                        ui.showVal
-                          ? _c(
-                              "ul",
-                              { staticClass: "userInputValidationOption" },
-                              _vm._l(_vm.validation, function(v, vindex) {
-                                return _c(
-                                  "li",
-                                  {
-                                    key: vindex,
-                                    on: {
-                                      click: function($event) {
-                                        ui.validation = vindex
-                                        ui.showVal = false
-                                        ui.saveContent()
-                                      }
-                                    }
-                                  },
-                                  [_vm._v(_vm._s(v))]
-                                )
-                              })
-                            )
-                          : _vm._e()
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "userInputAttribute" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: ui.attribute,
-                            expression: "ui.attribute"
-                          }
-                        ],
-                        attrs: { type: "text" },
-                        domProps: { value: ui.attribute },
-                        on: {
-                          blur: function($event) {
-                            ui.saveContent()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(ui, "attribute", $event.target.value)
-                          }
-                        }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "delIcon",
-                      on: {
-                        click: function($event) {
-                          _vm.content.delItem(index)
-                        }
-                      }
-                    },
-                    [
-                      _c("i", { staticClass: "material-icons" }, [
-                        _vm._v("delete")
-                      ])
-                    ]
-                  )
-                ])
+                          })
+                        ]
+                      : _vm._e()
+                  ],
+                  2
+                )
               })
             ],
             2
@@ -35387,22 +35496,25 @@ var render = function() {
             "div",
             [
               _vm.content.isCreating
-                ? [
-                    _vm._v(
-                      "\n                        Creating...\n                    "
-                    )
-                  ]
+                ? [_vm._v("Creating...")]
                 : [
                     _c(
                       "button",
                       {
+                        staticClass: "addMoreRule",
                         on: {
                           click: function($event) {
                             _vm.createNewUserInput()
                           }
                         }
                       },
-                      [_vm._v("+ Add Fields")]
+                      [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("add")
+                        ]),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("Add Fields")])
+                      ]
                     )
                   ]
             ],
@@ -35589,6 +35701,21 @@ var render = function() {
                       attrs: { type: "text" },
                       domProps: { value: _vm.section.title },
                       on: {
+                        keyup: function($event) {
+                          if (
+                            !("button" in $event) &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          return _vm.updateSection($event)
+                        },
                         blur: _vm.updateSection,
                         input: function($event) {
                           if ($event.target.composing) {
@@ -35625,7 +35752,7 @@ var render = function() {
         "draggable",
         {
           staticClass: "contentList",
-          attrs: { handle: ".handle", "ghost-class": "ghost" },
+          attrs: { handle: ".handle", "lock-axis": "y" },
           on: { end: _vm.updateSectionContentOrder },
           model: {
             value: _vm.contents,
@@ -35684,6 +35811,19 @@ var render = function() {
                         _c("div", { staticClass: "componentDeleting" }, [
                           _c("div", { staticClass: "deletingContainer" })
                         ])
+                      ]
+                    : _vm._e(),
+                  _vm._v(" "),
+                  content.errorMesg !== ""
+                    ? [
+                        _c("error-component", {
+                          attrs: { mesg: content.errorMesg },
+                          on: {
+                            closeError: function($event) {
+                              content.errorMesg = ""
+                            }
+                          }
+                        })
                       ]
                     : _vm._e()
                 ],
@@ -60430,18 +60570,20 @@ let RegisterComponent = class RegisterComponent extends __WEBPACK_IMPORTED_MODUL
         return __awaiter(this, void 0, void 0, function* () {
             this.loading = true;
             let data = new FormData();
-            data.append('name', this.registerData.name);
-            data.append('email', this.registerData.email);
-            data.append('password', this.registerData.password);
+            data.append("name", this.registerData.name);
+            data.append("email", this.registerData.email);
+            data.append("password", this.registerData.password);
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: "/api/user/register",
                 data: data,
                 method: "POST"
-            }).then(res => {
-                this.$router.push({ name: 'verify' });
-            }).catch(err => {
+            })
+                .then(res => {
+                this.$router.push({ name: "verify" });
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to register!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to register!");
                     alert(mesg);
                 }
             });
@@ -60463,117 +60605,159 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            _vm.registerNow()
+  return _c("div", { staticClass: "nonMemberComponent" }, [
+    _c("div", { staticClass: "nonMemberFormRoot" }, [
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              _vm.registerNow()
+            }
           }
-        }
-      },
-      [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "name" } }, [_vm._v("Full name")]),
+        },
+        [
+          _vm._m(0),
           _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.registerData.name,
-                expression: "registerData.name"
-              }
-            ],
-            attrs: {
-              type: "text",
-              id: "name",
-              required: "",
-              disabled: _vm.loading
-            },
-            domProps: { value: _vm.registerData.name },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "name" } }, [_vm._v("Full name")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerData.name,
+                  expression: "registerData.name"
                 }
-                _vm.$set(_vm.registerData, "name", $event.target.value)
+              ],
+              attrs: {
+                type: "text",
+                id: "name",
+                required: "",
+                disabled: _vm.loading
+              },
+              domProps: { value: _vm.registerData.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.registerData, "name", $event.target.value)
+                }
               }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+            })
+          ]),
           _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.registerData.email,
-                expression: "registerData.email"
-              }
-            ],
-            attrs: {
-              type: "email",
-              id: "email",
-              required: "",
-              disabled: _vm.loading
-            },
-            domProps: { value: _vm.registerData.email },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerData.email,
+                  expression: "registerData.email"
                 }
-                _vm.$set(_vm.registerData, "email", $event.target.value)
+              ],
+              attrs: {
+                type: "email",
+                id: "email",
+                required: "",
+                disabled: _vm.loading
+              },
+              domProps: { value: _vm.registerData.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.registerData, "email", $event.target.value)
+                }
               }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "password" } }, [_vm._v("Password")]),
+            })
+          ]),
           _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.registerData.password,
-                expression: "registerData.password"
-              }
-            ],
-            attrs: {
-              type: "password",
-              id: "password",
-              required: "",
-              disabled: _vm.loading
-            },
-            domProps: { value: _vm.registerData.password },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "password" } }, [_vm._v("Password")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerData.password,
+                  expression: "registerData.password"
                 }
-                _vm.$set(_vm.registerData, "password", $event.target.value)
+              ],
+              attrs: {
+                type: "password",
+                id: "password",
+                required: "",
+                disabled: _vm.loading
+              },
+              domProps: { value: _vm.registerData.password },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.registerData, "password", $event.target.value)
+                }
               }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _vm.loading
-          ? [_vm._v("\n            Loading...\n        ")]
-          : [_c("button", [_vm._v("Register")])]
-      ],
-      2
-    )
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "p",
+              { staticClass: "nonMemberFormNote" },
+              [
+                _vm._v("Already a member? Login\n                    "),
+                _c("router-link", { attrs: { to: { name: "login" } } }, [
+                  _vm._v("here")
+                ])
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form-group text-center" },
+            [
+              _vm.loading
+                ? [_vm._v("Loading...")]
+                : [
+                    _c(
+                      "button",
+                      { staticClass: "defaultBtn", attrs: { type: "submit" } },
+                      [_vm._v("Register")]
+                    )
+                  ]
+            ],
+            2
+          )
+        ]
+      )
+    ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("figure", [
+      _c("img", {
+        staticClass: "navIcon",
+        attrs: { src: "/images/icons/logo.png" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -60671,17 +60855,19 @@ let VerifyEmailComponent = class VerifyEmailComponent extends __WEBPACK_IMPORTED
         return __awaiter(this, void 0, void 0, function* () {
             this.loading = true;
             let data = new FormData();
-            data.append('email', this.verifyData.email);
-            data.append('code', this.verifyData.code);
+            data.append("email", this.verifyData.email);
+            data.append("code", this.verifyData.code);
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: "/api/user/verify",
                 data: data,
                 method: "POST"
-            }).then(res => {
-                this.$router.push({ name: 'login' });
-            }).catch(err => {
+            })
+                .then(res => {
+                this.$router.push({ name: "login" });
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to verify!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to verify!");
                     alert(mesg);
                 }
             });
@@ -60703,89 +60889,131 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            _vm.registerNow()
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.verifyData.email,
-                expression: "verifyData.email"
-              }
-            ],
-            attrs: {
-              type: "email",
-              id: "email",
-              required: "",
-              disabled: _vm.loading
-            },
-            domProps: { value: _vm.verifyData.email },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.verifyData, "email", $event.target.value)
-              }
+  return _c("div", { staticClass: "nonMemberComponent" }, [
+    _c("div", { staticClass: "nonMemberFormRoot" }, [
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              _vm.registerNow()
             }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "code" } }, [
-            _vm._v("Verification Code")
+          }
+        },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.verifyData.email,
+                  expression: "verifyData.email"
+                }
+              ],
+              attrs: {
+                type: "email",
+                id: "email",
+                required: "",
+                disabled: _vm.loading
+              },
+              domProps: { value: _vm.verifyData.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.verifyData, "email", $event.target.value)
+                }
+              }
+            })
           ]),
           _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.verifyData.code,
-                expression: "verifyData.code"
-              }
-            ],
-            attrs: {
-              type: "text",
-              id: "code",
-              required: "",
-              disabled: _vm.loading
-            },
-            domProps: { value: _vm.verifyData.code },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "code" } }, [
+              _vm._v("Verification Code")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.verifyData.code,
+                  expression: "verifyData.code"
                 }
-                _vm.$set(_vm.verifyData, "code", $event.target.value)
+              ],
+              attrs: {
+                type: "text",
+                id: "code",
+                required: "",
+                disabled: _vm.loading
+              },
+              domProps: { value: _vm.verifyData.code },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.verifyData, "code", $event.target.value)
+                }
               }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _vm.loading
-          ? [_vm._v("\n            Loading...\n        ")]
-          : [_c("button", [_vm._v("Register")])]
-      ],
-      2
-    )
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "p",
+              { staticClass: "nonMemberFormNote" },
+              [
+                _vm._v("Not a member? Register\n                    "),
+                _c("router-link", { attrs: { to: { name: "register" } } }, [
+                  _vm._v("here")
+                ])
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form-group text-center" },
+            [
+              _vm.loading
+                ? [_vm._v("Loading...")]
+                : [
+                    _c(
+                      "button",
+                      { staticClass: "defaultBtn", attrs: { type: "submit" } },
+                      [_vm._v("Verify")]
+                    )
+                  ]
+            ],
+            2
+          )
+        ]
+      )
+    ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("figure", [
+      _c("img", {
+        staticClass: "navIcon",
+        attrs: { src: "/images/icons/logo.png" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -61875,6 +62103,135 @@ var index_esm = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(255)
+/* template */
+var __vue_template__ = __webpack_require__(256)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/ErrorComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-234bcf34", Component.options)
+  } else {
+    hotAPI.reload("data-v-234bcf34", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 255 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+let ErrorComponent = class ErrorComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    closeError() { }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: String
+    })
+], ErrorComponent.prototype, "mesg", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("closeError")
+], ErrorComponent.prototype, "closeError", null);
+ErrorComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], ErrorComponent);
+/* harmony default export */ __webpack_exports__["default"] = (ErrorComponent);
+
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("popup-component", [
+    _c("div", {
+      staticClass: "ecMesg",
+      domProps: { innerHTML: _vm._s(_vm.mesg) }
+    }),
+    _vm._v(" "),
+    _c("div", { staticClass: "ecBtnCon" }, [
+      _c(
+        "button",
+        {
+          staticClass: "ecBtn",
+          attrs: { type: "button" },
+          on: {
+            click: function($event) {
+              _vm.closeError()
+            }
+          }
+        },
+        [_vm._v("Close")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-234bcf34", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

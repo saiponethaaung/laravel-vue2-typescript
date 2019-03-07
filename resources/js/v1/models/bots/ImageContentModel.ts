@@ -1,23 +1,23 @@
-import ChatBlockContentModel from "../ChatBlockContentModel";
-import { imageContent } from "../../configuration/interface";
 import Axios, { CancelTokenSource } from "axios";
+import { imageContent } from "../../configuration/interface";
+import ChatBlockContentModel from "../ChatBlockContentModel";
 
 export default class ImageContentModel extends ChatBlockContentModel {
-    
+
     private rootUrl: string;
     private imageContent: imageContent = {
         image: ''
     };
     private uploading: boolean = false;
     private imageToken: CancelTokenSource = Axios.CancelToken.source();
-    
+
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
         this.imageContent.image = content.content.image;
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}/image`;
     }
 
-    get image() : string {
+    get image(): string {
         return this.imageContent.image;
     }
 
@@ -25,7 +25,7 @@ export default class ImageContentModel extends ChatBlockContentModel {
         this.imageContent.image = image;
     }
 
-    get isUploading() : boolean {
+    get isUploading(): boolean {
         return this.uploading;
     }
 
@@ -49,9 +49,8 @@ export default class ImageContentModel extends ChatBlockContentModel {
         }).then((res: any) => {
             this.image = res.data.image;
         }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to update list!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to update list!');
             }
         });
 
@@ -65,9 +64,8 @@ export default class ImageContentModel extends ChatBlockContentModel {
         }).then((res) => {
             this.image = '';
         }).catch((err) => {
-            if(err.response) {
-                let mesg = this.globalHandler(err, 'Failed to delete an image!');
-                alert(mesg);
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to delete an image!');
             }
         });
     }

@@ -319,7 +319,7 @@ class UpdateController extends Controller
             $file->resize(800, null, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upSize();
-            })->encode('jpg')->save(public_path('storage/images/list/'.$name.'.'.$ext));
+            })->encode('jpg')->save(public_path('storage/images/list/'.$name.'.jpg'));
 
             if($ext!=="jpg"){
                 Storage::disk('public')->delete($upload);
@@ -391,7 +391,7 @@ class UpdateController extends Controller
             $file->resize(800, null, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upSize();
-            })->encode('jpg')->save(public_path('storage/images/gallery/'.$name.'.'.$ext));
+            })->encode('jpg')->save(public_path('storage/images/gallery/'.$name.'.jpg'));
 
             if($ext!=="jpg"){
                 Storage::disk('public')->delete($upload);
@@ -744,7 +744,7 @@ class UpdateController extends Controller
             $file->resize(800, null, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upSize();
-            })->encode('jpg')->save(public_path('storage/images/photos/'.$name.'.'.$ext));
+            })->encode('jpg')->save(public_path('storage/images/photos/'.$name.'.jpg'));
 
             if($ext!=="jpg"){
                 Storage::disk('public')->delete($upload);

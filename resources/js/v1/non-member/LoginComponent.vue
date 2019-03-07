@@ -13,6 +13,7 @@
                         required
                         v-model="loginData.email"
                         :disabled="loading"
+                        placeholder="Email"
                     >
                 </div>
                 <div class="form-group">
@@ -23,6 +24,7 @@
                         required
                         v-model="loginData.password"
                         :disabled="loading"
+                        placeholder="Password"
                     >
                 </div>
                 <div class="form-group">

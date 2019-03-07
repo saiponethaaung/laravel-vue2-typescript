@@ -13,6 +13,7 @@
                         required
                         v-model="verifyData.email"
                         :disabled="loading"
+                        placeholder="Email"
                     >
                 </div>
                 <div class="form-group">
@@ -23,6 +24,7 @@
                         required
                         v-model="verifyData.code"
                         :disabled="loading"
+                        placeholder="Verification code"
                     >
                 </div>
                 <div class="form-group">

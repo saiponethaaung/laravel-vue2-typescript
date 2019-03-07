@@ -29894,6 +29894,7 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         if (!this.$store.state.fbSdk)
             return;
         FB.Event.subscribe('send_to_messenger', (e) => {
+            console.log('send to messenger events', e);
             switch (e.event) {
                 case ('rendered'):
                     this.hideTest = false;
@@ -31095,7 +31096,8 @@ var render = function() {
                 type: "email",
                 id: "email",
                 required: "",
-                disabled: _vm.loading
+                disabled: _vm.loading,
+                placeholder: "Email"
               },
               domProps: { value: _vm.loginData.email },
               on: {
@@ -31125,7 +31127,8 @@ var render = function() {
                 type: "password",
                 id: "password",
                 required: "",
-                disabled: _vm.loading
+                disabled: _vm.loading,
+                placeholder: "Password"
               },
               domProps: { value: _vm.loginData.password },
               on: {
@@ -47639,7 +47642,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.keywords = '';
+        this.keywords = "";
         this.nodeOffset = 0;
         this.textbox = this.$refs.keywordsCon;
         this.showPlaceholder = true;
@@ -47648,9 +47651,9 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
         this.textbox = this.$refs.keywordsCon;
         if (this.rule.filters.length > 0) {
             for (let filter of this.rule.filters) {
-                let span = document.createElement('SPAN');
+                let span = document.createElement("SPAN");
                 span.innerHTML = filter.keyword;
-                span.className = 'aiKeywordBlock';
+                span.className = "aiKeywordBlock";
                 this.textbox.appendChild(span);
                 this.nodeOffset = 0;
             }
@@ -47676,7 +47679,7 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                 }
                 for (let i = 0; i < this.textbox.childNodes.length; i++) {
                     let parsedText = this.textbox.childNodes[i].innerText.trim();
-                    if (parsedText !== '') {
+                    if (parsedText !== "") {
                         if (update) {
                             this.rule.filters.push({ keyword: parsedText });
                         }
@@ -47698,9 +47701,9 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
             // Create empty keyword container if section is empty
             let range = document.createRange();
             let sel = window.getSelection();
-            let span = document.createElement('SPAN');
-            span.innerHTML = '&nbsp;';
-            span.className = 'aiKeywordBlock emptyBlock';
+            let span = document.createElement("SPAN");
+            span.innerHTML = "&nbsp;";
+            span.className = "aiKeywordBlock emptyBlock";
             this.textbox.appendChild(span);
             // refocus cursor position
             range.setStart(this.textbox.childNodes[this.nodeOffset].childNodes[0], 0);
@@ -47727,41 +47730,63 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
             let textbox = this.$refs.keywordsCon;
             let range = document.createRange();
             let sel = window.getSelection();
+            let anchor = window.getSelection().anchorOffset;
             let offset = window.getSelection().focusOffset;
+            let isOne = false;
+            if (anchor > offset) {
+                let offsetPlaceholder = offset;
+                offset = anchor;
+                anchor = offsetPlaceholder;
+            }
+            if (offset === anchor || anchor + 1 === offset) {
+                isOne = true;
+            }
             this.nodeOffset = 0;
             // check it have more than 1 keyword box
             if (textbox.childNodes.length > 1) {
-                this.getPrevSibling(null === sel.focusNode.previousSibling ? sel.focusNode.parentNode : sel.focusNode.previousSibling);
+                this.getPrevSibling(null === sel.focusNode.previousSibling
+                    ? sel.focusNode.parentNode
+                    : sel.focusNode.previousSibling);
             }
+            console.log("isone", isOne);
+            console.log("anchor", anchor);
+            console.log("offset", offset);
+            console.log("selection", sel);
             // get inner content of current node
             let content = textbox.childNodes[this.nodeOffset].innerText;
             if (content.length === 1) {
                 content = content.trim();
             }
             switch (e.keyCode) {
-                // handle enter key 
+                // handle enter key
                 case 13:
                     // if content is not empty create keyword box next to current node
-                    if (content !== '&nbsp;' && content !== '' && content !== ' ') {
+                    if (content !== "&nbsp;" &&
+                        content !== "" &&
+                        content !== " ") {
                         let allowAppend = true;
-                        let span = document.createElement('SPAN');
+                        let span = document.createElement("SPAN");
                         // if caret position is at the beginning or at the end create empty keyword box next to current node
                         if (offset == 0 || content.length == offset) {
                             // check if empty keyword box already exists next to current node
-                            if (undefined == textbox.childNodes[this.nodeOffset + 1] || (undefined !== textbox.childNodes[this.nodeOffset + 1] && textbox.childNodes[this.nodeOffset + 1].innerText.trim() !== '')) {
-                                span.innerHTML = '&nbsp;';
-                                span.className = 'aiKeywordBlock emptyBlock';
+                            if (undefined ==
+                                textbox.childNodes[this.nodeOffset + 1] ||
+                                (undefined !==
+                                    textbox.childNodes[this.nodeOffset + 1] &&
+                                    textbox.childNodes[this.nodeOffset + 1].innerText.trim() !== "")) {
+                                span.innerHTML = "&nbsp;";
+                                span.className = "aiKeywordBlock emptyBlock";
                             }
                             else {
                                 allowAppend = false;
                             }
                         }
                         else {
-                            // if caret position is not at the end or beginning split the content into new keyword by caret position 
+                            // if caret position is not at the end or beginning split the content into new keyword by caret position
                             span.innerHTML = content.slice(offset);
                             content = content.slice(0, offset);
                             textbox.childNodes[this.nodeOffset].innerText = content;
-                            span.className = 'aiKeywordBlock';
+                            span.className = "aiKeywordBlock";
                         }
                         if (allowAppend) {
                             // if current node is last node append the new node
@@ -47795,12 +47820,15 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                         // if caret position is at the beginning and another node exist before current node
                         // change current node to the one before current one and set caret positon to the end of node
                         this.nodeOffset--;
-                        offset = textbox.childNodes[this.nodeOffset].innerText.length - 1;
+                        offset =
+                            textbox.childNodes[this.nodeOffset].innerText
+                                .length - 1;
                     }
                     break;
                 case 39:
                     // right arrow key event
-                    if (textbox.childNodes.length > this.nodeOffset && content.length == offset) {
+                    if (textbox.childNodes.length > this.nodeOffset &&
+                        content.length == offset) {
                         // if caret positon is at the next and another node exist after current node
                         // change current node to next one and caret positon at the beginning of the node
                         this.nodeOffset++;
@@ -47812,11 +47840,23 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                     if (content.length > 1) {
                         // if caret position is not at first character remove character before caret
                         if (offset > 0) {
-                            content = [content.slice(0, offset - 1), content.slice(offset)].join('');
+                            if (isOne) {
+                                content = [
+                                    content.slice(0, offset - 1),
+                                    content.slice(offset)
+                                ].join("");
+                            }
+                            else {
+                                content = [
+                                    content.slice(0, anchor),
+                                    content.slice(offset, content.length)
+                                ].join("");
+                                offset = anchor + 1;
+                            }
                         }
                     }
                     else {
-                        content = '';
+                        content = "";
                     }
                     // if node is empty or caret is at the beginning of the node merge current node with the one before or delete current node
                     if (content === "" || offset === 0) {
@@ -47825,29 +47865,36 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                         // Check child node count
                         if (textbox.childNodes.length === 0) {
                             // if there is no node create empty keyword node
-                            let span = document.createElement('SPAN');
-                            span.innerHTML = '&nbsp;';
-                            span.className = 'aiKeywordBlock emptyBlock';
+                            let span = document.createElement("SPAN");
+                            span.innerHTML = "&nbsp;";
+                            span.className = "aiKeywordBlock emptyBlock";
                             textbox.appendChild(span);
                             this.nodeOffset = 0;
                             offset = -1;
                         }
                         else {
                             // if there is node before current one
-                            if ((textbox.childNodes.length - 1) < this.nodeOffset) {
+                            if (textbox.childNodes.length - 1 <
+                                this.nodeOffset) {
                                 // change curret node to the one before
                                 this.nodeOffset = textbox.childNodes.length - 1;
                             }
                             // if caret position is at the beginning
                             if (offset === 0) {
                                 // change caret position to the end of the node
-                                offset = textbox.childNodes[this.nodeOffset].innerText.length - 1;
+                                offset =
+                                    textbox.childNodes[this.nodeOffset]
+                                        .innerText.length - 1;
                                 // merge previous current node content with current node content
-                                textbox.childNodes[this.nodeOffset].innerText = textbox.childNodes[this.nodeOffset].innerText + content;
+                                textbox.childNodes[this.nodeOffset].innerText =
+                                    textbox.childNodes[this.nodeOffset]
+                                        .innerText + content;
                             }
                             else {
                                 // update caret position
-                                offset = textbox.childNodes[this.nodeOffset].innerText.length - 1;
+                                offset =
+                                    textbox.childNodes[this.nodeOffset]
+                                        .innerText.length - 1;
                             }
                         }
                     }
@@ -47862,41 +47909,63 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                     if (content.length > 1) {
                         // if caret positon is no at the end
                         if (offset < content.length) {
-                            content = [content.slice(0, offset), content.slice(offset + 1)].join('');
+                            if (isOne) {
+                                content = [
+                                    content.slice(0, offset),
+                                    content.slice(offset + 1)
+                                ].join("");
+                            }
+                            else {
+                                content = [
+                                    content.slice(0, anchor),
+                                    content.slice(offset, content.length)
+                                ].join("");
+                                offset = anchor + 1;
+                            }
                         }
                     }
                     else {
-                        content = '';
+                        content = "";
                     }
                     // if content is empty or caret position is at the end
-                    if (content === '' || offset === content.length) {
+                    if (content === "" || offset === content.length) {
                         // if caret position is not the end remove current node
-                        if (offset !== textbox.childNodes[this.nodeOffset].innerText.length) {
+                        if (offset !==
+                            textbox.childNodes[this.nodeOffset].innerText.length) {
                             textbox.removeChild(textbox.childNodes[this.nodeOffset]);
                         }
                         // if there is no node create empty keyword node
                         if (textbox.childNodes.length === 0) {
-                            let span = document.createElement('SPAN');
-                            span.innerHTML = '&nbsp;';
-                            span.className = 'aiKeywordBlock emptyBlock';
+                            let span = document.createElement("SPAN");
+                            span.innerHTML = "&nbsp;";
+                            span.className = "aiKeywordBlock emptyBlock";
                             textbox.appendChild(span);
                             this.nodeOffset = 0;
                             offset = -1;
                         }
                         else {
                             // if current node is greater than total node
-                            if ((textbox.childNodes.length - 1) < this.nodeOffset) {
+                            if (textbox.childNodes.length - 1 <
+                                this.nodeOffset) {
                                 // change current node position to last node of total node
                                 this.nodeOffset = textbox.childNodes.length - 1;
                                 // set caret position at the end of the node
-                                offset = textbox.childNodes[this.nodeOffset].innerText.length - 1;
+                                offset =
+                                    textbox.childNodes[this.nodeOffset]
+                                        .innerText.length - 1;
                             }
                             // if caret position is at the end and current node is not the last
-                            if (offset === content.length && this.nodeOffset < (textbox.childNodes.length - 1)) {
+                            if (offset === content.length &&
+                                this.nodeOffset < textbox.childNodes.length - 1) {
                                 // set caret position to at the end of the node
-                                offset = textbox.childNodes[this.nodeOffset].innerText.length - 1;
+                                offset =
+                                    textbox.childNodes[this.nodeOffset]
+                                        .innerText.length - 1;
                                 // merge node next to current node content into current
-                                textbox.childNodes[this.nodeOffset].innerText = content + textbox.childNodes[this.nodeOffset + 1].innerText;
+                                textbox.childNodes[this.nodeOffset].innerText =
+                                    content +
+                                        textbox.childNodes[this.nodeOffset + 1]
+                                            .innerText;
                                 // remove node next to the current node
                                 textbox.removeChild(textbox.childNodes[this.nodeOffset + 1]);
                             }
@@ -47910,15 +47979,22 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                     break;
                 default:
                     // remove empty keyword class
-                    textbox.childNodes[this.nodeOffset].className = 'aiKeywordBlock';
-                    let appendContent = e.key == ' ' ? '&nbsp;' : e.key;
+                    textbox.childNodes[this.nodeOffset].className =
+                        "aiKeywordBlock";
+                    let appendContent = e.key == " " ? "&nbsp;" : e.key;
                     // if node is empty replace '&nbsp;' value with inserted value
-                    if (content == '&nbsp;' || content == '' || content == ' ') {
+                    if (content == "&nbsp;" ||
+                        content == "" ||
+                        content == " ") {
                         content = appendContent;
                     }
                     else {
                         // update content at caret position with user inserted value
-                        content = [content.slice(0, offset), appendContent, content.slice(offset)].join('');
+                        content = [
+                            content.slice(0, offset),
+                            appendContent,
+                            content.slice(offset)
+                        ].join("");
                     }
                     // update node content
                     textbox.childNodes[this.nodeOffset].innerHTML = content;
@@ -48406,9 +48482,12 @@ var render = function() {
         [
           _vm._v("bot replies\n            "),
           _vm.rule.response.length > 1
-            ? [_vm._v("\n                 "), _c("b", [_vm._v("randomly")])]
+            ? [
+                _vm._v("\n                 \n                "),
+                _c("b", [_vm._v("randomly")])
+              ]
             : _vm._e(),
-          _vm._v("\n         with")
+          _vm._v(" with\n        ")
         ],
         2
       ),
@@ -48463,9 +48542,7 @@ var render = function() {
           _vm._v(" "),
           _vm.rule.responseCreating > 0
             ? _c("li", [
-                _c("div", { staticClass: "addMoreCon" }, [
-                  _vm._v("\n                    Loading...\n                ")
-                ])
+                _c("div", { staticClass: "addMoreCon" }, [_vm._v("Loading...")])
               ])
             : _vm._e(),
           _vm._v(" "),
@@ -48474,7 +48551,9 @@ var render = function() {
               _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
               _vm._v(" "),
               _c("span", [
-                _vm._v("add "),
+                _vm._v(
+                  "\n                        add\n                        "
+                ),
                 _c(
                   "button",
                   {
@@ -48487,7 +48566,7 @@ var render = function() {
                   },
                   [_vm._v("Block")]
                 ),
-                _vm._v(" or "),
+                _vm._v(" or\n                        "),
                 _c(
                   "button",
                   {
@@ -48500,7 +48579,7 @@ var render = function() {
                   },
                   [_vm._v("Text")]
                 ),
-                _vm._v(" reply")
+                _vm._v(" reply\n                    ")
               ])
             ])
           ])
@@ -60757,7 +60836,8 @@ var render = function() {
                 type: "text",
                 id: "name",
                 required: "",
-                disabled: _vm.loading
+                disabled: _vm.loading,
+                placeholder: "Full name"
               },
               domProps: { value: _vm.registerData.name },
               on: {
@@ -60787,7 +60867,8 @@ var render = function() {
                 type: "email",
                 id: "email",
                 required: "",
-                disabled: _vm.loading
+                disabled: _vm.loading,
+                placeholder: "Email"
               },
               domProps: { value: _vm.registerData.email },
               on: {
@@ -60817,7 +60898,8 @@ var render = function() {
                 type: "password",
                 id: "password",
                 required: "",
-                disabled: _vm.loading
+                disabled: _vm.loading,
+                placeholder: "Password"
               },
               domProps: { value: _vm.registerData.password },
               on: {
@@ -61041,7 +61123,8 @@ var render = function() {
                 type: "email",
                 id: "email",
                 required: "",
-                disabled: _vm.loading
+                disabled: _vm.loading,
+                placeholder: "Email"
               },
               domProps: { value: _vm.verifyData.email },
               on: {
@@ -61073,7 +61156,8 @@ var render = function() {
                 type: "text",
                 id: "code",
                 required: "",
-                disabled: _vm.loading
+                disabled: _vm.loading,
+                placeholder: "Verification code"
               },
               domProps: { value: _vm.verifyData.code },
               on: {

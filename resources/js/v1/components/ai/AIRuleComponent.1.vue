@@ -167,17 +167,17 @@ export default class AIRuleComponent extends Vue {
             let textbox: any = this.$refs.keywordsCon;
             let range = document.createRange();
             let sel = window.getSelection();
-            let anchor = window.getSelection().anchorOffset;
+            // let anchor = window.getSelection().anchorOffset;
             let offset = window.getSelection().focusOffset;
-            let isOne = false;
-            if (anchor > offset) {
-                let offsetPlaceholder = offset;
-                offset = anchor;
-                anchor = offsetPlaceholder;
-            }
-            if (offset === anchor || anchor + 1 === offset) {
-                isOne = true;
-            }
+            // let isOne = false;
+            // if (anchor > offset) {
+            //     let offsetPlaceholder = offset;
+            //     offset = anchor;
+            //     anchor = offsetPlaceholder;
+            // }
+            // if (offset === anchor || anchor + 1 === offset) {
+            //     isOne = true;
+            // }
             this.nodeOffset = 0;
             // check it have more than 1 keyword box
             if (textbox.childNodes.length > 1) {
@@ -188,10 +188,10 @@ export default class AIRuleComponent extends Vue {
                 );
             }
 
-            console.log("isone", isOne);
-            console.log("anchor", anchor);
-            console.log("offset", offset);
-            console.log("selection", sel);
+            // console.log("isone", isOne);
+            // console.log("anchor", anchor);
+            // console.log("offset", offset);
+            // console.log("selection", sel);
 
             // get inner content of current node
             let content = textbox.childNodes[this.nodeOffset].innerText;
@@ -298,18 +298,18 @@ export default class AIRuleComponent extends Vue {
                     if (content.length > 1) {
                         // if caret position is not at first character remove character before caret
                         if (offset > 0) {
-                            if (isOne) {
+                            // if (isOne) {
                                 content = [
                                     content.slice(0, offset - 1),
                                     content.slice(offset)
                                 ].join("");
-                            } else {
-                                content = [
-                                    content.slice(0, anchor),
-                                    content.slice(offset, content.length)
-                                ].join("");
-                                offset = anchor + 1;
-                            }
+                            // } else {
+                            //     content = [
+                            //         content.slice(0, anchor),
+                            //         content.slice(offset, content.length)
+                            //     ].join("");
+                            //     offset = anchor + 1;
+                            // }
                         }
                     } else {
                         content = "";
@@ -368,18 +368,18 @@ export default class AIRuleComponent extends Vue {
                     if (content.length > 1) {
                         // if caret positon is no at the end
                         if (offset < content.length) {
-                            if (isOne) {
+                            // if (isOne) {
                                 content = [
                                     content.slice(0, offset),
                                     content.slice(offset + 1)
                                 ].join("");
-                            } else {
-                                content = [
-                                    content.slice(0, anchor),
-                                    content.slice(offset, content.length)
-                                ].join("");
-                                offset = anchor + 1;
-                            }
+                            // } else {
+                            //     content = [
+                            //         content.slice(0, anchor),
+                            //         content.slice(offset, content.length)
+                            //     ].join("");
+                            //     offset = anchor + 1;
+                            // }
                         }
                     } else {
                         content = "";

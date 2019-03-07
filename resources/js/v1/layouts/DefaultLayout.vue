@@ -277,6 +277,7 @@ export default class DefaultLayout extends Vue {
     sendToMessengerEvent() {
         if(!this.$store.state.fbSdk) return;
         FB.Event.subscribe('send_to_messenger', (e: any) => {
+            console.log('send to messenger events', e);
             switch(e.event) {
                 case('rendered'):
                     this.hideTest = false;

@@ -13,6 +13,7 @@
                         required
                         v-model="registerData.name"
                         :disabled="loading"
+                        placeholder="Full name"
                     >
                 </div>
                 <div class="form-group">
@@ -23,6 +24,7 @@
                         required
                         v-model="registerData.email"
                         :disabled="loading"
+                        placeholder="Email"
                     >
                 </div>
                 <div class="form-group">
@@ -33,6 +35,7 @@
                         required
                         v-model="registerData.password"
                         :disabled="loading"
+                        placeholder="Password"
                     >
                 </div>
                 <div class="form-group">

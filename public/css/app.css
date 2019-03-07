@@ -15698,10 +15698,12 @@ a:hover {
 }
 
 .nonMemberFormRoot .form-group input {
-  height: 30px;
-  line-height: 30px;
+  height: 36px;
+  line-height: 36px;
   width: 100%;
   border-radius: 5px;
+  padding: 0 10px;
+  font-size: 12px;
   border: 1px solid #e2e2e2;
 }
 

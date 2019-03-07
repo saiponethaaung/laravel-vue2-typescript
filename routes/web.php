@@ -21,8 +21,8 @@ Route::get('/testplugin', function () {
     -a
 <div class="fb-send-to-messenger" 
     messenger_app_id="1155102521322007" 
-    page_id="1903587579753116" 
-    data-ref="testing" 
+    page_id="386294088519239" 
+    data-ref="8f14e45fceea167a5a36dedd4bea2543-386294088519239-343922309521024" 
     color="blue" 
     size="xlarge">
     Test this bot

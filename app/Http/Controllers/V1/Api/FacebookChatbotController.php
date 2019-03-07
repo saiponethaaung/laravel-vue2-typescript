@@ -341,6 +341,49 @@ class FacebookChatbotController extends Controller
 
                         $type = $mesg['type'];
 
+                        if(isset($messages['data'][$index+1]) && $messages['data'][$index+1]['type']===3 && in_array($type, [1,5,6,7])) {
+                            $data = $messages['data'][$index+1]['data'];
+                            unset($data['text']);
+                            
+                            switch($type) {
+                                case(1):
+                                    if(isset($mesg['data']['text'])) {
+                                        $data['text'] = $mesg['data']['text'];
+                                    } else {
+                                        $data['attachment'] = $mesg['data']['attachment'];
+                                    }
+                                    break;
+                                    
+                                case(5):
+                                case(6):
+                                    $data['attachment'] = $mesg['data']['attachment'];
+                                    break;
+
+                                case(7):
+                                    $attach = $this->getImage($mesg['data']['image']);
+                                    if($attach['status']) {
+                                        $data['attachment'] = [
+                                            'type' => 'template',
+                                            'payload' => [
+                                                'template_type' => 'media',
+                                                'elements' => [
+                                                    [
+                                                        'media_type' => 'image',
+                                                        'attachment_id' => $attach['atid'],
+                                                    ]
+                                                ]
+                                            ]
+                                        ];
+                                    } else {
+                                        continue;
+                                    }
+                                    break;
+                            }
+                            $type = 3;
+                            $nextSkip = true;
+                            $mesg['data'] = $data;
+                        }
+
                         switch($type) {
                             case(1):
                             case(5):

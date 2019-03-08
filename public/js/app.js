@@ -47873,6 +47873,7 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                     }
                     break;
                 case 8:
+                    let appendText = "";
                     // backspace event
                     if (content.length > 1) {
                         // if caret position is not at first character remove character before caret
@@ -47886,13 +47887,14 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                             else {
                                 content = [
                                     content.slice(0, anchor),
-                                    content.slice(offset, content.length)
+                                    content.slice(offset)
                                 ].join("");
                                 offset = anchor + 1;
                             }
                         }
                     }
                     else {
+                        appendText = content;
                         content = "";
                     }
                     // if node is empty or caret is at the beginning of the node merge current node with the one before or delete current node
@@ -47918,6 +47920,7 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                             }
                             // if caret position is at the beginning
                             if (offset === 0) {
+                                textbox.childNodes[this.nodeOffset].innerText += appendText;
                                 // change caret position to the end of the node
                                 offset =
                                     textbox.childNodes[this.nodeOffset]
@@ -47926,6 +47929,9 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                                 textbox.childNodes[this.nodeOffset].innerText =
                                     textbox.childNodes[this.nodeOffset]
                                         .innerText + content;
+                                if (appendText !== "") {
+                                    offset -= 1;
+                                }
                             }
                             else {
                                 // update caret position
@@ -47944,6 +47950,7 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                 case 46:
                     // delete event
                     if (content.length > 1) {
+                        console.log("starting...");
                         // if caret positon is no at the end
                         if (offset < content.length) {
                             if (isOne) {
@@ -47951,21 +47958,25 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                                     content.slice(0, offset),
                                     content.slice(offset + 1)
                                 ].join("");
+                                console.log("sliced", content);
+                                console.log("not more than one");
                             }
                             else {
                                 content = [
                                     content.slice(0, anchor),
-                                    content.slice(offset, content.length)
+                                    content.slice(offset)
                                 ].join("");
-                                offset = anchor + 1;
+                                offset = anchor;
                             }
                         }
                     }
                     else {
+                        console.log("empty them");
                         content = "";
                     }
                     // if content is empty or caret position is at the end
-                    if (content === "" || offset === content.length) {
+                    if (content === "") {
+                        // if (content === "" || offset === content.length) {
                         // if caret position is not the end remove current node
                         if (offset !==
                             textbox.childNodes[this.nodeOffset].innerText.length) {
@@ -51484,7 +51495,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.mesg = '';
+        this.mesg = "";
         this.page = 1;
         this.mesgList = [];
         this.firstLoad = true;
@@ -51492,10 +51503,10 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
         this.prevLoading = false;
         this.lastScroll = 0;
         this.showTags = false;
-        this.noteList = new __WEBPACK_IMPORTED_MODULE_2__models_inbox_AdminNoteListModel__["a" /* default */]('', 0);
+        this.noteList = new __WEBPACK_IMPORTED_MODULE_2__models_inbox_AdminNoteListModel__["a" /* default */]("", 0);
         this.saveReply = false;
         this.createReply = false;
-        this.replyList = new __WEBPACK_IMPORTED_MODULE_6__models_inbox_SavedReplyListModel__["a" /* default */]('', 0);
+        this.replyList = new __WEBPACK_IMPORTED_MODULE_6__models_inbox_SavedReplyListModel__["a" /* default */]("", 0);
     }
     reloadMesg() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -51520,8 +51531,10 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
         });
     }
     scrollCallback(a) {
-        this.el = this.$el.querySelector('.chatHisRoot');
-        if (this.el.getBoundingClientRect().top > -100 && this.lastScroll < this.el.getBoundingClientRect().top && !this.prevLoading) {
+        this.el = this.$el.querySelector(".chatHisRoot");
+        if (this.el.getBoundingClientRect().top > -100 &&
+            this.lastScroll < this.el.getBoundingClientRect().top &&
+            !this.prevLoading) {
             this.loadMesg(true);
         }
         this.lastScroll = this.el.getBoundingClientRect().top;
@@ -51535,8 +51548,9 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
             }
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/load-mesg?prev=${prevId.toString()}`,
-                method: 'get'
-            }).then((res) => {
+                method: "get"
+            })
+                .then(res => {
                 this.mesgList = [...res.data.data, ...this.mesgList];
                 this.mesgList.sort((a, b) => {
                     return a.id > b.id;
@@ -51545,8 +51559,8 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                 if (this.firstLoad) {
                     setTimeout(() => {
                         this.firstLoad = false;
-                        this.el = this.$el.querySelector('.chatHisRoot');
-                        var el = this.$el.querySelector('.chatHisCon');
+                        this.el = this.$el.querySelector(".chatHisRoot");
+                        var el = this.$el.querySelector(".chatHisCon");
                         el.scrollTop = this.el.getBoundingClientRect().height;
                     }, 1000);
                     setTimeout(() => {
@@ -51556,7 +51570,8 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                 if (prev) {
                     this.prevLoading = false;
                 }
-            }).catch((err) => {
+            })
+                .catch(err => {
                 if (prev) {
                     this.prevLoading = false;
                 }
@@ -51578,12 +51593,14 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
     }
     checkNewMesg() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.$store.state.selectedInbox === -1 || this.$route.name !== 'project.inbox')
+            if (this.$store.state.selectedInbox === -1 ||
+                this.$route.name !== "project.inbox")
                 return;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/load-new?last_id=${this.mesgList[this.mesgList.length - 1].id}`,
-                method: 'get'
-            }).then((res) => {
+                method: "get"
+            })
+                .then(res => {
                 this.mesgList = [...this.mesgList, ...res.data.data];
                 this.mesgList.sort((a, b) => {
                     return a.id > b.id;
@@ -51591,7 +51608,8 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                 setTimeout(() => {
                     this.checkNewMesg();
                 }, 5000);
-            }).catch((err) => {
+            })
+                .catch(err => {
                 setTimeout(() => {
                     this.checkNewMesg();
                 }, 5000);
@@ -51600,54 +51618,55 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
     }
     sendReply() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.mesg === '')
+            if (this.mesg === "")
                 return;
             let data = new FormData();
-            data.append('mesg', this.mesg);
+            data.append("mesg", this.mesg);
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/reply`,
                 data: data,
-                method: 'post'
-            }).then((res) => {
-                this.mesg = '';
+                method: "post"
+            })
+                .then(res => {
+                this.mesg = "";
                 this.mesgList.push(res.data.data);
                 if (this.mesgList.length === 1) {
                     setTimeout(() => {
                         this.checkNewMesg();
                     }, 5000);
                 }
-            }).catch((err) => {
-            });
+            })
+                .catch(err => { });
         });
     }
     processContent(content, type) {
-        let res = '';
-        let jc = '';
+        let res = "";
+        let jc = "";
         switch (type) {
-            case (0):
+            case 0:
                 res = `<div class="chatContentBody">${content}</div>`;
                 break;
-            case (1):
+            case 1:
                 jc = JSON.parse(content);
                 if (undefined === jc.attachement) {
                     res = `<div class="chatContentBody">${jc.text}</div>`;
                 }
                 else {
-                    res = type + '/|\\' + content;
+                    res = type + "/|\\" + content;
                 }
                 break;
-            case (4):
+            case 4:
                 jc = JSON.parse(content);
                 res = `<div class="chatContentBody">${jc.text}</div>`;
                 break;
-            case (7):
+            case 7:
                 jc = JSON.parse(content);
                 if (undefined !== jc.image) {
                     res = `<figure><img src='${jc.image}'/></figure>`;
                 }
                 break;
             default:
-                res = type + '/|\\' + content;
+                res = type + "/|\\" + content;
                 break;
         }
         return res;
@@ -51655,42 +51674,44 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
     startLiveChat() {
         return __awaiter(this, void 0, void 0, function* () {
             var data = new FormData();
-            data.append('status', 'true');
+            data.append("status", "true");
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/live-chat`,
                 data: data,
-                method: 'post'
-            }).then((res) => {
-                this.$store.commit('updateInboxChatStatus', {
+                method: "post"
+            })
+                .then(res => {
+                this.$store.commit("updateInboxChatStatus", {
                     index: this.$store.state.selectedInbox,
                     status: true
                 });
                 this.$store.state.chatFilter = 0;
-            }).catch((err) => {
-            });
+            })
+                .catch(err => { });
         });
     }
     stopLiveChat() {
         return __awaiter(this, void 0, void 0, function* () {
             var data = new FormData();
-            data.append('status', 'false');
+            data.append("status", "false");
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/live-chat`,
                 data: data,
-                method: 'post'
-            }).then((res) => {
-                this.$store.commit('updateInboxChatStatus', {
+                method: "post"
+            })
+                .then(res => {
+                this.$store.commit("updateInboxChatStatus", {
                     index: this.$store.state.selectedInbox,
                     status: false
                 });
                 this.$store.state.chatFilter = 1;
-            }).catch((err) => {
-            });
+            })
+                .catch(err => { });
         });
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.selectedInbox')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.selectedInbox")
 ], InboxPageComponent.prototype, "reloadMesg", null);
 InboxPageComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
@@ -52462,10 +52483,10 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SavedReplyModel__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__SavedReplyModel__ = __webpack_require__(196);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -52477,7 +52498,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-class SavedReplyListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+class SavedReplyListModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */] {
     constructor(projectId, userId) {
         super();
         this.projectId = projectId;
@@ -52486,7 +52507,7 @@ class SavedReplyListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
         this.messageContent = "";
         this.searchContent = "";
         this.savedReplyList = [];
-        this.cancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+        this.cancelToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.listLoading = false;
     }
     get savedReplies() {
@@ -52521,18 +52542,18 @@ class SavedReplyListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
             };
             this.listLoading = true;
             this.cancelToken.cancel();
-            this.cancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+            this.cancelToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             let keyword = "";
             keyword = this.search;
             console.log(keyword);
-            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
-                url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/reply?keyword=${keyword}`,
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+                url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/save-reply?keyword=${keyword}`,
                 method: 'get',
                 cancelToken: this.cancelToken.token
             }).then(res => {
                 this.savedReplyList = [];
                 for (let r of res.data.data) {
-                    this.savedReplyList.push(new __WEBPACK_IMPORTED_MODULE_1__SavedReplyModel__["a" /* default */](r));
+                    this.savedReplyList.push(new __WEBPACK_IMPORTED_MODULE_2__SavedReplyModel__["a" /* default */](r));
                 }
                 this.listLoading = false;
             }).catch(err => {
@@ -52554,14 +52575,14 @@ class SavedReplyListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
             let data = new FormData();
             data.append('title', this.reply);
             data.append('message', this.message);
-            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
-                url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/reply`,
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+                url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/save-reply`,
                 method: 'post',
                 data: data
             }).then(res => {
                 this.reply = '';
                 this.message = '';
-                this.savedReplyList.push(new __WEBPACK_IMPORTED_MODULE_1__SavedReplyModel__["a" /* default */](res.data.data));
+                this.savedReplyList.push(new __WEBPACK_IMPORTED_MODULE_2__SavedReplyModel__["a" /* default */](res.data.data));
             }).catch(err => {
                 if (err.response) {
                     res.status = false;
@@ -52626,7 +52647,7 @@ var render = function() {
     { staticClass: "inheritHFW" },
     [
       undefined == _vm.$store.state.projectInfo.pageConnected
-        ? [_vm._v("\n        Loading...\n    ")]
+        ? [_vm._v("Loading...")]
         : [
             _vm.$store.state.projectInfo.pageConnected
               ? [
@@ -52649,11 +52670,7 @@ var render = function() {
                                 { ref: "chatBox", staticClass: "chatHisRoot" },
                                 [
                                   _vm.prevLoading
-                                    ? [
-                                        _vm._v(
-                                          "\n                                Loading...\n                            "
-                                        )
-                                      ]
+                                    ? [_vm._v("Loading...")]
                                     : _vm._e(),
                                   _vm._v(" "),
                                   _vm._l(_vm.mesgList, function(mesg, index) {
@@ -52774,7 +52791,7 @@ var render = function() {
                                             _c("img", {
                                               attrs: {
                                                 src:
-                                                  "/images/icons/chat_icon.png"
+                                                  "/images/icons/chat/chat_icon.png"
                                               }
                                             }),
                                             _vm._v(" "),
@@ -52799,7 +52816,7 @@ var render = function() {
                                             _c("img", {
                                               attrs: {
                                                 src:
-                                                  "/images/icons/chat_stop.png"
+                                                  "/images/icons/chat/chat_stop.png"
                                               }
                                             }),
                                             _vm._v(" "),
@@ -52895,7 +52912,7 @@ var render = function() {
                                       { staticClass: "chatInputMesgBox" },
                                       [
                                         _vm._v(
-                                          "\n                                Activate Page in order to perform live chat\n                            "
+                                          "Activate Page in order to perform live chat"
                                         )
                                       ]
                                     )
@@ -53022,11 +53039,7 @@ var render = function() {
                                             { staticClass: "savedList" },
                                             [
                                               _vm.replyList.listLoading
-                                                ? [
-                                                    _vm._v(
-                                                      "\n                                        Loading...\n                                    "
-                                                    )
-                                                  ]
+                                                ? [_vm._v("Loading...")]
                                                 : _vm._l(
                                                     _vm.replyList.savedReplies,
                                                     function(reply, index) {
@@ -53047,11 +53060,9 @@ var render = function() {
                                                               },
                                                               [
                                                                 _vm._v(
-                                                                  "\n                                                " +
-                                                                    _vm._s(
-                                                                      reply.title
-                                                                    ) +
-                                                                    "\n                                            "
+                                                                  _vm._s(
+                                                                    reply.title
+                                                                  )
                                                                 )
                                                               ]
                                                             ),
@@ -53064,11 +53075,9 @@ var render = function() {
                                                               },
                                                               [
                                                                 _vm._v(
-                                                                  "\n                                                " +
-                                                                    _vm._s(
-                                                                      reply.message
-                                                                    ) +
-                                                                    "\n                                            "
+                                                                  _vm._s(
+                                                                    reply.message
+                                                                  )
                                                                 )
                                                               ]
                                                             )
@@ -53930,8 +53939,8 @@ var render = function() {
                           _c("img", {
                             attrs: {
                               src: _vm.showUrgent
-                                ? "/images/icons/urgent_active.png"
-                                : "/images/icons/urgent.png"
+                                ? "/images/icons/chat/urgent_active.png"
+                                : "/images/icons/chat/urgent.png"
                             }
                           })
                         ]
@@ -54063,8 +54072,8 @@ var render = function() {
                                               _c("img", {
                                                 attrs: {
                                                   src: user.urgent
-                                                    ? "/images/icons/urgent_active.png"
-                                                    : "/images/icons/urgent.png"
+                                                    ? "/images/icons/chat/urgent_active.png"
+                                                    : "/images/icons/chat/urgent.png"
                                                 }
                                               })
                                             ]

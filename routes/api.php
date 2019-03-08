@@ -256,7 +256,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
                 Route::get('note', 'V1\\Api\\AdminNoteController@getNote');
                 Route::post('note', 'V1\\Api\\AdminNoteController@createNote');
                 Route::get('reply', 'V1\\Api\\SavedReplyController@getReply');
-                Route::post('reply', 'V1\\Api\\SavedReplyController@createReply');
+                Route::post('save-reply', 'V1\\Api\\SavedReplyController@createReply');
             });
         });
 

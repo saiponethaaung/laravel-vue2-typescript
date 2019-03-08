@@ -1,13 +1,13 @@
+import Axios, { CancelTokenSource } from "axios";
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 import SavedReplyModel from "./SavedReplyModel";
-import Axios, { CancelTokenSource } from "axios";
 
 export default class SavedReplyListModel extends AjaxErrorHandler {
 
     private content: string = "";
     private messageContent: string = "";
     private searchContent: string = "";
-    private savedReplyList : Array<SavedReplyModel> = [];
+    private savedReplyList: Array<SavedReplyModel> = [];
     private cancelToken: CancelTokenSource = Axios.CancelToken.source();
     public listLoading: boolean = false;
 
@@ -18,7 +18,7 @@ export default class SavedReplyListModel extends AjaxErrorHandler {
         super();
     }
 
-    get savedReplies() : Array<SavedReplyModel> {
+    get savedReplies(): Array<SavedReplyModel> {
         return this.savedReplyList;
     }
 
@@ -64,19 +64,19 @@ export default class SavedReplyListModel extends AjaxErrorHandler {
         let keyword = "";
         keyword = this.search;
         console.log(keyword);
-    
+
         await Axios({
-            url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/reply?keyword=${keyword}`,
+            url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/save-reply?keyword=${keyword}`,
             method: 'get',
             cancelToken: this.cancelToken.token
         }).then(res => {
             this.savedReplyList = [];
-            for(let r of res.data.data) {
+            for (let r of res.data.data) {
                 this.savedReplyList.push(new SavedReplyModel(r));
             }
             this.listLoading = false;
         }).catch(err => {
-            if(err.response) {
+            if (err.response) {
                 res.status = false;
                 res.mesg = this.globalHandler(err, 'Failed to load saved reply list!');
                 this.listLoading = false;
@@ -98,7 +98,7 @@ export default class SavedReplyListModel extends AjaxErrorHandler {
         data.append('message', this.message);
 
         await Axios({
-            url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/reply`,
+            url: `/api/v1/project/${this.projectId}/chat/user/${this.userId}/save-reply`,
             method: 'post',
             data: data
         }).then(res => {
@@ -106,7 +106,7 @@ export default class SavedReplyListModel extends AjaxErrorHandler {
             this.message = '';
             this.savedReplyList.push(new SavedReplyModel(res.data.data));
         }).catch(err => {
-            if(err.response) {
+            if (err.response) {
                 res.status = false;
                 res.mesg = this.globalHandler(err, 'Failed to create a reply!');
             }

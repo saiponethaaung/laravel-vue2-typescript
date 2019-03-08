@@ -294,6 +294,7 @@ export default class AIRuleComponent extends Vue {
                     break;
 
                 case 8:
+                    let appendText = "";
                     // backspace event
                     if (content.length > 1) {
                         // if caret position is not at first character remove character before caret
@@ -306,12 +307,13 @@ export default class AIRuleComponent extends Vue {
                             } else {
                                 content = [
                                     content.slice(0, anchor),
-                                    content.slice(offset, content.length)
+                                    content.slice(offset)
                                 ].join("");
                                 offset = anchor + 1;
                             }
                         }
                     } else {
+                        appendText = content;
                         content = "";
                     }
 
@@ -341,6 +343,9 @@ export default class AIRuleComponent extends Vue {
                             }
                             // if caret position is at the beginning
                             if (offset === 0) {
+                                textbox.childNodes[
+                                    this.nodeOffset
+                                ].innerText += appendText;
                                 // change caret position to the end of the node
                                 offset =
                                     textbox.childNodes[this.nodeOffset]
@@ -349,6 +354,9 @@ export default class AIRuleComponent extends Vue {
                                 textbox.childNodes[this.nodeOffset].innerText =
                                     textbox.childNodes[this.nodeOffset]
                                         .innerText + content;
+                                if (appendText !== "") {
+                                    offset -= 1;
+                                }
                             } else {
                                 // update caret position
                                 offset =
@@ -366,6 +374,7 @@ export default class AIRuleComponent extends Vue {
                 case 46:
                     // delete event
                     if (content.length > 1) {
+                        console.log("starting...");
                         // if caret positon is no at the end
                         if (offset < content.length) {
                             if (isOne) {
@@ -373,20 +382,24 @@ export default class AIRuleComponent extends Vue {
                                     content.slice(0, offset),
                                     content.slice(offset + 1)
                                 ].join("");
+                                console.log("sliced", content);
+                                console.log("not more than one");
                             } else {
                                 content = [
                                     content.slice(0, anchor),
-                                    content.slice(offset, content.length)
+                                    content.slice(offset)
                                 ].join("");
-                                offset = anchor + 1;
+                                offset = anchor;
                             }
                         }
                     } else {
+                        console.log("empty them");
                         content = "";
                     }
 
                     // if content is empty or caret position is at the end
-                    if (content === "" || offset === content.length) {
+                    if (content === "") {
+                        // if (content === "" || offset === content.length) {
                         // if caret position is not the end remove current node
                         if (
                             offset !==

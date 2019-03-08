@@ -26,7 +26,8 @@ class FacebookChatbotController extends Controller
     private $token = '';
     private $url = '';
     
-    public function __construct() {
+    public function __construct()
+    {
         $this->token = config('facebook.defaultPageToken');
     }
 

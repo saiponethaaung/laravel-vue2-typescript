@@ -34,7 +34,7 @@
 
                     <div class="chatFilterAction float-right">
                         <div @click="showUrgent=!showUrgent">
-                            <img :src="showUrgent ? '/images/icons/urgent_active.png' : '/images/icons/urgent.png' "/>
+                            <img :src="showUrgent ? '/images/icons/chat/urgent_active.png' : '/images/icons/chat/urgent.png' "/>
                         </div>
                         <div @click="showFav=!showFav">
                             <template v-if="showFav">
@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="userBriefActionCon">
                                     <div @click="urgentStatus(index)">
-                                        <img :src="user.urgent ? '/images/icons/urgent_active.png' : '/images/icons/urgent.png' "/>
+                                        <img :src="user.urgent ? '/images/icons/chat/urgent_active.png' : '/images/icons/chat/urgent.png' "/>
                                     </div>
                                     <div @click="favStatus(index)">
                                         <template v-if="user.fav">

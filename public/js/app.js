@@ -24657,6 +24657,18 @@ new __WEBPACK_IMPORTED_MODULE_2_vue__["default"]({
     router: __WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */],
     store: __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */],
     el: '#app',
+    created() {
+        return (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement("script");
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        })(document, "script", "facebook-jssdk");
+    }
 });
 
 
@@ -28281,16 +28293,6 @@ let App = class App extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
             });
             // FB.AppEvents.logPageView();
         };
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {
-                return;
-            }
-            js = d.createElement("script");
-            js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        })(document, "script", "facebook-jssdk");
     }
     validateRouter() {
         console.log("Route", this.$route.name);
@@ -29836,14 +29838,37 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         super(...arguments);
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__["a" /* default */]();
         this.permissions = [
-            'public_profile',
-            'email',
-            'pages_messaging',
-            'pages_messaging_subscriptions',
-            'manage_pages',
-            'pages_show_list',
-            'publish_pages',
-            'read_page_mailboxes',
+            "public_profile",
+            "email",
+            "pages_messaging",
+            "pages_messaging_subscriptions",
+            "manage_pages",
+            "pages_show_list",
+            "publish_pages",
+            "read_page_mailboxes"
+            // 'groups_access_member_info',
+            // 'publish_to_groups',
+            // 'user_age_range',
+            // 'user_birthday',
+            // 'user_events',
+            // 'user_friends',
+            // 'user_gender',
+            // 'user_hometown',
+            // 'user_likes',
+            // 'user_link',
+            // 'user_location',
+            // 'user_photos',
+            // 'user_posts',
+            // 'user_tagged_places',
+            // 'user_videos',
+            // 'ads_management',
+            // 'ads_read',
+            // 'business_management',
+            // 'leads_retrieval',
+            // 'pages_manage_cta',
+            // 'pages_manage_instant_articles',
+            // 'read_audience_network_insights',
+            // 'read_insights'
         ];
         this.projectOptions = false;
         this.canTest = true;
@@ -29855,10 +29880,11 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         this.initSendToMessenger();
     }
     beforeDestory() {
-        FB.Event.unsubscribe('send_to_messenger');
+        FB.Event.unsubscribe("send_to_messenger");
     }
     get dynamicSidebar() {
-        if (this.$route.meta === undefined || this.$route.meta.sidebar === undefined) {
+        if (this.$route.meta === undefined ||
+            this.$route.meta.sidebar === undefined) {
             return null;
         }
         return this.$route.meta.sidebar;
@@ -29888,18 +29914,23 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
     initSendToMessenger() {
         if (!this.$store.state.fbSdk)
             return;
-        FB.XFBML.parse();
+        setTimeout(() => {
+            FB.XFBML.parse();
+            setTimeout(() => {
+                FB.XFBML.parse();
+            }, 500);
+        }, 500);
     }
     sendToMessengerEvent() {
         if (!this.$store.state.fbSdk)
             return;
-        FB.Event.subscribe('send_to_messenger', (e) => {
-            console.log('send to messenger events', e);
+        FB.Event.subscribe("send_to_messenger", (e) => {
+            console.log("send to messenger events", e);
             switch (e.event) {
-                case ('rendered'):
+                case "rendered":
                     this.hideTest = false;
                     break;
-                case ('clicked'):
+                case "clicked":
                     this.hideTest = true;
                     this.testChatBot();
                     break;
@@ -29908,12 +29939,12 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
     }
     fbLogin() {
         FB.login((res) => {
-            console.log('fb response', res);
-            if (res.status === 'connected') {
+            console.log("fb response", res);
+            if (res.status === "connected") {
                 let valid = true;
                 for (var i in this.permissions) {
                     FB.api(`/me/permissions/${this.permissions[i]}`, (pres) => {
-                        if (pres.data[0].status !== 'granted') {
+                        if (pres.data[0].status !== "granted") {
                             valid = false;
                             let mesg = `Login with facebook and allow ${this.permissions[i]} permissions`;
                             alert(mesg);
@@ -29925,7 +29956,7 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
                 }
             }
         }, {
-            auth_type: 'rerequest',
+            auth_type: "rerequest",
             scope: this.permissions.join(","),
             returnScope: true
         });
@@ -29933,18 +29964,20 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
     updateFBToken(res) {
         return __awaiter(this, void 0, void 0, function* () {
             let data = new FormData();
-            data.append('access_token', res.accessToken);
-            data.append('userID', res.userID);
+            data.append("access_token", res.accessToken);
+            data.append("userID", res.userID);
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: "/api/v1/user/facebook-linked",
                 data: data,
                 method: "POST"
-            }).then((res) => {
-                this.$store.commit('updateUserInfo', {
+            })
+                .then((res) => {
+                this.$store.commit("updateUserInfo", {
                     user: res.data.user
                 });
-            }).catch((err) => {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to access facebook!');
+            })
+                .catch((err) => {
+                let mesg = this.ajaxHandler.globalHandler(err, "Failed to access facebook!");
                 alert(mesg);
             });
         });
@@ -29954,12 +29987,16 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
             this.updatingStatus = true;
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/pages/change-publish-status`,
-                method: 'post'
-            }).then((res) => {
-                this.$store.commit('setProjectPublishStatus', { status: res.data.publishStatus });
-            }).catch((err) => {
+                method: "post"
+            })
+                .then(res => {
+                this.$store.commit("setProjectPublishStatus", {
+                    status: res.data.publishStatus
+                });
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to change project publish status!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to change project publish status!");
                     alert(mesg);
                 }
             });
@@ -29969,29 +30006,29 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
     documentClick(e) {
         let el = this.$refs.projectListDropDown;
         let target = e.target;
-        if ((el !== target) && !el.contains(target)) {
+        if (el !== target && !el.contains(target)) {
             this.projectOptions = false;
         }
     }
     created() {
-        document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$store.state.projectInfo', { immediate: true, deep: true })
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.projectInfo", { immediate: true, deep: true })
 ], DefaultLayout.prototype, "projectInfoChange", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('testNow')
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("testNow")
 ], DefaultLayout.prototype, "testNowChange", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$store.state.fbSdk', { immediate: true, deep: true })
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.fbSdk", { immediate: true, deep: true })
 ], DefaultLayout.prototype, "initSendToMessenger", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$store.state.fbSdk', { immediate: true, deep: true })
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.fbSdk", { immediate: true, deep: true })
 ], DefaultLayout.prototype, "sendToMessengerEvent", null);
 DefaultLayout = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */]
@@ -30333,11 +30370,7 @@ var render = function() {
                                       staticClass: "headerButtonTypeOne",
                                       attrs: { type: "button" }
                                     },
-                                    [
-                                      _vm._v(
-                                        "\n                                Changing status\n                            "
-                                      )
-                                    ]
+                                    [_vm._v("Changing status")]
                                   )
                                 : _c(
                                     "button",
@@ -30352,16 +30385,8 @@ var render = function() {
                                     },
                                     [
                                       _vm.$store.state.projectInfo.publish
-                                        ? [
-                                            _vm._v(
-                                              "\n                                    Deactivate Page\n                                "
-                                            )
-                                          ]
-                                        : [
-                                            _vm._v(
-                                              "\n                                    Activate Page\n                                "
-                                            )
-                                          ]
+                                        ? [_vm._v("Deactivate Page")]
+                                        : [_vm._v("Activate Page")]
                                     ],
                                     2
                                   )
@@ -30379,11 +30404,7 @@ var render = function() {
                                   }
                                 }
                               },
-                              [
-                                _vm._v(
-                                  "\n                            Connect a page\n                        "
-                                )
-                              ]
+                              [_vm._v("Connect a page")]
                             )
                       ]
                     : _vm._e()
@@ -30402,6 +30423,7 @@ var render = function() {
                     : _vm._e()
                 ],
             _vm._v(" "),
+            _vm.$store.state.fbSdk &&
             undefined !== _vm.$store.state.projectInfo.id
               ? [
                   !_vm.testNow && _vm.canTest
@@ -30412,9 +30434,7 @@ var render = function() {
                           class: { hideTest: _vm.hideTest }
                         },
                         [
-                          _vm._v(
-                            "\n                        Test this bot\n                        "
-                          ),
+                          _vm._v("Test this bot\n                        "),
                           _c(
                             "div",
                             {
@@ -30441,11 +30461,7 @@ var render = function() {
                                 size: "standard"
                               }
                             },
-                            [
-                              _vm._v(
-                                "\n                            Send to messenger\n                        "
-                              )
-                            ]
+                            [_vm._v("Send to messenger")]
                           )
                         ]
                       )
@@ -30466,11 +30482,7 @@ var render = function() {
                             target: "_blank"
                           }
                         },
-                        [
-                          _vm._v(
-                            "\n                        View on Messenger\n                    "
-                          )
-                        ]
+                        [_vm._v("View on Messenger")]
                       )
                     : _vm._e()
                 ]
@@ -30513,7 +30525,36 @@ var render = function() {
                 _c(
                   "div",
                   { staticClass: "bodyContent" },
-                  [_c("router-view")],
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "fb-send-to-messenger",
+                        attrs: {
+                          messenger_app_id: "1155102521322007",
+                          page_id:
+                            _vm.$store.state.projectInfo.pageConnected &&
+                            _vm.$store.state.projectInfo.publish
+                              ? _vm.$store.state.projectInfo.pageId
+                              : _vm.$store.state.projectInfo.testingPageId,
+                          "data-ref":
+                            _vm.$store.state.projectInfo.id +
+                            "-" +
+                            (_vm.$store.state.projectInfo.pageConnected &&
+                            _vm.$store.state.projectInfo.publish
+                              ? _vm.$store.state.projectInfo.pageId
+                              : _vm.$store.state.projectInfo.testingPageId) +
+                            "-" +
+                            _vm.$store.state.user.facebook,
+                          color: "blue",
+                          size: "standard"
+                        }
+                      },
+                      [_vm._v("Send to messenger")]
+                    ),
+                    _vm._v(" "),
+                    _c("router-view")
+                  ],
                   1
                 )
               ]
@@ -30529,7 +30570,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("h6", { staticClass: "projectVendor" }, [
-      _vm._v("powered by "),
+      _vm._v(
+        "\n                                powered by\n                                "
+      ),
       _c("a", { attrs: { href: "http://pixybots.com", target: "_blank" } }, [
         _vm._v("Pixybot")
       ])

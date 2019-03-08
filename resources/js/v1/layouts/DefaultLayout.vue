@@ -3,49 +3,52 @@
         <section id="sideMenu">
             <ul id="sideNav">
                 <li>
-                    <router-link 
+                    <router-link
                         :to="{name: 'project.home', params: {projectid: $route.params.projectid}}"
-                        :class="{'activeSection': this.$route.meta.section==='chatbot'}"    
+                        :class="{'activeSection': this.$route.meta.section==='chatbot'}"
                     >
                         <i class="material-icons">assistant</i>
                         <span class="icon-label">Chatbot</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link 
+                    <router-link
                         :to="{name: 'project.ai', params: {projectid: $route.params.projectid}}"
-                        :class="{'activeSection': this.$route.meta.section==='ai'}"    
+                        :class="{'activeSection': this.$route.meta.section==='ai'}"
                     >
                         <i class="material-icons">whatshot</i>
                         <span class="icon-label">Setup AI</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link 
+                    <router-link
                         :to="{name: 'project.inbox', params: {projectid: $route.params.projectid}}"
-                        :class="{'activeSection': this.$route.meta.section==='inbox'}"    
+                        :class="{'activeSection': this.$route.meta.section==='inbox'}"
                     >
                         <i class="material-icons">question_answer</i>
                         <span class="icon-label">Inbox</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link 
+                    <router-link
                         :to="{name: 'project.users', params: {projectid: $route.params.projectid}}"
-                        :class="{'activeSection': this.$route.meta.section==='user'}"    
+                        :class="{'activeSection': this.$route.meta.section==='user'}"
                     >
                         <i class="material-icons">supervisor_account</i>
                         <span class="icon-label">Users</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link 
+                    <router-link
                         :to="{name: 'project.broadcast', params: {projectid: $route.params.projectid}}"
-                        :class="{'activeSection': this.$route.meta.section==='broadcast'}"    
+                        :class="{'activeSection': this.$route.meta.section==='broadcast'}"
                     >
                         <figure>
-                            <img class="imgIcon" src="/images/icons/sidebar/broadcast.png"/>
-                            <img class="activeIcon" src="/images/icons/sidebar/broadcast_active.png"/>
+                            <img class="imgIcon" src="/images/icons/sidebar/broadcast.png">
+                            <img
+                                class="activeIcon"
+                                src="/images/icons/sidebar/broadcast_active.png"
+                            >
                         </figure>
                         <span class="icon-label">Broadcast</span>
                     </router-link>
@@ -61,11 +64,11 @@
                         </figure>
                         <span class="icon-label">Plugin</span>
                     </router-link>
-                </li> -->
+                </li>-->
                 <li>
-                    <router-link 
+                    <router-link
                         :to="{name: 'project.configuration', params: {projectid: $route.params.projectid}}"
-                        :class="{'activeSection': this.$route.meta.section==='setting'}"    
+                        :class="{'activeSection': this.$route.meta.section==='setting'}"
                     >
                         <i class="material-icons">settings</i>
                         <span class="icon-label">Settings</span>
@@ -78,20 +81,31 @@
                     </a>
                 </li>
             </ul>
-            <div>
-            </div>
+            <div></div>
         </section>
         <div id="mainContent">
             <section id="headerContent">
                 <div class="sidebar headerSidebar">
                     <div class="projectList">
-                        <div class="projectInfoContainer" ref="projectListDropDown" @click="projectOptions=!projectOptions">
+                        <div
+                            class="projectInfoContainer"
+                            ref="projectListDropDown"
+                            @click="projectOptions=!projectOptions"
+                        >
                             <figure class="projectIconWrapper">
-                                <img :src="$store.state.projectInfo.image ? $store.state.projectInfo.image : '/images/sample/Image_logo.png'" class="projectIcon"/>
+                                <img
+                                    :src="$store.state.projectInfo.image ? $store.state.projectInfo.image : '/images/sample/Image_logo.png'"
+                                    class="projectIcon"
+                                >
                             </figure>
                             <div class="projectInfo">
-                                <h4 class="projectName">{{ $store.state.projectInfo.name ? $store.state.projectInfo.name : '-' }}</h4>
-                                <h6 class="projectVendor">powered by <a href="http://pixybots.com" target="_blank">Pixybot</a></h6>
+                                <h4
+                                    class="projectName"
+                                >{{ $store.state.projectInfo.name ? $store.state.projectInfo.name : '-' }}</h4>
+                                <h6 class="projectVendor">
+                                    powered by
+                                    <a href="http://pixybots.com" target="_blank">Pixybot</a>
+                                </h6>
                             </div>
                             <div class="projectNavControl">
                                 <i class="material-icons" v-if="projectOptions">arrow_drop_up</i>
@@ -100,12 +114,22 @@
                         </div>
                         <template v-if="projectOptions">
                             <div class="popProjectList">
-                                <router-link :to="{name: 'project.home', params: {projectid: project.id}}" class="projectInfoContainer" v-for="(project, index) in $store.state.projectList" v-bind:key="index">
+                                <router-link
+                                    :to="{name: 'project.home', params: {projectid: project.id}}"
+                                    class="projectInfoContainer"
+                                    v-for="(project, index) in $store.state.projectList"
+                                    v-bind:key="index"
+                                >
                                     <figure class="projectIconWrapper">
-                                        <img :src="project.image ? project.image : '/images/sample/logo.png'" class="projectIcon"/>
+                                        <img
+                                            :src="project.image ? project.image : '/images/sample/logo.png'"
+                                            class="projectIcon"
+                                        >
                                     </figure>
                                     <div class="projectInfo">
-                                        <h4 class="projectName">{{ project.name ? project.name : '-' }}</h4>
+                                        <h4
+                                            class="projectName"
+                                        >{{ project.name ? project.name : '-' }}</h4>
                                     </div>
                                 </router-link>
                             </div>
@@ -116,46 +140,66 @@
                     <template v-if="$store.state.user.facebook_connected">
                         <template v-if="undefined!==$store.state.projectInfo.pageConnected">
                             <template v-if="$store.state.projectInfo.pageConnected">
-                                <button type="button" class="headerButtonTypeOne" v-if="updatingStatus">
-                                    Changing status
-                                </button>
-                                <button type="button" class="headerButtonTypeOne" @click="changePublishStatus()" v-else>
-                                    <template v-if="$store.state.projectInfo.publish">
-                                        Deactivate Page
-                                    </template>
-                                    <template v-else>
-                                        Activate Page
-                                    </template>
+                                <button
+                                    type="button"
+                                    class="headerButtonTypeOne"
+                                    v-if="updatingStatus"
+                                >Changing status</button>
+                                <button
+                                    type="button"
+                                    class="headerButtonTypeOne"
+                                    @click="changePublishStatus()"
+                                    v-else
+                                >
+                                    <template
+                                        v-if="$store.state.projectInfo.publish"
+                                    >Deactivate Page</template>
+                                    <template v-else>Activate Page</template>
                                 </button>
                             </template>
-                            <router-link :to="{name: 'project.configuration', params: {projectid: $route.params.projectid}}" class="headerButtonTypeOne" v-else>
-                                Connect a page
-                            </router-link>
+                            <router-link
+                                :to="{name: 'project.configuration', params: {projectid: $route.params.projectid}}"
+                                class="headerButtonTypeOne"
+                                v-else
+                            >Connect a page</router-link>
                         </template>
                     </template>
                     <template v-else>
-                        <button v-if="$store.state.fbSdk" @click="fbLogin" type="button" class="headerButtonTypeOne">Connect facebook account</button>
+                        <button
+                            v-if="$store.state.fbSdk"
+                            @click="fbLogin"
+                            type="button"
+                            class="headerButtonTypeOne"
+                        >Connect facebook account</button>
                     </template>
-                    <template v-if="undefined!==$store.state.projectInfo.id">
-                        <div v-if="!testNow && canTest" class="testChatBotBtn" :class="{'hideTest': hideTest}">
-                            Test this bot
-                            <div class="fb-send-to-messenger" 
-                                messenger_app_id="1155102521322007" 
-                                :page_id="$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId" 
+                    <template v-if="$store.state.fbSdk && undefined!==$store.state.projectInfo.id">
+                        <div
+                            v-if="!testNow && canTest"
+                            class="testChatBotBtn"
+                            :class="{'hideTest': hideTest}"
+                        >Test this bot
+                            <div
+                                class="fb-send-to-messenger"
+                                messenger_app_id="1155102521322007"
+                                :page_id="$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId"
                                 :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId}-${$store.state.user.facebook}`"
-                                color="blue" 
-                                size="standard">
-                                Send to messenger
-                            </div>
+                                color="blue"
+                                size="standard"
+                            >Send to messenger</div>
                         </div>
-                        <a v-if="testNow" :href="'https://m.me/'+($store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId)" target="_blank" class="headerButtonTypeOne">
-                            View on Messenger
-                        </a>
+                        <a
+                            v-if="testNow"
+                            :href="'https://m.me/'+($store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId)"
+                            target="_blank"
+                            class="headerButtonTypeOne"
+                        >View on Messenger</a>
                     </template>
                 </div>
             </section>
             <section id="innnerContent">
-                <template v-if="undefined!==$route.meta.fullContent && $route.meta.fullContent===true">
+                <template
+                    v-if="undefined!==$route.meta.fullContent && $route.meta.fullContent===true"
+                >
                     <div class="bodyContent fullWidthContent">
                         <div class="sidebarPlacementBorder"></div>
                         <router-view></router-view>
@@ -168,6 +212,14 @@
                         </template>
                     </div>
                     <div class="bodyContent">
+                        <div
+                            class="fb-send-to-messenger"
+                            messenger_app_id="1155102521322007"
+                            :page_id="$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId"
+                            :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId}-${$store.state.user.facebook}`"
+                            color="blue"
+                            size="standard"
+                        >Send to messenger</div>
                         <router-view></router-view>
                     </div>
                 </template>
@@ -177,25 +229,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component, Watch } from 'vue-property-decorator';
-import Axios from 'axios';
-import AjaxErrorHandler from '../utils/AjaxErrorHandler';
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import Axios from "axios";
+import AjaxErrorHandler from "../utils/AjaxErrorHandler";
 
 @Component
 export default class DefaultLayout extends Vue {
-
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
 
     private permissions: Array<string> = [
-        'public_profile',
-        'email',
-        'pages_messaging',
-        'pages_messaging_subscriptions',
-        'manage_pages',
-        'pages_show_list',
-        'publish_pages',
-        'read_page_mailboxes',
+        "public_profile",
+        "email",
+        "pages_messaging",
+        "pages_messaging_subscriptions",
+        "manage_pages",
+        "pages_show_list",
+        "publish_pages",
+        "read_page_mailboxes"
         // 'groups_access_member_info',
         // 'publish_to_groups',
         // 'user_age_range',
@@ -232,12 +283,15 @@ export default class DefaultLayout extends Vue {
     }
 
     beforeDestory() {
-        FB.Event.unsubscribe('send_to_messenger');
+        FB.Event.unsubscribe("send_to_messenger");
     }
 
     get dynamicSidebar() {
-        if(this.$route.meta === undefined || this.$route.meta.sidebar === undefined) {
-            return null;    
+        if (
+            this.$route.meta === undefined ||
+            this.$route.meta.sidebar === undefined
+        ) {
+            return null;
         }
         return this.$route.meta.sidebar;
     }
@@ -249,7 +303,7 @@ export default class DefaultLayout extends Vue {
         }, 30000);
     }
 
-    @Watch('$store.state.projectInfo', { immediate: true, deep: true })
+    @Watch("$store.state.projectInfo", { immediate: true, deep: true })
     projectInfoChange() {
         this.canTest = false;
         setTimeout(() => {
@@ -260,30 +314,35 @@ export default class DefaultLayout extends Vue {
         }, 500);
     }
 
-    @Watch('testNow')
+    @Watch("testNow")
     testNowChange() {
         setTimeout(() => {
             this.initSendToMessenger();
         }, 500);
     }
 
-    @Watch('$store.state.fbSdk', { immediate: true, deep: true })
+    @Watch("$store.state.fbSdk", { immediate: true, deep: true })
     initSendToMessenger() {
-        if(!this.$store.state.fbSdk) return;
-        FB.XFBML.parse();
+        if (!this.$store.state.fbSdk) return;
+        setTimeout(() => {
+            FB.XFBML.parse();
+            setTimeout(() => {
+                FB.XFBML.parse();
+            }, 500);
+        }, 500);
     }
 
-    @Watch('$store.state.fbSdk', { immediate: true, deep: true })
+    @Watch("$store.state.fbSdk", { immediate: true, deep: true })
     sendToMessengerEvent() {
-        if(!this.$store.state.fbSdk) return;
-        FB.Event.subscribe('send_to_messenger', (e: any) => {
-            console.log('send to messenger events', e);
-            switch(e.event) {
-                case('rendered'):
+        if (!this.$store.state.fbSdk) return;
+        FB.Event.subscribe("send_to_messenger", (e: any) => {
+            console.log("send to messenger events", e);
+            switch (e.event) {
+                case "rendered":
                     this.hideTest = false;
                     break;
 
-                case('clicked'):
+                case "clicked":
                     this.hideTest = true;
                     this.testChatBot();
                     break;
@@ -292,84 +351,105 @@ export default class DefaultLayout extends Vue {
     }
 
     fbLogin() {
-        FB.login((res: any) => {
-            console.log('fb response', res);
-            if(res.status==='connected') {
+        FB.login(
+            (res: any) => {
+                console.log("fb response", res);
+                if (res.status === "connected") {
+                    let valid = true;
 
-                let valid = true;
+                    for (var i in this.permissions) {
+                        FB.api(
+                            `/me/permissions/${this.permissions[i]}`,
+                            (pres: any) => {
+                                if (pres.data[0].status !== "granted") {
+                                    valid = false;
 
-                for(var i in this.permissions) {
-                    FB.api(`/me/permissions/${this.permissions[i]}`, (pres: any) => {
-                        if(pres.data[0].status!=='granted') {
-                            valid = false;
+                                    let mesg = `Login with facebook and allow ${
+                                        this.permissions[i]
+                                    } permissions`;
+                                    alert(mesg);
+                                }
+                            }
+                        );
+                    }
 
-                            let mesg = `Login with facebook and allow ${this.permissions[i]} permissions`;
-                            alert(mesg);
-                        }
-                    });
+                    if (valid) {
+                        this.updateFBToken(res.authResponse);
+                    }
                 }
-
-                if(valid) {
-                    this.updateFBToken(res.authResponse);
-                }
+            },
+            {
+                auth_type: "rerequest",
+                scope: this.permissions.join(","),
+                returnScope: true
             }
-        }, {
-            auth_type: 'rerequest',
-            scope: this.permissions.join(","),
-            returnScope: true
-        });
+        );
     }
 
     async updateFBToken(res: any) {
         let data = new FormData();
-        data.append('access_token', res.accessToken);
-        data.append('userID', res.userID);
+        data.append("access_token", res.accessToken);
+        data.append("userID", res.userID);
 
         await Axios({
             url: "/api/v1/user/facebook-linked",
             data: data,
             method: "POST"
-        }).then((res: any) => {
-            this.$store.commit('updateUserInfo', {
-                user: res.data.user
+        })
+            .then((res: any) => {
+                this.$store.commit("updateUserInfo", {
+                    user: res.data.user
+                });
+            })
+            .catch((err: any) => {
+                let mesg = this.ajaxHandler.globalHandler(
+                    err,
+                    "Failed to access facebook!"
+                );
+                alert(mesg);
             });
-        }).catch((err: any) => {
-            let mesg = this.ajaxHandler.globalHandler(err, 'Failed to access facebook!');
-            alert(mesg);
-        });
     }
 
     async changePublishStatus() {
         this.updatingStatus = true;
         await Axios({
-            url: `/api/v1/project/${this.$route.params.projectid}/pages/change-publish-status`,
-            method: 'post'
-        }).then((res) => {
-            this.$store.commit('setProjectPublishStatus', { status: res.data.publishStatus});
-        }).catch((err) => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to change project publish status!');
-                alert(mesg);
-            }
-        });
+            url: `/api/v1/project/${
+                this.$route.params.projectid
+            }/pages/change-publish-status`,
+            method: "post"
+        })
+            .then(res => {
+                this.$store.commit("setProjectPublishStatus", {
+                    status: res.data.publishStatus
+                });
+            })
+            .catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to change project publish status!"
+                    );
+                    alert(mesg);
+                }
+            });
         this.updatingStatus = false;
     }
 
-    documentClick(e: any){
+    documentClick(e: any) {
         let el: any = this.$refs.projectListDropDown;
         let target = e.target;
-        if (( el !== target) && !el.contains(target)) {
+        if (el !== target && !el.contains(target)) {
             this.projectOptions = false;
         }
     }
 
     created() {
-      document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
 
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 }
 </script>

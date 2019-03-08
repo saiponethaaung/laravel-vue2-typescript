@@ -102,7 +102,8 @@
                                 <h4
                                     class="projectName"
                                 >{{ $store.state.projectInfo.name ? $store.state.projectInfo.name : '-' }}</h4>
-                                <h6 class="projectVendor">powered by
+                                <h6 class="projectVendor">
+                                    powered by
                                     <a href="http://pixybots.com" target="_blank">Pixybot</a>
                                 </h6>
                             </div>
@@ -173,6 +174,7 @@
                     </template>
                     <template v-if="undefined!==$store.state.projectInfo.id">
                         <div
+                            v-if="!reload"
                             v-show="!testNow && canTest"
                             class="testChatBotBtn"
                             :class="{'hideTest': hideTest}"
@@ -272,6 +274,7 @@ export default class DefaultLayout extends Vue {
     private hideTest: boolean = true;
     private updatingStatus: boolean = false;
     private actionTime: string = "";
+    private reload: boolean = false;
 
     mounted() {
         this.initSendToMessenger();
@@ -295,8 +298,8 @@ export default class DefaultLayout extends Vue {
     async testChatBot() {
         this.testNow = true;
         setTimeout(() => {
-            this.testNow = false;
             this.actionTime = new Date().toString();
+            this.testNow = false;
         }, 30000);
     }
 
@@ -322,7 +325,13 @@ export default class DefaultLayout extends Vue {
     @Watch("$store.state.fbSdk", { immediate: true, deep: true })
     initSendToMessenger() {
         if (!this.$store.state.fbSdk) return;
-        FB.XFBML.parse();
+        this.reload = true;
+        setTimeout(() => {
+            this.reload = false;
+            setTimeout(() => {
+                FB.XFBML.parse();
+            }, 30);
+        }, 30);
     }
 
     @Watch("$store.state.fbSdk", { immediate: true, deep: true })

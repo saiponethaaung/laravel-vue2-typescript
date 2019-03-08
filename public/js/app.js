@@ -29876,6 +29876,7 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         this.hideTest = true;
         this.updatingStatus = false;
         this.actionTime = "";
+        this.reload = false;
     }
     mounted() {
         this.initSendToMessenger();
@@ -29895,8 +29896,8 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         return __awaiter(this, void 0, void 0, function* () {
             this.testNow = true;
             setTimeout(() => {
-                this.testNow = false;
                 this.actionTime = new Date().toString();
+                this.testNow = false;
             }, 30000);
         });
     }
@@ -29919,7 +29920,13 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
     initSendToMessenger() {
         if (!this.$store.state.fbSdk)
             return;
-        FB.XFBML.parse();
+        this.reload = true;
+        setTimeout(() => {
+            this.reload = false;
+            setTimeout(() => {
+                FB.XFBML.parse();
+            }, 30);
+        }, 30);
     }
     sendToMessengerEvent() {
         if (!this.$store.state.fbSdk)
@@ -30425,53 +30432,57 @@ var render = function() {
             _vm._v(" "),
             undefined !== _vm.$store.state.projectInfo.id
               ? [
-                  _c(
-                    "div",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: !_vm.testNow && _vm.canTest,
-                          expression: "!testNow && canTest"
-                        }
-                      ],
-                      staticClass: "testChatBotBtn",
-                      class: { hideTest: _vm.hideTest }
-                    },
-                    [
-                      _vm._v("Test this bot\n                        "),
-                      _c(
+                  !_vm.reload
+                    ? _c(
                         "div",
                         {
-                          staticClass: "fb-send-to-messenger",
-                          attrs: {
-                            messenger_app_id: "1155102521322007",
-                            page_id:
-                              _vm.$store.state.projectInfo.pageConnected &&
-                              _vm.$store.state.projectInfo.publish
-                                ? _vm.$store.state.projectInfo.pageId
-                                : _vm.$store.state.projectInfo.testingPageId,
-                            "data-ref":
-                              _vm.$store.state.projectInfo.id +
-                              "-" +
-                              (_vm.$store.state.projectInfo.pageConnected &&
-                              _vm.$store.state.projectInfo.publish
-                                ? _vm.$store.state.projectInfo.pageId
-                                : _vm.$store.state.projectInfo.testingPageId) +
-                              "-" +
-                              _vm.$store.state.user.facebook,
-                            color: "blue",
-                            "data-testNow": _vm.testNow,
-                            "data-canTest": _vm.canTest,
-                            "data-actionTime": _vm.actionTime,
-                            size: "standard"
-                          }
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: !_vm.testNow && _vm.canTest,
+                              expression: "!testNow && canTest"
+                            }
+                          ],
+                          staticClass: "testChatBotBtn",
+                          class: { hideTest: _vm.hideTest }
                         },
-                        [_vm._v("Send to messenger")]
+                        [
+                          _vm._v("Test this bot\n                        "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "fb-send-to-messenger",
+                              attrs: {
+                                messenger_app_id: "1155102521322007",
+                                page_id:
+                                  _vm.$store.state.projectInfo.pageConnected &&
+                                  _vm.$store.state.projectInfo.publish
+                                    ? _vm.$store.state.projectInfo.pageId
+                                    : _vm.$store.state.projectInfo
+                                        .testingPageId,
+                                "data-ref":
+                                  _vm.$store.state.projectInfo.id +
+                                  "-" +
+                                  (_vm.$store.state.projectInfo.pageConnected &&
+                                  _vm.$store.state.projectInfo.publish
+                                    ? _vm.$store.state.projectInfo.pageId
+                                    : _vm.$store.state.projectInfo
+                                        .testingPageId) +
+                                  "-" +
+                                  _vm.$store.state.user.facebook,
+                                color: "blue",
+                                "data-testNow": _vm.testNow,
+                                "data-canTest": _vm.canTest,
+                                "data-actionTime": _vm.actionTime,
+                                size: "standard"
+                              }
+                            },
+                            [_vm._v("Send to messenger")]
+                          )
+                        ]
                       )
-                    ]
-                  ),
+                    : _vm._e(),
                   _vm._v(" "),
                   _c(
                     "a",
@@ -30553,7 +30564,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("h6", { staticClass: "projectVendor" }, [
-      _vm._v("powered by\n                                "),
+      _vm._v(
+        "\n                                powered by\n                                "
+      ),
       _c("a", { attrs: { href: "http://pixybots.com", target: "_blank" } }, [
         _vm._v("Pixybot")
       ])

@@ -12,7 +12,8 @@ class ChatBlockSection extends Model
         'block_id',
         'broadcast_id',
         'title',
-        'order'
+        'order',
+        'type'
     ];
 
     public static function boot() {

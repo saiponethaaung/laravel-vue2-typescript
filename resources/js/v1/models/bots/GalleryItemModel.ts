@@ -14,6 +14,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
     private buttonEdit: number = -1;
     private buttonToken: CancelTokenSource = Axios.CancelToken.source();
     public errorMesg: string = '';
+    public canShowError: boolean = false;
 
 
     constructor(content: galleryContent, rootUrl: string) {
@@ -83,6 +84,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
     }
 
     async saveContent() {
+        this.canShowError = true;
         this.saveToken.cancel();
         this.saveToken = Axios.CancelToken.source();
 
@@ -109,6 +111,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
     }
 
     async imageUpload(e: any) {
+        this.canShowError = true;
         this.imageToken.cancel();
         this.imageToken = Axios.CancelToken.source();
         this.isUploading = true;
@@ -149,6 +152,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
     }
 
     async addButton() {
+        this.canShowError = true;
         this.addingNewBtn = true;
 
         this.buttonToken.cancel();
@@ -170,6 +174,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
     }
 
     async delButton(index: number) {
+        this.canShowError = true;
         await Axios({
             url: `${this.rootUrl.replace('/gallery', '')}/button/${this.buttons[index].id}`,
             method: 'delete',
@@ -183,6 +188,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
     }
 
     async delImage(index: number) {
+        this.canShowError = true;
         await Axios({
             url: `${this.rootUrl}/${this.id}/image`,
             method: 'delete',

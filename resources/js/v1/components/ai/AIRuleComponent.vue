@@ -164,6 +164,13 @@ export default class AIRuleComponent extends Vue {
             e.keyCode == 32 ||
             e.keyCode == 8
         ) {
+            if (e.ctrlKey && e.keyCode === 82) {
+                window.location.reload();
+                return;
+            }
+
+            let isShift = e.shiftKey;
+            let endFocus = false;
             let textbox: any = this.$refs.keywordsCon;
             let range = document.createRange();
             let sel = window.getSelection();
@@ -187,11 +194,6 @@ export default class AIRuleComponent extends Vue {
                         : sel.focusNode.previousSibling
                 );
             }
-
-            console.log("isone", isOne);
-            console.log("anchor", anchor);
-            console.log("offset", offset);
-            console.log("selection", sel);
 
             // get inner content of current node
             let content = textbox.childNodes[this.nodeOffset].innerText;
@@ -274,6 +276,7 @@ export default class AIRuleComponent extends Vue {
                         // if caret position is at the beginning and another node exist before current node
                         // change current node to the one before current one and set caret positon to the end of node
                         this.nodeOffset--;
+
                         offset =
                             textbox.childNodes[this.nodeOffset].innerText
                                 .length - 1;
@@ -374,7 +377,6 @@ export default class AIRuleComponent extends Vue {
                 case 46:
                     // delete event
                     if (content.length > 1) {
-                        console.log("starting...");
                         // if caret positon is no at the end
                         if (offset < content.length) {
                             if (isOne) {
@@ -382,8 +384,6 @@ export default class AIRuleComponent extends Vue {
                                     content.slice(0, offset),
                                     content.slice(offset + 1)
                                 ].join("");
-                                console.log("sliced", content);
-                                console.log("not more than one");
                             } else {
                                 content = [
                                     content.slice(0, anchor),
@@ -393,7 +393,6 @@ export default class AIRuleComponent extends Vue {
                             }
                         }
                     } else {
-                        console.log("empty them");
                         content = "";
                     }
 

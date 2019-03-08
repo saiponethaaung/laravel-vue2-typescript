@@ -164,6 +164,7 @@
 // tools
 
 .contentBuilderWidget {
+    padding-top: 50px;
     padding-left: 30px;
     padding-bottom: 50px;
 }
@@ -557,6 +558,25 @@
         max-width: 100%;
         max-height: 100%;
     }
+}
+
+.inputConLimitWrapper {
+    position: relative;
+    input {
+        &:focus + .limitGalleryTitle,
+        &:focus + .limitListTitle {
+            opacity: 1;
+        }
+    }    
+}
+
+input.required {
+    border-color: $red!important;
+    color: $red!important;
+}
+
+input.required::placeholder {
+    color: $red!important;
 }
 
 @import './bots/text.scss';

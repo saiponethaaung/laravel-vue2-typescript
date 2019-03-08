@@ -13,6 +13,10 @@
     > li:not(:last-child) {
         border-bottom: 1px solid $borderPrimary;
     }
+
+    .delIcon {
+        right: -10px;
+    }
 }
 
 .chatListInfo {
@@ -32,9 +36,10 @@
         box-shadow: none;
         font-size: 12px;
         padding: 3px 10px;
+        &.required,
         &:focus {
             box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.07);
-            border: solid 1px rgba(0, 0, 0, 0.33) !important;
+            border: solid 1px rgba(0, 0, 0, 0.33);
         }
     }
     .listDisplayBox {
@@ -237,9 +242,10 @@
         box-shadow: none;
         font-size: 12px;
         padding: 3px 10px;
+        &.required,
         &:focus {
             box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.07);
-            border: solid 1px rgba(0, 0, 0, 0.33) !important;
+            border: solid 1px rgba(0, 0, 0, 0.33);
         }
     }
 }
@@ -279,34 +285,36 @@
 
 .limitListTitle {
     position: absolute;
-    top: 20px;
-    right: 95px;
+    bottom: 0px;
+    right: 0px;
     font-size: 11px;
     width: 15px;
-    background: #c238eb;
+    background: $themeColor;
     text-align: center;
     color: #ffffff;
     border-radius: 5px;
-}
-
-.limitSub {
-    top: 50px;
+    height: 18px;
+    line-height: 18px;
+    padding: 0 4px;
+    width: auto;
+    opacity: 0;
 }
 
 .limitGalleryTitle {
     position: absolute;
-    top: 170px;
-    right: 20px;
+    bottom: 0px;
+    right: 0px;
     font-size: 11px;
     width: 15px;
-    background: #c238eb;
+    background: $themeColor;
     text-align: center;
     color: #ffffff;
     border-radius: 5px;
-}
-
-.limitGalSub {
-    top:200px;
+    height: 18px;
+    line-height: 18px;
+    padding: 0 4px;
+    width: auto;
+    opacity: 0;
 }
 
 .limitBtnTitle {
@@ -325,4 +333,69 @@
 
 .galleLoader {
     width: 80px;
+}
+
+.galleListItem {
+    position: relative;
+}
+
+.listRequired {
+    &:not(.galleListItem) {
+        border: 1px solid $red!important;
+        &:first-child {
+            border-top-left-radius: inherit;
+            border-top-right-radius: inherit;
+        }
+    }
+    .chatGalleryContainer {
+        border-color: $red!important;
+    }
+    &.galleListItem {
+        .requiredNotiCon {
+            left: 0;
+            top: 100%;
+            height: auto;
+            margin-top: 14px;
+            width: 260px;
+            text-align: center;
+            .requiredNotiText {
+                &:before {
+                    display: none;
+                }
+            }
+        }
+    }
+    .requiredNotiCon {
+        position: absolute;
+        top: 0;
+        left: calc(100% + 15px);
+        width: 515px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        .requiredNotiText {
+            background: $red;
+            color: #fff;
+            font-size: 13px;
+            font-weight: bolder;
+            padding: 10px 20px;
+            border-radius: 5px;
+            position: relative;
+            &:before {
+                content: '';
+                display: block;
+                width: 10px;
+                height: 10px;
+                bottom: 50%;
+                transform: translate(18px, 50%) rotate(45deg);
+                background: $red;
+                left: -23px;
+                position: absolute;
+            }
+        }
+    }
+}
+
+.requiredNotiCon {
+    display: none;
 }

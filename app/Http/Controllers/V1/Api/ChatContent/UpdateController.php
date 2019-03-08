@@ -178,7 +178,7 @@ class UpdateController extends Controller
         $input = $request->only('title', 'sub', 'url');
 
         $validator = Validator::make($input, [
-            'title' => 'required|string',
+            'title' => 'nullable|string',
             'sub' => 'nullable|string',
             'url' => 'nullable|url'
         ]);
@@ -204,7 +204,7 @@ class UpdateController extends Controller
         DB::beginTransaction();
 
         try {
-            $list->title = $input['title'];
+            $list->title = (String) $input['title'];
             $list->sub = (String) $input['sub'];
             $list->url = (String) $input['url'];
             $list->save();

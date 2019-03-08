@@ -33351,6 +33351,8 @@ if (false) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_ListContentModel__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ListItemComponent_vue__ = __webpack_require__(257);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ListItemComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ListItemComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -33359,9 +33361,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
+
 let ListComponent = class ListComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     createNewList() {
         this.content.createList();
+    }
+    delItem(index) {
+        this.content.delItem(index);
     }
 };
 __decorate([
@@ -33370,7 +33376,11 @@ __decorate([
     })
 ], ListComponent.prototype, "content", void 0);
 ListComponent = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
+        components: {
+            ListItemComponent: __WEBPACK_IMPORTED_MODULE_2__ListItemComponent_vue___default.a
+        }
+    })
 ], ListComponent);
 /* harmony default export */ __webpack_exports__["default"] = (ListComponent);
 
@@ -33405,6 +33415,7 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
         this.buttonEdit = false;
         this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.errorMesg = '';
+        this.canShowError = false;
         this.content = content;
         this.rootUrl = rootUrl;
     }
@@ -33455,6 +33466,7 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
     }
     saveContent() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.canShowError = true;
             this.saveToken.cancel();
             this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             this.isUpdating = true;
@@ -33490,6 +33502,7 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
     }
     imageUpload(e) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.canShowError = true;
             this.imageToken.cancel();
             this.imageToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             this.isUploading = true;
@@ -33512,6 +33525,7 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
     }
     delImage(e) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.canShowError = true;
             yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}/image`,
                 method: 'delete',
@@ -33526,6 +33540,7 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
     }
     delButton() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.canShowError = true;
             if (this.button !== null) {
                 yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                     url: `${this.rootUrl.replace('/list', '')}/button/${this.button.id}`,
@@ -33542,6 +33557,7 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
     }
     addButton() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.canShowError = true;
             this.addingNewBtn = true;
             this.buttonToken.cancel();
             this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
@@ -33585,285 +33601,18 @@ var render = function() {
         { staticClass: "chatListRoot" },
         [
           _vm._l(_vm.content.item, function(l, index) {
-            return _c(
-              "li",
-              { key: index, staticClass: "chatListItem" },
-              [
-                _c("div", { staticClass: "chatListContent" }, [
-                  _c("div", { staticClass: "chatListInfo" }, [
-                    _c("div", { staticClass: "chatListInput" }, [
-                      _c("div", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: l.title,
-                              expression: "l.title"
-                            }
-                          ],
-                          staticClass: "chatListTitle",
-                          attrs: {
-                            type: "text",
-                            placeholder: "Heading (required)",
-                            maxlength: "80"
-                          },
-                          domProps: { value: l.title },
-                          on: {
-                            blur: function($event) {
-                              l.saveContent()
-                            },
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(l, "title", $event.target.value)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "limitListTitle" }, [
-                          _vm._v(_vm._s(l.textLimitTitle))
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: l.sub,
-                              expression: "l.sub"
-                            }
-                          ],
-                          staticClass: "chatListSub",
-                          attrs: {
-                            type: "text",
-                            placeholder: "Subtitle or description",
-                            maxlength: "80"
-                          },
-                          domProps: { value: l.sub },
-                          on: {
-                            blur: function($event) {
-                              l.saveContent()
-                            },
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(l, "sub", $event.target.value)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "limitListTitle limitSub" }, [
-                          _vm._v(_vm._s(l.textLimitSub))
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: l.url,
-                              expression: "l.url"
-                            }
-                          ],
-                          staticClass: "chatListUrl",
-                          attrs: { type: "text", placeholder: "URL" },
-                          domProps: { value: l.url },
-                          on: {
-                            blur: function($event) {
-                              l.saveContent()
-                            },
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(l, "url", $event.target.value)
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "chatListImage" }, [
-                      _c(
-                        "figure",
-                        [
-                          l.image
-                            ? [
-                                _c("div", { staticClass: "listItemImageCon" }, [
-                                  _c("img", { attrs: { src: l.image } })
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "hoverOptions" }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "removeIcon",
-                                      on: {
-                                        click: function($event) {
-                                          l.delImage()
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c(
-                                        "i",
-                                        { staticClass: "material-icons" },
-                                        [_vm._v("close")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("span", [_vm._v("remove")])
-                                    ]
-                                  )
-                                ])
-                              ]
-                            : [
-                                _c("label", [
-                                  _c("i", { staticClass: "material-icons" }, [
-                                    _vm._v("photo_camera")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    attrs: { type: "file" },
-                                    on: {
-                                      change: function($event) {
-                                        l.imageUpload($event)
-                                      }
-                                    }
-                                  })
-                                ])
-                              ]
-                        ],
-                        2
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  l.addingNewBtn
-                    ? _c("div", { staticClass: "chatListButton noborder" }, [
-                        _vm._v("Creating...")
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  !l.addingNewBtn && l.button == null
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "chatListButton",
-                          on: {
-                            click: function($event) {
-                              l.addButton()
-                            }
-                          }
-                        },
-                        [_vm._v("Add Button")]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  l.button !== null
-                    ? _c(
-                        "div",
-                        { staticClass: "chatListButton" },
-                        [
-                          _c(
-                            "div",
-                            {
-                              on: {
-                                click: function($event) {
-                                  l.btnEdit = true
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  l.button.title
-                                    ? l.button.title
-                                    : "Button Name"
-                                )
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "delIcon",
-                              on: {
-                                click: function($event) {
-                                  l.delButton()
-                                }
-                              }
-                            },
-                            [
-                              _c("i", { staticClass: "material-icons" }, [
-                                _vm._v("delete")
-                              ])
-                            ]
-                          ),
-                          _vm._v(" "),
-                          l.btnEdit
-                            ? _c("button-component", {
-                                attrs: {
-                                  rootUrl: _vm.content.url + "/button",
-                                  button: l.button,
-                                  projectid: _vm.content.project
-                                },
-                                on: {
-                                  closeContent: function(status) {
-                                    if (status && l.btnEdit === true) {
-                                      l.btnEdit = false
-                                    }
-                                  }
-                                }
-                              })
-                            : _vm._e()
-                        ],
-                        1
-                      )
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "clear" }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "delIcon chatListItemDelIcon",
-                    on: {
-                      click: function($event) {
-                        _vm.content.delItem(index)
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("delete")
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                l.errorMesg !== ""
-                  ? [
-                      _c("error-component", {
-                        attrs: { mesg: l.errorMesg },
-                        on: {
-                          closeError: function($event) {
-                            l.errorMesg = ""
-                          }
-                        }
-                      })
-                    ]
-                  : _vm._e()
-              ],
-              2
-            )
+            return [
+              _c("list-item-component", {
+                key: index,
+                attrs: {
+                  listItem: l,
+                  index: index,
+                  baseUrl: _vm.content.url,
+                  projectid: _vm.content.porjectid
+                },
+                on: { delItem: _vm.delItem }
+              })
+            ]
           }),
           _vm._v(" "),
           _vm.content.isCreating
@@ -34016,6 +33765,8 @@ if (false) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_GalleryContentModel__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__GalleryItemComponent_vue__ = __webpack_require__(260);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__GalleryItemComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__GalleryItemComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -34024,9 +33775,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
+
 let GalleryComponent = class GalleryComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     createNewGallery() {
         this.content.createGallery();
+    }
+    delItem(index) {
+        this.content.delItem(index);
     }
 };
 __decorate([
@@ -34035,7 +33790,11 @@ __decorate([
     })
 ], GalleryComponent.prototype, "content", void 0);
 GalleryComponent = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
+        components: {
+            GalleryItemComponent: __WEBPACK_IMPORTED_MODULE_2__GalleryItemComponent_vue___default.a
+        }
+    })
 ], GalleryComponent);
 /* harmony default export */ __webpack_exports__["default"] = (GalleryComponent);
 
@@ -34070,6 +33829,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
         this.buttonEdit = -1;
         this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.errorMesg = '';
+        this.canShowError = false;
         this.rootUrl = rootUrl;
         this.content = content;
     }
@@ -34120,6 +33880,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
     }
     saveContent() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.canShowError = true;
             this.saveToken.cancel();
             this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             this.isUpdating = true;
@@ -34143,6 +33904,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
     }
     imageUpload(e) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.canShowError = true;
             this.imageToken.cancel();
             this.imageToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
             this.isUploading = true;
@@ -34177,6 +33939,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
     }
     addButton() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.canShowError = true;
             this.addingNewBtn = true;
             this.buttonToken.cancel();
             this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
@@ -34196,6 +33959,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
     }
     delButton(index) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.canShowError = true;
             yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl.replace('/gallery', '')}/button/${this.buttons[index].id}`,
                 method: 'delete',
@@ -34210,6 +33974,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
     }
     delImage(index) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.canShowError = true;
             yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/${this.id}/image`,
                 method: 'delete',
@@ -34248,316 +34013,18 @@ var render = function() {
         { staticClass: "galleListRoot" },
         [
           _vm._l(_vm.content.item, function(l, index) {
-            return _c(
-              "li",
-              { key: index, staticClass: "galleListItem" },
-              [
-                _c("div", { staticClass: "chatGalleryContainer" }, [
-                  _c(
-                    "figure",
-                    { staticClass: "chatGalleryImage" },
-                    [
-                      l.image
-                        ? [
-                            _c("div", { staticClass: "imageCon" }, [
-                              _c("img", { attrs: { src: l.image } })
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "hoverOptions" }, [
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "removeIcon",
-                                  on: {
-                                    click: function($event) {
-                                      l.delImage()
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", { staticClass: "material-icons" }, [
-                                    _vm._v("close")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("span", [_vm._v("remove")])
-                                ]
-                              )
-                            ])
-                          ]
-                        : [
-                            _c("label", [
-                              _c("i", { staticClass: "material-icons" }, [
-                                _vm._v("photo_camera")
-                              ]),
-                              _vm._v(" "),
-                              _c("input", {
-                                attrs: { type: "file" },
-                                on: {
-                                  change: function($event) {
-                                    l.imageUpload($event)
-                                  }
-                                }
-                              })
-                            ])
-                          ]
-                    ],
-                    2
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "chatGalleryContent" }, [
-                    _c("div", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: l.title,
-                            expression: "l.title"
-                          }
-                        ],
-                        attrs: {
-                          type: "text",
-                          placeholder: "Heading (required)",
-                          maxlength: "80"
-                        },
-                        domProps: { value: l.title },
-                        on: {
-                          blur: function($event) {
-                            l.saveContent()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(l, "title", $event.target.value)
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "limitGalleryTitle" }, [
-                        _vm._v(_vm._s(l.textLimitTitle))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: l.sub,
-                            expression: "l.sub"
-                          }
-                        ],
-                        attrs: {
-                          type: "text",
-                          placeholder: "Subtitle or description",
-                          maxlength: "80"
-                        },
-                        domProps: { value: l.sub },
-                        on: {
-                          blur: function($event) {
-                            l.saveContent()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(l, "sub", $event.target.value)
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        { staticClass: "limitGalleryTitle limitGalSub" },
-                        [_vm._v(_vm._s(l.textLimitSub))]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: l.url,
-                            expression: "l.url"
-                          }
-                        ],
-                        attrs: { type: "text", placeholder: "Url" },
-                        domProps: { value: l.url },
-                        on: {
-                          blur: function($event) {
-                            l.saveContent()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(l, "url", $event.target.value)
-                          }
-                        }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "chatGalleryButtons" },
-                    [
-                      _vm._l(l.buttons, function(button, sindex) {
-                        return _c(
-                          "div",
-                          { key: sindex, staticClass: "addBtn btnCon" },
-                          [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "buttonActionGroup",
-                                on: {
-                                  click: function($event) {
-                                    l.btnEdit = sindex
-                                  }
-                                }
-                              },
-                              [
-                                _c("div", { staticClass: "buttonName" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      button.title
-                                        ? button.title
-                                        : "Button Name"
-                                    )
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                button.type === 0 && button.block.length > 0
-                                  ? _c(
-                                      "div",
-                                      { staticClass: "buttonActionName" },
-                                      [_vm._v(_vm._s(button.block[0].title))]
-                                    )
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                button.type === 1 && button.url
-                                  ? _c(
-                                      "div",
-                                      { staticClass: "buttonActionName" },
-                                      [_vm._v(_vm._s(button.url))]
-                                    )
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                button.type === 2 && button.phone.number
-                                  ? _c(
-                                      "div",
-                                      { staticClass: "buttonActionName" },
-                                      [_vm._v(_vm._s(button.phone.number))]
-                                    )
-                                  : _vm._e()
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "delIcon",
-                                on: {
-                                  click: function($event) {
-                                    l.delButton(sindex)
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", { staticClass: "material-icons" }, [
-                                  _vm._v("delete")
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            l.btnEdit === sindex
-                              ? _c("button-component", {
-                                  attrs: {
-                                    rootUrl: _vm.content.url + "/button",
-                                    button: button,
-                                    projectid: _vm.content.project
-                                  },
-                                  on: {
-                                    closeContent: function(status) {
-                                      if (status && l.btnEdit === sindex) {
-                                        l.btnEdit = -1
-                                      }
-                                    }
-                                  }
-                                })
-                              : _vm._e()
-                          ],
-                          1
-                        )
-                      }),
-                      _vm._v(" "),
-                      l.addingNewBtn
-                        ? _c("div", { staticClass: "addBtn btnCon" }, [
-                            _vm._v("Creating...")
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      !l.addingNewBtn && l.buttons.length < 3
-                        ? _c(
-                            "div",
-                            {
-                              staticClass: "addBtn",
-                              on: {
-                                click: function($event) {
-                                  l.addButton()
-                                }
-                              }
-                            },
-                            [
-                              _c("i", { staticClass: "material-icons" }, [
-                                _vm._v("add")
-                              ]),
-                              _vm._v("Add Button\n                        ")
-                            ]
-                          )
-                        : _vm._e()
-                    ],
-                    2
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "delIcon",
-                      on: {
-                        click: function($event) {
-                          _vm.content.delItem(index)
-                        }
-                      }
-                    },
-                    [
-                      _c("i", { staticClass: "material-icons" }, [
-                        _vm._v("delete")
-                      ])
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                l.errorMesg !== ""
-                  ? [
-                      _c("error-component", {
-                        attrs: { mesg: l.errorMesg },
-                        on: {
-                          closeError: function($event) {
-                            l.errorMesg = ""
-                          }
-                        }
-                      })
-                    ]
-                  : _vm._e()
-              ],
-              2
-            )
+            return [
+              _c("gallery-item-component", {
+                key: index,
+                attrs: {
+                  listItem: l,
+                  index: index,
+                  baseUrl: _vm.content.url,
+                  projectid: _vm.content.porjectid
+                },
+                on: { delItem: _vm.delItem }
+              })
+            ]
           }),
           _vm._v(" "),
           _vm.content.item.length < 10
@@ -47764,6 +47231,12 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
             e.keyCode == 39 ||
             e.keyCode == 32 ||
             e.keyCode == 8) {
+            if (e.ctrlKey && e.keyCode === 82) {
+                window.location.reload();
+                return;
+            }
+            let isShift = e.shiftKey;
+            let endFocus = false;
             let textbox = this.$refs.keywordsCon;
             let range = document.createRange();
             let sel = window.getSelection();
@@ -47785,10 +47258,6 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                     ? sel.focusNode.parentNode
                     : sel.focusNode.previousSibling);
             }
-            console.log("isone", isOne);
-            console.log("anchor", anchor);
-            console.log("offset", offset);
-            console.log("selection", sel);
             // get inner content of current node
             let content = textbox.childNodes[this.nodeOffset].innerText;
             if (content.length === 1) {
@@ -47950,7 +47419,6 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                 case 46:
                     // delete event
                     if (content.length > 1) {
-                        console.log("starting...");
                         // if caret positon is no at the end
                         if (offset < content.length) {
                             if (isOne) {
@@ -47958,8 +47426,6 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                                     content.slice(0, offset),
                                     content.slice(offset + 1)
                                 ].join("");
-                                console.log("sliced", content);
-                                console.log("not more than one");
                             }
                             else {
                                 content = [
@@ -47971,7 +47437,6 @@ let AIRuleComponent = class AIRuleComponent extends __WEBPACK_IMPORTED_MODULE_0_
                         }
                     }
                     else {
-                        console.log("empty them");
                         content = "";
                     }
                     // if content is empty or caret position is at the end
@@ -62354,6 +61819,858 @@ var index_esm = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(258)
+/* template */
+var __vue_template__ = __webpack_require__(259)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/builder/ListItemComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7d965392", Component.options)
+  } else {
+    hotAPI.reload("data-v-7d965392", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 258 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_ListItemModel__ = __webpack_require__(94);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+let ListItemComponent = class ListItemComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    deleteItem(index) { }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_ListItemModel__["a" /* default */]
+    })
+], ListItemComponent.prototype, "listItem", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], ListItemComponent.prototype, "index", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], ListItemComponent.prototype, "baseUrl", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], ListItemComponent.prototype, "projectid", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("delItem")
+], ListItemComponent.prototype, "deleteItem", null);
+ListItemComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], ListItemComponent);
+/* harmony default export */ __webpack_exports__["default"] = (ListItemComponent);
+
+
+/***/ }),
+/* 259 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "li",
+    {
+      key: _vm.index,
+      staticClass: "chatListItem",
+      class: {
+        listRequired:
+          _vm.listItem.canShowError &&
+          _vm.listItem.title !== "" &&
+          (_vm.listItem.sub === "" ||
+            _vm.listItem.image === "" ||
+            _vm.listItem.button == null)
+      }
+    },
+    [
+      _c("div", { staticClass: "chatListContent" }, [
+        _c("div", { staticClass: "chatListInfo" }, [
+          _c("div", { staticClass: "chatListInput" }, [
+            _c("div", { staticClass: "inputConLimitWrapper" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.listItem.title,
+                    expression: "listItem.title"
+                  }
+                ],
+                staticClass: "chatListTitle",
+                class: {
+                  required:
+                    _vm.listItem.title == "" && _vm.listItem.canShowError
+                },
+                attrs: {
+                  type: "text",
+                  placeholder: "Heading (required)",
+                  maxlength: "80"
+                },
+                domProps: { value: _vm.listItem.title },
+                on: {
+                  blur: function($event) {
+                    _vm.listItem.saveContent()
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.listItem, "title", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "limitListTitle" }, [
+                _vm._v(_vm._s(_vm.listItem.textLimitTitle))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "inputConLimitWrapper" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.listItem.sub,
+                    expression: "listItem.sub"
+                  }
+                ],
+                staticClass: "chatListSub",
+                attrs: {
+                  type: "text",
+                  placeholder: "Subtitle or description",
+                  maxlength: "80"
+                },
+                domProps: { value: _vm.listItem.sub },
+                on: {
+                  blur: function($event) {
+                    _vm.listItem.saveContent()
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.listItem, "sub", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "limitListTitle limitSub" }, [
+                _vm._v(_vm._s(_vm.listItem.textLimitSub))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.listItem.url,
+                    expression: "listItem.url"
+                  }
+                ],
+                staticClass: "chatListUrl",
+                attrs: { type: "text", placeholder: "URL" },
+                domProps: { value: _vm.listItem.url },
+                on: {
+                  blur: function($event) {
+                    _vm.listItem.saveContent()
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.listItem, "url", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "chatListImage" }, [
+            _c(
+              "figure",
+              [
+                _vm.listItem.image
+                  ? [
+                      _c("div", { staticClass: "listItemImageCon" }, [
+                        _c("img", { attrs: { src: _vm.listItem.image } })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "hoverOptions" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "removeIcon",
+                            on: {
+                              click: function($event) {
+                                _vm.listItem.delImage()
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("close")
+                            ]),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("remove")])
+                          ]
+                        )
+                      ])
+                    ]
+                  : [
+                      _c("label", [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("photo_camera")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          attrs: { type: "file" },
+                          on: {
+                            change: function($event) {
+                              _vm.listItem.imageUpload($event)
+                            }
+                          }
+                        })
+                      ])
+                    ]
+              ],
+              2
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm.listItem.addingNewBtn
+          ? _c("div", { staticClass: "chatListButton noborder" }, [
+              _vm._v("Creating...")
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        !_vm.listItem.addingNewBtn && _vm.listItem.button == null
+          ? _c(
+              "div",
+              {
+                staticClass: "chatListButton",
+                on: {
+                  click: function($event) {
+                    _vm.listItem.addButton()
+                  }
+                }
+              },
+              [_vm._v("Add Button")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.listItem.button !== null
+          ? _c(
+              "div",
+              { staticClass: "chatListButton" },
+              [
+                _c(
+                  "div",
+                  {
+                    on: {
+                      click: function($event) {
+                        _vm.listItem.btnEdit = true
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm.listItem.button.title
+                          ? _vm.listItem.button.title
+                          : "Button Name"
+                      )
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "delIcon",
+                    on: {
+                      click: function($event) {
+                        _vm.listItem.delButton()
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("delete")
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _vm.listItem.btnEdit
+                  ? _c("button-component", {
+                      attrs: {
+                        rootUrl: _vm.baseUrl + "/button",
+                        button: _vm.listItem.button,
+                        projectid: _vm.projectid
+                      },
+                      on: {
+                        closeContent: function(status) {
+                          if (status && _vm.listItem.btnEdit === true) {
+                            _vm.listItem.btnEdit = false
+                          }
+                        }
+                      }
+                    })
+                  : _vm._e()
+              ],
+              1
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "clear" }),
+      _vm._v(" "),
+      _vm.index > 1
+        ? _c(
+            "div",
+            {
+              staticClass: "delIcon chatListItemDelIcon",
+              on: {
+                click: function($event) {
+                  _vm.deleteItem(_vm.index)
+                }
+              }
+            },
+            [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.listItem.errorMesg !== ""
+        ? [
+            _c("error-component", {
+              attrs: { mesg: _vm.listItem.errorMesg },
+              on: {
+                closeError: function($event) {
+                  _vm.listItem.errorMesg = ""
+                }
+              }
+            })
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._m(0)
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "requiredNotiCon" }, [
+      _c("div", { staticClass: "requiredNotiText" }, [
+        _vm._v(
+          "\n            Set up at least one more item field: subtitle, button or image\n        "
+        )
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7d965392", module.exports)
+  }
+}
+
+/***/ }),
+/* 260 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(261)
+/* template */
+var __vue_template__ = __webpack_require__(262)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/builder/GalleryItemComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2dc5903d", Component.options)
+  } else {
+    hotAPI.reload("data-v-2dc5903d", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 261 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_GalleryItemModel__ = __webpack_require__(97);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+let GalleryItemComponent = class GalleryItemComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    deleteItem(index) { }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_GalleryItemModel__["a" /* default */]
+    })
+], GalleryItemComponent.prototype, "listItem", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], GalleryItemComponent.prototype, "index", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], GalleryItemComponent.prototype, "baseUrl", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], GalleryItemComponent.prototype, "projectid", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("delItem")
+], GalleryItemComponent.prototype, "deleteItem", null);
+GalleryItemComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], GalleryItemComponent);
+/* harmony default export */ __webpack_exports__["default"] = (GalleryItemComponent);
+
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "li",
+    {
+      key: _vm.index,
+      staticClass: "galleListItem",
+      class: {
+        listRequired:
+          _vm.listItem.canShowError &&
+          _vm.listItem.title !== "" &&
+          (_vm.listItem.sub === "" ||
+            _vm.listItem.image === "" ||
+            _vm.listItem.button == null)
+      }
+    },
+    [
+      _c("div", { staticClass: "chatGalleryContainer" }, [
+        _c(
+          "figure",
+          { staticClass: "chatGalleryImage" },
+          [
+            _vm.listItem.image
+              ? [
+                  _c("div", { staticClass: "imageCon" }, [
+                    _c("img", { attrs: { src: _vm.listItem.image } })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "hoverOptions" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "removeIcon",
+                        on: {
+                          click: function($event) {
+                            _vm.listItem.delImage()
+                          }
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("close")
+                        ]),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("remove")])
+                      ]
+                    )
+                  ])
+                ]
+              : [
+                  _c("label", [
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("photo_camera")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      attrs: { type: "file" },
+                      on: {
+                        change: function($event) {
+                          _vm.listItem.imageUpload($event)
+                        }
+                      }
+                    })
+                  ])
+                ]
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "chatGalleryContent" }, [
+          _c("div", { staticClass: "inputConLimitWrapper" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.listItem.title,
+                  expression: "listItem.title"
+                }
+              ],
+              class: {
+                required: _vm.listItem.title == "" && _vm.listItem.canShowError
+              },
+              attrs: {
+                type: "text",
+                placeholder: "Heading (required)",
+                maxlength: "80"
+              },
+              domProps: { value: _vm.listItem.title },
+              on: {
+                blur: function($event) {
+                  _vm.listItem.saveContent()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.listItem, "title", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "limitGalleryTitle limitSub" }, [
+              _vm._v(_vm._s(_vm.listItem.textLimitTitle))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "inputConLimitWrapper" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.listItem.sub,
+                  expression: "listItem.sub"
+                }
+              ],
+              attrs: {
+                type: "text",
+                placeholder: "Subtitle or description",
+                maxlength: "80"
+              },
+              domProps: { value: _vm.listItem.sub },
+              on: {
+                blur: function($event) {
+                  _vm.listItem.saveContent()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.listItem, "sub", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "span",
+              { staticClass: "limitGalleryTitle limitSub limitGalSub" },
+              [_vm._v(_vm._s(_vm.listItem.textLimitSub))]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.listItem.url,
+                  expression: "listItem.url"
+                }
+              ],
+              attrs: { type: "text", placeholder: "Url" },
+              domProps: { value: _vm.listItem.url },
+              on: {
+                blur: function($event) {
+                  _vm.listItem.saveContent()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.listItem, "url", $event.target.value)
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "chatGalleryButtons" },
+          [
+            _vm._l(_vm.listItem.buttons, function(button, sindex) {
+              return _c(
+                "div",
+                { key: sindex, staticClass: "addBtn btnCon" },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "buttonActionGroup",
+                      on: {
+                        click: function($event) {
+                          _vm.listItem.btnEdit = sindex
+                        }
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "buttonName" }, [
+                        _vm._v(
+                          _vm._s(button.title ? button.title : "Button Name")
+                        )
+                      ]),
+                      _vm._v(" "),
+                      button.type === 0 && button.block.length > 0
+                        ? _c("div", { staticClass: "buttonActionName" }, [
+                            _vm._v(_vm._s(button.block[0].title))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      button.type === 1 && button.url
+                        ? _c("div", { staticClass: "buttonActionName" }, [
+                            _vm._v(_vm._s(button.url))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      button.type === 2 && button.phone.number
+                        ? _c("div", { staticClass: "buttonActionName" }, [
+                            _vm._v(_vm._s(button.phone.number))
+                          ])
+                        : _vm._e()
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "delIcon",
+                      on: {
+                        click: function($event) {
+                          _vm.listItem.delButton(sindex)
+                        }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("delete")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.listItem.btnEdit === sindex
+                    ? _c("button-component", {
+                        attrs: {
+                          rootUrl: _vm.content.url + "/button",
+                          button: button,
+                          projectid: _vm.content.project
+                        },
+                        on: {
+                          closeContent: function(status) {
+                            if (status && _vm.listItem.btnEdit === sindex) {
+                              _vm.listItem.btnEdit = -1
+                            }
+                          }
+                        }
+                      })
+                    : _vm._e()
+                ],
+                1
+              )
+            }),
+            _vm._v(" "),
+            _vm.listItem.addingNewBtn
+              ? _c("div", { staticClass: "addBtn btnCon" }, [
+                  _vm._v("Creating...")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            !_vm.listItem.addingNewBtn && _vm.listItem.buttons.length < 3
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "addBtn",
+                    on: {
+                      click: function($event) {
+                        _vm.listItem.addButton()
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+                    _vm._v("Add Button\n            ")
+                  ]
+                )
+              : _vm._e()
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "delIcon",
+            on: {
+              click: function($event) {
+                _vm.content.delItem(_vm.index)
+              }
+            }
+          },
+          [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
+        )
+      ]),
+      _vm._v(" "),
+      _vm.listItem.errorMesg !== ""
+        ? [
+            _c("error-component", {
+              attrs: { mesg: _vm.listItem.errorMesg },
+              on: {
+                closeError: function($event) {
+                  _vm.listItem.errorMesg = ""
+                }
+              }
+            })
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._m(0)
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "requiredNotiCon" }, [
+      _c("div", { staticClass: "requiredNotiText" }, [
+        _vm._v("Set up at least one more item field: subtitle, button or image")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2dc5903d", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

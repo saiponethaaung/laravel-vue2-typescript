@@ -14,6 +14,7 @@ export default class ListItemModel extends AjaxErrorHandler {
     private buttonEdit: boolean = false;
     private buttonToken: CancelTokenSource = Axios.CancelToken.source();
     public errorMesg: string = '';
+    public canShowError: boolean = false;
 
     constructor(content: listContent, rootUrl: string) {
         super();
@@ -82,6 +83,7 @@ export default class ListItemModel extends AjaxErrorHandler {
     }
 
     async saveContent() {
+        this.canShowError = true;
         this.saveToken.cancel();
         this.saveToken = Axios.CancelToken.source();
 
@@ -124,6 +126,7 @@ export default class ListItemModel extends AjaxErrorHandler {
     }
 
     async imageUpload(e: any) {
+        this.canShowError = true;
         this.imageToken.cancel();
         this.imageToken = Axios.CancelToken.source();
         this.isUploading = true;
@@ -148,6 +151,7 @@ export default class ListItemModel extends AjaxErrorHandler {
     }
 
     async delImage(e: any) {
+        this.canShowError = true;
         await Axios({
             url: `${this.rootUrl}/${this.id}/image`,
             method: 'delete',
@@ -161,6 +165,7 @@ export default class ListItemModel extends AjaxErrorHandler {
     }
 
     async delButton() {
+        this.canShowError = true;
         if (this.button !== null) {
             await Axios({
                 url: `${this.rootUrl.replace('/list', '')}/button/${this.button.id}`,
@@ -176,6 +181,7 @@ export default class ListItemModel extends AjaxErrorHandler {
     }
 
     async addButton() {
+        this.canShowError = true;
         this.addingNewBtn = true;
 
         this.buttonToken.cancel();

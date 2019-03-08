@@ -2,96 +2,16 @@
     <div class="componentTypeOne">
         <div class="chatListComponentRoot">
             <ul class="chatListRoot">
-                <li v-for="(l, index) in content.item" :key="index" class="chatListItem">
-                    <div class="chatListContent">
-                        <div class="chatListInfo">
-                            <div class="chatListInput">
-                                <div>
-                                    <input
-                                        type="text"
-                                        placeholder="Heading (required)"
-                                        maxlength="80"
-                                        v-model="l.title"
-                                        class="chatListTitle"
-                                        v-on:blur="l.saveContent()"
-                                    >
-                                    <span class="limitListTitle">{{ l.textLimitTitle }}</span>
-                                </div>
-                                <div>
-                                    <input
-                                        type="text"
-                                        placeholder="Subtitle or description"
-                                        maxlength="80"
-                                        v-model="l.sub"
-                                        class="chatListSub"
-                                        v-on:blur="l.saveContent()"
-                                    >
-                                    <span class="limitListTitle limitSub">{{ l.textLimitSub }}</span>
-                                </div>
-                                <div>
-                                    <input
-                                        type="text"
-                                        placeholder="URL"
-                                        v-model="l.url"
-                                        class="chatListUrl"
-                                        v-on:blur="l.saveContent()"
-                                    >
-                                </div>
-                            </div>
-                            <div class="chatListImage">
-                                <figure>
-                                    <template v-if="l.image">
-                                        <div class="listItemImageCon">
-                                            <img :src="l.image">
-                                        </div>
-                                        <div class="hoverOptions">
-                                            <div class="removeIcon" @click="l.delImage()">
-                                                <i class="material-icons">close</i>
-                                                <span>remove</span>
-                                            </div>
-                                        </div>
-                                    </template>
-                                    <template v-else>
-                                        <label>
-                                            <i class="material-icons">photo_camera</i>
-                                            <input type="file" @change="l.imageUpload($event)">
-                                        </label>
-                                    </template>
-                                </figure>
-                            </div>
-                        </div>
-                        <div class="chatListButton noborder" v-if="l.addingNewBtn">Creating...</div>
-                        <div
-                            class="chatListButton"
-                            v-if="!l.addingNewBtn && l.button==null"
-                            @click="l.addButton()"
-                        >Add Button</div>
-                        <div class="chatListButton" v-if="l.button!==null">
-                            <div
-                                @click="l.btnEdit=true"
-                            >{{ l.button.title ? l.button.title : 'Button Name' }}</div>
-                            <div class="delIcon" @click="l.delButton()">
-                                <i class="material-icons">delete</i>
-                            </div>
-                            <button-component
-                                :rootUrl="`${content.url}/button`"
-                                :button="l.button"
-                                :projectid="content.project"
-                                v-if="l.btnEdit"
-                                v-on:closeContent="(status) => {
-                                    if(status && l.btnEdit===true) l.btnEdit=false;
-                                }"
-                            ></button-component>
-                        </div>
-                    </div>
-                    <div class="clear"></div>
-                    <div class="delIcon chatListItemDelIcon" @click="content.delItem(index)">
-                        <i class="material-icons">delete</i>
-                    </div>
-                    <template v-if="l.errorMesg!==''">
-                        <error-component :mesg="l.errorMesg" @closeError="l.errorMesg=''"></error-component>
-                    </template>
-                </li>
+                <template v-for="(l, index) in content.item">
+                    <list-item-component
+                        :listItem="l"
+                        :index="index"
+                        :baseUrl="content.url"
+                        :projectid="content.porjectid"
+                        @delItem="delItem"
+                        :key="index"
+                    ></list-item-component>
+                </template>
                 <li v-if="content.isCreating" class="addMoreChatListItem addBtn">Creating...</li>
                 <li
                     v-if="content.item.length<4 && !content.isCreating"
@@ -145,8 +65,13 @@
 <script lang="ts">
 import { Component, Watch, Prop, Vue } from "vue-property-decorator";
 import ListContentModel from "../../../models/bots/ListContentModel";
+import ListItemComponent from "./ListItemComponent.vue";
 
-@Component
+@Component({
+    components: {
+        ListItemComponent
+    }
+})
 export default class ListComponent extends Vue {
     @Prop({
         type: ListContentModel
@@ -155,6 +80,10 @@ export default class ListComponent extends Vue {
 
     createNewList() {
         this.content.createList();
+    }
+
+    delItem(index: any) {
+        this.content.delItem(index);
     }
 }
 </script>

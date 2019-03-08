@@ -29875,9 +29875,11 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         this.testNow = false;
         this.hideTest = true;
         this.updatingStatus = false;
+        this.actionTime = "";
     }
     mounted() {
         this.initSendToMessenger();
+        this.actionTime = new Date().toString();
     }
     beforeDestory() {
         FB.Event.unsubscribe("send_to_messenger");
@@ -29894,6 +29896,7 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
             this.testNow = true;
             setTimeout(() => {
                 this.testNow = false;
+                this.actionTime = new Date().toString();
             }, 30000);
         });
     }
@@ -30422,65 +30425,78 @@ var render = function() {
             _vm._v(" "),
             undefined !== _vm.$store.state.projectInfo.id
               ? [
-                  !_vm.testNow && _vm.canTest
-                    ? _c(
+                  _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: !_vm.testNow && _vm.canTest,
+                          expression: "!testNow && canTest"
+                        }
+                      ],
+                      staticClass: "testChatBotBtn",
+                      class: { hideTest: _vm.hideTest }
+                    },
+                    [
+                      _vm._v("Test this bot\n                        "),
+                      _c(
                         "div",
                         {
-                          staticClass: "testChatBotBtn",
-                          class: { hideTest: _vm.hideTest }
-                        },
-                        [
-                          _vm._v("Test this bot\n                        "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "fb-send-to-messenger",
-                              attrs: {
-                                messenger_app_id: "1155102521322007",
-                                page_id:
-                                  _vm.$store.state.projectInfo.pageConnected &&
-                                  _vm.$store.state.projectInfo.publish
-                                    ? _vm.$store.state.projectInfo.pageId
-                                    : _vm.$store.state.projectInfo
-                                        .testingPageId,
-                                "data-ref":
-                                  _vm.$store.state.projectInfo.id +
-                                  "-" +
-                                  (_vm.$store.state.projectInfo.pageConnected &&
-                                  _vm.$store.state.projectInfo.publish
-                                    ? _vm.$store.state.projectInfo.pageId
-                                    : _vm.$store.state.projectInfo
-                                        .testingPageId) +
-                                  "-" +
-                                  _vm.$store.state.user.facebook,
-                                color: "blue",
-                                size: "standard"
-                              }
-                            },
-                            [_vm._v("Send to messenger")]
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.testNow
-                    ? _c(
-                        "a",
-                        {
-                          staticClass: "headerButtonTypeOne",
+                          staticClass: "fb-send-to-messenger",
                           attrs: {
-                            href:
-                              "https://m.me/" +
+                            messenger_app_id: "1155102521322007",
+                            page_id:
+                              _vm.$store.state.projectInfo.pageConnected &&
+                              _vm.$store.state.projectInfo.publish
+                                ? _vm.$store.state.projectInfo.pageId
+                                : _vm.$store.state.projectInfo.testingPageId,
+                            "data-ref":
+                              _vm.$store.state.projectInfo.id +
+                              "-" +
                               (_vm.$store.state.projectInfo.pageConnected &&
                               _vm.$store.state.projectInfo.publish
                                 ? _vm.$store.state.projectInfo.pageId
-                                : _vm.$store.state.projectInfo.testingPageId),
-                            target: "_blank"
+                                : _vm.$store.state.projectInfo.testingPageId) +
+                              "-" +
+                              _vm.$store.state.user.facebook,
+                            color: "blue",
+                            "data-testNow": _vm.testNow,
+                            "data-canTest": _vm.canTest,
+                            "data-actionTime": _vm.actionTime,
+                            size: "standard"
                           }
                         },
-                        [_vm._v("View on Messenger")]
+                        [_vm._v("Send to messenger")]
                       )
-                    : _vm._e()
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.testNow,
+                          expression: "testNow"
+                        }
+                      ],
+                      staticClass: "headerButtonTypeOne",
+                      attrs: {
+                        href:
+                          "https://m.me/" +
+                          (_vm.$store.state.projectInfo.pageConnected &&
+                          _vm.$store.state.projectInfo.publish
+                            ? _vm.$store.state.projectInfo.pageId
+                            : _vm.$store.state.projectInfo.testingPageId),
+                        target: "_blank"
+                      }
+                    },
+                    [_vm._v("View on Messenger")]
+                  )
                 ]
               : _vm._e()
           ],
@@ -30521,7 +30537,36 @@ var render = function() {
                 _c(
                   "div",
                   { staticClass: "bodyContent" },
-                  [_c("router-view")],
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "fb-send-to-messenger",
+                        attrs: {
+                          messenger_app_id: "1155102521322007",
+                          page_id:
+                            _vm.$store.state.projectInfo.pageConnected &&
+                            _vm.$store.state.projectInfo.publish
+                              ? _vm.$store.state.projectInfo.pageId
+                              : _vm.$store.state.projectInfo.testingPageId,
+                          "data-ref":
+                            _vm.$store.state.projectInfo.id +
+                            "-" +
+                            (_vm.$store.state.projectInfo.pageConnected &&
+                            _vm.$store.state.projectInfo.publish
+                              ? _vm.$store.state.projectInfo.pageId
+                              : _vm.$store.state.projectInfo.testingPageId) +
+                            "-" +
+                            _vm.$store.state.user.facebook,
+                          color: "blue",
+                          size: "standard"
+                        }
+                      },
+                      [_vm._v("Send to messenger")]
+                    ),
+                    _vm._v(" "),
+                    _c("router-view")
+                  ],
                   1
                 )
               ]

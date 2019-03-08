@@ -173,7 +173,7 @@
                     </template>
                     <template v-if="undefined!==$store.state.projectInfo.id">
                         <div
-                            v-if="!testNow && canTest"
+                            v-show="!testNow && canTest"
                             class="testChatBotBtn"
                             :class="{'hideTest': hideTest}"
                         >Test this bot
@@ -183,11 +183,14 @@
                                 :page_id="$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId"
                                 :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId}-${$store.state.user.facebook}`"
                                 color="blue"
+                                :data-testNow="testNow"
+                                :data-canTest="canTest"
+                                :data-actionTime="actionTime"
                                 size="standard"
                             >Send to messenger</div>
                         </div>
                         <a
-                            v-if="testNow"
+                            v-show="testNow"
                             :href="'https://m.me/'+($store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId)"
                             target="_blank"
                             class="headerButtonTypeOne"
@@ -211,6 +214,14 @@
                         </template>
                     </div>
                     <div class="bodyContent">
+                        <div
+                            class="fb-send-to-messenger"
+                            messenger_app_id="1155102521322007"
+                            :page_id="$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId"
+                            :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId}-${$store.state.user.facebook}`"
+                            color="blue"
+                            size="standard"
+                        >Send to messenger</div>
                         <router-view></router-view>
                     </div>
                 </template>
@@ -268,9 +279,11 @@ export default class DefaultLayout extends Vue {
     private testNow: boolean = false;
     private hideTest: boolean = true;
     private updatingStatus: boolean = false;
+    private actionTime: string = "";
 
     mounted() {
         this.initSendToMessenger();
+        this.actionTime = new Date().toString();
     }
 
     beforeDestory() {
@@ -291,6 +304,7 @@ export default class DefaultLayout extends Vue {
         this.testNow = true;
         setTimeout(() => {
             this.testNow = false;
+            this.actionTime = new Date().toString();
         }, 30000);
     }
 

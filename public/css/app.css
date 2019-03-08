@@ -13964,10 +13964,6 @@ a:hover {
   width: 100%;
 }
 
-.userListTable .ultDateColumn {
-  width: 125px;
-}
-
 .userListTable th.ultDateColumn .ultWrapper,
 .userListTable th.utlSessinColumn .ultWrapper {
   cursor: pointer;

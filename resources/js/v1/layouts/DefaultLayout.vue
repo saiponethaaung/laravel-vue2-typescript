@@ -214,14 +214,6 @@
                         </template>
                     </div>
                     <div class="bodyContent">
-                        <div
-                            class="fb-send-to-messenger"
-                            messenger_app_id="1155102521322007"
-                            :page_id="$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId"
-                            :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId}-${$store.state.user.facebook}`"
-                            color="blue"
-                            size="standard"
-                        >Send to messenger</div>
                         <router-view></router-view>
                     </div>
                 </template>

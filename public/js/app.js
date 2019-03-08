@@ -30537,36 +30537,7 @@ var render = function() {
                 _c(
                   "div",
                   { staticClass: "bodyContent" },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "fb-send-to-messenger",
-                        attrs: {
-                          messenger_app_id: "1155102521322007",
-                          page_id:
-                            _vm.$store.state.projectInfo.pageConnected &&
-                            _vm.$store.state.projectInfo.publish
-                              ? _vm.$store.state.projectInfo.pageId
-                              : _vm.$store.state.projectInfo.testingPageId,
-                          "data-ref":
-                            _vm.$store.state.projectInfo.id +
-                            "-" +
-                            (_vm.$store.state.projectInfo.pageConnected &&
-                            _vm.$store.state.projectInfo.publish
-                              ? _vm.$store.state.projectInfo.pageId
-                              : _vm.$store.state.projectInfo.testingPageId) +
-                            "-" +
-                            _vm.$store.state.user.facebook,
-                          color: "blue",
-                          size: "standard"
-                        }
-                      },
-                      [_vm._v("Send to messenger")]
-                    ),
-                    _vm._v(" "),
-                    _c("router-view")
-                  ],
+                  [_c("router-view")],
                   1
                 )
               ]

@@ -102,8 +102,7 @@
                                 <h4
                                     class="projectName"
                                 >{{ $store.state.projectInfo.name ? $store.state.projectInfo.name : '-' }}</h4>
-                                <h6 class="projectVendor">
-                                    powered by
+                                <h6 class="projectVendor">powered by
                                     <a href="http://pixybots.com" target="_blank">Pixybot</a>
                                 </h6>
                             </div>
@@ -172,7 +171,7 @@
                             class="headerButtonTypeOne"
                         >Connect facebook account</button>
                     </template>
-                    <template v-if="$store.state.fbSdk && undefined!==$store.state.projectInfo.id">
+                    <template v-if="undefined!==$store.state.projectInfo.id">
                         <div
                             v-if="!testNow && canTest"
                             class="testChatBotBtn"
@@ -212,14 +211,6 @@
                         </template>
                     </div>
                     <div class="bodyContent">
-                        <div
-                            class="fb-send-to-messenger"
-                            messenger_app_id="1155102521322007"
-                            :page_id="$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId"
-                            :data-ref="`${$store.state.projectInfo.id}-${$store.state.projectInfo.pageConnected && $store.state.projectInfo.publish ? $store.state.projectInfo.pageId : $store.state.projectInfo.testingPageId}-${$store.state.user.facebook}`"
-                            color="blue"
-                            size="standard"
-                        >Send to messenger</div>
                         <router-view></router-view>
                     </div>
                 </template>
@@ -316,6 +307,7 @@ export default class DefaultLayout extends Vue {
 
     @Watch("testNow")
     testNowChange() {
+        if (this.testNow) return;
         setTimeout(() => {
             this.initSendToMessenger();
         }, 500);
@@ -324,12 +316,7 @@ export default class DefaultLayout extends Vue {
     @Watch("$store.state.fbSdk", { immediate: true, deep: true })
     initSendToMessenger() {
         if (!this.$store.state.fbSdk) return;
-        setTimeout(() => {
-            FB.XFBML.parse();
-            setTimeout(() => {
-                FB.XFBML.parse();
-            }, 500);
-        }, 500);
+        FB.XFBML.parse();
     }
 
     @Watch("$store.state.fbSdk", { immediate: true, deep: true })

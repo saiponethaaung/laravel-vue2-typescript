@@ -29907,6 +29907,8 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         }, 500);
     }
     testNowChange() {
+        if (this.testNow)
+            return;
         setTimeout(() => {
             this.initSendToMessenger();
         }, 500);
@@ -29914,12 +29916,7 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
     initSendToMessenger() {
         if (!this.$store.state.fbSdk)
             return;
-        setTimeout(() => {
-            FB.XFBML.parse();
-            setTimeout(() => {
-                FB.XFBML.parse();
-            }, 500);
-        }, 500);
+        FB.XFBML.parse();
     }
     sendToMessengerEvent() {
         if (!this.$store.state.fbSdk)
@@ -30423,7 +30420,6 @@ var render = function() {
                     : _vm._e()
                 ],
             _vm._v(" "),
-            _vm.$store.state.fbSdk &&
             undefined !== _vm.$store.state.projectInfo.id
               ? [
                   !_vm.testNow && _vm.canTest
@@ -30525,36 +30521,7 @@ var render = function() {
                 _c(
                   "div",
                   { staticClass: "bodyContent" },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "fb-send-to-messenger",
-                        attrs: {
-                          messenger_app_id: "1155102521322007",
-                          page_id:
-                            _vm.$store.state.projectInfo.pageConnected &&
-                            _vm.$store.state.projectInfo.publish
-                              ? _vm.$store.state.projectInfo.pageId
-                              : _vm.$store.state.projectInfo.testingPageId,
-                          "data-ref":
-                            _vm.$store.state.projectInfo.id +
-                            "-" +
-                            (_vm.$store.state.projectInfo.pageConnected &&
-                            _vm.$store.state.projectInfo.publish
-                              ? _vm.$store.state.projectInfo.pageId
-                              : _vm.$store.state.projectInfo.testingPageId) +
-                            "-" +
-                            _vm.$store.state.user.facebook,
-                          color: "blue",
-                          size: "standard"
-                        }
-                      },
-                      [_vm._v("Send to messenger")]
-                    ),
-                    _vm._v(" "),
-                    _c("router-view")
-                  ],
+                  [_c("router-view")],
                   1
                 )
               ]
@@ -30570,9 +30537,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("h6", { staticClass: "projectVendor" }, [
-      _vm._v(
-        "\n                                powered by\n                                "
-      ),
+      _vm._v("powered by\n                                "),
       _c("a", { attrs: { href: "http://pixybots.com", target: "_blank" } }, [
         _vm._v("Pixybot")
       ])

@@ -1,16 +1,23 @@
 <template>
     <div class="componentTypeOne quickReplyRoot">
         <ul class="quickReplyRootContainer" ref="dropdownMenu">
-            <template v-for="(qr, index) in content.item">
-                <quick-reply-item-component
-                    :key="index"
-                    :qr="qr"
-                    :isChildDeleting="content.isChildDeleting"
-                    :index="index"
-                    @delItem="delItem"
-                    @closeOtherSection="closeOtherSection"
-                ></quick-reply-item-component>
-            </template>
+            <draggable
+                v-model="content.item"
+                class="draggable"
+                handle=".horizontalDrag"
+                @end="updateOrder"
+            >
+                <template v-for="(qr, index) in content.item">
+                    <quick-reply-item-component
+                        :key="index"
+                        :qr="qr"
+                        :isChildDeleting="content.isChildDeleting"
+                        :index="index"
+                        @delItem="delItem"
+                        @closeOtherSection="closeOtherSection"
+                    ></quick-reply-item-component>
+                </template>
+            </draggable>
             <li v-if="content.item.length<11">
                 <div class="quickReplyCapsule qrAddMore" v-if="content.isCreating">Creating...</div>
                 <div class="quickReplyCapsule qrAddMore" @click="createNewQuickReply" v-else>
@@ -23,8 +30,13 @@
                 <span class="noticIcon">
                     <i class="material-icons">warning</i>
                 </span>
-                <span class="noticText">Quick replies can be placed only under text, list, gallery or image cards</span>
+                <span
+                    class="noticText"
+                >Quick replies can be placed only under text, list, gallery or image cards</span>
             </div>
+        </template>
+        <template v-if="content.errorMesg!==''">
+            <error-component :mesg="content.errorMesg" @closeError="content.errorMesg=''"></error-component>
         </template>
     </div>
 </template>
@@ -33,6 +45,7 @@
 import { Component, Watch, Prop, Vue } from "vue-property-decorator";
 import QuickReplyContentModel from "../../../models/bots/QuickReplyContentModel";
 import QuickReplyItemComponent from "./QuickReplyItemComponent.vue";
+import Axios from "axios";
 
 @Component({
     components: {
@@ -51,6 +64,10 @@ export default class QuickReplyComponent extends Vue {
 
     async createNewQuickReply() {
         this.content.createQuickReply();
+    }
+
+    async updateOrder() {
+        await this.content.updateOrder();
     }
 
     documentClick(e: any) {

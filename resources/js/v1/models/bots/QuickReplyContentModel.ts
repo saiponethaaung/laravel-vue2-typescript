@@ -1,4 +1,4 @@
-import Axios from "axios";
+import Axios, { CancelTokenSource } from "axios";
 import { quickReplyContent } from "../../configuration/interface";
 import ChatBlockContentModel from "../ChatBlockContentModel";
 import QuickReplyItemModel from "./QuickReplyItemModel";
@@ -9,6 +9,7 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
     private creating: boolean = false;
     private rootUrl: string = '';
     private delChild: number = -1;
+    private orderToken: CancelTokenSource = Axios.CancelToken.source();
 
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
@@ -76,5 +77,28 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
             }
         });
         this.isChildDeleting = -1;
+    }
+
+    async updateOrder() {
+
+        this.orderToken.cancel();
+        this.orderToken = Axios.CancelToken.source();
+
+        let data = new FormData();
+
+        for (let i in this.item) {
+            data.append(`order[${i}]`, this.item[i].id.toString());
+        }
+
+        await Axios({
+            url: `${this.rootUrl}/order`,
+            data: data,
+            method: 'post',
+            cancelToken: this.orderToken.token
+        }).catch(err => {
+            if (err.response) {
+                this.errorMesg = this.globalHandler(err, 'Failed to update quick reply order!');
+            }
+        });
     }
 }

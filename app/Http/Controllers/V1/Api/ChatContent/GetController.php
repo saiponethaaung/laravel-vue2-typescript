@@ -203,7 +203,7 @@ class GetController extends Controller
 
     public function parseGallery($content)
     {
-        $list = ChatGallery::where('content_id', $content->id)->get();
+        $list = ChatGallery::where('content_id', $content->id)->orderBy('order', 'asc')->get();
 
         $res = [];
         
@@ -256,7 +256,7 @@ class GetController extends Controller
             'attribute',
             'blocks',
             'blocks.value'
-        ])->where('content_id', $content->id)->get();
+        ])->where('content_id', $content->id)->orderBy('order', 'asc')->get();
         $res = [];
 
         foreach($list as $l) {

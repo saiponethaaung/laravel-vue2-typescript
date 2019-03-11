@@ -1,5 +1,5 @@
 <template>
-    <li>
+    <li class="horizontalDragCon">
         <div class="quickReplyCapsule">
             <div
                 class="quickReplyTitle"
@@ -99,6 +99,9 @@
         <template v-if="qr.errorMesg!==''">
             <error-component :mesg="qr.errorMesg" @closeError="qr.errorMesg=''"></error-component>
         </template>
+        <div class="horizontalDrag">
+            <i class="material-icons">unfold_more</i>
+        </div>
     </li>
 </template>
 
@@ -110,7 +113,8 @@ import QuickReplyItemModel from "../../../models/bots/QuickReplyItemModel";
 export default class QuickReplyItemComponent extends Vue {
     @Prop({
         type: QuickReplyItemModel
-    }) qr!: QuickReplyItemModel;
+    })
+    qr!: QuickReplyItemModel;
     @Prop() isChildDeleting: any;
     @Prop() index: any;
 

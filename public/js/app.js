@@ -12458,6 +12458,26 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentM
             });
         });
     }
+    updateOrder() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.orderToken.cancel();
+            this.orderToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+            let data = new FormData();
+            for (let i in this.item) {
+                data.append(`order[${i}]`, this.item[i].id.toString());
+            }
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+                url: `${this.rootUrl}/gallery/order`,
+                data: data,
+                method: 'post',
+                cancelToken: this.orderToken.token
+            }).catch(err => {
+                if (err.response) {
+                    this.errorMesg = this.globalHandler(err, 'Failed to update gallery order!');
+                }
+            });
+        });
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = GalleryContentModel;
 
@@ -12490,6 +12510,7 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockConte
         this.creating = false;
         this.rootUrl = '';
         this.delChild = -1;
+        this.orderToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}/quick-reply`;
         for (let i of content.content) {
             this.buildQuickReplyItem(i);
@@ -12546,6 +12567,26 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockConte
                 }
             });
             this.isChildDeleting = -1;
+        });
+    }
+    updateOrder() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.orderToken.cancel();
+            this.orderToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+            let data = new FormData();
+            for (let i in this.item) {
+                data.append(`order[${i}]`, this.item[i].id.toString());
+            }
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+                url: `${this.rootUrl}/order`,
+                data: data,
+                method: 'post',
+                cancelToken: this.orderToken.token
+            }).catch(err => {
+                if (err.response) {
+                    this.errorMesg = this.globalHandler(err, 'Failed to update quick reply order!');
+                }
+            });
         });
     }
 }
@@ -34396,6 +34437,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 
 
 
@@ -34405,6 +34454,11 @@ let GalleryComponent = class GalleryComponent extends __WEBPACK_IMPORTED_MODULE_
     }
     delItem(index) {
         this.content.delItem(index);
+    }
+    updateOrder() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.content.updateOrder();
+        });
     }
 };
 __decorate([
@@ -34523,7 +34577,7 @@ var render = function() {
     "li",
     {
       key: _vm.index,
-      staticClass: "galleListItem",
+      staticClass: "galleListItem horizontalDragCon",
       class: {
         listRequired:
           _vm.listItem.canShowError &&
@@ -34825,7 +34879,9 @@ var render = function() {
           ]
         : _vm._e(),
       _vm._v(" "),
-      _vm._m(0)
+      _vm._m(0),
+      _vm._v(" "),
+      _vm._m(1)
     ],
     2
   )
@@ -34839,6 +34895,14 @@ var staticRenderFns = [
       _c("div", { staticClass: "requiredNotiText" }, [
         _vm._v("Set up at least one more item field: subtitle, button or image")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "horizontalDrag" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("unfold_more")])
     ])
   }
 ]
@@ -34859,62 +34923,98 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "componentTypeOne" }, [
-    _c("div", { staticClass: "galleListComponentRoot" }, [
-      _c(
-        "ul",
-        { staticClass: "galleListRoot" },
-        [
-          _vm._l(_vm.content.item, function(l, index) {
-            return [
-              _c("gallery-item-component", {
-                key: index,
-                attrs: {
-                  listItem: l,
-                  index: index,
-                  baseUrl: _vm.content.url,
-                  projectid: _vm.content.project
-                },
-                on: { delItem: _vm.delItem }
-              })
-            ]
-          }),
-          _vm._v(" "),
-          _vm.content.item.length < 10
-            ? _c("li", { staticClass: "addMoreChatGallery" }, [
-                _c(
-                  "div",
-                  { staticClass: "galleAddMore" },
-                  [
-                    _vm.content.isCreating
-                      ? [
-                          _c(
-                            "div",
-                            { staticClass: "galleLoader" },
-                            [_c("loading-component")],
-                            1
-                          )
-                        ]
-                      : [
-                          _c(
-                            "div",
-                            {
-                              staticClass: "addMoreGalleBtn",
-                              on: { click: _vm.createNewGallery }
-                            },
-                            [_vm._v("+")]
-                          )
-                        ]
-                  ],
-                  2
-                )
-              ])
-            : _vm._e()
-        ],
-        2
-      )
-    ])
-  ])
+  return _c(
+    "div",
+    { staticClass: "componentTypeOne" },
+    [
+      _c("div", { staticClass: "galleListComponentRoot" }, [
+        _c(
+          "ul",
+          { staticClass: "galleListRoot" },
+          [
+            _c(
+              "draggable",
+              {
+                staticClass: "draggable",
+                attrs: { handle: ".horizontalDrag" },
+                on: { end: _vm.updateOrder },
+                model: {
+                  value: _vm.content.item,
+                  callback: function($$v) {
+                    _vm.$set(_vm.content, "item", $$v)
+                  },
+                  expression: "content.item"
+                }
+              },
+              [
+                _vm._l(_vm.content.item, function(l, index) {
+                  return [
+                    _c("gallery-item-component", {
+                      key: index,
+                      attrs: {
+                        listItem: l,
+                        index: index,
+                        baseUrl: _vm.content.url,
+                        projectid: _vm.content.project
+                      },
+                      on: { delItem: _vm.delItem }
+                    })
+                  ]
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _vm.content.item.length < 10
+              ? _c("li", { staticClass: "addMoreChatGallery" }, [
+                  _c(
+                    "div",
+                    { staticClass: "galleAddMore" },
+                    [
+                      _vm.content.isCreating
+                        ? [
+                            _c(
+                              "div",
+                              { staticClass: "galleLoader" },
+                              [_c("loading-component")],
+                              1
+                            )
+                          ]
+                        : [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "addMoreGalleBtn",
+                                on: { click: _vm.createNewGallery }
+                              },
+                              [_vm._v("+")]
+                            )
+                          ]
+                    ],
+                    2
+                  )
+                ])
+              : _vm._e()
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _vm.content.errorMesg !== ""
+        ? [
+            _c("error-component", {
+              attrs: { mesg: _vm.content.errorMesg },
+              on: {
+                closeError: function($event) {
+                  _vm.content.errorMesg = ""
+                }
+              }
+            })
+          ]
+        : _vm._e()
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -34957,6 +35057,11 @@ let QuickReplyComponent = class QuickReplyComponent extends __WEBPACK_IMPORTED_M
     createNewQuickReply() {
         return __awaiter(this, void 0, void 0, function* () {
             this.content.createQuickReply();
+        });
+    }
+    updateOrder() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.content.updateOrder();
         });
     }
     documentClick(e) {
@@ -35182,22 +35287,40 @@ var render = function() {
         "ul",
         { ref: "dropdownMenu", staticClass: "quickReplyRootContainer" },
         [
-          _vm._l(_vm.content.item, function(qr, index) {
-            return [
-              _c("quick-reply-item-component", {
-                key: index,
-                attrs: {
-                  qr: qr,
-                  isChildDeleting: _vm.content.isChildDeleting,
-                  index: index
+          _c(
+            "draggable",
+            {
+              staticClass: "draggable",
+              attrs: { handle: ".horizontalDrag" },
+              on: { end: _vm.updateOrder },
+              model: {
+                value: _vm.content.item,
+                callback: function($$v) {
+                  _vm.$set(_vm.content, "item", $$v)
                 },
-                on: {
-                  delItem: _vm.delItem,
-                  closeOtherSection: _vm.closeOtherSection
-                }
+                expression: "content.item"
+              }
+            },
+            [
+              _vm._l(_vm.content.item, function(qr, index) {
+                return [
+                  _c("quick-reply-item-component", {
+                    key: index,
+                    attrs: {
+                      qr: qr,
+                      isChildDeleting: _vm.content.isChildDeleting,
+                      index: index
+                    },
+                    on: {
+                      delItem: _vm.delItem,
+                      closeOtherSection: _vm.closeOtherSection
+                    }
+                  })
+                ]
               })
-            ]
-          }),
+            ],
+            2
+          ),
           _vm._v(" "),
           _vm.content.item.length < 11
             ? _c("li", [
@@ -35221,10 +35344,23 @@ var render = function() {
               ])
             : _vm._e()
         ],
-        2
+        1
       ),
       _vm._v(" "),
-      !_vm.isValid ? [_vm._m(0)] : _vm._e()
+      !_vm.isValid ? [_vm._m(0)] : _vm._e(),
+      _vm._v(" "),
+      _vm.content.errorMesg !== ""
+        ? [
+            _c("error-component", {
+              attrs: { mesg: _vm.content.errorMesg },
+              on: {
+                closeError: function($event) {
+                  _vm.content.errorMesg = ""
+                }
+              }
+            })
+          ]
+        : _vm._e()
     ],
     2
   )
@@ -35264,6 +35400,8 @@ if (false) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_UserInputContentModel__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UserInputItemComponent_vue__ = __webpack_require__(266);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UserInputItemComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__UserInputItemComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -35280,11 +35418,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 
+
 let UserInputComponent = class UserInputComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
-    constructor() {
-        super(...arguments);
-        this.validation = ["None", "Phone", "Email", "Number"];
-    }
     createNewUserInput() {
         return __awaiter(this, void 0, void 0, function* () {
             this.content.createUserInpt();
@@ -35296,6 +35431,9 @@ let UserInputComponent = class UserInputComponent extends __WEBPACK_IMPORTED_MOD
         if (el !== target && !el.contains(target)) {
             this.closeOtherSection(-1);
         }
+    }
+    delItem(index) {
+        this.content.delItem(index);
     }
     closeOtherSection(index) {
         for (let i in this.content.item) {
@@ -35318,7 +35456,11 @@ __decorate([
     })
 ], UserInputComponent.prototype, "content", void 0);
 UserInputComponent = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
+        components: {
+            UserInputItemComponent: __WEBPACK_IMPORTED_MODULE_2__UserInputItemComponent_vue___default.a
+        }
+    })
 ], UserInputComponent);
 /* harmony default export */ __webpack_exports__["default"] = (UserInputComponent);
 
@@ -35430,137 +35572,16 @@ var render = function() {
               _vm._m(1),
               _vm._v(" "),
               _vm._l(_vm.content.item, function(ui, index) {
-                return _c(
-                  "li",
-                  { key: index, staticClass: "userInputCon" },
-                  [
-                    _c("div", { staticClass: "userInputForm" }, [
-                      _c("div", { staticClass: "userInputQuestion" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: ui.question,
-                              expression: "ui.question"
-                            }
-                          ],
-                          attrs: { type: "text" },
-                          domProps: { value: ui.question },
-                          on: {
-                            blur: function($event) {
-                              ui.saveContent()
-                            },
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(ui, "question", $event.target.value)
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "userInputValidation" }, [
-                        _c("div", { staticClass: "userInputValidationCon" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass: "userInputValidationValue",
-                              on: {
-                                click: function($event) {
-                                  ui.showVal = !ui.showVal
-                                  _vm.closeOtherSection(index)
-                                }
-                              }
-                            },
-                            [_vm._v(_vm._s(_vm.validation[ui.validation]))]
-                          ),
-                          _vm._v(" "),
-                          ui.showVal
-                            ? _c(
-                                "ul",
-                                { staticClass: "userInputValidationOption" },
-                                _vm._l(_vm.validation, function(v, vindex) {
-                                  return _c(
-                                    "li",
-                                    {
-                                      key: vindex,
-                                      on: {
-                                        click: function($event) {
-                                          ui.validation = vindex
-                                          ui.showVal = false
-                                          ui.saveContent()
-                                        }
-                                      }
-                                    },
-                                    [_vm._v(_vm._s(v))]
-                                  )
-                                })
-                              )
-                            : _vm._e()
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "userInputAttribute" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: ui.attribute,
-                              expression: "ui.attribute"
-                            }
-                          ],
-                          attrs: { type: "text" },
-                          domProps: { value: ui.attribute },
-                          on: {
-                            blur: function($event) {
-                              ui.saveContent()
-                            },
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(ui, "attribute", $event.target.value)
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "delIcon",
-                        on: {
-                          click: function($event) {
-                            _vm.content.delItem(index)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("delete")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    ui.errorMesg !== ""
-                      ? [
-                          _c("error-component", {
-                            attrs: { mesg: ui.errorMesg },
-                            on: {
-                              closeError: function($event) {
-                                ui.errorMesg = ""
-                              }
-                            }
-                          })
-                        ]
-                      : _vm._e()
-                  ],
-                  2
-                )
+                return [
+                  _c("user-input-item-component", {
+                    key: index,
+                    attrs: { index: index, ui: ui },
+                    on: {
+                      closeOtherSection: _vm.closeOtherSection,
+                      delItem: _vm.delItem
+                    }
+                  })
+                ]
               })
             ],
             2
@@ -35763,42 +35784,58 @@ var render = function() {
               _vm.section.lock
                 ? [_c("div", [_vm._v(_vm._s(_vm.section.title))])]
                 : [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.section.title,
-                          expression: "section.title"
+                    _c("div", { staticClass: "blockSectionTitleCon" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.section.title,
+                            expression: "section.title"
+                          }
+                        ],
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.section.title },
+                        on: {
+                          keyup: function($event) {
+                            if (
+                              !("button" in $event) &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            return _vm.updateSection($event)
+                          },
+                          blur: _vm.updateSection,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.section, "title", $event.target.value)
+                          }
                         }
-                      ],
-                      attrs: { type: "text" },
-                      domProps: { value: _vm.section.title },
-                      on: {
-                        keyup: function($event) {
-                          if (
-                            !("button" in $event) &&
-                            _vm._k(
-                              $event.keyCode,
-                              "enter",
-                              13,
-                              $event.key,
-                              "Enter"
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "blockSectionTitleConBackgroundWidth" },
+                        [
+                          _vm._v(
+                            _vm._s(
+                              _vm.section.title
+                                ? _vm.section.title
+                                : "Enter a title"
                             )
-                          ) {
-                            return null
-                          }
-                          return _vm.updateSection($event)
-                        },
-                        blur: _vm.updateSection,
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.section, "title", $event.target.value)
-                        }
-                      }
-                    }),
+                          )
+                        ]
+                      )
+                    ]),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -50958,10 +50995,10 @@ SidebarComponent = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ChatBlockSectionModel__ = __webpack_require__(186);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ChatBlockSectionModel__ = __webpack_require__(186);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -50973,7 +51010,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__["a" /* default */] {
+class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */] {
     constructor(chatBlock, sections) {
         super();
         this.isAllowDelete = false;
@@ -50987,7 +51024,7 @@ class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler
         }
     }
     buildContentModel(section) {
-        this.chatBlock.sections.push(new __WEBPACK_IMPORTED_MODULE_0__ChatBlockSectionModel__["a" /* default */](section));
+        this.chatBlock.sections.push(new __WEBPACK_IMPORTED_MODULE_2__ChatBlockSectionModel__["a" /* default */](section));
     }
     get id() {
         return this.chatBlock.id;
@@ -51051,7 +51088,7 @@ class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler
             let data = new FormData();
             data.append('title', this.title);
             data.append('_method', 'put');
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.project}/chat-bot/block/${this.id}`,
                 method: 'post',
                 data: data
@@ -51068,7 +51105,7 @@ class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler
     createNewSection() {
         return __awaiter(this, void 0, void 0, function* () {
             this.creatingSection = true;
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.project}/chat-bot/block/${this.id}/section`,
                 method: 'post'
             }).then((res) => {
@@ -51086,7 +51123,7 @@ class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler
                 status: true,
                 mesg: "Success"
             };
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.project}/chat-bot/block/${this.id}`,
                 method: 'delete'
             }).catch((err) => {
@@ -51118,6 +51155,9 @@ class ChatBlockSectionModel {
     }
     set title(title) {
         this.blockSection.title = title;
+    }
+    get shortenTitle() {
+        return this.blockSection.title.length > 20 ? this.blockSection.title.slice(0, 20) : this.blockSection.title;
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ChatBlockSectionModel;
@@ -51274,7 +51314,7 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [_vm._v(_vm._s(section.title))]
+                                    [_vm._v(_vm._s(section.shortenTitle))]
                                   )
                                 }),
                                 _vm._v(" "),
@@ -62499,6 +62539,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "li",
+    { staticClass: "horizontalDragCon" },
     [
       _c("div", { staticClass: "quickReplyCapsule" }, [
         _c(
@@ -62771,7 +62812,9 @@ var render = function() {
               }
             })
           ]
-        : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._m(4)
     ],
     2
   )
@@ -62808,6 +62851,14 @@ var staticRenderFns = [
     return _c("div", { staticClass: "componentDeleting" }, [
       _c("div", { staticClass: "deletingContainer" })
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "horizontalDrag" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("unfold_more")])
+    ])
   }
 ]
 render._withStripped = true
@@ -62816,6 +62867,243 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-67c4e578", module.exports)
+  }
+}
+
+/***/ }),
+/* 266 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(267)
+/* template */
+var __vue_template__ = __webpack_require__(268)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/builder/UserInputItemComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d79fd5a0", Component.options)
+  } else {
+    hotAPI.reload("data-v-d79fd5a0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 267 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_UserInputItemModel__ = __webpack_require__(109);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+let UserInputItemComponent = class UserInputItemComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.validation = ["None", "Phone", "Email", "Number"];
+    }
+    closeOtherSection(index) { }
+    delItem(index) { }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_UserInputItemModel__["a" /* default */]
+    })
+], UserInputItemComponent.prototype, "ui", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], UserInputItemComponent.prototype, "index", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("closeOtherSection")
+], UserInputItemComponent.prototype, "closeOtherSection", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("delItem")
+], UserInputItemComponent.prototype, "delItem", null);
+UserInputItemComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], UserInputItemComponent);
+/* harmony default export */ __webpack_exports__["default"] = (UserInputItemComponent);
+
+
+/***/ }),
+/* 268 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "li",
+    { key: _vm.index, staticClass: "userInputCon" },
+    [
+      _c("div", { staticClass: "userInputForm" }, [
+        _c("div", { staticClass: "userInputQuestion" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.ui.question,
+                expression: "ui.question"
+              }
+            ],
+            attrs: { type: "text" },
+            domProps: { value: _vm.ui.question },
+            on: {
+              blur: function($event) {
+                _vm.ui.saveContent()
+              },
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.ui, "question", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "userInputValidation" }, [
+          _c("div", { staticClass: "userInputValidationCon" }, [
+            _c(
+              "div",
+              {
+                staticClass: "userInputValidationValue",
+                on: {
+                  click: function($event) {
+                    _vm.ui.showVal = !_vm.ui.showVal
+                    _vm.closeOtherSection(_vm.index)
+                  }
+                }
+              },
+              [_vm._v(_vm._s(_vm.validation[_vm.ui.validation]))]
+            ),
+            _vm._v(" "),
+            _vm.ui.showVal
+              ? _c(
+                  "ul",
+                  { staticClass: "userInputValidationOption" },
+                  _vm._l(_vm.validation, function(v, vindex) {
+                    return _c(
+                      "li",
+                      {
+                        key: vindex,
+                        on: {
+                          click: function($event) {
+                            _vm.ui.validation = vindex
+                            _vm.ui.showVal = false
+                            _vm.ui.saveContent()
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(v))]
+                    )
+                  })
+                )
+              : _vm._e()
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "userInputAttribute" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.ui.attribute,
+                expression: "ui.attribute"
+              }
+            ],
+            attrs: { type: "text" },
+            domProps: { value: _vm.ui.attribute },
+            on: {
+              blur: function($event) {
+                _vm.ui.saveContent()
+              },
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.ui, "attribute", $event.target.value)
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "delIcon",
+          on: {
+            click: function($event) {
+              _vm.delItem(_vm.index)
+            }
+          }
+        },
+        [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
+      ),
+      _vm._v(" "),
+      _vm.ui.errorMesg !== ""
+        ? [
+            _c("error-component", {
+              attrs: { mesg: _vm.ui.errorMesg },
+              on: {
+                closeError: function($event) {
+                  _vm.ui.errorMesg = ""
+                }
+              }
+            })
+          ]
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-d79fd5a0", module.exports)
   }
 }
 

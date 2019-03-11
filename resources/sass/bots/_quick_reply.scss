@@ -1,7 +1,8 @@
 .quickReplyRoot {
     padding-left: 0;
-    display: flex;
+    display: grid;
 }
+
 
 .quickReplyRootContainer {
     height: 100px;
@@ -12,8 +13,12 @@
     align-items: center;
     list-style: none;
     margin-bottom: 0;
-    min-width: 100%;
-    & > li {
+    width: 100%;
+    .draggable {
+        display: flex;
+    }
+    & > li,
+    & > .draggable > li {
         margin-right: 15px;
         white-space: nowrap;
         position: relative;
@@ -91,8 +96,8 @@
     width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
-    height: 23px;
-    line-height: 23px;
+    height: 21px;
+    line-height: 21px;
     color: $btnText1;
 }
 
@@ -144,7 +149,7 @@
             color: $red;
         }
     }
-    .noticeText {
+    .noticText {
         height: 30px;
         line-height: 30px;
         padding-left: 10px;

@@ -5,12 +5,15 @@
                 <div>{{ section.title }}</div>
             </template>
             <template v-else>
-                <input
-                    type="text"
-                    v-model="section.title"
-                    v-on:keyup.enter="updateSection"
-                    v-on:blur="updateSection"
-                >
+                <div class="blockSectionTitleCon">
+                    <input
+                        type="text"
+                        v-model="section.title"
+                        v-on:keyup.enter="updateSection"
+                        v-on:blur="updateSection"
+                    >
+                    <div class="blockSectionTitleConBackgroundWidth">{{ section.title ? section.title : "Enter a title" }}</div>
+                </div>
                 <div class="deleteAction" @click="delSection()">
                     <i class="material-icons">delete</i>
                 </div>
@@ -40,7 +43,11 @@
                             <i class="material-icons">unfold_more</i>
                         </div>
                     </div>
-                    <component :is="getComponent(content.type)" :isValid="content.type===3 ? checkIsValid(index) : null"  :content="content"></component>
+                    <component
+                        :is="getComponent(content.type)"
+                        :isValid="content.type===3 ? checkIsValid(index) : null"
+                        :content="content"
+                    ></component>
                     <template v-if="content.isDeleting">
                         <div class="componentDeleting">
                             <div class="deletingContainer"></div>
@@ -325,10 +332,10 @@ export default class BuilderComponent extends Vue {
     private checkIsValid(index: any) {
         let status = false;
 
-        if(index>0) {
-            let prevType = this.contents[index-1].type;
-            let available = [1,5,6,7];
-            if(available.indexOf(prevType)>-1) {
+        if (index > 0) {
+            let prevType = this.contents[index - 1].type;
+            let available = [1, 5, 6, 7];
+            if (available.indexOf(prevType) > -1) {
                 status = true;
             }
         }

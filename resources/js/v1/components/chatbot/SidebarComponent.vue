@@ -44,7 +44,7 @@
                                 class="chatBlockContent sortCBC"
                                 @click="selectBlock(index, sIndex)"
                                 :class="{'selectedBlock': selectedBlock==section.id}"
-                            >{{ section.title }}</div>
+                            >{{ section.shortenTitle }}</div>
                             <div
                                 slot="footer"
                                 v-if="!block.isSecCreating"

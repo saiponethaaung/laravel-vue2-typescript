@@ -11388,6 +11388,8 @@ a:hover {
   padding-left: 20px;
   width: calc(100% + 10px);
   margin-left: -5px;
+  white-space: initial;
+  word-wrap: break-word;
   cursor: pointer;
 }
 
@@ -11773,6 +11775,58 @@ input.required::-ms-input-placeholder {
 
 input.required::placeholder {
   color: #e9604a !important;
+}
+
+.horizontalDrag {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  left: -100%;
+  right: -100%;
+  margin: 0 auto;
+  width: 26px;
+  cursor: pointer;
+}
+
+.horizontalDrag .material-icons {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+
+.horizontalDragCon:hover .horizontalDrag {
+  visibility: visible;
+  opacity: 1;
+}
+
+.blockSectionTitleCon {
+  position: relative;
+  max-width: 80%;
+  overflow: hidden;
+}
+
+.blockSectionTitleCon input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-width: 40px;
+  height: 36px;
+  opacity: 0;
+}
+
+.blockSectionTitleCon input:focus {
+  height: 100%;
+  opacity: 1;
+}
+
+.blockSectionTitleCon input:focus + .blockSectionTitleConBackgroundWidth {
+  padding: 0 12px;
+}
+
+.blockSectionTitleCon .blockSectionTitleConBackgroundWidth {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .botTextComponent {
@@ -12177,6 +12231,12 @@ input.required::placeholder {
   padding: 0;
 }
 
+.galleListRoot .draggable {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .galleAddMore,
 .chatGalleryContainer {
   border: 1px solid #ebebeb;
@@ -12488,9 +12548,7 @@ input.required::placeholder {
 
 .quickReplyRoot {
   padding-left: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: grid;
 }
 
 .quickReplyRootContainer {
@@ -12506,16 +12564,24 @@ input.required::placeholder {
           align-items: center;
   list-style: none;
   margin-bottom: 0;
-  min-width: 100%;
+  width: 100%;
 }
 
-.quickReplyRootContainer > li {
+.quickReplyRootContainer .draggable {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.quickReplyRootContainer > li,
+.quickReplyRootContainer > .draggable > li {
   margin-right: 15px;
   white-space: nowrap;
   position: relative;
 }
 
-.quickReplyRootContainer > li .quickReplyCapsule {
+.quickReplyRootContainer > li .quickReplyCapsule,
+.quickReplyRootContainer > .draggable > li .quickReplyCapsule {
   cursor: pointer;
   height: 40px;
   padding: 0 20px;
@@ -12541,7 +12607,8 @@ input.required::placeholder {
           flex: auto;
 }
 
-.quickReplyRootContainer > li .quickReplyCapsule.qrAddMore {
+.quickReplyRootContainer > li .quickReplyCapsule.qrAddMore,
+.quickReplyRootContainer > .draggable > li .quickReplyCapsule.qrAddMore {
   color: #aaaaaa;
   border-color: #ebebeb;
   -webkit-box-orient: horizontal;
@@ -12550,12 +12617,14 @@ input.required::placeholder {
           flex-direction: row;
 }
 
-.quickReplyRootContainer > li .quickReplyCapsule.qrAddMore .material-icons {
+.quickReplyRootContainer > li .quickReplyCapsule.qrAddMore .material-icons,
+.quickReplyRootContainer > .draggable > li .quickReplyCapsule.qrAddMore .material-icons {
   font-size: 18px;
   margin-right: 3px;
 }
 
-.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox {
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox,
+.quickReplyRootContainer > .draggable > li .quickReplyCapsule .quickReplyInfoBox {
   display: none;
   position: absolute;
   top: -2px;
@@ -12569,7 +12638,8 @@ input.required::placeholder {
   padding: 10px 0;
 }
 
-.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox.showInfoBox {
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox.showInfoBox,
+.quickReplyRootContainer > .draggable > li .quickReplyCapsule .quickReplyInfoBox.showInfoBox {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -12579,21 +12649,25 @@ input.required::placeholder {
           flex-direction: column;
 }
 
-.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox > div {
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox > div,
+.quickReplyRootContainer > .draggable > li .quickReplyCapsule .quickReplyInfoBox > div {
   padding: 0 15px;
 }
 
-.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox .QRActionName {
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox .QRActionName,
+.quickReplyRootContainer > .draggable > li .quickReplyCapsule .quickReplyInfoBox .QRActionName {
   border-bottom: 1px solid #ebebeb;
   margin-bottom: 10px;
 }
 
-.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox .QRActionName input {
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox .QRActionName input,
+.quickReplyRootContainer > .draggable > li .quickReplyCapsule .quickReplyInfoBox .QRActionName input {
   border-radius: 40px;
   color: #c238eb;
 }
 
-.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox input {
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox input,
+.quickReplyRootContainer > .draggable > li .quickReplyCapsule .quickReplyInfoBox input {
   height: 40px;
   margin-bottom: 10px;
   color: #aaaaaa;
@@ -12604,7 +12678,8 @@ input.required::placeholder {
   font-size: 13px;
 }
 
-.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox input.noMgb {
+.quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox input.noMgb,
+.quickReplyRootContainer > .draggable > li .quickReplyCapsule .quickReplyInfoBox input.noMgb {
   margin-bottom: 0;
 }
 
@@ -12612,8 +12687,8 @@ input.required::placeholder {
   width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
-  height: 23px;
-  line-height: 23px;
+  height: 21px;
+  line-height: 21px;
   color: #c238eb;
 }
 
@@ -12677,7 +12752,7 @@ input.required::placeholder {
   color: #e9604a;
 }
 
-.quickReplyPositionError .noticeText {
+.quickReplyPositionError .noticText {
   height: 30px;
   line-height: 30px;
   padding-left: 10px;

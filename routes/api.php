@@ -123,6 +123,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 
                         Route::group(['prefix' => 'gallery'], function() {
                             Route::post('/', 'V1\\Api\\ChatContent\\CreateController@createNewgallery')->name('chatbot.content.gallery.create');
+                            Route::post('/order', 'V1\\Api\\ChatContent\\UpdateController@updateGalleryOrder')->name('chatbot.content.gallery.update.order');
                             Route::put('/{galleId}', 'V1\\Api\\ChatContent\\UpdateController@updateGallery')->name('chatbot.content.gallery.item.update');
                             Route::delete('/{galleId}', 'V1\\Api\\ChatContent\\DeleteController@deleteGalleryItem')->name('chatbot.content.gallery.item.delete');
                             Route::post('/{galleId}/image', 'V1\\Api\\ChatContent\\UpdateController@uploadGalleryImage')->name('chatbot.content.gallery.image.upload');
@@ -131,6 +132,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 
                         Route::group(['prefix' => 'quick-reply'], function() {
                             Route::post('/', 'V1\\Api\\ChatContent\\CreateController@createNewQuickReply')->name('chatbot.content.qr.create');
+                            Route::post('/order', 'V1\\Api\\ChatContent\\UpdateController@updateQuickReplyOrder')->name('chatbot.content.qr.update.order');
                             Route::put('/{qrId}', 'V1\\Api\\ChatContent\\UpdateController@updateQuickReply')->name('chatbot.content.qr.update');
                             Route::delete('/{qrId}', 'V1\\Api\\ChatContent\\DeleteController@deleteQuickReplyItem')->name('chatbot.content.qr.item.delete');
                             Route::post('/{qrId}/block', 'V1\\Api\\ChatContent\\UpdateController@addQuickReplyBlock')->name('chatbot.content.qr.block.create');

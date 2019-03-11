@@ -20,45 +20,15 @@
                                 <div class="userInputAttribute">Save answer to attribute *</div>
                             </div>
                         </li>
-                        <li v-for="(ui, index) in content.item" :key="index" class="userInputCon">
-                            <div class="userInputForm">
-                                <div class="userInputQuestion">
-                                    <input
-                                        type="text"
-                                        v-model="ui.question"
-                                        v-on:blur="ui.saveContent()"
-                                    >
-                                </div>
-                                <div class="userInputValidation">
-                                    <div class="userInputValidationCon">
-                                        <div
-                                            class="userInputValidationValue"
-                                            @click="ui.showVal=!ui.showVal;closeOtherSection(index)"
-                                        >{{ validation[ui.validation] }}</div>
-                                        <ul class="userInputValidationOption" v-if="ui.showVal">
-                                            <li
-                                                v-for="(v, vindex) in validation"
-                                                :key="vindex"
-                                                @click="ui.validation=vindex;ui.showVal=false;ui.saveContent();"
-                                            >{{ v }}</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="userInputAttribute">
-                                    <input
-                                        type="text"
-                                        v-model="ui.attribute"
-                                        v-on:blur="ui.saveContent()"
-                                    >
-                                </div>
-                            </div>
-                            <div class="delIcon" @click="content.delItem(index)">
-                                <i class="material-icons">delete</i>
-                            </div>
-                            <template v-if="ui.errorMesg!==''">
-                                <error-component :mesg="ui.errorMesg" @closeError="ui.errorMesg=''"></error-component>
-                            </template>
-                        </li>
+                        <template v-for="(ui, index) in content.item">
+                            <user-input-item-component
+                                :index="index"
+                                :ui="ui"
+                                :key="index"
+                                @closeOtherSection="closeOtherSection"
+                                @delItem="delItem"
+                            ></user-input-item-component>
+                        </template>
                     </ul>
                     <div>
                         <template v-if="content.isCreating">Creating...</template>
@@ -78,15 +48,18 @@
 <script lang="ts">
 import { Component, Watch, Prop, Vue } from "vue-property-decorator";
 import UserInputContentModel from "../../../models/bots/UserInputContentModel";
+import UserInputItemComponent from "./UserInputItemComponent.vue";
 
-@Component
+@Component({
+    components: {
+        UserInputItemComponent
+    }
+})
 export default class UserInputComponent extends Vue {
     @Prop({
         type: UserInputContentModel
     })
     content!: UserInputContentModel;
-
-    private validation: Array<string> = ["None", "Phone", "Email", "Number"];
 
     async createNewUserInput() {
         this.content.createUserInpt();
@@ -98,6 +71,10 @@ export default class UserInputComponent extends Vue {
         if (el !== target && !el.contains(target)) {
             this.closeOtherSection(-1);
         }
+    }
+
+    delItem(index: any) {
+        this.content.delItem(index);
     }
 
     closeOtherSection(index: any) {

@@ -1,7 +1,7 @@
 <template>
     <li
         :key="index"
-        class="galleListItem"
+        class="galleListItem horizontalDragCon"
         :class="{'listRequired': listItem.canShowError && listItem.title!=='' && (listItem.sub==='' && listItem.image==='' && listItem.buttons.length==0)}"
     >
         <div class="chatGalleryContainer">
@@ -110,6 +110,9 @@
             <div
                 class="requiredNotiText"
             >Set up at least one more item field: subtitle, button or image</div>
+        </div>
+        <div class="horizontalDrag">
+            <i class="material-icons">unfold_more</i>
         </div>
     </li>
 </template>

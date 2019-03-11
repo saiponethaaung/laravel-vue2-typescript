@@ -777,4 +777,94 @@ class UpdateController extends Controller
             'image' => $image
         ], 201);
     }
+
+    public function updateQuickReplyOrder(Request $request)
+    {
+        $quickReplies = $request->only('order');
+
+        $validator = Validator::make($quickReplies, [
+            'order' => 'required',
+            'order.*' => 'required|exists:chat_quick_reply,id'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $order = 1;
+            foreach($quickReplies['order'] as $quickReply) {
+                $qr = ChatQuickReply::find($quickReply);
+                $qr->order = $order++;
+                $qr->save();
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update quick reply order!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success'
+        ]);
+    }
+
+    public function updateGalleryOrder(Request $request)
+    {
+        $chatGalleries = $request->only('order');
+
+        $validator = Validator::make($chatGalleries, [
+            'order' => 'required',
+            'order.*' => 'required|exists:chat_gallery,id'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $order = 1;
+            foreach($chatGalleries['order'] as $chatGallery) {
+                $cg = ChatGallery::find($chatGallery);
+                $cg->order = $order++;
+                $cg->save();
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update gallery order!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success'
+        ]);
+    }
 }

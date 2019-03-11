@@ -2,16 +2,23 @@
     <div class="componentTypeOne">
         <div class="galleListComponentRoot">
             <ul class="galleListRoot">
-                <template v-for="(l, index) in content.item">
-                    <gallery-item-component
-                        :listItem="l"
-                        :index="index"
-                        :baseUrl="content.url"
-                        :projectid="content.project"
-                        @delItem="delItem"
-                        :key="index"
-                    ></gallery-item-component>
-                </template>
+                <draggable
+                    v-model="content.item"
+                    class="draggable"
+                    handle=".horizontalDrag"
+                    @end="updateOrder"
+                >
+                    <template v-for="(l, index) in content.item">
+                        <gallery-item-component
+                            :listItem="l"
+                            :index="index"
+                            :baseUrl="content.url"
+                            :projectid="content.project"
+                            @delItem="delItem"
+                            :key="index"
+                        ></gallery-item-component>
+                    </template>
+                </draggable>
                 <li class="addMoreChatGallery" v-if="content.item.length<10">
                     <div class="galleAddMore">
                         <template v-if="content.isCreating">
@@ -26,6 +33,9 @@
                 </li>
             </ul>
         </div>
+        <template v-if="content.errorMesg!==''">
+            <error-component :mesg="content.errorMesg" @closeError="content.errorMesg=''"></error-component>
+        </template>
     </div>
 </template>
 
@@ -51,6 +61,10 @@ export default class GalleryComponent extends Vue {
 
     delItem(index: any) {
         this.content.delItem(index);
+    }
+
+    async updateOrder() {
+        await this.content.updateOrder();
     }
 }
 </script>

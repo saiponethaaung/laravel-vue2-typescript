@@ -15,7 +15,7 @@
                                         class="chatContentCon"
                                         :class="{'sender': mesg.isSend}"
                                     >
-                                        <figure class="chatImage">
+                                        <figure class="chatImage" v-if="!mesg.isSend || (mesg.isLive && mesg.isSend)">
                                             <img
                                                 :src="mesg.isSend ? '/images/sample/logo.png' : $store.state.inboxList[$store.state.selectedInbox].profile_pic"
                                             >

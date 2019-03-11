@@ -119,3 +119,29 @@
     text-align: center;
     color: #ffffff;
 }
+
+.quickReplyPositionError {
+    position: absolute;
+    top: 0;
+    left: 28px;
+    width: calc(100% - 28px);
+    height: 100%;
+    background: rgba(0,0,0,.4);
+    padding: 10px 17px;
+    color: #fff;
+    .noticIcon {
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        .material-icons {
+            font-size: 22px;
+            color: $red;
+        }
+    }
+    .noticeText {
+        height: 30px;
+        line-height: 30px;
+        padding-left: 10px;
+    }
+}

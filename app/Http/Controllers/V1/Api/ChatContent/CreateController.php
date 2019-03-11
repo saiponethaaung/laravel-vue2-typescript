@@ -152,7 +152,17 @@ class CreateController extends Controller
             'duration' => 1
         ]);
 
-        $list = ChatGallery::create([
+        $list1 = ChatGallery::create([
+            'title' => '',
+            'sub' => '',
+            'image' => '',
+            'url' => '',
+            'type' => 1,
+            'order' => 1,
+            'content_id' => $create->id
+        ]);
+
+        $list2 = ChatGallery::create([
             'title' => '',
             'sub' => '',
             'image' => '',
@@ -175,7 +185,16 @@ class CreateController extends Controller
                 'content' => [
                     'content' => [
                         [
-                            'id' => $list->id,
+                            'id' => $list1->id,
+                            'title' => '',
+                            'sub' => '',
+                            'image' => '',
+                            'url' => '',
+                            'content_id' => $create->id,
+                            'button' => null
+                        ],
+                        [
+                            'id' => $list2->id,
                             'title' => '',
                             'sub' => '',
                             'image' => '',

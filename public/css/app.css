@@ -11473,7 +11473,7 @@ a:hover {
 }
 
 .buttonActionGroup .buttonName {
-  line-height: 8px;
+  line-height: 20px;
   color: #aaaaaa;
 }
 
@@ -12641,6 +12641,41 @@ input.required::placeholder {
   width: 15px;
   text-align: center;
   color: #ffffff;
+}
+
+.quickReplyPositionError {
+  position: absolute;
+  top: 0;
+  left: 28px;
+  width: calc(100% - 28px);
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 10px 17px;
+  color: #fff;
+}
+
+.quickReplyPositionError .noticIcon {
+  height: 30px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.quickReplyPositionError .noticIcon .material-icons {
+  font-size: 22px;
+  color: #e9604a;
+}
+
+.quickReplyPositionError .noticeText {
+  height: 30px;
+  line-height: 30px;
+  padding-left: 10px;
 }
 
 .userInputRootContainer {

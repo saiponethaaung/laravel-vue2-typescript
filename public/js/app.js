@@ -33214,6 +33214,17 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
         }
         return component;
     }
+    checkIsValid(index) {
+        let status = false;
+        if (index > 0) {
+            let prevType = this.contents[index - 1].type;
+            let available = [1, 5, 6, 7];
+            if (available.indexOf(prevType) > -1) {
+                status = true;
+            }
+        }
+        return status;
+    }
     delItem(index) {
         return __awaiter(this, void 0, void 0, function* () {
             if (confirm("Are you sure you want to delete?")) {
@@ -34923,6 +34934,8 @@ if (false) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_QuickReplyContentModel__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__QuickReplyItemComponent_vue__ = __webpack_require__(263);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__QuickReplyItemComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__QuickReplyItemComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -34937,6 +34950,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 let QuickReplyComponent = class QuickReplyComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
@@ -34959,6 +34973,9 @@ let QuickReplyComponent = class QuickReplyComponent extends __WEBPACK_IMPORTED_M
             this.content.item[i].canShow = false;
         }
     }
+    delItem(index) {
+        this.content.delItem(index);
+    }
     created() {
         document.addEventListener("click", this.documentClick);
     }
@@ -34972,8 +34989,17 @@ __decorate([
         type: __WEBPACK_IMPORTED_MODULE_1__models_bots_QuickReplyContentModel__["a" /* default */]
     })
 ], QuickReplyComponent.prototype, "content", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: Boolean
+    })
+], QuickReplyComponent.prototype, "isValid", void 0);
 QuickReplyComponent = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
+        components: {
+            QuickReplyItemComponent: __WEBPACK_IMPORTED_MODULE_2__QuickReplyItemComponent_vue___default.a
+        }
+    })
 ], QuickReplyComponent);
 /* harmony default export */ __webpack_exports__["default"] = (QuickReplyComponent);
 
@@ -35148,379 +35174,76 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "componentTypeOne quickReplyRoot" }, [
-    _c(
-      "ul",
-      { ref: "dropdownMenu", staticClass: "quickReplyRootContainer" },
-      [
-        _vm._l(_vm.content.item, function(qr, index) {
-          return _c(
-            "li",
-            { key: index },
-            [
-              _c("div", { staticClass: "quickReplyCapsule" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "quickReplyTitle",
-                    on: {
-                      click: function($event) {
-                        _vm.closeOtherSection(index)
-                        qr.canShow = !qr.canShow
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(qr.title ? qr.title : "Enter button name"))]
-                ),
-                _vm._v(" "),
-                qr.block.length > 0
-                  ? _c(
+  return _c(
+    "div",
+    { staticClass: "componentTypeOne quickReplyRoot" },
+    [
+      _c(
+        "ul",
+        { ref: "dropdownMenu", staticClass: "quickReplyRootContainer" },
+        [
+          _vm._l(_vm.content.item, function(qr, index) {
+            return [
+              _c("quick-reply-item-component", {
+                key: index,
+                attrs: {
+                  qr: qr,
+                  isChildDeleting: _vm.content.isChildDeleting,
+                  index: index
+                },
+                on: {
+                  delItem: _vm.delItem,
+                  closeOtherSection: _vm.closeOtherSection
+                }
+              })
+            ]
+          }),
+          _vm._v(" "),
+          _vm.content.item.length < 11
+            ? _c("li", [
+                _vm.content.isCreating
+                  ? _c("div", { staticClass: "quickReplyCapsule qrAddMore" }, [
+                      _vm._v("Creating...")
+                    ])
+                  : _c(
                       "div",
                       {
-                        staticClass: "quickReplyValue",
-                        on: {
-                          click: function($event) {
-                            _vm.closeOtherSection(index)
-                            qr.canShow = !qr.canShow
-                          }
-                        }
+                        staticClass: "quickReplyCapsule qrAddMore",
+                        on: { click: _vm.createNewQuickReply }
                       },
-                      [_vm._v(_vm._s(qr.block[0].title))]
+                      [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("add")
+                        ]),
+                        _vm._v("Add Quick Reply\n            ")
+                      ]
                     )
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "quickReplyInfoBox",
-                    class: { showInfoBox: qr.canShow }
-                  },
-                  [
-                    _c("div", { staticClass: "QRActionName" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: qr.title,
-                            expression: "qr.title"
-                          }
-                        ],
-                        attrs: { placeholder: "Title", maxlength: "20" },
-                        domProps: { value: qr.title },
-                        on: {
-                          blur: function($event) {
-                            qr.saveContent()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(qr, "title", $event.target.value)
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "limitReplyTitle" }, [
-                        _vm._v(_vm._s(qr.textLimitTitle))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [
-                      _c(
-                        "div",
-                        [
-                          qr.block.length > 0
-                            ? [
-                                _c(
-                                  "div",
-                                  { staticClass: "selectedLinkedBlock" },
-                                  [
-                                    _c("span", { staticClass: "slbText" }, [
-                                      _vm._v(_vm._s(qr.block[0].title))
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass: "slbDel",
-                                        on: {
-                                          click: function($event) {
-                                            qr.delButton()
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c(
-                                          "i",
-                                          { staticClass: "material-icons" },
-                                          [_vm._v("delete")]
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    qr.isBtnProcess
-                                      ? [_vm._m(0, true)]
-                                      : _vm._e()
-                                  ],
-                                  2
-                                )
-                              ]
-                            : [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: qr.blockKey,
-                                      expression: "qr.blockKey"
-                                    }
-                                  ],
-                                  attrs: { placeholder: "Enter block name" },
-                                  domProps: { value: qr.blockKey },
-                                  on: {
-                                    keyup: function($event) {
-                                      qr.loadSuggestion()
-                                    },
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        qr,
-                                        "blockKey",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                }),
-                                _vm._v(" "),
-                                qr.blockList.length > 0
-                                  ? [
-                                      _c(
-                                        "div",
-                                        { staticClass: "sugContainer" },
-                                        [
-                                          _vm._l(qr.blockList, function(
-                                            b,
-                                            index
-                                          ) {
-                                            return _c(
-                                              "div",
-                                              {
-                                                key: index,
-                                                staticClass: "sugBlock"
-                                              },
-                                              [
-                                                _c(
-                                                  "div",
-                                                  {
-                                                    staticClass: "sugBlockTitle"
-                                                  },
-                                                  [_vm._v(_vm._s(b.title))]
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "div",
-                                                  {
-                                                    staticClass: "sugBlockSec"
-                                                  },
-                                                  _vm._l(b.contents, function(
-                                                    s,
-                                                    sindex
-                                                  ) {
-                                                    return _c(
-                                                      "div",
-                                                      {
-                                                        key: sindex,
-                                                        staticClass:
-                                                          "sugBlockSecTitle",
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            qr.addBlock(
-                                                              index,
-                                                              sindex
-                                                            )
-                                                          }
-                                                        }
-                                                      },
-                                                      [_vm._v(_vm._s(s.title))]
-                                                    )
-                                                  })
-                                                )
-                                              ]
-                                            )
-                                          }),
-                                          _vm._v(" "),
-                                          qr.isBtnProcess
-                                            ? [_vm._m(1, true)]
-                                            : _vm._e()
-                                        ],
-                                        2
-                                      )
-                                    ]
-                                  : _vm._e()
-                              ]
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _vm._m(2, true),
-                      _vm._v(" "),
-                      _c("div", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: qr.attribute,
-                              expression: "qr.attribute"
-                            }
-                          ],
-                          attrs: { placeholder: "<Set attribute>" },
-                          domProps: { value: qr.attribute },
-                          on: {
-                            blur: function($event) {
-                              qr.saveContent()
-                            },
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(qr, "attribute", $event.target.value)
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: qr.value,
-                              expression: "qr.value"
-                            }
-                          ],
-                          staticClass: "noMgb",
-                          attrs: { placeholder: "<Set value>" },
-                          domProps: { value: qr.value },
-                          on: {
-                            blur: function($event) {
-                              qr.saveContent()
-                            },
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(qr, "value", $event.target.value)
-                            }
-                          }
-                        })
-                      ])
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "delIcon",
-                    on: {
-                      click: function($event) {
-                        _vm.content.delItem(index)
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("delete")
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _vm.content.isChildDeleting === index
-                ? [_vm._m(3, true)]
-                : _vm._e(),
-              _vm._v(" "),
-              qr.errorMesg !== ""
-                ? [
-                    _c("error-component", {
-                      attrs: { mesg: qr.errorMesg },
-                      on: {
-                        closeError: function($event) {
-                          qr.errorMesg = ""
-                        }
-                      }
-                    })
-                  ]
-                : _vm._e()
-            ],
-            2
-          )
-        }),
-        _vm._v(" "),
-        _vm.content.item.length < 11
-          ? _c("li", [
-              _vm.content.isCreating
-                ? _c("div", { staticClass: "quickReplyCapsule qrAddMore" }, [
-                    _vm._v("Creating...")
-                  ])
-                : _c(
-                    "div",
-                    {
-                      staticClass: "quickReplyCapsule qrAddMore",
-                      on: { click: _vm.createNewQuickReply }
-                    },
-                    [
-                      _c("i", { staticClass: "material-icons" }, [
-                        _vm._v("add")
-                      ]),
-                      _vm._v("Add Quick Reply\n            ")
-                    ]
-                  )
-            ])
-          : _vm._e()
-      ],
-      2
-    )
-  ])
+              ])
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      !_vm.isValid ? [_vm._m(0)] : _vm._e()
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "componentDeleting" }, [
-      _c("div", { staticClass: "deletingContainer" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "componentDeleting" }, [
-      _c("div", { staticClass: "deletingContainer" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "attributeNotice" }, [
-      _c("span", [_vm._v("Save reply as attribute:")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "componentDeleting" }, [
-      _c("div", { staticClass: "deletingContainer" })
+    return _c("div", { staticClass: "quickReplyPositionError" }, [
+      _c("span", { staticClass: "noticIcon" }, [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("warning")])
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "noticText" }, [
+        _vm._v(
+          "Quick replies can be placed only under text, list, gallery or image cards"
+        )
+      ])
     ])
   }
 ]
@@ -36154,7 +35877,11 @@ var render = function() {
                   _vm._v(" "),
                   _c(_vm.getComponent(content.type), {
                     tag: "component",
-                    attrs: { content: content }
+                    attrs: {
+                      isValid:
+                        content.type === 3 ? _vm.checkIsValid(index) : null,
+                      content: content
+                    }
                   }),
                   _vm._v(" "),
                   content.isDeleting
@@ -62661,6 +62388,436 @@ var index_esm = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(264)
+/* template */
+var __vue_template__ = __webpack_require__(265)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/builder/QuickReplyItemComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-67c4e578", Component.options)
+  } else {
+    hotAPI.reload("data-v-67c4e578", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 264 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_QuickReplyItemModel__ = __webpack_require__(106);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+let QuickReplyItemComponent = class QuickReplyItemComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    deleteItem(index) { }
+    closeOtherSection(index) { }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_QuickReplyItemModel__["a" /* default */]
+    })
+], QuickReplyItemComponent.prototype, "qr", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], QuickReplyItemComponent.prototype, "isChildDeleting", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], QuickReplyItemComponent.prototype, "index", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("delItem")
+], QuickReplyItemComponent.prototype, "deleteItem", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("closeOtherSection")
+], QuickReplyItemComponent.prototype, "closeOtherSection", null);
+QuickReplyItemComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], QuickReplyItemComponent);
+/* harmony default export */ __webpack_exports__["default"] = (QuickReplyItemComponent);
+
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "li",
+    [
+      _c("div", { staticClass: "quickReplyCapsule" }, [
+        _c(
+          "div",
+          {
+            staticClass: "quickReplyTitle",
+            on: {
+              click: function($event) {
+                _vm.closeOtherSection(_vm.index)
+                _vm.qr.canShow = !_vm.qr.canShow
+              }
+            }
+          },
+          [_vm._v(_vm._s(_vm.qr.title ? _vm.qr.title : "Enter button name"))]
+        ),
+        _vm._v(" "),
+        _vm.qr.block.length > 0
+          ? _c(
+              "div",
+              {
+                staticClass: "quickReplyValue",
+                on: {
+                  click: function($event) {
+                    _vm.closeOtherSection(_vm.index)
+                    _vm.qr.canShow = !_vm.qr.canShow
+                  }
+                }
+              },
+              [_vm._v(_vm._s(_vm.qr.block[0].title))]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "quickReplyInfoBox",
+            class: { showInfoBox: _vm.qr.canShow }
+          },
+          [
+            _c("div", { staticClass: "QRActionName" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.qr.title,
+                    expression: "qr.title"
+                  }
+                ],
+                attrs: { placeholder: "Title", maxlength: "20" },
+                domProps: { value: _vm.qr.title },
+                on: {
+                  blur: function($event) {
+                    _vm.qr.saveContent()
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.qr, "title", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "limitReplyTitle" }, [
+                _vm._v(_vm._s(_vm.qr.textLimitTitle))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", [
+              _c(
+                "div",
+                [
+                  _vm.qr.block.length > 0
+                    ? [
+                        _c(
+                          "div",
+                          { staticClass: "selectedLinkedBlock" },
+                          [
+                            _c("span", { staticClass: "slbText" }, [
+                              _vm._v(_vm._s(_vm.qr.block[0].title))
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass: "slbDel",
+                                on: {
+                                  click: function($event) {
+                                    _vm.qr.delButton()
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("delete")
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm.qr.isBtnProcess ? [_vm._m(0)] : _vm._e()
+                          ],
+                          2
+                        )
+                      ]
+                    : [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.qr.blockKey,
+                              expression: "qr.blockKey"
+                            }
+                          ],
+                          attrs: { placeholder: "Enter block name" },
+                          domProps: { value: _vm.qr.blockKey },
+                          on: {
+                            keyup: function($event) {
+                              _vm.qr.loadSuggestion()
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.qr, "blockKey", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.qr.blockList.length > 0
+                          ? [
+                              _c(
+                                "div",
+                                { staticClass: "sugContainer" },
+                                [
+                                  _vm._l(_vm.qr.blockList, function(b, index) {
+                                    return _c(
+                                      "div",
+                                      { key: index, staticClass: "sugBlock" },
+                                      [
+                                        _c(
+                                          "div",
+                                          { staticClass: "sugBlockTitle" },
+                                          [_vm._v(_vm._s(b.title))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          { staticClass: "sugBlockSec" },
+                                          _vm._l(b.contents, function(
+                                            s,
+                                            sindex
+                                          ) {
+                                            return _c(
+                                              "div",
+                                              {
+                                                key: sindex,
+                                                staticClass: "sugBlockSecTitle",
+                                                on: {
+                                                  click: function($event) {
+                                                    _vm.qr.addBlock(
+                                                      index,
+                                                      sindex
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v(_vm._s(s.title))]
+                                            )
+                                          })
+                                        )
+                                      ]
+                                    )
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.qr.isBtnProcess ? [_vm._m(1)] : _vm._e()
+                                ],
+                                2
+                              )
+                            ]
+                          : _vm._e()
+                      ]
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _vm._m(2),
+              _vm._v(" "),
+              _c("div", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.qr.attribute,
+                      expression: "qr.attribute"
+                    }
+                  ],
+                  attrs: { placeholder: "<Set attribute>" },
+                  domProps: { value: _vm.qr.attribute },
+                  on: {
+                    blur: function($event) {
+                      _vm.qr.saveContent()
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.qr, "attribute", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.qr.value,
+                      expression: "qr.value"
+                    }
+                  ],
+                  staticClass: "noMgb",
+                  attrs: { placeholder: "<Set value>" },
+                  domProps: { value: _vm.qr.value },
+                  on: {
+                    blur: function($event) {
+                      _vm.qr.saveContent()
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.qr, "value", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "delIcon",
+            on: {
+              click: function($event) {
+                _vm.deleteItem(_vm.index)
+              }
+            }
+          },
+          [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
+        )
+      ]),
+      _vm._v(" "),
+      _vm.isChildDeleting === _vm.index ? [_vm._m(3)] : _vm._e(),
+      _vm._v(" "),
+      _vm.qr.errorMesg !== ""
+        ? [
+            _c("error-component", {
+              attrs: { mesg: _vm.qr.errorMesg },
+              on: {
+                closeError: function($event) {
+                  _vm.qr.errorMesg = ""
+                }
+              }
+            })
+          ]
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "componentDeleting" }, [
+      _c("div", { staticClass: "deletingContainer" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "componentDeleting" }, [
+      _c("div", { staticClass: "deletingContainer" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "attributeNotice" }, [
+      _c("span", [_vm._v("Save reply as attribute:")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "componentDeleting" }, [
+      _c("div", { staticClass: "deletingContainer" })
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-67c4e578", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

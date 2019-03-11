@@ -40,7 +40,7 @@
                             <i class="material-icons">unfold_more</i>
                         </div>
                     </div>
-                    <component :is="getComponent(content.type)" :content="content"></component>
+                    <component :is="getComponent(content.type)" :isValid="content.type===3 ? checkIsValid(index) : null"  :content="content"></component>
                     <template v-if="content.isDeleting">
                         <div class="componentDeleting">
                             <div class="deletingContainer"></div>
@@ -320,6 +320,20 @@ export default class BuilderComponent extends Vue {
         }
 
         return component;
+    }
+
+    private checkIsValid(index: any) {
+        let status = false;
+
+        if(index>0) {
+            let prevType = this.contents[index-1].type;
+            let available = [1,5,6,7];
+            if(available.indexOf(prevType)>-1) {
+                status = true;
+            }
+        }
+
+        return status;
     }
 
     async delItem(index: number) {

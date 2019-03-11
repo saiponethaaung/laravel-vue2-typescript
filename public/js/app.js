@@ -34530,7 +34530,7 @@ var render = function() {
           _vm.listItem.title !== "" &&
           (_vm.listItem.sub === "" &&
             _vm.listItem.image === "" &&
-            _vm.listItem.button.length == 0)
+            _vm.listItem.buttons.length == 0)
       }
     },
     [

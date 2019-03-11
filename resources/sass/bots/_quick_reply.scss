@@ -102,6 +102,11 @@
     font-size: 12px;
     line-height: 17px;
     color: $secondaryText;
+    display: inline-block;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: center;
 }
 
 .attributeNotice {

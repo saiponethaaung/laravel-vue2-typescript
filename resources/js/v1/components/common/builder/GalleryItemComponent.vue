@@ -2,7 +2,7 @@
     <li
         :key="index"
         class="galleListItem"
-        :class="{'listRequired': listItem.canShowError && listItem.title!=='' && (listItem.sub==='' && listItem.image==='' && listItem.button.length==0)}"
+        :class="{'listRequired': listItem.canShowError && listItem.title!=='' && (listItem.sub==='' && listItem.image==='' && listItem.buttons.length==0)}"
     >
         <div class="chatGalleryContainer">
             <figure class="chatGalleryImage">

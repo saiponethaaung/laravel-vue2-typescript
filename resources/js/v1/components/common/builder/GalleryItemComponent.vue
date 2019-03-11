@@ -2,7 +2,7 @@
     <li
         :key="index"
         class="galleListItem"
-        :class="{'listRequired': listItem.canShowError && listItem.title!=='' && (listItem.sub==='' || listItem.image==='' || listItem.button==null)}"
+        :class="{'listRequired': listItem.canShowError && listItem.title!=='' && (listItem.sub==='' && listItem.image==='' && listItem.button.length==0)}"
     >
         <div class="chatGalleryContainer">
             <figure class="chatGalleryImage">
@@ -81,9 +81,9 @@
                         <i class="material-icons">delete</i>
                     </div>
                     <button-component
-                        :rootUrl="`${content.url}/button`"
+                        :rootUrl="`${baseUrl}/button`"
                         :button="button"
-                        :projectid="content.project"
+                        :projectid="projectid"
                         v-if="listItem.btnEdit===sindex"
                         v-on:closeContent="(status) => {
                             if(status && listItem.btnEdit===sindex) listItem.btnEdit=-1;
@@ -99,7 +99,7 @@
                     <i class="material-icons">add</i>Add Button
                 </div>
             </div>
-            <div class="delIcon" @click="content.delItem(index)">
+            <div class="delIcon" @click="deleteItem(index)">
                 <i class="material-icons">delete</i>
             </div>
         </div>
@@ -127,7 +127,7 @@ export default class GalleryItemComponent extends Vue {
 
     @Prop() index!: any;
     @Prop() baseUrl!: string;
-    @Prop() projectid!: number;
+    @Prop() projectid!: string;
 
     @Emit("delItem")
     deleteItem(index: any) {}

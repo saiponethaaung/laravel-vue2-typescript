@@ -33891,8 +33891,8 @@ var render = function() {
         listRequired:
           _vm.listItem.canShowError &&
           _vm.listItem.title !== "" &&
-          (_vm.listItem.sub === "" ||
-            _vm.listItem.image === "" ||
+          (_vm.listItem.sub === "" &&
+            _vm.listItem.image === "" &&
             _vm.listItem.button == null)
       }
     },
@@ -34517,9 +34517,9 @@ var render = function() {
         listRequired:
           _vm.listItem.canShowError &&
           _vm.listItem.title !== "" &&
-          (_vm.listItem.sub === "" ||
-            _vm.listItem.image === "" ||
-            _vm.listItem.button == null)
+          (_vm.listItem.sub === "" &&
+            _vm.listItem.image === "" &&
+            _vm.listItem.button.length == 0)
       }
     },
     [
@@ -34742,9 +34742,9 @@ var render = function() {
                   _vm.listItem.btnEdit === sindex
                     ? _c("button-component", {
                         attrs: {
-                          rootUrl: _vm.content.url + "/button",
+                          rootUrl: _vm.baseUrl + "/button",
                           button: button,
-                          projectid: _vm.content.project
+                          projectid: _vm.projectid
                         },
                         on: {
                           closeContent: function(status) {
@@ -34793,7 +34793,7 @@ var render = function() {
             staticClass: "delIcon",
             on: {
               click: function($event) {
-                _vm.content.delItem(_vm.index)
+                _vm.deleteItem(_vm.index)
               }
             }
           },
@@ -34862,7 +34862,7 @@ var render = function() {
                   listItem: l,
                   index: index,
                   baseUrl: _vm.content.url,
-                  projectid: _vm.content.porjectid
+                  projectid: _vm.content.project
                 },
                 on: { delItem: _vm.delItem }
               })

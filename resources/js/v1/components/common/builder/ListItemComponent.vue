@@ -2,7 +2,7 @@
     <li
         :key="index"
         class="chatListItem"
-        :class="{'listRequired': listItem.canShowError && listItem.title!=='' && (listItem.sub==='' || listItem.image==='' || listItem.button==null)}"
+        :class="{'listRequired': listItem.canShowError && listItem.title!=='' && (listItem.sub==='' && listItem.image==='' && listItem.button==null)}"
     >
         <div class="chatListContent">
             <div class="chatListInfo">

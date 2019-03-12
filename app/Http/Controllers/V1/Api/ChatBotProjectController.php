@@ -572,7 +572,7 @@ class ChatBotProjectController extends Controller
             "text" => $content->content
         ];
 
-        if(!empty($button)) {
+        if(!empty($buttons)) {
             $res = [
                 'attachment' => [
                     'type' => 'template',

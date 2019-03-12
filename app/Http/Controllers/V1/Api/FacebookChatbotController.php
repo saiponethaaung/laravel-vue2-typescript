@@ -317,7 +317,8 @@ class FacebookChatbotController extends Controller
                             continue;
                         }
 
-                        if($mesg['status']===false) continue;
+                        // If status false or first element is quick reply
+                        if($mesg['status']===false || ($index===0 && $mesg['type']===3)) continue;
 
                         $jsonData = [
                             "recipient" => [
@@ -341,11 +342,14 @@ class FacebookChatbotController extends Controller
                         ];
 
                         $type = $mesg['type'];
-
-                        if(isset($messages['data'][$index+1]) && $messages['data'][$index+1]['type']===3 && in_array($type, [1,5,6,7])) {
+                        
+                        // if next element is quick reply
+                        if(isset($messages['data'][$index+1]) && $messages['data'][$index+1]['type']===3) {
+                            $isValid = true;
                             $data = $messages['data'][$index+1]['data'];
                             unset($data['text']);
                             
+                            // If current element is text, list, gallery or image
                             switch($type) {
                                 case(1):
                                     if(isset($mesg['data']['text'])) {
@@ -379,10 +383,19 @@ class FacebookChatbotController extends Controller
                                         continue;
                                     }
                                     break;
+                                
+                                // Ignore quick reply on next turn
+                                default:
+                                    $isValid = false;
+                                    break;
                             }
-                            $type = 3;
+
+                            if($isValid) {
+                                $type = 3;
+                                $mesg['data'] = $data;
+                            }
+
                             $nextSkip = true;
-                            $mesg['data'] = $data;
                         }
 
                         switch($type) {
@@ -437,8 +450,10 @@ class FacebookChatbotController extends Controller
                             'fb_request' => true,
                             'data' => json_encode($jsonData)
                         ]);
-
-                        $recordChat = ProjectPageUserChat::create($recordChat);
+                        
+                        if(!isset($mesg['ignore']) || !$mesg['ignore']) {
+                            $recordChat = ProjectPageUserChat::create($recordChat);
+                        }
                         
                         $this->execResponse($jsonData);
 

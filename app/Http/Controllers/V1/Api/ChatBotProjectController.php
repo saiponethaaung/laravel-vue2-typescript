@@ -50,33 +50,43 @@ class ChatBotProjectController extends Controller
     public function process($input=null, $payload=false, $welcome=false, $userid=null, $ignore=false, $justRecord=false)
     {
         $response = [];
+        // get user id
         $userid = isset($input['entry'][0]['messaging'][0]['sender']['id']) ? $input['entry'][0]['messaging'][0]['sender']['id'] : '';
+        // check the section is welcome section
         if($welcome===false) {
             $userid = $userid!==$this->projectPage->page_id ? $input['entry'][0]['messaging'][0]['sender']['id']: $input['entry'][0]['messaging'][0]['recipient']['id'];
         }
 
+        // Reocord user
         $recordUser = $this->recordChatUser($userid, config('facebook.defaultPageId')===$input['entry'][0]['id']);
     
+        // Response an error if record user is failed
         if(!$recordUser['status']) {
             return $recordUser;
         }
 
+        // update user last active status
         $this->user->updated_at = date("Y-m-d H:i:s");
         $this->user->save();
 
         $log;
         $postback = '';
+        // get message body from user
         $mesgText = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : '';
 
+        // Check if the request payload
         if($payload) {
             $mesgText = (String) $input['entry'][0]['messaging'][0]['postback']['title'];
             $postback = $input['entry'][0]['messaging'][0]['postback']['payload'];
         } else if(isset($input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'])) {
+            // check if the request is payload from quick reply
             $postback = $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'];
         }
 
+        // open transaction
         DB::beginTransaction();
         try {
+            // Record user chat
             $log = ProjectPageUserChat::create([
                 'content_id' => null,
                 'post_back' => $postback,
@@ -88,6 +98,7 @@ class ChatBotProjectController extends Controller
                 'ignore' => $ignore
             ]);
         } catch(\Exception $e) {
+            // rollback if recording user chat is failed
             DB::rollback();
             return [
                 'status' => false,
@@ -98,6 +109,7 @@ class ChatBotProjectController extends Controller
         }
         DB::commit();
 
+        // if user is on live chat or it's function to stop with record stop the process
         if($this->user->live_chat || $justRecord) {
             return [
                 'status' => true,
@@ -107,6 +119,7 @@ class ChatBotProjectController extends Controller
         }
         
         if($welcome===false) {
+            // if it's button payload
             if($payload) {
                 $py = explode('-', $input['entry'][0]['messaging'][0]['postback']['payload']);
 
@@ -128,6 +141,7 @@ class ChatBotProjectController extends Controller
                     }
                 }
             } else if(isset($input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'])) {
+                // if it's quick reply payload
                 $qr = explode('-', $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload']);
                 $content = ChatBlockSectionContent::with('section')->find($qr[1]);
 
@@ -154,24 +168,51 @@ class ChatBotProjectController extends Controller
                 }
                 
             } else {
+                // Check the last action from platform
                 $lastRecord = ProjectPageUserChat::where('project_page_user_id', $this->user->id)
                                 ->where('is_send', true)
                                 ->where('from_platform', true)
+                                ->where('ignore', false)
                                 ->orderBy('created_at', 'desc')
                                 ->first();
                 
+                // if last record is not empty and it's user input proceed
                 if(!empty($lastRecord) && !is_null($lastRecord->user_input_id)) {
+                    // extract user input and if user input still exists
                     $userInput = ChatUserInput::find($lastRecord->user_input_id);
                     if(!empty($userInput)) {
+                        $breakUserInputProcess = false;
+                        // if user input have attribute
                         if(!is_null($userInput->attribute_id)) {
-                            $this->setUserAttribute($userInput->attribute_id, $this->user->id, $mesgText);
+                            $attribute = $this->setUserAttribute($userInput->attribute_id, $this->user->id, $mesgText);
+                            if(!$attribute['validate']) {
+                                $response = [
+                                    'status' => true,
+                                    'type' => '',
+                                    'data' => [
+                                        [
+                                            'status' => true,
+                                            'mesg' => '',
+                                            'type' => 1,
+                                            'content_id' => null,
+                                            'data' => [
+                                                'text' => $attribute['errorMesg']
+                                            ],
+                                            'ignore' => false
+                                        ]
+                                    ]
+                                ];
+                                $breakUserInputProcess = true;
+                            }
                         }
-
-                        $this->inputOrder = $userInput->order;
-        
-                        $resContent = $this->getResumeSection($userInput->content->section_id, ($userInput->content->order-1));
-                        if($resContent['status']) {
-                            $response = $resContent;
+                        
+                        if(!$breakUserInputProcess) {
+                            $this->inputOrder = $userInput->order;
+            
+                            $resContent = $this->getResumeSection($userInput->content->section_id, ($userInput->content->order-1));
+                            if($resContent['status']) {
+                                $response = $resContent;
+                            }
                         }
                     }
                 }
@@ -181,10 +222,11 @@ class ChatBotProjectController extends Controller
         }
         
         if(empty($response)) {
+            // if response is empty validate user mesg text with ai rule
             if(!empty($mesgText)) {
                 $response = $this->aiValidation($mesgText);
             }
-            // keyword matching start here
+            // if there is no ai rule get default response
             if(empty($response)) {
                 $response = $this->getDefault();
             }
@@ -214,6 +256,8 @@ class ChatBotProjectController extends Controller
             DB::commit();
         }
 
+        // validation process here
+
         DB::beginTransaction();
         try {
             $attr->value = $value;
@@ -223,6 +267,10 @@ class ChatBotProjectController extends Controller
             throw(new \Exception("Failed to update user attribute!"));
         }
         DB::commit();
+
+        return [
+            'validate' => true
+        ];
     }
 
     // ai validation
@@ -614,70 +662,77 @@ class ChatBotProjectController extends Controller
     {
         $res = [];
 
-        foreach($content->galleryList as $list) {
-            if(empty($list->title)) continue;
-
-            $buttons = [];
-
-            foreach($list->buttons as $button) {
-                $btParsed = $this->parseButton($button);
-                if($btParsed['status']) {
-                    $buttons[] = $btParsed['data'];
+        if(count($content->galleryList)>=2) {
+            foreach($content->galleryList as $list) {
+                if(
+                    empty($list->title) || 
+                    (
+                        empty($list->sub) &&
+                        (empty($list->image) || (!empty($list->image) && !Storage::disk('public')->exists('images/list/'.$list->image))) &&
+                        empty($list->buttons)
+                    )
+                )  continue;
+    
+                $buttons = [];
+    
+                foreach($list->buttons as $button) {
+                    $btParsed = $this->parseButton($button);
+                    if($btParsed['status']) {
+                        $buttons[] = $btParsed['data'];
+                    }
                 }
+    
+                $image = "";
+    
+                if(!empty($list->image) && Storage::disk('public')->exists('images/list/'.$list->image)) {
+                    $image = Storage::disk('public')->url('images/list/'.$list->image);
+                }
+                
+                $parsed = [
+                    'title' => (string) $list->title,
+                    'subtitle' => (string) $list->sub
+                ];
+    
+                if($image) {
+                    $parsed['image_url'] = $image;
+                }
+    
+                if($list->url) {
+                    $parsed['default_action'] = [
+                        'type' => 'web_url',
+                        'url' => $list->url,
+                    ];
+                }
+    
+                if(!empty($buttons)) {
+                    $parsed['buttons'] = $buttons;
+                }
+    
+                $res[] = $parsed;
             }
-
-            $image = "";
-
-            if(!empty($list->image) && Storage::disk('public')->exists('images/list/'.$list->image)) {
-                $image = Storage::disk('public')->url('images/list/'.$list->image);
-            }
-            
-            $parsed = [
-                'title' => (string) $list->title,
-                'subtitle' => (string) $list->sub
+            $result = [
+                'attachment' => [
+                    'type' => 'template',
+                    'payload' => [
+                        'template_type' => 'list',
+                        'top_element_style' => 'compact',
+                        'elements' => $res
+                    ]
+                ],
             ];
 
-            if($image) {
-                $parsed['image_url'] = $image;
-            }
-
-            if($list->url) {
-                $parsed['default_action'] = [
-                    'type' => 'web_url',
-                    'url' => $list->url,
-                ];
-            }
-
-            if(!empty($buttons)) {
-                $parsed['buttons'] = $buttons;
-            }
-
-            $res[] = $parsed;
-        }
-
-        // $but[]
-        $result = [
-            'attachment' => [
-                'type' => 'template',
-                'payload' => [
-                    'template_type' => 'list',
-                    'top_element_style' => 'compact',
-                    'elements' => $res
-                ]
-            ],
-        ];
-
-        if(!empty($content->buttons)) {
-            $buttons = [];
-            foreach($content->buttons as $button) {
-                $btParsed = $this->parseButton($button);
-                if($btParsed['status']) {
-                    $buttons[] = $btParsed['data'];
+            if(!empty($content->buttons)) {
+                $buttons = [];
+                foreach($content->buttons as $button) {
+                    $btParsed = $this->parseButton($button);
+                    if($btParsed['status']) {
+                        $buttons[] = $btParsed['data'];
+                    }
                 }
-            }
 
-            if(!empty($buttons)) {
-                $result['attachment']['payload']['buttons'] = $buttons;
+                if(!empty($buttons)) {
+                    $result['attachment']['payload']['buttons'] = $buttons;
+                }
             }
         }
 
@@ -704,7 +759,14 @@ class ChatBotProjectController extends Controller
         $res = [];
 
         foreach($content->galleryList as $list) {
-            if(empty($list->title)) continue;
+            if(
+                empty($list->title) || 
+                (
+                    empty($list->sub) &&
+                    (empty($list->image) || (!empty($list->image) && !Storage::disk('public')->exists('images/gallery/'.$list->image))) &&
+                    count($list->buttons)===0
+                )
+            ) continue;
 
             $buttons = [];
 
@@ -830,19 +892,29 @@ class ChatBotProjectController extends Controller
                 break;
 
             case(1):
-                $res['data'] = [
-                    'type' => 'web_url',
-                    'url' => $button->url,
-                    'title' => $button->title,
-                ];
+                if(!empty($button->url)) {
+                    $res['data'] = [
+                        'type' => 'web_url',
+                        'url' => $button->url,
+                        'title' => $button->title,
+                    ];
+                } else {
+                    $res['status'] = false;
+                    $res['mesg'] = 'URL value is empty!';
+                }
                 break;
 
             case(2):
-                $res['data'] = [
-                    'type' => 'phone_number',
-                    'payload' => $button->phone,
-                    'title' => $button->title
-                ];
+                if(!empty($button->phone)) {
+                    $res['data'] = [
+                        'type' => 'phone_number',
+                        'payload' => $button->phone,
+                        'title' => $button->title
+                    ];
+                } else {
+                    $res['status'] = false;
+                    $res['mesg'] = 'Phone number value is empty!';
+                }
                 break;
 
             default:

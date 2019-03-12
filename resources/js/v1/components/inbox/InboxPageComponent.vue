@@ -245,7 +245,7 @@
                         </div>
                         <div class="alignNote">
                             <div class="addNote" @click="showTags=!showTags">
-                                <span>Write note about the shop</span>
+                                <span>Write note about the user</span>
                                 <span class="iconSub">
                                     <i class="material-icons">
                                         <template v-if="showTags">expand_more</template>

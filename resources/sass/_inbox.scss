@@ -425,6 +425,7 @@ $attributePanelWidth: 336px;
     cursor: pointer;
     .iconSub {
         float: right;
+        display: flex;
         margin-top: -2px;
     }
 }

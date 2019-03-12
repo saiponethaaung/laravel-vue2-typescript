@@ -54152,7 +54152,7 @@ var render = function() {
                               },
                               [
                                 _c("span", [
-                                  _vm._v("Write note about the shop")
+                                  _vm._v("Write note about the user")
                                 ]),
                                 _vm._v(" "),
                                 _c("span", { staticClass: "iconSub" }, [

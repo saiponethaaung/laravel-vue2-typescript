@@ -177,7 +177,7 @@ class ChatBotProjectController extends Controller
                                 ->first();
                 
                 // if last record is not empty and it's user input proceed
-                if(!empty($lastRecord) && !is_null($lastRecord->user_input_id)) {
+                if(!empty($lastRecord) && !is_null($lastRecord->user_input_id) && !$lastRecord->input_complete) {
                     // extract user input and if user input still exists
                     $userInput = ChatUserInput::find($lastRecord->user_input_id);
                     if(!empty($userInput)) {
@@ -245,6 +245,9 @@ class ChatBotProjectController extends Controller
                             if($resContent['status']) {
                                 $response = $resContent;
                             }
+
+                            $lastRecord->input_complete = true;
+                            $lastRecord->save();
                         }
                     }
                 }

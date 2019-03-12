@@ -13,7 +13,9 @@ class ModifyProjectPageUserChatAddIgnoreColumnAndUserInputCompleteStatus extends
      */
     public function up()
     {
-        //
+        Schema::table('project_page_user_chat', function(Blueprint $table) {
+            $table->boolean('input_complete')->default(0)->after('user_input_id');
+        }); 
     }
 
     /**

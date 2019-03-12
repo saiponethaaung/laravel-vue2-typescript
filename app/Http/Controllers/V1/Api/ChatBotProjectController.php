@@ -189,18 +189,26 @@ class ChatBotProjectController extends Controller
                         switch($userInput->validation) {
                             // validate phone number
                             case(1):
+                                if (preg_match('/^[0-9 ()+-]+$/', $mesgText)===0) {
+                                    $isValidInput = false;
+                                    $errorMesg = 'Invalid phone number value!';
+                                }
                                 break;
                             
                             // validate email
                             case(2):
-                                    if (!filter_var($mesgText, FILTER_VALIDATE_EMAIL)) {
-                                        $isValidInput = false;
-                                        $errorMesg = 'Invalid email address!';
-                                    }
+                                if (!filter_var($mesgText, FILTER_VALIDATE_EMAIL)) {
+                                    $isValidInput = false;
+                                    $errorMesg = 'Invalid email address!';
+                                }
                                 break;
 
                             // validate number only
                             case(3):
+                                if (preg_match('/^[0-9]+$/', $mesgText)===0) {
+                                    $isValidInput = false;
+                                    $errorMesg = 'Enter only numeric value!';
+                                }
                                 break;
                         }
 
@@ -217,7 +225,7 @@ class ChatBotProjectController extends Controller
                                         'data' => [
                                             'text' => $errorMesg
                                         ],
-                                        'ignore' => false
+                                        'ignore' => true
                                     ]
                                 ]
                             ];

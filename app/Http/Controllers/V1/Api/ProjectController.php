@@ -119,34 +119,42 @@ class ProjectController extends Controller
             'publish' => false
         ];
 
+        $reAuth = false;
+
         if(is_null($project->project->page)==false) {
             // @codeCoverageIgnoreStart
             $fbc = new FacebookController($project->project->page->token);
             $pageInfo = $fbc->expire();
         
             // Response error if page check response error
-            if($pageInfo['status']===false) {
+            if($pageInfo['status']===false && $pageInfo['fbCode']!==190) {
                 return response()->json([
                     'status' => false,
                     'code' => 422,
-                    'mesg' => $pageInfo['mesg']
+                    'mesg' => $pageInfo['mesg'],
+                    'reAuthenticate' => false
                 ], 422);
             }
             
-            $res['pageId'] = $project->project->page->page_id;
-            $res['pageConnected'] = true;
-            $res['publish'] = $project->project->page->publish===1 ? true : false;
-            $res['image'] = $pageInfo['data']['picture']['url'];
-            ProjectPage::where('id', $project->project->page->id)->update([
-                'page_icon' => $pageInfo['data']['picture']['url']
-            ]);
+            if(!isset($pageInfo['fbCode']) || $pageInfo['fbCode']!==190) {
+                $res['pageId'] = $project->project->page->page_id;
+                $res['pageConnected'] = true;
+                $res['publish'] = $project->project->page->publish===1 ? true : false;
+                $res['image'] = $pageInfo['data']['picture']['url'];
+                ProjectPage::where('id', $project->project->page->id)->update([
+                    'page_icon' => $pageInfo['data']['picture']['url']
+                ]);
+            } else {
+                $reAuth = true;
+            }
             // @codeCoverageIgnoreEnd
         }
-
+            
         return response()->json([
             'status' => true,
             'code' => 200,
-            'data' => $res
+            'data' => $res,
+            'reAuthenticate' => $reAuth
         ]);
     }
     

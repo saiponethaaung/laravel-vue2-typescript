@@ -30662,6 +30662,7 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
                 method: "POST"
             })
                 .then((res) => {
+                this.$store.state.user.facebookReconnect = false;
                 this.$store.commit("updateUserInfo", {
                     user: res.data.user
                 });
@@ -31108,7 +31109,15 @@ var render = function() {
                           attrs: { type: "button" },
                           on: { click: _vm.fbLogin }
                         },
-                        [_vm._v("Connect facebook account")]
+                        [
+                          _vm._v(
+                            _vm._s(
+                              _vm.$store.state.user.facebookReconnect
+                                ? "Reauthenticate your facebook account"
+                                : "Connect facebook account"
+                            )
+                          )
+                        ]
                       )
                     : _vm._e()
                 ],
@@ -35105,7 +35114,9 @@ var render = function() {
             }
           },
           [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
-        )
+        ),
+        _vm._v(" "),
+        _vm._m(0)
       ]),
       _vm._v(" "),
       _vm.listItem.errorMesg !== ""
@@ -35121,8 +35132,6 @@ var render = function() {
           ]
         : _vm._e(),
       _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
       _vm._m(1)
     ],
     2
@@ -35133,18 +35142,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "requiredNotiCon" }, [
-      _c("div", { staticClass: "requiredNotiText" }, [
-        _vm._v("Set up at least one more item field: subtitle, button or image")
-      ])
+    return _c("div", { staticClass: "horizontalDrag galleryDrag" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("unfold_more")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "horizontalDrag" }, [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("unfold_more")])
+    return _c("div", { staticClass: "requiredNotiCon" }, [
+      _c("div", { staticClass: "requiredNotiText" }, [
+        _vm._v("Set up at least one more item field: subtitle, button or image")
+      ])
     ])
   }
 ]
@@ -35178,7 +35187,7 @@ var render = function() {
               "draggable",
               {
                 staticClass: "draggable",
-                attrs: { handle: ".horizontalDrag" },
+                attrs: { handle: ".galleryDrag" },
                 on: { end: _vm.updateOrder },
                 model: {
                   value: _vm.content.item,
@@ -36043,6 +36052,7 @@ let UserInputItemComponent = class UserInputItemComponent extends __WEBPACK_IMPO
     constructor() {
         super(...arguments);
         this.validation = ["None", "Phone", "Email", "Number"];
+        this.canShowError = false;
     }
     closeOtherSection(index) { }
     delItem(index) { }
@@ -36090,10 +36100,11 @@ var render = function() {
                 expression: "ui.question"
               }
             ],
-            attrs: { type: "text" },
+            attrs: { type: "text", placeholder: "What do you want to ask" },
             domProps: { value: _vm.ui.question },
             on: {
               blur: function($event) {
+                _vm.canShowError = true
                 _vm.ui.saveContent()
               },
               input: function($event) {
@@ -36119,7 +36130,13 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v(_vm._s(_vm.validation[_vm.ui.validation]))]
+              [
+                _c("span", [_vm._v(_vm._s(_vm.validation[_vm.ui.validation]))]),
+                _vm._v(" "),
+                _c("i", { staticClass: "material-icons" }, [
+                  _vm._v(_vm._s(_vm.ui.showVal ? "expand_less" : "expand_more"))
+                ])
+              ]
             ),
             _vm._v(" "),
             _vm.ui.showVal
@@ -36157,10 +36174,12 @@ var render = function() {
                 expression: "ui.attribute"
               }
             ],
-            attrs: { type: "text" },
+            class: { required: _vm.canShowError && _vm.ui.attribute === "" },
+            attrs: { type: "text", placeholder: "Required" },
             domProps: { value: _vm.ui.attribute },
             on: {
               blur: function($event) {
+                _vm.canShowError = true
                 _vm.ui.saveContent()
               },
               input: function($event) {
@@ -47317,25 +47336,34 @@ let ProjectRootComponent = class ProjectRootComponent extends __WEBPACK_IMPORTED
     }
     validateProject() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.$store.commit('setProjectStatus', {
-                status: true,
+            this.$store.commit("setProjectStatus", {
+                status: true
             });
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}`,
-                method: 'get'
-            }).then((res) => {
-                this.$store.commit('setProjectInfo', { project: res.data.data });
-            }).catch((err) => {
+                method: "get"
+            })
+                .then((res) => {
+                this.$store.state.user.facebook_connected = !res.data
+                    .reAuthenticate;
+                this.$store.state.user.facebookReconnect =
+                    res.data.reAuthenticate;
+                this.$store.commit("setProjectInfo", {
+                    project: res.data.data
+                });
+            })
+                .catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to validate project!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to validate project!");
                     alert(mesg);
-                    if (undefined !== err.response.data.redirectHome && err.response.data.redirectHome) {
-                        this.$router.push({ name: 'home' });
+                    if (undefined !== err.response.data.redirectHome &&
+                        err.response.data.redirectHome) {
+                        this.$router.push({ name: "home" });
                     }
                 }
             });
-            this.$store.commit('setProjectStatus', {
-                status: false,
+            this.$store.commit("setProjectStatus", {
+                status: false
             });
         });
     }
@@ -47344,7 +47372,8 @@ let ProjectRootComponent = class ProjectRootComponent extends __WEBPACK_IMPORTED
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$route.params.projectid')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$route.params.facebookReconnect"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$route.params.projectid")
 ], ProjectRootComponent.prototype, "validateProject", null);
 ProjectRootComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -47367,7 +47396,7 @@ var render = function() {
       _vm.$store.state.validatingProject
         ? [
             _c("div", { staticClass: "floatingLoading" }, [
-              _vm._v("\n            Loading...\n        ")
+              _vm._v("Loading...")
             ])
           ]
         : [_c("router-view")]
@@ -61439,7 +61468,7 @@ var render = function() {
                   ],
                   1
                 )
-              : _vm._e()
+              : _c("div", [_vm._v("\n            Loading...\n        ")])
           ]
     ],
     2
@@ -62080,7 +62109,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         deleteTrigger: null,
         deleteSchedule: null,
         updateTrigger: null,
-        updateSchedule: null
+        updateSchedule: null,
+        facebookReconnect: false
     },
     mutations: {
         logout(state) {

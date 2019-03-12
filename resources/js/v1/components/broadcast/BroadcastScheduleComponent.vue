@@ -120,6 +120,9 @@
                     :value="contents"
                     :section="schedule.section"></builder-component>
             </div>
+            <div v-else>
+                Loading...
+            </div>
         </template>
     </div>
 </template>

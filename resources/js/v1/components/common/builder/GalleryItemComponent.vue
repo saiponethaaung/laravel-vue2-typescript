@@ -20,7 +20,6 @@
                 <template v-else>
                     <label>
                         <i class="material-icons">photo_camera</i>
-                        <!-- <input type="file"/> -->
                         <input type="file" @change="listItem.imageUpload($event)">
                     </label>
                 </template>
@@ -102,6 +101,9 @@
             <div class="delIcon" @click="deleteItem(index)">
                 <i class="material-icons">delete</i>
             </div>
+            <div class="horizontalDrag galleryDrag">
+                <i class="material-icons">unfold_more</i>
+            </div>
         </div>
         <template v-if="listItem.errorMesg!==''">
             <error-component :mesg="listItem.errorMesg" @closeError="listItem.errorMesg=''"></error-component>
@@ -110,9 +112,6 @@
             <div
                 class="requiredNotiText"
             >Set up at least one more item field: subtitle, button or image</div>
-        </div>
-        <div class="horizontalDrag">
-            <i class="material-icons">unfold_more</i>
         </div>
     </li>
 </template>

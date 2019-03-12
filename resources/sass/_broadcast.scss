@@ -139,6 +139,7 @@
     position: relative;
     background: $secondaryBackground;
     padding: 20px 30px;
+    margin-bottom: 25px;
     .dropDownList,
     .btnSub {
         margin: 10px 0;
@@ -379,7 +380,7 @@
 .broadcastActionBtn {
     position: absolute;
     right: 0;
-    bottom: -36px;
+    bottom: -22px;
 }
 
 .statusBtn {

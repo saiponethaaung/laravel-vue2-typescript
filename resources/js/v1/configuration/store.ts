@@ -52,7 +52,8 @@ export default new Vuex.Store({
         deleteTrigger: null,
         deleteSchedule: null,
         updateTrigger: null,
-        updateSchedule: null
+        updateSchedule: null,
+        facebookReconnect: false
     },
     mutations: {
         logout(state) {
@@ -62,30 +63,30 @@ export default new Vuex.Store({
             state.isLogin = false;
             state.token = '';
         },
-        setToken(state, {token, remember}) {
+        setToken(state, { token, remember }) {
             localStorage.setItem('access_token', token);
             localStorage.setItem('token_created', new Date().getTime().toString());
-            localStorage.setItem('remember', undefined!==remember && remember==true ? "true" : "false");
+            localStorage.setItem('remember', undefined !== remember && remember == true ? "true" : "false");
         },
-        updateUserInfo(state, {user}) {
+        updateUserInfo(state, { user }) {
             state.user = user;
         },
         getToken() {
             return localStorage.getItem('access_token');
         },
-        selectChatBot(state, {section, block}) {
+        selectChatBot(state, { section, block }) {
             state.chatBot = {
                 section: section,
                 block: block
             };
         },
-        deleteChatBot(state, {section, block}) {
+        deleteChatBot(state, { section, block }) {
             state.delBot = {
                 section: section,
                 block: block
             };
         },
-        updateChatBot(state, {section, block, title}) {
+        updateChatBot(state, { section, block, title }) {
             state.updateBot = {
                 section: section,
                 block: block,

@@ -170,7 +170,7 @@
                             @click="fbLogin"
                             type="button"
                             class="headerButtonTypeOne"
-                        >Connect facebook account</button>
+                        >{{ $store.state.user.facebookReconnect ? 'Reauthenticate your facebook account' : 'Connect facebook account' }}</button>
                     </template>
                     <template v-if="undefined!==$store.state.projectInfo.id">
                         <div
@@ -399,6 +399,7 @@ export default class DefaultLayout extends Vue {
             method: "POST"
         })
             .then((res: any) => {
+                this.$store.state.user.facebookReconnect = false;
                 this.$store.commit("updateUserInfo", {
                     user: res.data.user
                 });

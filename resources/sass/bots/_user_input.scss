@@ -1,3 +1,5 @@
+$uiHeight: 27px;
+
 .userInputRootContainer {
     max-width: 680px;
     width: 100%;
@@ -38,10 +40,6 @@
     padding: 0;
 }
 
-.userInputCon {
-    position: relative;
-}
-
 .userInputHeading {
     display: flex;
 }
@@ -51,6 +49,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    > div {
+        height: $uiHeight;
+    }
 }
 
 $userInputAttribute: 200px;
@@ -95,8 +96,46 @@ $userInputValidation: 120px;
 }
 
 .userInputCon {
+    position: relative;
+    &:not(:last-child) {
+        margin-bottom: 15px;
+    }
     .delIcon {
         top: 3px!important;
         right: -13px!important;
+    }
+}
+
+.userInputValidationCon {
+    width: 100%;
+    border: 1px solid $borderPrimary;
+    border-radius: 5px;
+    .userInputValidationValue {
+        @extend %flexCenter;
+        justify-content: space-between;
+        padding: 0 10px;
+        height: calc(#{$uiHeight} - 2px);
+        line-height: calc(#{$uiHeight} - 2px);
+        cursor: pointer;
+        font-size: 13px;
+        .material-icons {
+            font-size: 20px;
+        }
+    }
+
+    .userInputValidationOption {
+        padding: 0;
+        z-index: 11;
+        background: #fff;
+        list-style: none;
+        position: relative;
+        font-size: 13px;
+        li {
+            padding: 5px 10px;
+            &:hover {
+                background: rgba(0,0,0,0.1);
+                cursor: pointer;
+            }
+        }
     }
 }

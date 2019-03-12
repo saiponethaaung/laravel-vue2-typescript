@@ -31,6 +31,7 @@
 .responseDelete,
 .builderSectionInfo,
 .adminHeadingCon,
+.userInputValidationCon .userInputValidationValue,
 .configSidebarLink a,
 .sectionList,
 .userListTable th.ultDateColumn .ultWrapper,
@@ -12517,6 +12518,7 @@ input.required::placeholder {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  z-index: 11;
 }
 
 .listRequired .requiredNotiCon .requiredNotiText {
@@ -12544,6 +12546,34 @@ input.required::placeholder {
 
 .requiredNotiCon {
   display: none;
+}
+
+.galleryDrag {
+  left: initial;
+  right: 0;
+  top: 23px;
+  border: 1px solid #ebebeb;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 3px;
+  width: 22px;
+  right: -2px;
+  background: #fff;
+  height: 22px;
+}
+
+.galleryDrag .material-icons {
+  font-size: 18px;
+  color: #aaaaaa;
+  position: relative;
+  right: -1px;
 }
 
 .quickReplyRoot {
@@ -12809,10 +12839,6 @@ input.required::placeholder {
   padding: 0;
 }
 
-.userInputCon {
-  position: relative;
-}
-
 .userInputHeading {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -12830,6 +12856,10 @@ input.required::placeholder {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+}
+
+.userInputForm > div {
+  height: 27px;
 }
 
 .userInputQuestion {
@@ -12871,9 +12901,56 @@ input.required::placeholder {
   border: 1px solid #ebebeb;
 }
 
+.userInputCon {
+  position: relative;
+}
+
+.userInputCon:not(:last-child) {
+  margin-bottom: 15px;
+}
+
 .userInputCon .delIcon {
   top: 3px !important;
   right: -13px !important;
+}
+
+.userInputValidationCon {
+  width: 100%;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+}
+
+.userInputValidationCon .userInputValidationValue {
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 0 10px;
+  height: calc(27px - 2px);
+  line-height: calc(27px - 2px);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.userInputValidationCon .userInputValidationValue .material-icons {
+  font-size: 20px;
+}
+
+.userInputValidationCon .userInputValidationOption {
+  padding: 0;
+  z-index: 11;
+  background: #fff;
+  list-style: none;
+  position: relative;
+  font-size: 13px;
+}
+
+.userInputValidationCon .userInputValidationOption li {
+  padding: 5px 10px;
+}
+
+.userInputValidationCon .userInputValidationOption li:hover {
+  background: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .imageComponentCon {
@@ -14853,6 +14930,7 @@ input.required::placeholder {
   position: relative;
   background: #f7f6f6;
   padding: 20px 30px;
+  margin-bottom: 25px;
 }
 
 .broadcastFilterCon .dropDownList,
@@ -15106,7 +15184,7 @@ input.required::placeholder {
 .broadcastActionBtn {
   position: absolute;
   right: 0;
-  bottom: -36px;
+  bottom: -22px;
 }
 
 .statusBtn {

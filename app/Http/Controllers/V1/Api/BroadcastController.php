@@ -20,7 +20,7 @@ use App\Jobs\Facebook\BroadcastJob;
 class BroadcastController extends Controller
 {
     public function getSendNow(Request $request) {
-        $sendNow = Broadcast::where('broadcast_type', 1)->where('complete', 0)->first();
+        $sendNow = Broadcast::where('broadcast_type', 1)->where('project_id', $request->attributes->get('project')->id)->where('complete', 0)->first();
 
         if(empty($sendNow)) {
             $createSendNow = $this->createSendNow($request);
@@ -204,7 +204,7 @@ class BroadcastController extends Controller
 
     public function getSchedule(Request $request)
     {
-        $schedules = Broadcast::where('broadcast_type', 3)->get();
+        $schedules = Broadcast::where('broadcast_type', 3)->where('project_id', $request->attributes->get('project')->id)->get();
         
         $res = [];
 
@@ -233,7 +233,7 @@ class BroadcastController extends Controller
     
     public function getTrigger(Request $request)
     {
-        $triggers = Broadcast::where('broadcast_type', 2)->get();
+        $triggers = Broadcast::where('broadcast_type', 2)->where('project_id', $request->attributes->get('project')->id)->get();
         
         $res = [];
 

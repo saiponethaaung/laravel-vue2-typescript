@@ -5,7 +5,7 @@
                 <draggable
                     v-model="content.item"
                     class="draggable"
-                    handle=".horizontalDrag"
+                    handle=".galleryDrag"
                     @end="updateOrder"
                 >
                     <template v-for="(l, index) in content.item">

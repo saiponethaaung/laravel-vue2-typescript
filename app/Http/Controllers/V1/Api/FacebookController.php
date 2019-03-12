@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\V1\Api;
 
+use DB;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Facebook\Facebook;
+use App\Models\ProjectPage;
 
 // @codeCoverageIgnoreStart
 
@@ -41,6 +43,8 @@ class FacebookController extends Controller
                 'status' => false,
                 'code' => 422,
                 'type' => 'expire',
+                'raw' => $e,
+                'fbCode' => $e->getCode(),
                 'mesg' => $e->getMessage()
             ];
         } catch(\Facebook\Exceptions\FacebookSDKException $e) {
@@ -48,6 +52,8 @@ class FacebookController extends Controller
                 'status' => false,
                 'code' => 422,
                 'type' => 'sdkerror',
+                'raw' => $e,
+                'fbCode' => $e->getCode(),
                 'mesg' => $e->getMessage()
             ];
         }
@@ -96,7 +102,7 @@ class FacebookController extends Controller
         $this->reconstruct($token);
 
         $permission = $this->getPermissions($token);
-
+        
         if($permission['status']===false) {
             return [
                 'status' => false,
@@ -105,6 +111,40 @@ class FacebookController extends Controller
             ];
         }
 
+        $pages = $this->getPageList();
+
+        if(!$pages['status']) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => $pages['mesg']
+            ];
+        }
+
+        if(!empty($pages['list'])) {
+            DB::beginTransaction();
+
+            try {
+                foreach($pages['list'] as $page) {
+                    $projectPage = ProjectPage::where('page_id', $page['id'])->first();
+                    if(!empty($projectPage)) {
+                        $projectPage->token = $page['access_token'];
+                        $projectPage->save();
+                    }
+                }
+            } catch (\Exception $e) {
+                DB::rollback();
+                return [
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => 'Failed to update page access!',
+                    'debugMesg' => $e->getMessage(),
+                ];
+            }
+
+            DB::commit();
+        }
+        
         return [
             'status' => true,
             'code' => 200,

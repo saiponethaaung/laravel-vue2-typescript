@@ -185,16 +185,18 @@ class ChatBotProjectController extends Controller
 
                         // validate input type
                         $isValidInput = true;
+                        $errorMesg = '';
                         switch($userInput->validation) {
                             // validate phone number
                             case(1):
-                                if (!filter_var($mesgText, FILTER_VALIDATE_EMAIL)) {
-                                    $isValidInput = false;
-                                }
                                 break;
-
+                            
                             // validate email
                             case(2):
+                                    if (!filter_var($mesgText, FILTER_VALIDATE_EMAIL)) {
+                                        $isValidInput = false;
+                                        $errorMesg = 'Invalid email address!';
+                                    }
                                 break;
 
                             // validate number only
@@ -213,7 +215,7 @@ class ChatBotProjectController extends Controller
                                         'type' => 1,
                                         'content_id' => null,
                                         'data' => [
-                                            'text' => $attribute['errorMesg']
+                                            'text' => $errorMesg
                                         ],
                                         'ignore' => false
                                     ]

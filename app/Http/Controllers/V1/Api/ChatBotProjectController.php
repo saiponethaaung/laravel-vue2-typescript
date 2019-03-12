@@ -503,7 +503,9 @@ class ChatBotProjectController extends Controller
         $break = false;
 
         // parse content based on their content type
+        $index = -1;
         foreach($contents as $content) {
+            $index++;
             $parsed = [];
 
             switch ($content->type) {
@@ -516,13 +518,17 @@ class ChatBotProjectController extends Controller
                     break;
                 
                 case 3:
-                    $break = true;
-                    $parsed = $this->parseQuickReply($content);
+                    if($index>0) {
+                        $parsed = $this->parseQuickReply($content);
+                        $break = !$parsed['status'] || in_array($contents[$index-1]['type'], [1,5,6,7]);
+                    } else {
+                        $parsed['status'] = false;
+                    }
                     break;
                 
                 case 4:
-                    $break = true;
                     $parsed = $this->parseUserInput($content);
+                    $break = $parsed['status'];
                     break;
                 
                 case 5:

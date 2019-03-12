@@ -13462,6 +13462,7 @@ input.required::placeholder {
 .chatInfoPanel .chatHisCon .chatContentCon .chatContent .componentTypeOne {
   overflow: auto;
   padding-bottom: 30px;
+  padding-left: 0;
 }
 
 .chatInfoPanel .chatHisCon .chatContentCon .chatContent .chatContentBody {
@@ -13502,11 +13503,12 @@ input.required::placeholder {
   height: 30px;
   font-size: 13px;
   float: right;
-  border: 1px solid #72bb53;
-  border-radius: 5px;
+  border: 1px solid #ebebeb;
+  border-radius: 5px 5px 0 0;
   position: fixed;
   bottom: 15px;
   cursor: pointer;
+  outline: none;
 }
 
 .chatInfoPanel .chatHisCon .liveChatButton img {

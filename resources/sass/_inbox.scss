@@ -233,6 +233,7 @@ $attributePanelWidth: 336px;
                 .componentTypeOne {
                     overflow: auto;
                     padding-bottom: 30px;
+                    padding-left: 0;
                 }
                 .chatContentBody {
                     background: $primaryChatBackground;
@@ -266,11 +267,12 @@ $attributePanelWidth: 336px;
             height: 30px;
             font-size: 13px;
             float: right;
-            border: 1px solid $actionBtn1;
-            border-radius: 5px;
+            border: 1px solid $color5;
+            border-radius: 5px 5px 0 0;
             position: fixed;
             bottom: 15px;
             cursor: pointer;
+            outline: none;
 
             img {
                 width: 16px;

@@ -11481,9 +11481,13 @@ a:hover {
 }
 
 .buttonActionGroup .buttonActionName {
-  line-height: 5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: calc(100% - 20px);
+  line-height: 10px;
   font-size: 11px;
-  padding-top: 6px;
+  padding-top: 3px;
 }
 
 .btnComponentTypeOne {

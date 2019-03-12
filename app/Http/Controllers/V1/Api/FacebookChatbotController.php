@@ -451,9 +451,10 @@ class FacebookChatbotController extends Controller
                             'data' => json_encode($jsonData)
                         ]);
                         
-                        if(!isset($mesg['ignore']) || !$mesg['ignore']) {
-                            $recordChat = ProjectPageUserChat::create($recordChat);
+                        if(isset($mesg['ignore']) && $mesg['ignore']) {
+                            $recordChat['ignore'] = true;
                         }
+                        $recordChat = ProjectPageUserChat::create($recordChat);
                         
                         $this->execResponse($jsonData);
 

@@ -182,27 +182,49 @@ class ChatBotProjectController extends Controller
                     $userInput = ChatUserInput::find($lastRecord->user_input_id);
                     if(!empty($userInput)) {
                         $breakUserInputProcess = false;
-                        // if user input have attribute
-                        if(!is_null($userInput->attribute_id)) {
-                            $attribute = $this->setUserAttribute($userInput->attribute_id, $this->user->id, $mesgText);
-                            if(!$attribute['validate']) {
-                                $response = [
-                                    'status' => true,
-                                    'type' => '',
-                                    'data' => [
-                                        [
-                                            'status' => true,
-                                            'mesg' => '',
-                                            'type' => 1,
-                                            'content_id' => null,
-                                            'data' => [
-                                                'text' => $attribute['errorMesg']
-                                            ],
-                                            'ignore' => false
-                                        ]
+
+                        // validate input type
+                        $isValidInput = true;
+                        switch($userInput->validation) {
+                            // validate phone number
+                            case(1):
+                                if (!filter_var($mesgText, FILTER_VALIDATE_EMAIL)) {
+                                    $isValidInput = false;
+                                }
+                                break;
+
+                            // validate email
+                            case(2):
+                                break;
+
+                            // validate number only
+                            case(3):
+                                break;
+                        }
+
+                        if(!$isValidInput) {
+                            $response = [
+                                'status' => true,
+                                'type' => '',
+                                'data' => [
+                                    [
+                                        'status' => true,
+                                        'mesg' => '',
+                                        'type' => 1,
+                                        'content_id' => null,
+                                        'data' => [
+                                            'text' => $attribute['errorMesg']
+                                        ],
+                                        'ignore' => false
                                     ]
-                                ];
-                                $breakUserInputProcess = true;
+                                ]
+                            ];
+                            $breakUserInputProcess = true;
+                        } else {
+                            // if user input have attribute
+                            if(!is_null($userInput->attribute_id)) {
+                                $attribute = $this->setUserAttribute($userInput->attribute_id, $this->user->id, $mesgText);
+                                
                             }
                         }
                         
@@ -256,8 +278,6 @@ class ChatBotProjectController extends Controller
             DB::commit();
         }
 
-        // validation process here
-
         DB::beginTransaction();
         try {
             $attr->value = $value;
@@ -267,10 +287,6 @@ class ChatBotProjectController extends Controller
             throw(new \Exception("Failed to update user attribute!"));
         }
         DB::commit();
-
-        return [
-            'validate' => true
-        ];
     }
 
     // ai validation

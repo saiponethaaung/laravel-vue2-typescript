@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ModifyChatAttributeTableAddProjectIdColumn extends Migration
+class ModifyChatAttributeTableAddIsSystemColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,7 @@ class ModifyChatAttributeTableAddProjectIdColumn extends Migration
     public function up()
     {
         Schema::table('chat_attribute', function(Blueprint $table) {
-            $table->unsignedInteger('project_id')->nullable()->index()->after('type');
-
-            $table->foreign('project_id')->references('id')->on('project');
+            $table->boolean('is_system')->default(0)->after('type');
         });
     }
 

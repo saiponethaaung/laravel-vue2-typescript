@@ -398,7 +398,7 @@ class BroadcastController extends Controller
 
             $attribute = BroadcastTriggerAttribute::where('project_broadcast_id', $request->attributes->get('broadcast')->id)
                             ->first();
-            $attribute->chat_attribute_id = $this->getChatAttribute($request->input('attribute'));
+            $attribute->chat_attribute_id = $this->getChatAttribute($request->input('attribute'), $request->attributes->get('project')->id);
             $attribute->condition = $request->input('condi');
             $attribute->value = (String) $request->input('value');
             $attribute->save();
@@ -539,15 +539,18 @@ class BroadcastController extends Controller
         ]);
     }
 
-    public function getChatAttribute($name)
+    public function getChatAttribute($name, $projectid)
     {
         $chatAttribute = ChatAttribute::where(
             DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $name.'%'
-        )->first();
+        )
+        ->where('project_id', $projectid)
+        ->first();
 
         if(empty($chatAttribute)) {
             $chatAttribute = ChatAttribute::create([
-                'attribute' => $name
+                'attribute' => $name,
+                'project_id' => $projectid
             ]);
         }
 
@@ -696,7 +699,7 @@ class BroadcastController extends Controller
                     break;
 
                 case("2"):
-                    $attributeId = $this->getChatAttribute($request->input('name'));
+                    $attributeId = $this->getChatAttribute($request->input('name'), $request->attributes->get('project')->id);
                     $filter->chat_attribute_id = $attributeId;
                     $filter->chat_attribute_value = $request->input('value');
                     break;

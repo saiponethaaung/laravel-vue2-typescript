@@ -59889,34 +59889,34 @@ let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPAC
             {
                 key: 2,
                 value: "pm"
-            },
+            }
         ];
         this.durationOption = [
             {
                 key: 1,
-                value: 'Minute'
+                value: "Minute"
             },
             {
                 key: 2,
-                value: 'Hour'
+                value: "Hour"
             },
             {
                 key: 3,
-                value: 'Day'
+                value: "Day"
             }
         ];
         this.triggerOption = [
             {
                 key: 1,
-                value: 'After first interaction'
+                value: "After first interaction"
             },
             {
                 key: 2,
-                value: 'After last interaction'
+                value: "After last interaction"
             },
             {
                 key: 3,
-                value: 'After attribute is set'
+                value: "After attribute is set"
             }
         ];
         this.showTags = false;
@@ -59947,18 +59947,20 @@ let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPAC
             this.loading = true;
             yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/trigger/${this.$route.params.triggerid}`,
-                method: 'get',
+                method: "get",
                 cancelToken: this.loadingToken.token
-            }).then(res => {
+            })
+                .then(res => {
                 this.trigger.init(res.data.data);
                 this.filterList = new __WEBPACK_IMPORTED_MODULE_1__models_BroadcastAttributeFilterListModel__["a" /* default */](this.$store.state.projectInfo.id);
                 this.filterList.id = this.trigger.id;
                 this.filterList.loadAttributes();
                 this.loadBroadcastContent();
                 this.loading = false;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load trigger info!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load trigger info!");
                     alert(mesg);
                     this.loading = false;
                 }
@@ -59974,11 +59976,13 @@ let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPAC
             yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.trigger.id}/section/${this.trigger.section.id}/content`,
                 cancelToken: this.loadingContentToken.token
-            }).then((res) => {
+            })
+                .then((res) => {
                 this.contents = res.data.content;
-            }).catch((err) => {
+            })
+                .catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load content!");
                     alert(mesg);
                 }
                 else {
@@ -60017,27 +60021,26 @@ let BroadcastTriggerComponent = class BroadcastTriggerComponent extends __WEBPAC
                 }
                 else {
                     this.$store.state.deleteTrigger = this.trigger.id;
-                    this.$router.push({ name: 'project.broadcast' });
+                    this.$router.push({ name: "project.broadcast" });
                 }
             }
         });
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$route.params.triggerid')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$route.params.triggerid")
 ], BroadcastTriggerComponent.prototype, "loadTrigger", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.duration'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.time'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.period'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.durationType'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.triggerType'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.attr'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.value'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.condi')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("trigger.duration"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("trigger.time"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("trigger.period"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("trigger.durationType"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("trigger.triggerType"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("trigger.value"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("trigger.condi")
 ], BroadcastTriggerComponent.prototype, "updateTrigger", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('trigger.tag')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("trigger.tag")
 ], BroadcastTriggerComponent.prototype, "updateTag", null);
 BroadcastTriggerComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -60187,7 +60190,7 @@ var render = function() {
     { staticClass: "inheritHFW broadcastRoot" },
     [
       _vm.loading && undefined !== _vm.trigger
-        ? [_vm._v("\n        Loading...\n    ")]
+        ? [_vm._v("Loading...")]
         : [
             _c("div", { staticClass: "broadcastFilterCon" }, [
               _vm.$store.state.messageTags.length > 0
@@ -60356,7 +60359,7 @@ var render = function() {
                 { staticClass: "broadcastCondition" },
                 [
                   _c("h5", { staticClass: "bccHeading float-left" }, [
-                    _vm._v("\n                    Trigger:\n                ")
+                    _vm._v("Trigger:")
                   ]),
                   _vm._v(" "),
                   _c(
@@ -60431,9 +60434,7 @@ var render = function() {
                   _vm.trigger.durationType === 3
                     ? [
                         _c("div", { staticClass: "float-left" }, [
-                          _vm._v(
-                            "\n                         send at  \n                    "
-                          )
+                          _vm._v("  send at  ")
                         ]),
                         _vm._v(" "),
                         _c(
@@ -60497,6 +60498,7 @@ var render = function() {
                         attrs: { type: "text", placeholder: "Attribute Name" },
                         domProps: { value: _vm.trigger.attr },
                         on: {
+                          blur: _vm.updateTrigger,
                           input: function($event) {
                             if ($event.target.composing) {
                               return
@@ -60610,7 +60612,7 @@ var render = function() {
               "div",
               [
                 _vm.loadingContent
-                  ? [_vm._v("\n                Loading...\n            ")]
+                  ? [_vm._v("Loading...")]
                   : [
                       _c("builder-component", {
                         attrs: {
@@ -60634,9 +60636,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "reachableUser" }, [
-      _vm._v("You have "),
+      _vm._v("You have\n                "),
       _c("b", [_vm._v("4")]),
-      _vm._v(" users based on your filters.")
+      _vm._v(" users based on your filters.\n            ")
     ])
   },
   function() {

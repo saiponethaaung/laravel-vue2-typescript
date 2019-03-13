@@ -1,8 +1,6 @@
 <template>
     <div class="inheritHFW broadcastRoot">
-        <template v-if="loading && undefined!==trigger">
-            Loading...
-        </template>
+        <template v-if="loading && undefined!==trigger">Loading...</template>
         <template v-else>
             <div class="broadcastFilterCon">
                 <div class="outerDisplay" v-if="$store.state.messageTags.length>0">
@@ -37,27 +35,35 @@
                                 :segmentValue="filterList.segments"
                                 :segment="attribute.segment"
                             ></attribute-selector-component>
-                            
-                            <button v-if="filterList.attributes.length>1" class="deleteAttribute" @click="filterList.deleteFilter(index);">
+
+                            <button
+                                v-if="filterList.attributes.length>1"
+                                class="deleteAttribute"
+                                @click="filterList.deleteFilter(index);"
+                            >
                                 <i class="material-icons">delete</i>
                             </button>
-                            <div v-if="(filterList.attributes.length-1)==index" @click="addNewFitler()" class="addMoreFilterButton">
+                            <div
+                                v-if="(filterList.attributes.length-1)==index"
+                                @click="addNewFitler()"
+                                class="addMoreFilterButton"
+                            >
                                 <i class="material-icons">add</i>Add More
                             </div>
                         </div>
                     </template>
                 </div>
-                
-                <div class="reachableUser">You have <b>4</b> users based on your filters.</div>
+
+                <div class="reachableUser">You have
+                    <b>4</b> users based on your filters.
+                </div>
 
                 <div class="broadcastCondition">
-                    <h5 class="bccHeading float-left">
-                        Trigger:
-                    </h5>
-                   
+                    <h5 class="bccHeading float-left">Trigger:</h5>
+
                     <div class="bccTime bccDuration float-left">
                         <div class="timeOptionCon">
-                            <input type="number" v-model="trigger.duration" min="1"/>
+                            <input type="number" v-model="trigger.duration" min="1">
                         </div>
                         <dropdown-keybase-component
                             :options="durationOption"
@@ -73,15 +79,10 @@
                         ></dropdown-keybase-component>
                     </div>
                     <template v-if="trigger.durationType===3">
-                        <div class="float-left">
-                           &nbsp;&nbsp;send at&nbsp;&nbsp;
-                        </div>
+                        <div class="float-left">&nbsp;&nbsp;send at&nbsp;&nbsp;</div>
                         <div class="bccTime float-left">
                             <div class="timeOptionCon">
-                                <time-input-component
-                                    :value="trigger.time"
-                                    v-model="trigger.time"
-                                ></time-input-component>
+                                <time-input-component :value="trigger.time" v-model="trigger.time"></time-input-component>
                             </div>
                             <dropdown-keybase-component
                                 :options="periodOption"
@@ -93,7 +94,7 @@
                 </div>
 
                 <div class="triggerAttribute" v-if="trigger.triggerType===3">
-                    <input type="text" v-model="trigger.attr" placeholder="Attribute Name"/>
+                    <input type="text" v-model="trigger.attr" @blur="updateTrigger" placeholder="Attribute Name">
                     <dropdown-keybase-component
                         :options="[
                             {
@@ -108,31 +109,39 @@
                         :selectedKey="trigger.condi"
                         v-model="trigger.condi"
                     ></dropdown-keybase-component>
-                    <input type="text" v-model="trigger.value" placeholder="Attribute Value"/>
+                    <input type="text" v-model="trigger.value" placeholder="Attribute Value">
                 </div>
 
                 <div class="btnAction broadcastActionBtn">
                     <a href="javascript:void(0);" @click="deleteBroadcast()">
                         <figure>
-                            <img src="/images/icons/broadcast/delete.png"/>
+                            <img src="/images/icons/broadcast/delete.png">
                         </figure>
                     </a>
-                    <a href="javascript:void(0);" @click="trigger.updateStatus()" :to="{name: 'project.broadcast'}">
-                        <figure class="btnSend statusBtn" :class="{'deactiveStatus': !trigger.status}">
-                            <img :src="'/images/icons/broadcast/'+(trigger.status ? 'broadcast_status_enable': 'broadcast_status')+'.png'"/>
-                        </figure>   
+                    <a
+                        href="javascript:void(0);"
+                        @click="trigger.updateStatus()"
+                        :to="{name: 'project.broadcast'}"
+                    >
+                        <figure
+                            class="btnSend statusBtn"
+                            :class="{'deactiveStatus': !trigger.status}"
+                        >
+                            <img
+                                :src="'/images/icons/broadcast/'+(trigger.status ? 'broadcast_status_enable': 'broadcast_status')+'.png'"
+                            >
+                        </figure>
                     </a>
                 </div>
             </div>
             <div>
-                <template v-if="loadingContent">
-                    Loading...
-                </template>
+                <template v-if="loadingContent">Loading...</template>
                 <template v-else>
                     <builder-component
                         :isBroadcast="true"
                         :value="contents"
-                        :section="trigger.section"></builder-component>
+                        :section="trigger.section"
+                    ></builder-component>
                 </template>
             </div>
         </template>
@@ -140,21 +149,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch} from 'vue-property-decorator';
-import BroadcastAttributeFilterListModel from '../../models/BroadcastAttributeFilterListModel';
-import TriggerModel from '../../models/broadcast/TriggerModel';
-import Axios,{ CancelTokenSource } from 'axios';
-import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import BroadcastAttributeFilterListModel from "../../models/BroadcastAttributeFilterListModel";
+import TriggerModel from "../../models/broadcast/TriggerModel";
+import Axios, { CancelTokenSource } from "axios";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
 @Component
-export default class BroadcastTriggerComponent extends Vue{
+export default class BroadcastTriggerComponent extends Vue {
     private loading: boolean = false;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private loadingToken: CancelTokenSource = Axios.CancelToken.source();
     private loadingContentToken: CancelTokenSource = Axios.CancelToken.source();
     private loadingContent: boolean = true;
     private contents: any = [];
-    private filterList: BroadcastAttributeFilterListModel = new BroadcastAttributeFilterListModel(this.$store.state.projectInfo.id);
+    private filterList: BroadcastAttributeFilterListModel = new BroadcastAttributeFilterListModel(
+        this.$store.state.projectInfo.id
+    );
 
     private periodOption: any = [
         {
@@ -164,36 +175,36 @@ export default class BroadcastTriggerComponent extends Vue{
         {
             key: 2,
             value: "pm"
-        },
+        }
     ];
 
     private durationOption: any = [
         {
             key: 1,
-            value: 'Minute'
+            value: "Minute"
         },
         {
             key: 2,
-            value: 'Hour'
+            value: "Hour"
         },
         {
             key: 3,
-            value: 'Day'
+            value: "Day"
         }
     ];
 
     private triggerOption: any = [
         {
             key: 1,
-            value: 'After first interaction'
+            value: "After first interaction"
         },
         {
             key: 2,
-            value: 'After last interaction'
+            value: "After last interaction"
         },
         {
             key: 3,
-            value: 'After attribute is set'
+            value: "After attribute is set"
         }
     ];
 
@@ -202,12 +213,12 @@ export default class BroadcastTriggerComponent extends Vue{
     private trigger: TriggerModel = new TriggerModel();
 
     get selectedTag() {
-        if(undefined === this.trigger) return 0;
+        if (undefined === this.trigger) return 0;
 
         let index: any = 0;
 
-        for(let i=0; this.$store.state.messageTags.length>i; i++ ) {
-            if(this.$store.state.messageTags[i].id===this.trigger.tag) {
+        for (let i = 0; this.$store.state.messageTags.length > i; i++) {
+            if (this.$store.state.messageTags[i].id === this.trigger.tag) {
                 index = i;
                 break;
             }
@@ -223,8 +234,8 @@ export default class BroadcastTriggerComponent extends Vue{
     private addNewFitler() {
         this.filterList.createNewAttribute();
     }
-    
-    @Watch('$route.params.triggerid')
+
+    @Watch("$route.params.triggerid")
     async loadTrigger() {
         this.loadingToken.cancel();
         this.loadingToken = Axios.CancelToken.source();
@@ -232,23 +243,32 @@ export default class BroadcastTriggerComponent extends Vue{
         this.loading = true;
 
         await Axios({
-            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/trigger/${this.$route.params.triggerid}`,
-            method: 'get',
+            url: `/api/v1/project/${
+                this.$store.state.projectInfo.id
+            }/broadcast/trigger/${this.$route.params.triggerid}`,
+            method: "get",
             cancelToken: this.loadingToken.token
-        }).then(res => {
-            this.trigger.init(res.data.data);
-            this.filterList = new BroadcastAttributeFilterListModel(this.$store.state.projectInfo.id);
-            this.filterList.id = this.trigger.id;
-            this.filterList.loadAttributes();
-            this.loadBroadcastContent();
-            this.loading = false;
-        }).catch(err => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load trigger info!');
-                alert(mesg);
+        })
+            .then(res => {
+                this.trigger.init(res.data.data);
+                this.filterList = new BroadcastAttributeFilterListModel(
+                    this.$store.state.projectInfo.id
+                );
+                this.filterList.id = this.trigger.id;
+                this.filterList.loadAttributes();
+                this.loadBroadcastContent();
                 this.loading = false;
-            }
-        });
+            })
+            .catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to load trigger info!"
+                    );
+                    alert(mesg);
+                    this.loading = false;
+                }
+            });
     }
 
     async loadBroadcastContent() {
@@ -259,32 +279,40 @@ export default class BroadcastTriggerComponent extends Vue{
         this.contents = [];
 
         await Axios({
-            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.trigger.id}/section/${this.trigger.section.id}/content`,
+            url: `/api/v1/project/${
+                this.$store.state.projectInfo.id
+            }/broadcast/${this.trigger.id}/section/${
+                this.trigger.section.id
+            }/content`,
             cancelToken: this.loadingContentToken.token
-        }).then((res: any) => {
-            this.contents = res.data.content;
-        }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
-                alert(mesg);
-            } else {
-                this.loadingContentToken.cancel();
-            }
-        });
+        })
+            .then((res: any) => {
+                this.contents = res.data.content;
+            })
+            .catch((err: any) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to load content!"
+                    );
+                    alert(mesg);
+                } else {
+                    this.loadingContentToken.cancel();
+                }
+            });
 
         this.loadingContent = false;
     }
 
-    @Watch('trigger.duration')
-    @Watch('trigger.time')
-    @Watch('trigger.period')
-    @Watch('trigger.durationType')
-    @Watch('trigger.triggerType')
-    @Watch('trigger.attr')
-    @Watch('trigger.value')
-    @Watch('trigger.condi')
+    @Watch("trigger.duration")
+    @Watch("trigger.time")
+    @Watch("trigger.period")
+    @Watch("trigger.durationType")
+    @Watch("trigger.triggerType")
+    @Watch("trigger.value")
+    @Watch("trigger.condi")
     private async updateTrigger() {
-        if(this.loadingContent) return;
+        if (this.loadingContent) return;
         await this.trigger.updateTrigger();
         this.$store.state.updateTrigger = {
             id: this.trigger.id,
@@ -294,20 +322,20 @@ export default class BroadcastTriggerComponent extends Vue{
         };
     }
 
-    @Watch('trigger.tag')
+    @Watch("trigger.tag")
     private async updateTag() {
-        if(this.loadingContent) return;
+        if (this.loadingContent) return;
         await this.trigger.updateTag();
     }
 
     private async deleteBroadcast() {
-        if(confirm("Are you sure you want to delete this broadcast?")) {
+        if (confirm("Are you sure you want to delete this broadcast?")) {
             let del = await this.trigger.deleteBroadcast();
-            if(!del.status) {
+            if (!del.status) {
                 alert(del.mesg);
             } else {
                 this.$store.state.deleteTrigger = this.trigger.id;
-                this.$router.push({name: 'project.broadcast'});
+                this.$router.push({ name: "project.broadcast" });
             }
         }
     }

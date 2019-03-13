@@ -14,9 +14,12 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\ProjectPage;
+use App\Models\ProjectPageUser;
+use App\Models\ProjectPageUserChat;
 use App\Models\ProjectInvite as ProjectInviteModel;
 use App\Models\ProjectInviteEmail;
 use App\Models\ChatBlock;
+use App\Models\ChatAttribute;
 use App\Models\ChatBlockSection;
 
 use App\Mail\MemberInviteWithProject;
@@ -250,40 +253,55 @@ class ProjectController extends Controller
         // Check project page
         $projectPage = ProjectPage::where('page_id', $input['id'])->first();
 
-        // Create new project page if project page didn't exists
-        if(empty($projectPage)) {
-            //Begin transaction
-            DB::beginTransaction();
+        if(!empty($projectPage) && is_null($projectPage->project_id)===false) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Page is already used in another bot!'
+            ], 422);
+        }
 
-            // Create new project page
-            try {
+        //Begin transaction
+        DB::beginTransaction();
+        try {
+            // Create new project page if project page didn't exists
+            if(empty($projectPage)) {
+                // Create new project page
                 $projectPage = ProjectPage::create([
                     'project_id' => null,
                     'page_id' => $input['id'],
                     'token' => $input['access_token']
                 ]);
-            } catch (\Exception $e) {
-                // Rollback and send error
-                DB::rollback();
-                return response()->json([
-                    'status' => false,
-                    'code' => 422,
-                    'mesg' => 'Failed to link project and page!'
-                ], 422);
             }
-            
-            // Commit page
-            DB::commit();
-        } else {
-            // if project id from project page is not null send an error
-            if(is_null($projectPage->project_id)===false) {
-                return response()->json([
-                    'status' => false,
-                    'code' => 422,
-                    'mesg' => 'Page is already used in another bot!'
-                ], 422);
+
+            $attributes = ChatAttribute::with([
+                'chatValue',
+                'chatValue.user'
+            ])->whereHas('chatValue', function($query) use ($projectPage) {
+                $query->whereHas('user', function($query) use ($projectPage) {
+                    $query->where('project_page_id', $projectPage->id);
+                });
+            })->get();
+
+            foreach($attributes as $attribute) {
+                foreach($attribute->chatValue as $cv) {
+                    $validate = $this->chatAttributeHandler($attribute, $request->attributes->get('project')->id);
+                    $cv->attribute_id = $validate;
+                    $cv->save();
+                }
             }
+        } catch (\Exception $e) {
+            // Rollback and send error
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to link project and page!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
         }
+
+        DB::commit();
 
         // Subscribe facebook page to bot
         $subscribe = $fbc->subscribeApp($input['id']);
@@ -333,6 +351,36 @@ class ProjectController extends Controller
                 'publish' => false
             ]
         ]);
+    }
+
+    private function chatAttributeHandler($attribute, $targetProject)
+    {
+        $attributeId = $attribute->id;
+        // check project id is null on chat attribute
+        if(is_null($attribute->project_id)) {
+            // set target project id
+            $attribute->project_id = $targetProject;
+            $attribute->save();
+        } else {
+            // check target project id and attribute project id are matched
+            if($attribute->project_id!==$targetProject) {
+                // if it is not match check chat attribute with target project id already exists
+                $attr = ChatAttribute::where(DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $attribute->attribute.'%')
+                    ->where('project_id', $targetProject)
+                    ->first();
+                // create new attribute if it's not yet exists
+                if(empty($attr)) {
+                    $attr = ChatAttribute::create([
+                        'attribute' => $attribute->attribute,
+                        'type' => $attribute->type,
+                        'is_system' => 0,
+                        'project_id' => $targetProject
+                    ]);
+                }
+                $attributeId = $attr->id;
+            }
+        }
+        return $attributeId;
     }
 
     public function unlinkProject(Request $request)

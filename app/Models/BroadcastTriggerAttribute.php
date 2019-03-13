@@ -23,4 +23,9 @@ class BroadcastTriggerAttribute extends Model
     {
         return $this->hasOne('App\Models\ChatAttribute', 'id', 'chat_attribute_id');
     }
+
+    public function projectBroadcast()
+    {
+        return $this->hasOne('App\Models\broadcast', 'id', 'project_broadcast_id');
+    }
 }

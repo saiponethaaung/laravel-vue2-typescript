@@ -14,7 +14,6 @@ use App\Http\Controllers\Controller;
 
 use App\Models\ChatBlockSectionContent as CBSC;
 use App\Models\ChatGallery;
-use App\Models\ChatAttribute;
 use App\Models\ChatQuickReply;
 use App\Models\ChatUserInput;
 use App\Models\ChatButton;

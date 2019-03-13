@@ -439,11 +439,14 @@ class UpdateController extends Controller
             if($input['attribute']) {
                 $attr = ChatAttribute::where(
                     DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $input['attribute'].'%'
-                )->first();
+                )
+                ->where('project_id', '=', $request->attributes->get('project')->id)
+                ->first();
 
                 if(empty($attr)) {
                     $attr = ChatAttribute::create([
-                        'attribute' => $input['attribute']
+                        'attribute' => $input['attribute'],
+                        'project_id' => $request->attributes->get('project')->id
                     ]);
                 }
 
@@ -543,12 +546,21 @@ class UpdateController extends Controller
             if($input['attribute']) {
                 $attr = ChatAttribute::where(
                     DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $input['attribute'].'%'
-                )->first();
+                )
+                ->where('project_id', $request->attributes->get('project')->id)
+                ->first();
 
                 if(empty($attr)) {
                     $attr = ChatAttribute::create([
-                        'attribute' => $input['attribute']
+                        'attribute' => $input['attribute'],
+                        'project_id' => $request->attributes->get('project')->id,
+                        'type' => $input['validation']<3 ? $input['validation'] : 0
                     ]);
+                }
+
+                if($attr->type!==$input['validation'] && $input['validation']<3) {
+                    $attr->type = $input['validation'];
+                    $attr->save();
                 }
 
                 $attrId = $attr->id;

@@ -132,15 +132,21 @@ class ChatUserController extends Controller
                 'id' => $attr->id,
                 'name' => $attr->attribute,
                 'key' => $attr->id,
+                'type' => $attr->type,
                 'value' => []
             ];
 
             $values = [];
 
-            foreach($attr->chatValue as $chat) {
-                if(in_array($chat->value, $values)) continue;
-                $values[] = $chat->value;
-                $parsed['value'][]['value'] = $chat->value;
+            if(in_array($attr->type, [1, 2])) {
+                $parsed['value'][]['value'] = "Yes";
+                $parsed['value'][]['value'] = "No";
+            } else {
+                foreach($attr->chatValue as $chat) {
+                    if(in_array($chat->value, $values)) continue;
+                    $values[] = $chat->value;
+                    $parsed['value'][]['value'] = $chat->value;
+                }
             }
 
             $res[1]['child'][] = $parsed;

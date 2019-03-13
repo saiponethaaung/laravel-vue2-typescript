@@ -554,14 +554,12 @@ class UpdateController extends Controller
                     $attr = ChatAttribute::create([
                         'attribute' => $input['attribute'],
                         'project_id' => $request->attributes->get('project')->id,
-                        'type' => $input['validation']<3 ? $input['validation'] : 0
+                        'type' => 1
                     ]);
                 }
 
-                if($attr->type!==$input['validation'] && $input['validation']<3) {
-                    $attr->type = $input['validation'];
-                    $attr->save();
-                }
+                $attr->type = 1;
+                $attr->save();
 
                 $attrId = $attr->id;
             }

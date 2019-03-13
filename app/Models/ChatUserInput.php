@@ -14,6 +14,7 @@ class ChatUserInput extends Model
      * 1 Phone
      * 2 Email
      * 3 Number
+     * 4 Other
      * 
      */
     protected $table = 'chat_user_input';

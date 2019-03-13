@@ -55059,6 +55059,7 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
             let filter = '';
             if (this.$store.state.userFilter.length > 0) {
                 for (let i2 of this.$store.state.userFilter[0].child) {
+                    filter += `custom[${i2.key}][type]=${i2.type}&`;
                     filter += `user[${i2.key}][key]=${i2.key}&`;
                     for (let i3 of i2.value) {
                         if (!i3.checked)
@@ -55067,6 +55068,7 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
                     }
                 }
                 for (let i2 of this.$store.state.userFilter[1].child) {
+                    filter += `custom[${i2.key}][type]=${i2.type}&`;
                     filter += `custom[${i2.key}][key]=${i2.key}&`;
                     for (let i3 of i2.value) {
                         if (!i3.checked)
@@ -55075,6 +55077,7 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
                     }
                 }
                 for (let i2 of this.$store.state.userFilter[2].child) {
+                    filter += `custom[${i2.key}][type]=${i2.type}&`;
                     filter += `system[${i2.key}][key]=${i2.key}&`;
                     for (let i3 of i2.value) {
                         if (!i3.checked)

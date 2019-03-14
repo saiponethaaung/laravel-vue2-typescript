@@ -46,6 +46,7 @@ class ChatUserController extends Controller
                         "id" => 0,
                         "name" => "Gender",
                         "key" => "gender",
+                        "type" => 0,
                         "value" => [
                             [
                                 "value" => "Male",
@@ -70,6 +71,7 @@ class ChatUserController extends Controller
                         "id" => 0,
                         "name" => "Signed up",
                         "key" => "signup",
+                        "type" => 0,
                         "value" => [
                             [
                                 "value" => "24 hrs ago",
@@ -89,6 +91,7 @@ class ChatUserController extends Controller
                         "id" => 0,
                         "name" => "Last Seen",
                         "key" => "lastseen",
+                        "type" => 0,
                         "value" => [
                             [
                                 "value" => "24 hrs ago",
@@ -108,6 +111,7 @@ class ChatUserController extends Controller
                         "id" => 0,
                         "name" => "Last Engaged",
                         "key" => "lastengaged",
+                        "type" => 0,
                         "value" => [
                             [
                                 "value" => "24 hrs ago",
@@ -138,7 +142,7 @@ class ChatUserController extends Controller
 
             $values = [];
 
-            if(in_array($attr->type, [1, 2])) {
+            if($attr->type==1) {
                 $parsed['value'][]['value'] = "Yes";
                 $parsed['value'][]['value'] = "No";
             } else {
@@ -175,10 +179,33 @@ class ChatUserController extends Controller
         if(!is_null($request->input('custom'))) {
             foreach($request->input('custom') as $custom) {
                 if(!isset($custom['value'])) continue;
-                $users->whereHas('attributes', function($query) use ($custom) {
-                    $query->where('attribute_id', $custom['key']);
-                    $query->whereIn('value', $custom['value']);
-                });
+                if($custom['type']!=1) {
+                    $users->whereHas('attributes', function($query) use ($custom) {
+                        $query->where('attribute_id', $custom['key']);
+                        $query->whereIn('value', $custom['value']);
+                    });
+                } else {
+                    switch(strtolower($custom['value'][0])) {
+                        case 'yes':
+                            $users->whereHas('attributes', function($query) use ($custom) {
+                                $query->where('attribute_id', $custom['key']);
+                                $query->where('value', '!=', '');
+                            });
+                            break;
+
+                        case 'no':
+                            $users->where(function($query) use ($custom) {
+                                $query->whereHas('attributes', function($query) use ($custom) {
+                                    $query->where('attribute_id', $custom['key']);
+                                    $query->where('value', '=', '');
+                                });
+                                $query->orWhereDoesntHave('attributes', function($query) use ($custom) {
+                                    $query->where('attribute_id', $custom['key']);
+                                });
+                            });
+                            break;
+                    }
+                }
             }
         }
 
@@ -496,22 +523,46 @@ class ChatUserController extends Controller
                     
                     case(2):
                         $whereCondi = 'whereHas';
+                        $rootWhereCon = 'where';
                         
                         if($key>0 && $segmentFilters[$key-1]->chain_condition==2) {
                             $whereCondi = 'orWhereHas';
+                            $rootWhereCon = 'orWhere';
                         }
 
                         if(empty($value->chat_attribute_value)) continue;
-                        
-                        $filterList[] = [
-                            'key' => $value->attribute->attribute,
-                            'value' => $value->chat_attribute_value
-                        ];
+                        if($value->attribute->type!==1) {
+                            $filterList[] = [
+                                'key' => $value->attribute->attribute,
+                                'value' => $value->chat_attribute_value
+                            ];
 
-                        $users->$whereCondi('attributes', function($query) use ($value) {
-                            $query->where('attribute_id', $value->chat_attribute_id);
-                            $query->where('value', $value->chat_attribute_value);
-                        });
+                            $users->$whereCondi('attributes', function($query) use ($value) {
+                                $query->where('attribute_id', $value->chat_attribute_id);
+                                $query->where('value', $value->chat_attribute_value);
+                            });
+                        } else {
+                            switch(strtolower($value->chat_attribute_value)) {
+                                case 'yes':
+                                    $users->$whereCondi('attributes', function($query) use ($value) {
+                                        $query->where('attribute_id', $value->chat_attribute_id);
+                                        $query->where('value', '!=', '');
+                                    });
+                                    break;
+
+                                case 'no':
+                                    $users->$rootWhereCon(function($query) use ($value) {
+                                        $users->where('attributes', function($query) use ($value) {
+                                            $query->where('attribute_id', $value->chat_attribute_id);
+                                            $query->where('value', '=', '');
+                                        });
+                                        $users->whereDoesntHave('attributes', function($query) use ($value) {
+                                            $query->where('attribute_id', $value->chat_attribute_id);
+                                        });
+                                    });
+                                    break;
+                            }
+                        }
                         break;
                     
                     case(3):

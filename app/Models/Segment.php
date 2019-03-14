@@ -14,7 +14,8 @@ class Segment extends Model
         'project_id'
     ];
 
-    public static function boot() {
+    public static function boot()
+    {
         parent::boot();
 
         static::deleting(function($segment) {

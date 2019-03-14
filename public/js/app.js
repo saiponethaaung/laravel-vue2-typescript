@@ -56609,12 +56609,13 @@ let UserListSidebarComponent = class UserListSidebarComponent extends __WEBPACK_
         let status = false;
         for (let i in this.$store.state.userFilter) {
             for (let i2 in this.$store.state.userFilter[i].child) {
-                for (let i3 in this.$store.state.userFilter[i].child[i2].value) {
+                for (let i3 in this.$store.state.userFilter[i].child[i2]
+                    .value) {
                     this.$store.state.userFilter[i].child[i2].value[i3].checked = false;
                 }
             }
         }
-        this.$store.state.prevUserFilter = '';
+        this.$store.state.prevUserFilter = "";
     }
     applyFilters() {
         this.$store.state.prevUserFilter = JSON.stringify(this.$store.state.userFilter);
@@ -56625,8 +56626,9 @@ let UserListSidebarComponent = class UserListSidebarComponent extends __WEBPACK_
                 return;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/users/attributes`,
-                method: 'get'
-            }).then((res) => {
+                method: "get"
+            })
+                .then(res => {
                 let data = [];
                 for (let i of res.data.data) {
                     let parsed = i;
@@ -56638,10 +56640,10 @@ let UserListSidebarComponent = class UserListSidebarComponent extends __WEBPACK_
                     }
                     data.push(parsed);
                 }
-                console.log('res', data);
+                console.log("res", data);
                 this.$store.state.userFilter = data;
-            }).catch((err) => {
-            });
+            })
+                .catch(err => { });
         });
     }
     checkHasChecked(index, index2) {
@@ -56655,9 +56657,12 @@ let UserListSidebarComponent = class UserListSidebarComponent extends __WEBPACK_
         return status;
     }
     checkFilter(tindex, aindex, index) {
-        if (this.$store.state.userFilter[tindex].single) {
-            if (!this.$store.state.userFilter[tindex].child[aindex].value[index].checked) {
-                for (let i in this.$store.state.userFilter[tindex].child[aindex].value) {
+        if (this.$store.state.userFilter[tindex].single ||
+            this.$store.state.userFilter[tindex].child[aindex].type == 1) {
+            if (!this.$store.state.userFilter[tindex].child[aindex].value[index]
+                .checked) {
+                for (let i in this.$store.state.userFilter[tindex].child[aindex]
+                    .value) {
                     if (i === index)
                         continue;
                     this.$store.state.userFilter[tindex].child[aindex].value[i].checked = false;
@@ -56708,16 +56713,8 @@ var render = function() {
                   },
                   [
                     _vm.showFilter
-                      ? [
-                          _vm._v(
-                            "\n                                arrow_drop_up\n                            "
-                          )
-                        ]
-                      : [
-                          _vm._v(
-                            "\n                                arrow_drop_down\n                            "
-                          )
-                        ]
+                      ? [_vm._v("arrow_drop_up")]
+                      : [_vm._v("arrow_drop_down")]
                   ],
                   2
                 )
@@ -56733,11 +56730,7 @@ var render = function() {
                         _c(
                           "router-link",
                           { attrs: { to: { name: "project.users" } } },
-                          [
-                            _vm._v(
-                              "\n                                Accounts\n                            "
-                            )
-                          ]
+                          [_vm._v("Accounts")]
                         )
                       ],
                       1
@@ -56749,11 +56742,7 @@ var render = function() {
                         _c(
                           "router-link",
                           { attrs: { to: { name: "project.users.segments" } } },
-                          [
-                            _vm._v(
-                              "\n                                Segments\n                            "
-                            )
-                          ]
+                          [_vm._v("Segments")]
                         )
                       ],
                       1

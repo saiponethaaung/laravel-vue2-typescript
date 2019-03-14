@@ -32060,77 +32060,79 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
+        this.keyTimeout = null;
+        this.keySuggestion = [];
         this.showOption = false;
         this.condiOptions = [
             {
                 key: 1,
-                value: 'and'
+                value: "and"
             },
             {
                 key: 2,
-                value: 'or'
+                value: "or"
             }
         ];
         this.attributeOptions = [
             {
                 key: 1,
-                value: 'User Attribute'
+                value: "User Attribute"
             },
             {
                 key: 2,
-                value: 'Attribute',
+                value: "Attribute Name"
             },
             {
                 key: 3,
-                value: 'System Attribute'
+                value: "System Attribute"
             }
         ];
         this.systemAttribute = [
             {
                 key: 1,
-                value: "Signed up",
+                value: "Signed up"
             },
             {
                 key: 2,
-                value: "Last Seen",
+                value: "Last Seen"
             },
             {
                 key: 3,
-                value: "Last Engaged",
+                value: "Last Engaged"
             }
         ];
         this.userAttribute = [
             {
                 key: 1,
-                value: "Gender",
-            },
+                value: "Gender"
+            }
         ];
         this.systemAttributeValue = [
             {
                 key: 1,
-                value: "24 hrs ago",
+                value: "24 hrs ago"
             },
             {
                 key: 2,
-                value: "1 week ago",
+                value: "1 week ago"
             },
             {
                 key: 3,
-                value: "1 month ago",
+                value: "1 month ago"
             },
             {
                 key: 4,
-                value: "3 months ago",
-            },
+                value: "3 months ago"
+            }
         ];
         this.userAttributeValue = [
             {
                 key: 1,
-                value: "Male",
+                value: "Male"
             },
             {
                 key: 2,
-                value: "Female",
+                value: "Female"
             }
         ];
     }
@@ -32143,11 +32145,11 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
         let res = [
             {
                 key: 1,
-                value: 'is not'
+                value: "is not"
             },
             {
                 key: 2,
-                value: 'is'
+                value: "is"
             }
         ];
         // if(this.attribute.option === 2) {
@@ -32171,11 +32173,21 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
         // }
         return res;
     }
+    searchKeySuggestion() {
+        clearTimeout(this.keyTimeout);
+        if (this.attribute.name == "")
+            return;
+        this.keyTimeout = setTimeout(() => {
+            this.keySuggestion.push(new Date());
+        }, 1000);
+    }
     mounted() {
-        if (!this.isSegment && undefined !== this.segmentValue && this.segmentValue.length > 0) {
+        if (!this.isSegment &&
+            undefined !== this.segmentValue &&
+            this.segmentValue.length > 0) {
             this.attributeOptions.push({
                 key: 4,
-                value: 'Segment'
+                value: "Segment"
             });
         }
     }
@@ -32204,16 +32216,16 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], AttributeSelectorComponent.prototype, "segment", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.option'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.type'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.name'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.value'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.condi'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.system'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.systemValue'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.user'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('attribute.userValue'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('segment.id')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("attribute.option"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("attribute.type"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("attribute.name"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("attribute.value"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("attribute.condi"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("attribute.system"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("attribute.systemValue"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("attribute.user"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("attribute.userValue"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("segment.id")
 ], AttributeSelectorComponent.prototype, "updateFilter", null);
 AttributeSelectorComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
@@ -32471,6 +32483,7 @@ var render = function() {
                       attrs: { placeholder: "Attribute name" },
                       domProps: { value: _vm.attribute.name },
                       on: {
+                        keyup: _vm.searchKeySuggestion,
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -32478,7 +32491,23 @@ var render = function() {
                           _vm.$set(_vm.attribute, "name", $event.target.value)
                         }
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "attrKeySuggestCon" }, [
+                      _c("h6", [_vm._v("Available Attribute")]),
+                      _vm._v(" "),
+                      _c(
+                        "ul",
+                        [
+                          _vm._l(_vm.keySuggestion, function(k, index) {
+                            return [
+                              _c("li", { key: index }, [_vm._v(_vm._s(k))])
+                            ]
+                          })
+                        ],
+                        2
+                      )
+                    ])
                   ]
                 : _vm.attribute.option === 3
                 ? [

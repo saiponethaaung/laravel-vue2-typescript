@@ -14553,6 +14553,36 @@ input.required::placeholder {
   width: 64px;
 }
 
+.attrKeySuggestCon {
+  position: relative;
+  bottom: -15px;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+}
+
+.attrKeySuggestCon h6 {
+  padding: 10px 5px;
+  margin: 0;
+  font-size: 13px;
+}
+
+.attrKeySuggestCon ul {
+  padding: 0;
+  list-style: none;
+  word-wrap: break-word;
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+.attrKeySuggestCon ul li {
+  padding: 10px 5px;
+  cursor: pointer;
+}
+
+.attrKeySuggestCon ul li:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .floatingLoading {
   position: fixed;
   width: 100vw;

@@ -21,7 +21,20 @@
                     </div>
                 </template>
                 <template v-else-if="attribute.option === 2">
-                    <input placeholder="Attribute name" v-model="attribute.name" class="attrSelInput"/>
+                    <input
+                        placeholder="Attribute name"
+                        v-model="attribute.name"
+                        class="attrSelInput"
+                        @keyup="searchKeySuggestion"
+                    >
+                    <div class="attrKeySuggestCon">
+                        <h6>Available Attribute</h6>
+                        <ul>
+                            <template v-for="(k, index) in keySuggestion">
+                                <li :key="index">{{ k }}</li>
+                            </template>
+                        </ul>
+                    </div>
                 </template>
                 <template v-else-if="attribute.option === 3">
                     <div class="optionSpinner">
@@ -77,7 +90,11 @@
                     </div>
                 </template>
                 <template v-else-if="attribute.option === 2">
-                    <input placeholder="Attribute value" v-model="attribute.value" class="attrSelInput"/>
+                    <input
+                        placeholder="Attribute value"
+                        v-model="attribute.value"
+                        class="attrSelInput"
+                    >
                 </template>
                 <template v-else-if="attribute.option === 3">
                     <div class="optionSpinner">
@@ -90,18 +107,26 @@
                 </template>
             </div>
             <div v-if="canCondition" class="alignFilter">
-                <button class="filterType" :class="{'selectedCondi': attribute.condi===1}" @click="attribute.condi=1">and</button>
-                <button class="filterType" :class="{'selectedCondi': attribute.condi===2}" @click="attribute.condi=2">or</button>
+                <button
+                    class="filterType"
+                    :class="{'selectedCondi': attribute.condi===1}"
+                    @click="attribute.condi=1"
+                >and</button>
+                <button
+                    class="filterType"
+                    :class="{'selectedCondi': attribute.condi===2}"
+                    @click="attribute.condi=2"
+                >or</button>
             </div>
-        </div>    
-    </div>    
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import SpinnerDropDownComponent from './SpinnerDropDownComponent.vue';
-import AttributeFilterModel from '../../models/AttributeFilterModel';
-import BroadcastAttributeFilterListModel from '../../models/BroadcastAttributeFilterListModel';
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import SpinnerDropDownComponent from "./SpinnerDropDownComponent.vue";
+import AttributeFilterModel from "../../models/AttributeFilterModel";
+import BroadcastAttributeFilterListModel from "../../models/BroadcastAttributeFilterListModel";
 
 @Component({
     components: {
@@ -109,36 +134,40 @@ import BroadcastAttributeFilterListModel from '../../models/BroadcastAttributeFi
     }
 })
 export default class AttributeSelectorComponent extends Vue {
-
     @Prop({
         default: false
-    }) canCondition!: boolean;
+    })
+    canCondition!: boolean;
     @Prop() attribute!: any;
 
     @Prop({
         type: Boolean,
         default: false
-    }) isSegment!: boolean;
+    })
+    isSegment!: boolean;
 
     @Prop({
         type: Array,
         default: []
-    }) segmentValue!: Array<any>;
+    })
+    segmentValue!: Array<any>;
+    private keyTimeout: any = null;
+    private keySuggestion: any[] = [];
 
     @Prop() segment!: any;
 
-    @Watch('attribute.option')
-    @Watch('attribute.type')
-    @Watch('attribute.name')
-    @Watch('attribute.value')
-    @Watch('attribute.condi')
-    @Watch('attribute.system')
-    @Watch('attribute.systemValue')
-    @Watch('attribute.user')
-    @Watch('attribute.userValue')
-    @Watch('segment.id')
+    @Watch("attribute.option")
+    @Watch("attribute.type")
+    @Watch("attribute.name")
+    @Watch("attribute.value")
+    @Watch("attribute.condi")
+    @Watch("attribute.system")
+    @Watch("attribute.systemValue")
+    @Watch("attribute.user")
+    @Watch("attribute.userValue")
+    @Watch("segment.id")
     private updateFilter() {
-        if(this.isSegment) return;
+        if (this.isSegment) return;
         this.attribute.updateFilter();
     }
 
@@ -147,90 +176,90 @@ export default class AttributeSelectorComponent extends Vue {
     private condiOptions: any = [
         {
             key: 1,
-            value: 'and'
+            value: "and"
         },
         {
             key: 2,
-            value: 'or'
+            value: "or"
         }
     ];
 
     private attributeOptions: any = [
         {
             key: 1,
-            value: 'User Attribute'
+            value: "User Attribute"
         },
         {
             key: 2,
-            value: 'Attribute',
+            value: "Attribute Name"
         },
         {
             key: 3,
-            value: 'System Attribute'
+            value: "System Attribute"
         }
     ];
 
     private systemAttribute: any = [
         {
             key: 1,
-            value: "Signed up",
+            value: "Signed up"
         },
         {
             key: 2,
-            value: "Last Seen",
+            value: "Last Seen"
         },
         {
             key: 3,
-            value: "Last Engaged",
+            value: "Last Engaged"
         }
     ];
 
     private userAttribute: any = [
         {
             key: 1,
-            value: "Gender",
-        },
+            value: "Gender"
+        }
     ];
 
     private systemAttributeValue: any = [
         {
             key: 1,
-            value: "24 hrs ago",
+            value: "24 hrs ago"
         },
         {
             key: 2,
-            value: "1 week ago",
+            value: "1 week ago"
         },
         {
             key: 3,
-            value: "1 month ago",
+            value: "1 month ago"
         },
         {
             key: 4,
-            value: "3 months ago",
-        },
+            value: "3 months ago"
+        }
     ];
 
     private userAttributeValue: any = [
         {
             key: 1,
-            value: "Male",
+            value: "Male"
         },
         {
             key: 2,
-            value: "Female",
+            value: "Female"
         }
     ];
 
-    get filterType() : Array<any> {
+    get filterType(): Array<any> {
         let res = [
             {
                 key: 1,
-                value: 'is not'
+                value: "is not"
             },
             {
                 key: 2,
-                value: 'is'
+                value: "is"
             }
         ];
 
@@ -257,12 +286,26 @@ export default class AttributeSelectorComponent extends Vue {
         return res;
     }
 
+    searchKeySuggestion() {
+        clearTimeout(this.keyTimeout);
+
+        if(this.attribute.name=="") return;
+
+        this.keyTimeout = setTimeout(() => {
+            this.keySuggestion.push(new Date());
+        }, 1000);
+    }
+
     mounted() {
-        if(!this.isSegment && undefined!==this.segmentValue && this.segmentValue.length>0) {
+        if (
+            !this.isSegment &&
+            undefined !== this.segmentValue &&
+            this.segmentValue.length > 0
+        ) {
             this.attributeOptions.push({
                 key: 4,
-                value: 'Segment'
-            })
+                value: "Segment"
+            });
         }
     }
 }

@@ -283,3 +283,29 @@
 .editColumn {
     width: 64px;
 }
+
+.attrKeySuggestCon {
+    position: relative;
+    bottom: -15px;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    h6 {
+        padding: 10px 5px;
+        margin: 0;
+        font-size: 13px;
+    }
+    ul {
+        padding: 0;
+        list-style: none;
+        word-wrap: break-word;
+        font-size: 12px;
+        margin-bottom: 0;
+        li {
+            padding: 10px 5px;
+            cursor: pointer;
+            &:hover {
+                background: rgba(0,0,0,0.2);
+            }
+        }
+    }
+}

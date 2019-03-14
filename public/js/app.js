@@ -52357,6 +52357,7 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
         this.saveReply = false;
         this.createReply = false;
         this.replyList = new __WEBPACK_IMPORTED_MODULE_6__models_inbox_SavedReplyListModel__["a" /* default */]("", 0);
+        this.message = "";
     }
     reloadMesg() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -52557,6 +52558,12 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                 this.$store.state.chatFilter = 1;
             })
                 .catch(err => { });
+        });
+    }
+    selectReply(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.mesg = this.replyList.savedReplies[index].message;
+            this.saveReply = false;
         });
     }
 };
@@ -53904,7 +53911,16 @@ var render = function() {
                                                           {
                                                             key: index,
                                                             staticClass:
-                                                              "subReply"
+                                                              "subReply",
+                                                            on: {
+                                                              click: function(
+                                                                $event
+                                                              ) {
+                                                                _vm.selectReply(
+                                                                  index
+                                                                )
+                                                              }
+                                                            }
                                                           },
                                                           [
                                                             _c(
@@ -53926,7 +53942,10 @@ var render = function() {
                                                               "div",
                                                               {
                                                                 staticClass:
-                                                                  "replyMessage"
+                                                                  "replyMessage",
+                                                                attrs: {
+                                                                  id: "reply"
+                                                                }
                                                               },
                                                               [
                                                                 _vm._v(

@@ -13790,6 +13790,7 @@ input.required::placeholder {
 }
 
 .savedList .subReply {
+  cursor: pointer;
   border-bottom: 1px solid #e5e5e5;
 }
 

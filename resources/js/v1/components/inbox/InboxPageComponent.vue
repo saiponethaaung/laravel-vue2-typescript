@@ -126,9 +126,9 @@
                                             v-for="(reply, index) in replyList.savedReplies"
                                             v-else
                                         >
-                                            <div class="subReply" :key="index">
+                                            <div class="subReply" :key="index" @click="selectReply(index)">
                                                 <div class="replyTitle">{{ reply.title }}</div>
-                                                <div class="replyMessage">{{ reply.message }}</div>
+                                                <div id="reply" class="replyMessage">{{ reply.message }}</div>
                                             </div>
                                         </template>
                                     </div>
@@ -325,6 +325,7 @@ export default class InboxPageComponent extends Vue {
     private saveReply: boolean = false;
     private createReply: boolean = false;
     private replyList: SavedReplyListModel = new SavedReplyListModel("", 0);
+    private message: string = "";
 
     @Watch("$store.state.selectedInbox")
     async reloadMesg() {
@@ -557,6 +558,13 @@ export default class InboxPageComponent extends Vue {
                 this.$store.state.chatFilter = 1;
             })
             .catch(err => {});
+    }
+
+    async selectReply(index: number) {
+
+        this.mesg = this.replyList.savedReplies[index].message;
+        this.saveReply = false;
+
     }
 }
 </script>

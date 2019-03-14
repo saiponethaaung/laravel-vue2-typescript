@@ -527,6 +527,7 @@ $attributePanelWidth: 336px;
     height: 200px;
     overflow: auto;
     .subReply {
+        cursor: pointer;
         border-bottom: 1px solid #e5e5e5;
         .replyTitle {
             font-weight: bold;

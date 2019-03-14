@@ -713,37 +713,39 @@ class UpdateController extends Controller
             if($button->type!=0 && !empty($block)) {
                 $block->delete();
             } else {
-                $attr = ChatAttribute::where(
-                    DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $input['attrTitle'].'%'
-                )
-                ->where('project_id', $request->attributes->get('project')->id)
-                ->first();
+                if(!empty($input['attrTitle'])) {
+                    $attr = ChatAttribute::where(
+                        DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $input['attrTitle'].'%'
+                    )
+                    ->where('project_id', $request->attributes->get('project')->id)
+                    ->first();
 
-                if(empty($attr)) {
-                    $attr = ChatAttribute::create([
-                        'attribute' => $input['attrTitle'],
-                        'project_id' => $request->attributes->get('project')->id,
-                        'type' => 2
-                    ]);
+                    if(empty($attr)) {
+                        $attr = ChatAttribute::create([
+                            'attribute' => $input['attrTitle'],
+                            'project_id' => $request->attributes->get('project')->id,
+                            'type' => 2
+                        ]);
+                    }
+
+                    if($attr->type==1) {
+                        return response()->json([
+                            'status' => false,
+                            'code' => 422,
+                            'mesg' => 'Attribute `'.$input['attrTitle'].'` can only be used in user input!'
+                        ], 422);
+                    }
+
+                    if(empty($block)) {
+                        $block = ChatButtonBlock::create([
+                            'button_id' => $button->id,
+                        ]);
+                    }
+
+                    $block->attribute_id = $attr->id;
+                    $block->value = $input['attrValue'];
+                    $block->save();
                 }
-
-                if($attr->type==1) {
-                    return response()->json([
-                        'status' => false,
-                        'code' => 422,
-                        'mesg' => 'Attribute `'.$input['attrTitle'].'` can only be used in user input!'
-                    ], 422);
-                }
-
-                if(empty($block)) {
-                    $block = ChatButtonBlock::create([
-                        'button_id' => $button->id,
-                    ]);
-                }
-
-                $block->attribute_id = $attr->id;
-                $block->value = $input['attrValue'];
-                $block->save();
             }
         } catch(\Exception $e) {
             DB::rollback();

@@ -21,6 +21,9 @@
         <template v-if="$store.state.autheticating">
             <div class="floatingLoading">Loading...</div>
         </template>
+        <template v-if="$store.state.errorMesg.length>0">
+            <error-component :mesg="$store.state.errorMesg[0]" @closeError="$store.state.errorMesg.splice(0, 1)"></error-component>
+        </template>
     </div>
 </template>
 

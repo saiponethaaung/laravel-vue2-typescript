@@ -31965,6 +31965,19 @@ var render = function() {
               _vm._v("Loading...")
             ])
           ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.$store.state.errorMesg.length > 0
+        ? [
+            _c("error-component", {
+              attrs: { mesg: _vm.$store.state.errorMesg[0] },
+              on: {
+                closeError: function($event) {
+                  _vm.$store.state.errorMesg.splice(0, 1)
+                }
+              }
+            })
+          ]
         : _vm._e()
     ],
     2
@@ -32850,8 +32863,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
             })
                 .catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to connect a block!");
-                    alert(mesg);
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to connect a block!"));
                 }
             });
             this.saveBlock = false;
@@ -32869,8 +32881,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
             })
                 .catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to delete a block!");
-                    alert(mesg);
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to delete a block!"));
                 }
             });
             this.deleteBlock = false;
@@ -32889,6 +32900,8 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
             data.append("url", this.button.url);
             data.append("number", this.button.phone.number ? this.button.phone.number.toString() : "");
             data.append("type", this.button.type.toString());
+            data.append("attrTitle", this.button.attribute.title);
+            data.append("attrValue", this.button.attribute.value);
             data.append("_method", "put");
             __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `${this.rootUrl}/${this.button.id}`,
@@ -32912,8 +32925,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
             })
                 .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to update button!");
-                    alert(mesg);
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to update button!"));
                 }
             });
             if (close) {
@@ -32974,6 +32986,7 @@ var render = function() {
                   expression: "button.title"
                 }
               ],
+              staticClass: "buttonNameInput",
               attrs: { type: "text", maxlength: "20" },
               domProps: { value: _vm.button.title },
               on: {
@@ -33158,7 +33171,64 @@ var render = function() {
                                 )
                               ]
                             : _vm._e()
-                        ]
+                        ],
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.button.attribute.title,
+                            expression: "button.attribute.title"
+                          }
+                        ],
+                        attrs: { placeholder: "<Set attribute>" },
+                        domProps: { value: _vm.button.attribute.title },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.button.attribute,
+                              "title",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.button.attribute.value,
+                            expression: "button.attribute.value"
+                          }
+                        ],
+                        staticClass: "noMgb",
+                        attrs: { placeholder: "<Set value>" },
+                        domProps: { value: _vm.button.attribute.value },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.button.attribute,
+                              "value",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
                   ],
                   2
                 )
@@ -33235,7 +33305,16 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "attributeNotice" }, [
+      _c("span", [_vm._v("Save reply as attribute:")])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -36051,7 +36130,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 let UserInputItemComponent = class UserInputItemComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.validation = ["None", "Phone", "Email", "Number"];
+        this.validation = ["Other", "Phone", "Email", "Number"];
         this.canShowError = false;
     }
     closeOtherSection(index) { }
@@ -62115,7 +62194,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         deleteSchedule: null,
         updateTrigger: null,
         updateSchedule: null,
-        facebookReconnect: false
+        facebookReconnect: false,
+        errorMesg: []
     },
     mutations: {
         logout(state) {

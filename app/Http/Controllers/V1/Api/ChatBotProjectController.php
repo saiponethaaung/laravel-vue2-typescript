@@ -130,6 +130,10 @@ class ChatBotProjectController extends Controller
 
                         if(!empty($button->blocks) && isset($button->blocks[0]) && !is_null($button->blocks[0]->section_id)) {
 
+                            if(!is_null($button->blocks[0]->attribute_id) && $button->blocks[0]->value) {
+                                $this->setUserAttribute($button->blocks[0]->attribute_id, $this->user->id, $button->blocks[0]->value);
+                            }
+
                             $resContent = $this->getSection($button->blocks[0]->section_id);
 
                             if($resContent['status']) {

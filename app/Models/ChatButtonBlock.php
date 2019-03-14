@@ -10,11 +10,18 @@ class ChatButtonBlock extends Model
 
     protected $fillable = [
         'button_id',
-        'section_id'
+        'section_id',
+        'attribute_id',
+        'value'
     ];
 
     public function value()
     {
         return $this->hasOne('App\Models\ChatBlockSection', 'id', 'section_id');
+    }
+
+    public function attribute()
+    {
+        return $this->hasOne('App\Models\ChatAttribute', 'id', 'attribute_id');
     }
 }

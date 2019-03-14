@@ -10978,7 +10978,7 @@ a.text-dark:focus {
 
 .popupContainer {
   position: fixed;
-  z-index: 13;
+  z-index: 20;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.6);
@@ -11832,6 +11832,7 @@ input.required::placeholder {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 40px;
 }
 
 .botTextComponent {
@@ -12469,9 +12470,9 @@ input.required::placeholder {
   right: 60px;
   font-size: 11px;
   top: 52px;
-  background: #e2e;
+  background: #c238eb;
   height: 17px;
-  width: 15px;
+  padding: 0 4px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -12479,6 +12480,17 @@ input.required::placeholder {
       -ms-flex-align: center;
           align-items: center;
   border-radius: 5px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.buttonNameInput:focus {
+  padding-right: 20px;
+}
+
+.buttonNameInput:focus + .limitBtnTitle {
+  opacity: 1;
+  visibility: visible;
 }
 
 .galleLoader {
@@ -14760,6 +14772,8 @@ input.required::placeholder {
 .ecMesg {
   padding: 15px 30px;
   font-size: 13px;
+  white-space: normal;
+  text-align: center;
 }
 
 .ecBtnCon {

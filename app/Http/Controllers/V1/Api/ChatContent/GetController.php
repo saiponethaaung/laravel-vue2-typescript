@@ -83,18 +83,28 @@ class GetController extends Controller
 
     public function parseText($content)
     {
-        $button = ChatButton::with('blocks', 'blocks.value')->where('content_id', $content->id)->get();
+        $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.value')->where('content_id', $content->id)->get();
 
         $buttonList = [];
 
         foreach($button as $btn) {
             $blocks = [];
+            $attrTitle = "";
+            $attrValue = "";
 
             foreach($btn->blocks as $block) {
-                $blocks[] = [
-                    'id' => $block->value->id,
-                    'title' => $block->value->title
-                ];
+                if(isset($block->value->id)) {
+                    $blocks[] = [
+                        'id' => $block->value->id,
+                        'title' => $block->value->title
+                    ];
+                }
+
+                if(isset($block->attribute->attribute)) {
+                    $attrTitle = $block->attribute->attribute;
+                }
+
+                $attrValue = $block->value;
             }
 
             $buttonList[] = [
@@ -106,6 +116,10 @@ class GetController extends Controller
                 'phone' => [
                     'countryCode' => 95,
                     'number' => $btn->phone
+                ],
+                'attribute' => [
+                    'title' => $attrTitle,
+                    'value' => $attrValue
                 ]
             ];
         }
@@ -128,16 +142,26 @@ class GetController extends Controller
         $list = ChatGallery::where('content_id', $content->id)->get();
 
         $listButton = null;
-        $button = ChatButton::with('blocks', 'blocks.value')->where('content_id', $content->id)->first();
+        $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.value')->where('content_id', $content->id)->first();
 
         if(!empty($button)) {
             $blocks = [];
+            $attrTitle = "";
+            $attrValue = "";
 
             foreach($button->blocks as $block) {
-                $blocks[] = [
-                    'id' => $block->value->id,
-                    'title' => $block->value->title
-                ];
+                if(isset($block->value->id)) {
+                    $blocks[] = [
+                        'id' => $block->value->id,
+                        'title' => $block->value->title
+                    ];
+                }
+
+                if(isset($block->attribute->attribute)) {
+                    $attrTitle = $block->attribute->attribute;
+                }
+
+                $attrValue = $block->value;
             }
 
             $listButton = [
@@ -149,6 +173,10 @@ class GetController extends Controller
                 'phone' => [
                     'countryCode' => 95,
                     'number' => $button->phone
+                ],
+                'attribute' => [
+                    'title' => $attrTitle,
+                    'value' => $attrValue
                 ]
             ];
         }
@@ -161,16 +189,26 @@ class GetController extends Controller
         foreach($list as $l) {
 
             $listItemButton = null;
-            $button = ChatButton::with('blocks', 'blocks.value')->where('gallery_id', $l->id)->first();
+            $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.value')->where('gallery_id', $l->id)->first();
 
             if(!empty($button)) {
                 $blocks = [];
+                $attrTitle = "";
+                $attrValue = "";
 
                 foreach($button->blocks as $block) {
-                    $blocks[] = [
-                        'id' => $block->value->id,
-                        'title' => $block->value->title
-                    ];
+                    if(isset($block->value->id)) {
+                        $blocks[] = [
+                            'id' => $block->value->id,
+                            'title' => $block->value->title
+                        ];
+                    }
+    
+                    if(isset($block->attribute->attribute)) {
+                        $attrTitle = $block->attribute->attribute;
+                    }
+    
+                    $attrValue = $block->value;
                 }
 
                 $listItemButton = [
@@ -182,6 +220,10 @@ class GetController extends Controller
                     'phone' => [
                         'countryCode' => 95,
                         'number' => $button->phone
+                    ],
+                    'attribute' => [
+                        'title' => $attrTitle,
+                        'value' => $attrValue
                     ]
                 ];
             }
@@ -208,18 +250,28 @@ class GetController extends Controller
         
         foreach($list as $l) {
 
-            $button = ChatButton::with('blocks', 'blocks.value')->where('gallery_id', $l->id)->get();
+            $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.value')->where('gallery_id', $l->id)->get();
 
             $buttonList = [];
 
             foreach($button as $btn) {
                 $blocks = [];
+                $attrTitle = "";
+                $attrValue = "";
 
                 foreach($btn->blocks as $block) {
-                    $blocks[] = [
-                        'id' => $block->value->id,
-                        'title' => $block->value->title
-                    ];
+                    if(isset($block->value->id)) {
+                        $blocks[] = [
+                            'id' => $block->value->id,
+                            'title' => $block->value->title
+                        ];
+                    }
+    
+                    if(isset($block->attribute->attribute)) {
+                        $attrTitle = $block->attribute->attribute;
+                    }
+    
+                    $attrValue = $block->value;
                 }
 
                 $buttonList[] = [
@@ -231,6 +283,10 @@ class GetController extends Controller
                     'phone' => [
                         'countryCode' => 95,
                         'number' => $btn->phone
+                    ],
+                    'attribute' => [
+                        'title' => $attrTitle,
+                        'value' => $attrValue
                     ]
                 ];
             }

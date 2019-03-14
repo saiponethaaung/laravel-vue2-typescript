@@ -633,6 +633,7 @@ input.required::placeholder {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        min-width: 40px;
     }
 }
 

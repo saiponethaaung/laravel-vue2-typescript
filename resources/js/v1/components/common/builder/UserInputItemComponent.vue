@@ -58,7 +58,7 @@ export default class UserInputItemComponent extends Vue {
     ui!: UserInputItemModel;
     @Prop() index: any;
 
-    private validation: Array<string> = ["None", "Phone", "Email", "Number"];
+    private validation: Array<string> = ["Other", "Phone", "Email", "Number"];
     private canShowError: boolean = false;
 
     @Emit("closeOtherSection")

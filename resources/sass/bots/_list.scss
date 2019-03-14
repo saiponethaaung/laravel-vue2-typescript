@@ -330,12 +330,24 @@
     right: 60px;
     font-size: 11px;
     top: 52px;
-    background: #e2e;
+    background: $themeColor;
     height: 17px;
-    width: 15px;
+    padding: 0 4px;
     display: flex;
     align-items: center;
     border-radius: 5px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.buttonNameInput {
+    &:focus {
+        padding-right: 20px;
+    }
+    &:focus + .limitBtnTitle {
+        opacity: 1;
+        visibility: visible;
+    }
 }
 
 .galleLoader {

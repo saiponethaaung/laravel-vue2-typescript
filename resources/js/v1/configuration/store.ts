@@ -53,7 +53,8 @@ export default new Vuex.Store({
         deleteSchedule: null,
         updateTrigger: null,
         updateSchedule: null,
-        facebookReconnect: false
+        facebookReconnect: false,
+        errorMesg: []
     },
     mutations: {
         logout(state) {

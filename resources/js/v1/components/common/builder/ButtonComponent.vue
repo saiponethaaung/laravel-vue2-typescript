@@ -7,6 +7,7 @@
                     <div>
                         <input
                             type="text"
+                            class="buttonNameInput"
                             maxlength="20"
                             v-model="button.title"
                             v-on:focus="cancelUpdate()"
@@ -69,6 +70,22 @@
                                     </div>
                                 </template>
                             </template>
+                            <div class="attributeNotice">
+                                <span>Save reply as attribute:</span>
+                            </div>
+                            <div>
+                                <input
+                                    placeholder="<Set attribute>"
+                                    v-model="button.attribute.title"
+                                >
+                            </div>
+                            <div>
+                                <input
+                                    class="noMgb"
+                                    placeholder="<Set value>"
+                                    v-model="button.attribute.value"
+                                >
+                            </div>
                         </div>
                         <div class="optionValue" v-if="button.type===1">
                             <input
@@ -181,11 +198,12 @@ export default class ButtonComponent extends Vue {
             })
             .catch((err: any) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(
-                        err,
-                        "Failed to connect a block!"
+                    this.$store.state.errorMesg.push(
+                        this.ajaxHandler.globalHandler(
+                            err,
+                            "Failed to connect a block!"
+                        )
                     );
-                    alert(mesg);
                 }
             });
 
@@ -204,11 +222,12 @@ export default class ButtonComponent extends Vue {
             })
             .catch((err: any) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(
-                        err,
-                        "Failed to delete a block!"
+                    this.$store.state.errorMesg.push(
+                        this.ajaxHandler.globalHandler(
+                            err,
+                            "Failed to delete a block!"
+                        )
                     );
-                    alert(mesg);
                 }
             });
 
@@ -232,6 +251,8 @@ export default class ButtonComponent extends Vue {
             this.button.phone.number ? this.button.phone.number.toString() : ""
         );
         data.append("type", this.button.type.toString());
+        data.append("attrTitle", this.button.attribute.title);
+        data.append("attrValue", this.button.attribute.value);
         data.append("_method", "put");
 
         Axios({
@@ -254,15 +275,16 @@ export default class ButtonComponent extends Vue {
             })
             .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(
-                        err,
-                        "Failed to update button!"
+                    this.$store.state.errorMesg.push(
+                        this.ajaxHandler.globalHandler(
+                            err,
+                            "Failed to update button!"
+                        )
                     );
-                    alert(mesg);
                 }
             });
 
-        if(close) {
+        if (close) {
             this.closeContent(true);
         }
     }

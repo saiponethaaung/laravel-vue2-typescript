@@ -766,6 +766,10 @@ class CreateController extends Controller
                 'phone' => [
                     'countryCode' => 95,
                     'number' => null
+                ],
+                'attribute' => [
+                    'title' => '',
+                    'value' => ''
                 ]
             ]
         ];

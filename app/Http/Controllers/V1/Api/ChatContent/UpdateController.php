@@ -12,14 +12,14 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Models\ChatBlockSectionContent as CBSC;
+use App\Models\ChatButton;
 use App\Models\ChatGallery;
 use App\Models\ChatAttribute;
-use App\Models\ChatQuickReply;
-use App\Models\ChatQuickReplyBlock;
 use App\Models\ChatUserInput;
-use App\Models\ChatButton;
+use App\Models\ChatQuickReply;
 use App\Models\ChatButtonBlock;
+use App\Models\ChatQuickReplyBlock;
+use App\Models\ChatBlockSectionContent as CBSC;
 
 class UpdateController extends Controller
 {
@@ -450,6 +450,14 @@ class UpdateController extends Controller
                     ]);
                 }
 
+                if($attr->type===1) {
+                    return response()->json([
+                        'status' => false,
+                        'code' => 422,
+                        'mesg' => 'Attribute `'.$input['attribute'].'` can only be used in user input!'
+                    ], 422);
+                }
+
                 $attrId = $attr->id;
             }
 
@@ -558,6 +566,14 @@ class UpdateController extends Controller
                     ]);
                 }
 
+                if($attr->type!==1) {
+                    return response()->json([
+                        'status' => false,
+                        'code' => 422,
+                        'mesg' => 'Attribute `'.$input['attribute'].'` is already used in quick reply attribute or button attribute!'
+                    ], 422);
+                }
+
                 $attr->type = 1;
                 $attr->save();
 
@@ -663,13 +679,15 @@ class UpdateController extends Controller
 
     public function updateButtonInfo(Request $request)
     {
-        $input = $request->only('title', 'url', 'number', 'type');
+        $input = $request->only('title', 'url', 'number', 'type', 'attrTitle', 'attrValue');
 
         $validator = Validator::make($input, [
             'title' => 'nullable',
             'url' => 'nullable',
             'number' => 'nullable',
-            'type' => 'required|in:0,1,2'
+            'type' => 'required|in:0,1,2',
+            'attrTitle' => 'nullable',
+            'attrValue' => 'nullable',
         ]);
 
         if($validator->fails()) {
@@ -691,11 +709,41 @@ class UpdateController extends Controller
             $button->action_type = $input['type'];
             $button->save();
 
-            if($button->type!=0) {
-                $block = ChatButtonBlock::where('button_id', $request->buttonid)->first();
-                if(!empty($block)) {
-                    $block->delete();
+            $block = ChatButtonBlock::where('button_id', $request->buttonid)->first();
+            if($button->type!=0 && !empty($block)) {
+                $block->delete();
+            } else {
+                $attr = ChatAttribute::where(
+                    DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $input['attrTitle'].'%'
+                )
+                ->where('project_id', $request->attributes->get('project')->id)
+                ->first();
+
+                if(empty($attr)) {
+                    $attr = ChatAttribute::create([
+                        'attribute' => $input['attrTitle'],
+                        'project_id' => $request->attributes->get('project')->id,
+                        'type' => 2
+                    ]);
                 }
+
+                if($attr->type==1) {
+                    return response()->json([
+                        'status' => false,
+                        'code' => 422,
+                        'mesg' => 'Attribute `'.$input['attrTitle'].'` can only be used in user input!'
+                    ], 422);
+                }
+
+                if(empty($block)) {
+                    $block = ChatButtonBlock::create([
+                        'button_id' => $button->id,
+                    ]);
+                }
+
+                $block->attribute_id = $attr->id;
+                $block->value = $input['attrValue'];
+                $block->save();
             }
         } catch(\Exception $e) {
             DB::rollback();

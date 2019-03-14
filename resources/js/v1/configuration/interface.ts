@@ -1,5 +1,4 @@
 import ChatBlockSectionModel from "../models/ChatBlockSectionModel";
-import AIGroupRuleResponseModel from "../models/ai/AIGroupRuleResponseModel";
 
 export interface ChatBlock {
     id: number;
@@ -92,7 +91,11 @@ export interface buttonContent {
     phone: {
         countryCode: number;
         number: number | null;
-    }
+    };
+    attribute: {
+        title: string;
+        value: string
+    };
 }
 
 export interface blockSuggestion {

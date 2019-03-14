@@ -114,7 +114,8 @@ class ChatBotProjectController extends Controller
             return [
                 'status' => true,
                 'type' => '',
-                'data' => []
+                'data' => [],
+                'userid' => $this->user->id
             ];
         }
         

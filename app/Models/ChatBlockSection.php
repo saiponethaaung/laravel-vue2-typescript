@@ -23,6 +23,11 @@ class ChatBlockSection extends Model
             foreach($section->contents as $content) {
                 $content->delete();
             }
+
+            foreach($section->buttonBlocks as $btn) {
+                $btn->section_id = null;
+                $btn->save();
+            }
         });
     }
 
@@ -34,5 +39,10 @@ class ChatBlockSection extends Model
     public function contents()
     {
         return $this->hasMany('App\Models\ChatBlockSectionContent', 'section_id', 'id');
+    }
+
+    public function buttonBlocks()
+    {
+        return $this->hasMany('App\Models\ChatButtonBlock', 'section_id', 'id');
     }
 }

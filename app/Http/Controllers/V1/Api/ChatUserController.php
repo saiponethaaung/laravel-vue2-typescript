@@ -556,7 +556,7 @@ class ChatUserController extends Controller
                                             $query->where('attribute_id', $value->chat_attribute_id);
                                             $query->where('value', '=', '');
                                         });
-                                        $query->whereDoesntHave('attributes', function($query) use ($value) {
+                                        $query->orWhereDoesntHave('attributes', function($query) use ($value) {
                                             $query->where('attribute_id', $value->chat_attribute_id);
                                         });
                                     });

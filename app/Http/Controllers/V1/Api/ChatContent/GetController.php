@@ -83,7 +83,7 @@ class GetController extends Controller
 
     public function parseText($content)
     {
-        $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.value')->where('content_id', $content->id)->get();
+        $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.section')->where('content_id', $content->id)->get();
 
         $buttonList = [];
 
@@ -93,10 +93,10 @@ class GetController extends Controller
             $attrValue = "";
 
             foreach($btn->blocks as $block) {
-                if(isset($block->value->id)) {
+                if(!is_null($block->section)) {
                     $blocks[] = [
-                        'id' => $block->value->id,
-                        'title' => $block->value->title
+                        'id' => $block->section->id,
+                        'title' => $block->section->title
                     ];
                 }
 
@@ -142,7 +142,7 @@ class GetController extends Controller
         $list = ChatGallery::where('content_id', $content->id)->get();
 
         $listButton = null;
-        $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.value')->where('content_id', $content->id)->first();
+        $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.section')->where('content_id', $content->id)->first();
 
         if(!empty($button)) {
             $blocks = [];
@@ -150,10 +150,10 @@ class GetController extends Controller
             $attrValue = "";
 
             foreach($button->blocks as $block) {
-                if(isset($block->value->id)) {
+                if(isset($block->section->id)) {
                     $blocks[] = [
-                        'id' => $block->value->id,
-                        'title' => $block->value->title
+                        'id' => $block->section->id,
+                        'title' => $block->section->title
                     ];
                 }
 
@@ -189,7 +189,7 @@ class GetController extends Controller
         foreach($list as $l) {
 
             $listItemButton = null;
-            $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.value')->where('gallery_id', $l->id)->first();
+            $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.section')->where('gallery_id', $l->id)->first();
 
             if(!empty($button)) {
                 $blocks = [];
@@ -197,10 +197,10 @@ class GetController extends Controller
                 $attrValue = "";
 
                 foreach($button->blocks as $block) {
-                    if(isset($block->value->id)) {
+                    if(isset($block->section->id)) {
                         $blocks[] = [
-                            'id' => $block->value->id,
-                            'title' => $block->value->title
+                            'id' => $block->section->id,
+                            'title' => $block->section->title
                         ];
                     }
     
@@ -250,7 +250,7 @@ class GetController extends Controller
         
         foreach($list as $l) {
 
-            $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.value')->where('gallery_id', $l->id)->get();
+            $button = ChatButton::with('blocks', 'blocks.attribute', 'blocks.section')->where('gallery_id', $l->id)->get();
 
             $buttonList = [];
 
@@ -260,10 +260,10 @@ class GetController extends Controller
                 $attrValue = "";
 
                 foreach($btn->blocks as $block) {
-                    if(isset($block->value->id)) {
+                    if(isset($block->section->id)) {
                         $blocks[] = [
-                            'id' => $block->value->id,
-                            'title' => $block->value->title
+                            'id' => $block->section->id,
+                            'title' => $block->section->title
                         ];
                     }
     
@@ -310,7 +310,7 @@ class GetController extends Controller
         $list = ChatQuickReply::with([
             'attribute',
             'blocks',
-            'blocks.value'
+            'blocks.section'
         ])->where('content_id', $content->id)->orderBy('order', 'asc')->get();
         $res = [];
 

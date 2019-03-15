@@ -15,7 +15,7 @@ class ChatButtonBlock extends Model
         'value'
     ];
 
-    public function value()
+    public function section()
     {
         return $this->hasOne('App\Models\ChatBlockSection', 'id', 'section_id');
     }

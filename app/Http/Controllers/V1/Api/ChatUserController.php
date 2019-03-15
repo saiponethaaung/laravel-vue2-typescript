@@ -552,7 +552,7 @@ class ChatUserController extends Controller
 
                                 case 'no':
                                     $users->$rootWhereCon(function($query) use ($value) {
-                                        $query->where('attributes', function($query) use ($value) {
+                                        $query->whereHas('attributes', function($query) use ($value) {
                                             $query->where('attribute_id', $value->chat_attribute_id);
                                             $query->where('value', '=', '');
                                         });

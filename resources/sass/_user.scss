@@ -284,16 +284,28 @@
     width: 64px;
 }
 
-.attrKeySuggestCon {
-    position: relative;
-    bottom: -15px;
-    border: 1px solid #e2e2e2;
-    border-radius: 5px;
-    h6 {
-        padding: 10px 5px;
-        margin: 0;
-        font-size: 13px;
+.attrSelInput {
+    &:focus + .attrKeySuggestCon {
+        opacity: 1;
+        visibility: visible;
     }
+}
+
+.attrKeySuggestCon {
+    opacity: 0;
+    visibility: hidden;
+    position: relative;
+    bottom: 0;
+    border: 1px solid #e2e2e2;
+    border-top: none;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    
+    &:hover {
+        opacity: 1;
+        visibility: visible;
+    }
+
     ul {
         padding: 0;
         list-style: none;

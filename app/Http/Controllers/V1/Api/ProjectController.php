@@ -123,6 +123,7 @@ class ProjectController extends Controller
         ];
 
         $reAuth = false;
+        $pageInfo = null;
 
         if(is_null($project->project->page)==false) {
             // @codeCoverageIgnoreStart
@@ -157,7 +158,8 @@ class ProjectController extends Controller
             'status' => true,
             'code' => 200,
             'data' => $res,
-            'reAuthenticate' => $reAuth
+            'reAuthenticate' => $reAuth,
+            'raw' => $pageInfo
         ]);
     }
     

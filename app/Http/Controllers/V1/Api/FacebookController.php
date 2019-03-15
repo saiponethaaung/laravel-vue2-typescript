@@ -45,7 +45,8 @@ class FacebookController extends Controller
                 'type' => 'expire',
                 'raw' => $e,
                 'fbCode' => $e->getCode(),
-                'mesg' => $e->getMessage()
+                'mesg' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ];
         } catch(\Facebook\Exceptions\FacebookSDKException $e) {
             return [
@@ -54,7 +55,8 @@ class FacebookController extends Controller
                 'type' => 'sdkerror',
                 'raw' => $e,
                 'fbCode' => $e->getCode(),
-                'mesg' => $e->getMessage()
+                'mesg' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ];
         }
 

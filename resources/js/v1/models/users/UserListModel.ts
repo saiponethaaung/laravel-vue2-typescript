@@ -1,9 +1,9 @@
-import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
-import { user } from "../../configuration/interface";
 import Axios from "axios";
+import { user } from "../../configuration/interface";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 import AttributeModel from "./AttributeModel";
 
-export default class UserListModel extends AjaxErrorHandler{
+export default class UserListModel extends AjaxErrorHandler {
 
     private isChecked: boolean = false;
     private isAttributeLoad: boolean = false;
@@ -17,39 +17,39 @@ export default class UserListModel extends AjaxErrorHandler{
         super();
     }
 
-    get id() : number {
+    get id(): number {
         return this.user.id;
     }
 
-    get name() : string {
+    get name(): string {
         return this.user.name;
     }
 
-    get gender() : string {
+    get gender(): string {
         return this.user.gender;
     }
 
-    get age() : number {
+    get age(): number {
         return this.user.age;
     }
 
-    get parsedAge() : string {
-        return this.age>0 ? this.age.toString() : "-";
+    get parsedAge(): string {
+        return this.age > 0 ? this.age.toString() : "-";
     }
 
-    get lastEngaged() : string {
+    get lastEngaged(): string {
         return this.user.lastEngaged;
     }
 
-    get lastSeen() : string {
+    get lastSeen(): string {
         return this.user.lastSeen;
     }
 
-    get signup() : string {
+    get signup(): string {
         return this.user.signup;
     }
 
-    get checked() : boolean {
+    get checked(): boolean {
         return this.isChecked;
     }
 
@@ -57,7 +57,7 @@ export default class UserListModel extends AjaxErrorHandler{
         this.isChecked = status;
     }
 
-    get creating() : number {
+    get creating(): number {
         return this.creatingAttr;
     }
 
@@ -65,7 +65,7 @@ export default class UserListModel extends AjaxErrorHandler{
         this.creatingAttr = count;
     }
 
-    get isAttrLoad() : boolean {
+    get isAttrLoad(): boolean {
         return this.isAttributeLoad;
     }
 
@@ -73,7 +73,7 @@ export default class UserListModel extends AjaxErrorHandler{
         this.isAttributeLoad = status;
     }
 
-    get attributes() : Array<AttributeModel> {
+    get attributes(): Array<AttributeModel> {
         return this.userAttributes;
     }
 
@@ -88,12 +88,12 @@ export default class UserListModel extends AjaxErrorHandler{
             method: 'get'
         }).then(res => {
             console.log('attribute', res.data);
-            for(let i of res.data.data) {
+            for (let i of res.data.data) {
                 this.userAttributes.push(new AttributeModel(i, this.projectId, this.id));
             }
             this.isAttrLoad = true;
         }).catch(err => {
-            if(err.response) {
+            if (err.response) {
                 result['status'] = false;
                 result['mesg'] = this.globalHandler(err, 'Failed to load user attribute!');
             }
@@ -117,7 +117,7 @@ export default class UserListModel extends AjaxErrorHandler{
             this.userAttributes.push(new AttributeModel(res.data.data, this.projectId, this.id));
             this.isAttrLoad = true;
         }).catch(err => {
-            if(err.response) {
+            if (err.response) {
                 result['status'] = false;
                 result['mesg'] = this.globalHandler(err, 'Failed create new attribute!');
             }
@@ -140,7 +140,7 @@ export default class UserListModel extends AjaxErrorHandler{
         }).then(res => {
             this.userAttributes.splice(index, 1);
         }).catch(err => {
-            if(err.response) {
+            if (err.response) {
                 result['status'] = false;
                 result['mesg'] = this.globalHandler(err, 'Failed create new attribute!');
             }
@@ -163,12 +163,24 @@ export default class UserListModel extends AjaxErrorHandler{
             data: data,
             method: 'post'
         }).catch((err) => {
-            if(err.response) {
+            if (err.response) {
                 result['status'] = false;
                 result['mesg'] = this.globalHandler(err, 'Failed create new attribute!');
             }
         });
 
         return result;
+    }
+
+    get csvFormat() {
+        return [
+            `"${this.name}"`,
+            `"${this.gender}"`,
+            `"${this.parsedAge}"`,
+            `"${this.lastEngaged}"`,
+            `"${this.lastSeen}"`,
+            `"${this.signup}"`,
+            '-'
+        ];
     }
 }

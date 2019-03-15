@@ -201,7 +201,7 @@
 
 .popupContainer {
     position: fixed;
-    z-index: 20;
+    z-index: 200;
     top: 0;
     left: 0;
     background: rgba(0,0,0,0.6);
@@ -284,4 +284,9 @@ a:hover {
     background: $themeColor;
     color: #fff;
     cursor: pointer;
+}
+
+.hideBottomRadius {
+    border-bottom-left-radius: 0!important;
+    border-bottom-right-radius: 0!important;
 }

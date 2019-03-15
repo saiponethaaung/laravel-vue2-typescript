@@ -24832,9 +24832,9 @@ return jQuery;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AttributeModel__ = __webpack_require__(215);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -24847,7 +24847,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-class UserListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+class UserListModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */] {
     constructor(user, projectId) {
         super();
         this.user = user;
@@ -24908,7 +24908,7 @@ class UserListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
                 'status': true,
                 'mesg': 'success'
             };
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.projectId}/users/${this.id}/attributes`,
                 method: 'get'
             }).then(res => {
@@ -24933,7 +24933,7 @@ class UserListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
                 'mesg': 'success'
             };
             this.creating++;
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.projectId}/users/${this.id}/attributes`,
                 method: 'post'
             }).then(res => {
@@ -24955,7 +24955,7 @@ class UserListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
                 'status': true,
                 'mesg': 'success'
             };
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.projectId}/users/${this.id}/attributes/${this.userAttributes[index].id}`,
                 method: 'delete'
             }).then(res => {
@@ -24977,7 +24977,7 @@ class UserListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
             };
             let data = new FormData();
             data.append('status', 'true');
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.projectId}/chat/user/${this.id}/live-chat`,
                 data: data,
                 method: 'post'
@@ -24989,6 +24989,17 @@ class UserListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler_
             });
             return result;
         });
+    }
+    get csvFormat() {
+        return [
+            `"${this.name}"`,
+            `"${this.gender}"`,
+            `"${this.parsedAge}"`,
+            `"${this.lastEngaged}"`,
+            `"${this.lastSeen}"`,
+            `"${this.signup}"`,
+            '-'
+        ];
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = UserListModel;
@@ -32049,19 +32060,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SpinnerDropDownComponent_vue__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SpinnerDropDownComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__SpinnerDropDownComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
 
 
 let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
+        this.attrName = "";
         this.keyTimeout = null;
+        this.keyLoading = false;
+        this.canShowErr = false;
+        this.showSuggest = false;
         this.keySuggestion = [];
+        this.keyCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+        this.attrValue = "";
+        this.valueTimeout = null;
+        this.valueLoading = false;
+        this.canShowValueErr = false;
+        this.showValueSuggest = false;
+        this.valueSuggestion = [];
+        this.valueCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__["a" /* default */]();
         this.showOption = false;
         this.condiOptions = [
             {
@@ -32173,13 +32210,120 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
         // }
         return res;
     }
-    searchKeySuggestion() {
-        clearTimeout(this.keyTimeout);
-        if (this.attribute.name == "")
-            return;
-        this.keyTimeout = setTimeout(() => {
-            this.keySuggestion.push(new Date());
-        }, 1000);
+    searchKeySuggestion(e) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(e);
+            if (e.keyCode == 37 ||
+                e.keyCode == 38 ||
+                e.keyCode == 39 ||
+                e.keyCode == 40 ||
+                e.keyCode == 17 ||
+                e.keyCode == 16 ||
+                e.keyCode == 18 ||
+                (e.ctrlKey && e.keyCode == 65)) {
+                return;
+            }
+            this.canShowErr = true;
+            this.keyCancelToken.cancel();
+            this.keyLoading = false;
+            this.showSuggest = true;
+            this.attribute.name = "";
+            this.attrValue = "";
+            this.attribute.value = "";
+            this.canShowValueErr = false;
+            clearTimeout(this.keyTimeout);
+            if (this.attrName == "")
+                return;
+            this.keyLoading = true;
+            this.keyTimeout = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                this.keyCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+                this.keySuggestion = [];
+                let data = new FormData();
+                data.append("keyword", this.attrName);
+                yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/attributes/serach/attribute`,
+                    data: data,
+                    method: "post",
+                    cancelToken: this.keyCancelToken.token
+                })
+                    .then(res => {
+                    this.keySuggestion = res.data.data;
+                })
+                    .catch(err => {
+                    if (err.response) {
+                        this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to load attribute name suggestion!"));
+                    }
+                });
+                this.keyLoading = false;
+            }), 1000);
+        });
+    }
+    searchValueSuggestion(e) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (e.keyCode == 37 ||
+                e.keyCode == 38 ||
+                e.keyCode == 39 ||
+                e.keyCode == 40 ||
+                e.keyCode == 17 ||
+                e.keyCode == 16 ||
+                e.keyCode == 18 ||
+                (e.ctrlKey && e.keyCode == 65)) {
+                return;
+            }
+            this.canShowValueErr = true;
+            this.valueCancelToken.cancel();
+            this.showValueSuggest = true;
+            this.attribute.value = "";
+            yield clearTimeout(this.valueTimeout);
+            if (this.attrValue == "")
+                return;
+            this.valueTimeout = yield setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                this.valueLoading = true;
+                this.valueCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+                this.valueSuggestion = [];
+                let data = new FormData();
+                data.append("attr", this.attrName);
+                data.append("keyword", this.attrValue);
+                yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/attributes/serach/value`,
+                    data: data,
+                    method: "post",
+                    cancelToken: this.valueCancelToken.token
+                })
+                    .then(res => {
+                    this.valueSuggestion = res.data.data;
+                })
+                    .catch(err => {
+                    if (err.response) {
+                        this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to load attribute value suggestion!"));
+                    }
+                });
+                this.valueLoading = false;
+            }), 1000);
+        });
+    }
+    documentClick(e) {
+        let el1 = this.$refs.input;
+        let el2 = this.$refs.suggestion;
+        let target = e.target;
+        if (el1 !== target &&
+            !el1.contains(target) &&
+            (typeof el2 == "undefined" ||
+                (typeof el2 != "undefined" &&
+                    el2 !== target &&
+                    !el2.contains(target)))) {
+            this.showSuggest = false;
+        }
+        let el3 = this.$refs.valueInput;
+        let el4 = this.$refs.valueSuggestion;
+        if (el3 !== target &&
+            !el3.contains(target) &&
+            (typeof el4 == "undefined" ||
+                (typeof el4 !== "undefined" &&
+                    el4 !== target &&
+                    !el4.contains(target)))) {
+            this.showValueSuggest = false;
+        }
     }
     mounted() {
         if (!this.isSegment &&
@@ -32190,6 +32334,15 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
                 value: "Segment"
             });
         }
+        this.attrName = this.attribute.name;
+        this.attrValue = this.attribute.value;
+    }
+    created() {
+        document.addEventListener("click", this.documentClick);
+    }
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener("click", this.documentClick);
     }
 };
 __decorate([
@@ -32475,39 +32628,83 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.attribute.name,
-                          expression: "attribute.name"
+                          value: _vm.attrName,
+                          expression: "attrName"
                         }
                       ],
-                      staticClass: "attrSelInput",
+                      ref: "input",
+                      staticClass: "attrSelInput withSuggestion",
+                      class: {
+                        hideBottomRadius: _vm.showSuggest,
+                        required:
+                          !_vm.showSuggest &&
+                          _vm.canShowErr &&
+                          _vm.attribute.name === ""
+                      },
                       attrs: { placeholder: "Attribute name" },
-                      domProps: { value: _vm.attribute.name },
+                      domProps: { value: _vm.attrName },
                       on: {
                         keyup: _vm.searchKeySuggestion,
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(_vm.attribute, "name", $event.target.value)
+                          _vm.attrName = $event.target.value
                         }
                       }
                     }),
                     _vm._v(" "),
-                    _c("div", { staticClass: "attrKeySuggestCon" }, [
-                      _c("h6", [_vm._v("Available Attribute")]),
-                      _vm._v(" "),
-                      _c(
-                        "ul",
-                        [
-                          _vm._l(_vm.keySuggestion, function(k, index) {
-                            return [
-                              _c("li", { key: index }, [_vm._v(_vm._s(k))])
-                            ]
-                          })
-                        ],
-                        2
-                      )
-                    ])
+                    _vm.attrName !== "" && _vm.showSuggest
+                      ? _c(
+                          "div",
+                          {
+                            ref: "suggestion",
+                            staticClass: "attrKeySuggestCon"
+                          },
+                          [
+                            _c(
+                              "ul",
+                              [
+                                _vm.keyLoading
+                                  ? [_c("li", [_vm._v("Loading...")])]
+                                  : [
+                                      _vm.keySuggestion.length === 0
+                                        ? [
+                                            _c("li", [
+                                              _vm._v("Invalid attribute!")
+                                            ])
+                                          ]
+                                        : [
+                                            _vm._l(_vm.keySuggestion, function(
+                                              k,
+                                              index
+                                            ) {
+                                              return [
+                                                _c(
+                                                  "li",
+                                                  {
+                                                    key: index,
+                                                    on: {
+                                                      click: function($event) {
+                                                        _vm.attribute.name = k
+                                                        _vm.attrName = k
+                                                        _vm.keySuggestion = []
+                                                        _vm.showSuggest = false
+                                                      }
+                                                    }
+                                                  },
+                                                  [_vm._v(_vm._s(k))]
+                                                )
+                                              ]
+                                            })
+                                          ]
+                                    ]
+                              ],
+                              2
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ]
                 : _vm.attribute.option === 3
                 ? [
@@ -32669,22 +32866,84 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.attribute.value,
-                          expression: "attribute.value"
+                          value: _vm.attrValue,
+                          expression: "attrValue"
                         }
                       ],
-                      staticClass: "attrSelInput",
-                      attrs: { placeholder: "Attribute value" },
-                      domProps: { value: _vm.attribute.value },
+                      ref: "valueInput",
+                      staticClass: "attrSelInput withSuggestion",
+                      class: {
+                        hideBottomRadius: _vm.showValueSuggest,
+                        required:
+                          !_vm.showValueSuggest &&
+                          _vm.canShowValueErr &&
+                          _vm.attribute.value === ""
+                      },
+                      attrs: {
+                        placeholder: "Attribute value",
+                        disabled: _vm.attribute.name == ""
+                      },
+                      domProps: { value: _vm.attrValue },
                       on: {
+                        keyup: _vm.searchValueSuggestion,
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(_vm.attribute, "value", $event.target.value)
+                          _vm.attrValue = $event.target.value
                         }
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.attrValue !== "" && _vm.showValueSuggest
+                      ? _c(
+                          "div",
+                          {
+                            ref: "valueSuggestion",
+                            staticClass: "attrKeySuggestCon"
+                          },
+                          [
+                            _c(
+                              "ul",
+                              [
+                                _vm.valueLoading
+                                  ? [_c("li", [_vm._v("Loading...")])]
+                                  : [
+                                      _vm.valueSuggestion.length === 0
+                                        ? [_c("li", [_vm._v("Invalid value!")])]
+                                        : [
+                                            _vm._l(
+                                              _vm.valueSuggestion,
+                                              function(k, index) {
+                                                return [
+                                                  _c(
+                                                    "li",
+                                                    {
+                                                      key: index,
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          _vm.attribute.value = k
+                                                          _vm.attrValue = k
+                                                          _vm.valueSuggestion = []
+                                                          _vm.showValueSuggest = false
+                                                        }
+                                                      }
+                                                    },
+                                                    [_vm._v(_vm._s(k))]
+                                                  )
+                                                ]
+                                              }
+                                            )
+                                          ]
+                                    ]
+                              ],
+                              2
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ]
                 : _vm.attribute.option === 3
                 ? [
@@ -57036,17 +57295,19 @@ let UserSegmentListComponent = class UserSegmentListComponent extends __WEBPACK_
             this.userLoading = true;
             yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/users/segments/${this.$store.state.selectedSegment}/users`,
-                method: 'get',
+                method: "get",
                 cancelToken: this.loadUserToken.token
-            }).then(res => {
+            })
+                .then(res => {
                 this.userFilters = res.data.data.filters;
                 for (let i of res.data.data.user) {
                     this.userList.push(new __WEBPACK_IMPORTED_MODULE_2__models_users_UserListModel__["a" /* default */](i, this.$store.state.projectInfo.id));
                 }
                 this.userLoading = false;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load user!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load user!");
                     alert(mesg);
                 }
             });
@@ -57056,16 +57317,43 @@ let UserSegmentListComponent = class UserSegmentListComponent extends __WEBPACK_
     createNewSegment() {
         return __awaiter(this, void 0, void 0, function* () {
             let createSegment = yield this.filterSegment.createSegment();
-            if (!createSegment['status']) {
-                alert(createSegment['mesg']);
+            if (!createSegment["status"]) {
+                alert(createSegment["mesg"]);
                 return;
             }
             this.createSegment = false;
         });
     }
+    exportCSV() {
+        const rows = [
+            [
+                "Name",
+                "Gender",
+                "Age",
+                "Last Engaged",
+                "Last Seen",
+                "Signed up",
+                "Session"
+            ]
+        ];
+        for (let i of this.userList) {
+            rows.push(i.csvFormat);
+        }
+        let csvContent = "data:text/csv;charset=utf-8,";
+        rows.forEach(function (rowArray) {
+            let row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "userdata.csv");
+        document.body.appendChild(link);
+        link.click();
+    }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.selectedSegment')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.selectedSegment")
 ], UserSegmentListComponent.prototype, "loadUser", null);
 UserSegmentListComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
@@ -57251,7 +57539,11 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._m(0)
+          _c(
+            "button",
+            { staticClass: "uloButton", on: { click: _vm.exportCSV } },
+            [_vm._m(0), _vm._v(" "), _c("span", [_vm._v("export")])]
+          )
         ])
       ]),
       _vm._v(" "),
@@ -57411,12 +57703,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "uloButton" }, [
-      _c("figure", [
-        _c("img", { attrs: { src: "/images/icons/user/export.png" } })
-      ]),
-      _vm._v(" "),
-      _c("span", [_vm._v("export")])
+    return _c("figure", [
+      _c("img", { attrs: { src: "/images/icons/user/export.png" } })
     ])
   },
   function() {

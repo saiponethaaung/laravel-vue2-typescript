@@ -34,7 +34,7 @@ class ChatUserController extends Controller
                 });
             });
         });
-
+        
         $attributes = $attributes->get();
     
         $res = [
@@ -562,6 +562,10 @@ class ChatUserController extends Controller
                                     });
                                     break;
                             }
+                            $filterList[] = [
+                                'key' => $value->attribute->attribute,
+                                'value' => $value->chat_attribute_value
+                            ];
                         }
                         break;
                     

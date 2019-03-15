@@ -220,13 +220,18 @@ export interface FilterResponse {
 }
 
 export interface Admin {
-    id: number,
-    name: string,
-    email: string,
+    id: number;
+    name: string;
+    email: string;
     status: number
 }
 
 export interface invites {
-    id: number,
-    email: string,
+    id: number;
+    email: string;
 }
+
+// export interface userCsv {
+//     user: String,
+
+// }

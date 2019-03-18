@@ -19,7 +19,7 @@
                     <i class="material-icons">group_add</i>
                     <span>Create Segment</span>
                 </button>
-                <button class="uloButton" @click="exportCSV">
+                <button class="uloButton" @click="exportCSV" v-if="userList.length>0">
                     <figure>
                         <img src="/images/icons/user/export.png">
                     </figure>
@@ -184,7 +184,7 @@ export default class UserSegmentListComponent extends Vue {
             ]
         ];
 
-        for(let i of this.userList) {
+        for (let i of this.userList) {
             rows.push(i.csvFormat);
         }
 

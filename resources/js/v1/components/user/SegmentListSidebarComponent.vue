@@ -176,7 +176,10 @@ export default class SegmentListSidebarComponent extends Vue {
 
         if(!updateSegment.status) {
             alert(updateSegment.mesg);
+            return;
         }
+
+        this.editSegment = -1;
     }
 
     private async deleteSegment(index: number) {

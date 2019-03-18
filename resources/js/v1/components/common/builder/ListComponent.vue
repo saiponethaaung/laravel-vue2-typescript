@@ -7,7 +7,7 @@
                         :listItem="l"
                         :index="index"
                         :baseUrl="content.url"
-                        :projectid="content.porjectid"
+                        :projectid="content.project"
                         @delItem="delItem"
                         :key="index"
                     ></list-item-component>

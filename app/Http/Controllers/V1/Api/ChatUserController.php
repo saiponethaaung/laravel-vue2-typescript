@@ -13,7 +13,7 @@ use App\Models\ProjectPageUserAttribute;
 use App\Models\SegmentFilter;
 
 class ChatUserController extends Controller
-{
+{ 
     public function getFilterAttributes(Request $request)
     {
         $attributes = ChatAttribute::query();
@@ -255,7 +255,8 @@ class ChatUserController extends Controller
         ];
     }
 
-    public function durationOffsetParser($duration) {
+    public function durationOffsetParser($duration)
+    {
         $date = strtotime(date("Y-m-d H:i:s"));
         $offset = null;
         switch($duration) {
@@ -279,7 +280,8 @@ class ChatUserController extends Controller
         return is_null($offset) ? date("Y-m-d H:i:s", $date) : date("Y-m-d H:i:s", strtotime($offset, $date));
     }
 
-    public function getDurationOffset($duration) {
+    public function getDurationOffset($duration)
+    {
         $date = strtotime(date("Y-m-d H:i:s"));
         $offset = null;
         switch($duration) {

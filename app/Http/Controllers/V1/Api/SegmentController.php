@@ -97,7 +97,7 @@ class SegmentController extends Controller
             'code' => 201,
             'mesg' => 'successs',
             'data' => [
-                'id' => $filter
+                'id' => $filter->id
             ]
         ], 201);
     }

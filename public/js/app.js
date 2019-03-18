@@ -32117,7 +32117,7 @@ let AttributeSelectorComponent = class AttributeSelectorComponent extends __WEBP
             },
             {
                 key: 2,
-                value: "Attribute Name"
+                value: "Custom Attribute"
             },
             {
                 key: 3,
@@ -34997,7 +34997,7 @@ var render = function() {
                   listItem: l,
                   index: index,
                   baseUrl: _vm.content.url,
-                  projectid: _vm.content.porjectid
+                  projectid: _vm.content.project
                 },
                 on: { delItem: _vm.delItem }
               })
@@ -55629,7 +55629,7 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
         this.userLoading = false;
         this.assignSegment = false;
         this.segmentList = new __WEBPACK_IMPORTED_MODULE_4__models_SegmentListModel__["a" /* default */]();
-        this.segmentName = '';
+        this.segmentName = "";
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__["a" /* default */]();
     }
     initSegment() {
@@ -55638,8 +55638,8 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
                 return;
             this.segmentList.setProjectId = this.$store.state.projectInfo.id;
             let loadSegment = yield this.segmentList.loadSegment();
-            if (!loadSegment['status']) {
-                alert(loadSegment['mesg']);
+            if (!loadSegment["status"]) {
+                alert(loadSegment["mesg"]);
             }
         });
     }
@@ -55657,7 +55657,7 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
     }
     get hasCheck() {
         let status = false;
-        if (this.$store.state.prevUserFilter !== '') {
+        if (this.$store.state.prevUserFilter !== "") {
             for (let i of JSON.parse(this.$store.state.prevUserFilter)) {
                 for (let i2 of i.child) {
                     for (let i3 of i2.value) {
@@ -55677,7 +55677,7 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
     }
     loadUser() {
         return __awaiter(this, void 0, void 0, function* () {
-            let filter = '';
+            let filter = "";
             if (this.$store.state.userFilter.length > 0) {
                 for (let i2 of this.$store.state.userFilter[0].child) {
                     filter += `custom[${i2.key}][type]=${i2.type}&`;
@@ -55711,26 +55711,27 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
             this.userLoading = true;
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/users?${filter}`,
-                method: 'get'
-            }).then((res) => {
+                method: "get"
+            })
+                .then((res) => {
                 this.userList = [];
                 for (let i of res.data.data) {
                     this.userList.push(new __WEBPACK_IMPORTED_MODULE_1__models_users_UserListModel__["a" /* default */](i, this.$store.state.projectInfo.id));
                 }
-            }).catch((err) => {
-            });
+            })
+                .catch((err) => { });
             this.userLoading = false;
         });
     }
     createSegment() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.segmentName === '') {
-                alert('Segment name is required!');
+            if (this.segmentName === "") {
+                alert("Segment name is required!");
                 return;
             }
             let data = new FormData();
-            data.append('name', this.segmentName);
-            if (this.$store.state.prevUserFilte !== '') {
+            data.append("name", this.segmentName);
+            if (this.$store.state.prevUserFilte !== "") {
                 let filters = JSON.parse(this.$store.state.prevUserFilter);
                 if (filters.length > 0) {
                     for (let i2 of filters[0].child) {
@@ -55762,24 +55763,53 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/users/segments/user-filter`,
                 data: data,
-                method: 'post'
-            }).then(res => {
+                method: "post"
+            })
+                .then(res => {
                 this.assignSegment = false;
-                this.segmentName = '';
-            }).catch(err => {
+                this.segmentName = "";
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create segment!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to create segment!");
                     alert(mesg);
                 }
             });
         });
     }
+    exportCSV() {
+        const rows = [
+            [
+                "Name",
+                "Gender",
+                "Age",
+                "Last Engaged",
+                "Last Seen",
+                "Signed up",
+                "Session"
+            ]
+        ];
+        for (let i of this.userList) {
+            rows.push(i.csvFormat);
+        }
+        let csvContent = "data:text/csv;charset=utf-8,";
+        rows.forEach(function (rowArray) {
+            let row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "userdata.csv");
+        document.body.appendChild(link);
+        link.click();
+    }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.projectInfo', { immediate: true })
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.projectInfo", { immediate: true })
 ], UserListComponent.prototype, "initSegment", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.prevUserFilter', { immediate: true })
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.prevUserFilter", { immediate: true })
 ], UserListComponent.prototype, "loadUser", null);
 UserListComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
@@ -56604,9 +56634,9 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AttributeFilterModel__ = __webpack_require__(17);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -56619,7 +56649,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
-class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+class SegmentModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */] {
     constructor(segment, projectId) {
         super();
         this.segment = segment;
@@ -56630,7 +56660,7 @@ class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
         this.attributeCreating = false;
         this.segmentUpdating = false;
         this.attributeFilters = [];
-        this.loadAttributeToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.loadAttributeToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
     }
     get id() {
         return this.segment.id;
@@ -56679,8 +56709,8 @@ class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
             };
             this.isAttrLoading = true;
             this.loadAttributeToken.cancel();
-            this.loadAttributeToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            this.loadAttributeToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.projectId}/users/segments/${this.id}/filters`,
                 method: 'get',
                 cancelToken: this.loadAttributeToken.token
@@ -56706,7 +56736,7 @@ class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
                 mesg: 'success'
             };
             this.isAttrCreating = true;
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.projectId}/users/segments/${this.id}/filters`,
                 method: 'post'
             }).then(res => {
@@ -56738,7 +56768,7 @@ class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
                 status: true,
                 mesg: 'success'
             };
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.projectId}/users/segments/${this.id}/filters/${this.attributes[index].id}`,
                 method: 'delete'
             }).then(res => {
@@ -56763,8 +56793,7 @@ class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
             data.append('name', this.name);
             data.append('_method', 'put');
             for (let i in this.attributes) {
-                if (this.attributes[i].type === 2 && (this.attributes[i].name == '' || this.attributes[i].value == ''))
-                    continue;
+                // if(this.attributes[i].type===2 && (this.attributes[i].name=='' || this.attributes[i].value=='')) continue;
                 data.append(`filters[${i}][id]`, this.attributes[i].id.toString());
                 data.append(`filters[${i}][option]`, this.attributes[i].option.toString());
                 data.append(`filters[${i}][type]`, this.attributes[i].type.toString());
@@ -56776,7 +56805,7 @@ class SegmentModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__
                 data.append(`filters[${i}][userAttribute]`, this.attributes[i].user.toString());
                 data.append(`filters[${i}][userAttributeValue]`, this.attributes[i].userValue.toString());
             }
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `/api/v1/project/${this.projectId}/users/segments/${this.id}`,
                 data: data,
                 method: 'post'
@@ -56918,24 +56947,34 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("div", { staticClass: "userListOptionCon" }, [
-          _c(
-            "button",
-            {
-              staticClass: "uloButton",
-              on: {
-                click: function($event) {
-                  _vm.assignSegment = true
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "material-icons" }, [_vm._v("group_add")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("Save to segment")])
-            ]
-          ),
+          _vm.hasCheck
+            ? _c(
+                "button",
+                {
+                  staticClass: "uloButton",
+                  on: {
+                    click: function($event) {
+                      _vm.assignSegment = true
+                    }
+                  }
+                },
+                [
+                  _c("i", { staticClass: "material-icons" }, [
+                    _vm._v("group_add")
+                  ]),
+                  _vm._v(" "),
+                  _c("span", [_vm._v("Save to segment")])
+                ]
+              )
+            : _vm._e(),
           _vm._v(" "),
-          _vm._m(0)
+          _vm.userList.length > 0
+            ? _c(
+                "button",
+                { staticClass: "uloButton", on: { click: _vm.exportCSV } },
+                [_vm._m(0), _vm._v(" "), _c("span", [_vm._v("export")])]
+              )
+            : _vm._e()
         ])
       ]),
       _vm._v(" "),
@@ -57023,12 +57062,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "uloButton" }, [
-      _c("figure", [
-        _c("img", { attrs: { src: "/images/icons/user/export.png" } })
-      ]),
-      _vm._v(" "),
-      _c("span", [_vm._v("export")])
+    return _c("figure", [
+      _c("img", { attrs: { src: "/images/icons/user/export.png" } })
     ])
   }
 ]
@@ -57785,11 +57820,13 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "uloButton", on: { click: _vm.exportCSV } },
-            [_vm._m(0), _vm._v(" "), _c("span", [_vm._v("export")])]
-          )
+          _vm.userList.length > 0
+            ? _c(
+                "button",
+                { staticClass: "uloButton", on: { click: _vm.exportCSV } },
+                [_vm._m(0), _vm._v(" "), _c("span", [_vm._v("export")])]
+              )
+            : _vm._e()
         ])
       ]),
       _vm._v(" "),
@@ -58101,7 +58138,9 @@ let SegmentListSidebarComponent = class SegmentListSidebarComponent extends __WE
             let updateSegment = yield this.segmentList.segments[this.editSegment].updateSegment();
             if (!updateSegment.status) {
                 alert(updateSegment.mesg);
+                return;
             }
+            this.editSegment = -1;
         });
     }
     deleteSegment(index) {

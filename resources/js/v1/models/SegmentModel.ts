@@ -1,6 +1,6 @@
-import AjaxErrorHandler from "../utils/AjaxErrorHandler";
-import { segment } from "../configuration/interface";
 import Axios, { CancelTokenSource } from "axios";
+import { segment } from "../configuration/interface";
+import AjaxErrorHandler from "../utils/AjaxErrorHandler";
 import AttributeFilterModel from "./AttributeFilterModel";
 
 export default class SegmentModel extends AjaxErrorHandler {
@@ -19,11 +19,11 @@ export default class SegmentModel extends AjaxErrorHandler {
         super();
     }
 
-    get id() : number {
+    get id(): number {
         return this.segment.id;
     }
 
-    get name() : string {
+    get name(): string {
         return this.segment.name;
     }
 
@@ -31,7 +31,7 @@ export default class SegmentModel extends AjaxErrorHandler {
         this.segment.name = name;
     }
 
-    get isAttrLoaded() : boolean {
+    get isAttrLoaded(): boolean {
         return this.attributeLoaded;
     }
 
@@ -39,7 +39,7 @@ export default class SegmentModel extends AjaxErrorHandler {
         this.attributeLoaded = status;
     }
 
-    get isAttrLoading() : boolean {
+    get isAttrLoading(): boolean {
         return this.attributeLoading;
     }
 
@@ -47,7 +47,7 @@ export default class SegmentModel extends AjaxErrorHandler {
         this.attributeLoading = status;
     }
 
-    get isAttrCreating() : boolean {
+    get isAttrCreating(): boolean {
         return this.attributeCreating;
     }
 
@@ -55,7 +55,7 @@ export default class SegmentModel extends AjaxErrorHandler {
         this.attributeCreating = status;
     }
 
-    get updating() : boolean {
+    get updating(): boolean {
         return this.segmentUpdating;
     }
 
@@ -63,11 +63,11 @@ export default class SegmentModel extends AjaxErrorHandler {
         this.segmentUpdating = status;
     }
 
-    get attributes() : Array<AttributeFilterModel> {
+    get attributes(): Array<AttributeFilterModel> {
         return this.attributeFilters;
     }
 
-    set attributes(attributeFilters : Array<AttributeFilterModel>) {
+    set attributes(attributeFilters: Array<AttributeFilterModel>) {
         this.attributeFilters = attributeFilters;
     }
 
@@ -76,28 +76,28 @@ export default class SegmentModel extends AjaxErrorHandler {
             status: true,
             mesg: 'success'
         };
-        
+
         this.isAttrLoading = true;
-        
+
         this.loadAttributeToken.cancel();
         this.loadAttributeToken = Axios.CancelToken.source();
-        
+
         await Axios({
             url: `/api/v1/project/${this.projectId}/users/segments/${this.id}/filters`,
             method: 'get',
             cancelToken: this.loadAttributeToken.token
         }).then(res => {
-            for(let i of res.data.data) {
+            for (let i of res.data.data) {
                 this.attributes.push(new AttributeFilterModel(i));
             }
             this.isAttrLoaded = true;
         }).catch(err => {
-            if(err.response) {
+            if (err.response) {
                 res.status = false;
                 res.mesg = this.globalHandler(err, 'Failed to load segments!');
             }
         });
-        
+
         this.isAttrLoading = false;
         return res;
     }
@@ -109,10 +109,10 @@ export default class SegmentModel extends AjaxErrorHandler {
         };
 
         this.isAttrCreating = true;
-        
+
         await Axios({
             url: `/api/v1/project/${this.projectId}/users/segments/${this.id}/filters`,
-            method: 'post'   
+            method: 'post'
         }).then(res => {
             this.attributes.push(new AttributeFilterModel({
                 id: res.data.data.id,
@@ -127,7 +127,7 @@ export default class SegmentModel extends AjaxErrorHandler {
                 value: ''
             }));
         }).catch(err => {
-            if(err.response) {
+            if (err.response) {
                 res.status = false;
                 res.mesg = this.globalHandler(err, 'Failed to create new attribute filter!');
             }
@@ -142,7 +142,7 @@ export default class SegmentModel extends AjaxErrorHandler {
         let res = {
             status: true,
             mesg: 'success'
-        }; 
+        };
 
         await Axios({
             url: `/api/v1/project/${this.projectId}/users/segments/${this.id}/filters/${this.attributes[index].id}`,
@@ -150,7 +150,7 @@ export default class SegmentModel extends AjaxErrorHandler {
         }).then(res => {
             this.attributes.splice(index, 1);
         }).catch(err => {
-            if(err.response) {
+            if (err.response) {
                 res.status = false;
                 res.mesg = this.globalHandler(err, 'Failed to delete filter atttribute!');
             }
@@ -171,8 +171,8 @@ export default class SegmentModel extends AjaxErrorHandler {
         data.append('name', this.name);
         data.append('_method', 'put');
 
-        for(let i in this.attributes) {
-            if(this.attributes[i].type===2 && (this.attributes[i].name=='' || this.attributes[i].value=='')) continue;
+        for (let i in this.attributes) {
+            // if(this.attributes[i].type===2 && (this.attributes[i].name=='' || this.attributes[i].value=='')) continue;
             data.append(`filters[${i}][id]`, this.attributes[i].id.toString());
             data.append(`filters[${i}][option]`, this.attributes[i].option.toString());
             data.append(`filters[${i}][type]`, this.attributes[i].type.toString());
@@ -190,9 +190,9 @@ export default class SegmentModel extends AjaxErrorHandler {
             data: data,
             method: 'post'
         }).then(res => {
-            
+
         }).catch(err => {
-            if(err.response) {
+            if (err.response) {
                 res.status = false;
                 res.mesg = this.globalHandler(err, 'Failed to update segment filter!');
             }

@@ -254,7 +254,7 @@ export default class AttributeSelectorComponent extends Vue {
         },
         {
             key: 2,
-            value: "Attribute Name"
+            value: "Custom Attribute"
         },
         {
             key: 3,

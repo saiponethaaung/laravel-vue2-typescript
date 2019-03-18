@@ -193,6 +193,7 @@ export default class ListItemModel extends AjaxErrorHandler {
             cancelToken: this.buttonToken.token
         }).then((res) => {
             this.button = res.data.button;
+            this.btnEdit = true;
         }).catch((err) => {
             if (err.response) {
                 this.errorMesg = this.globalHandler(err, 'Failed to create new button!');

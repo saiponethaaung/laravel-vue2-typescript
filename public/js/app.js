@@ -12125,6 +12125,7 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentMode
                 cancelToken: this.buttonToken.token
             }).then((res) => {
                 this.textContent.button.push(res.data.button);
+                this.btnEditIndex = this.buttons.length - 1;
             }).catch((err) => {
                 if (err.response) {
                     this.errorMesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
@@ -12320,6 +12321,7 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentMode
                 cancelToken: this.buttonToken.token
             }).then((res) => {
                 this.listButton = res.data.button;
+                this.btnEdit = true;
             }).catch((err) => {
                 if (err.response) {
                     this.errorMesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');
@@ -12545,6 +12547,7 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockConte
                 method: 'post'
             }).then((res) => {
                 this.buildQuickReplyItem(res.data.data);
+                this.item[this.item.length - 1].canShow = true;
             }).catch((err) => {
                 if (err.response) {
                     this.errorMesg = this.globalHandler(err, 'Failed to create new quick reply!');
@@ -13808,6 +13811,7 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
                 cancelToken: this.buttonToken.token
             }).then((res) => {
                 this.button = res.data.button;
+                this.btnEdit = true;
             }).catch((err) => {
                 if (err.response) {
                     this.errorMesg = this.globalHandler(err, 'Failed to create new button!');

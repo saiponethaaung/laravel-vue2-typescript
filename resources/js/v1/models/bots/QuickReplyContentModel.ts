@@ -55,6 +55,7 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
             method: 'post'
         }).then((res: any) => {
             this.buildQuickReplyItem(res.data.data);
+            this.item[this.item.length - 1].canShow = true;
         }).catch((err: any) => {
             if (err.response) {
                 this.errorMesg = this.globalHandler(err, 'Failed to create new quick reply!');

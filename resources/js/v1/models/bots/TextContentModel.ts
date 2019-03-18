@@ -78,6 +78,7 @@ export default class TextContentModel extends ChatBlockContentModel {
             cancelToken: this.buttonToken.token
         }).then((res) => {
             this.textContent.button.push(res.data.button);
+            this.btnEditIndex = this.buttons.length - 1;
         }).catch((err) => {
             if (err.response) {
                 this.errorMesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');

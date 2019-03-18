@@ -85,6 +85,7 @@ export default class ListContentModel extends ChatBlockContentModel {
             cancelToken: this.buttonToken.token
         }).then((res) => {
             this.listButton = res.data.button;
+            this.btnEdit = true;
         }).catch((err) => {
             if (err.response) {
                 this.errorMesg = this.ajaxHandler.globalHandler(err, 'Failed to create new button!');

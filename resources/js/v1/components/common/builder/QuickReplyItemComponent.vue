@@ -13,12 +13,13 @@
             <div class="quickReplyInfoBox" :class="{'showInfoBox': qr.canShow}">
                 <div class="QRActionName">
                     <input
+                        class="quickReplyInput"
                         placeholder="Title"
                         maxlength="20"
                         v-model="qr.title"
                         v-on:blur="qr.saveContent()"
                     >
-                    <span class="limitReplyTitle">{{ qr.textLimitTitle }}</span>
+                    <span class="limitReplyTitle limitReply">{{ qr.textLimitTitle }}</span>
                 </div>
                 <div>
                     <div>

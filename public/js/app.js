@@ -29382,7 +29382,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -30571,6 +30571,7 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         this.updatingStatus = false;
         this.actionTime = "";
         this.reload = false;
+        this.createProject = false;
     }
     mounted() {
         this.initSendToMessenger();
@@ -31005,48 +31006,53 @@ var render = function() {
                     _c(
                       "div",
                       { staticClass: "popProjectList" },
-                      _vm._l(_vm.$store.state.projectList, function(
-                        project,
-                        index
-                      ) {
-                        return _c(
-                          "router-link",
-                          {
-                            key: index,
-                            staticClass: "projectInfoContainer",
-                            attrs: {
-                              to: {
-                                name: "project.home",
-                                params: { projectid: project.id }
+                      [
+                        _vm._l(_vm.$store.state.projectList, function(
+                          project,
+                          index
+                        ) {
+                          return _c(
+                            "router-link",
+                            {
+                              key: index,
+                              staticClass: "projectInfoContainer",
+                              attrs: {
+                                to: {
+                                  name: "project.home",
+                                  params: { projectid: project.id }
+                                }
                               }
-                            }
-                          },
-                          [
-                            _c(
-                              "figure",
-                              { staticClass: "projectIconWrapper" },
-                              [
-                                _c("img", {
-                                  staticClass: "projectIcon",
-                                  attrs: {
-                                    src: project.image
-                                      ? project.image
-                                      : "/images/sample/logo.png"
-                                  }
-                                })
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "projectInfo" }, [
-                              _c("h4", { staticClass: "projectName" }, [
-                                _vm._v(
-                                  _vm._s(project.name ? project.name : "-")
-                                )
+                            },
+                            [
+                              _c(
+                                "figure",
+                                { staticClass: "projectIconWrapper" },
+                                [
+                                  _c("img", {
+                                    staticClass: "projectIcon",
+                                    attrs: {
+                                      src: project.image
+                                        ? project.image
+                                        : "/images/sample/logo.png"
+                                    }
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "projectInfo" }, [
+                                _c("h4", { staticClass: "projectName" }, [
+                                  _vm._v(
+                                    _vm._s(project.name ? project.name : "-")
+                                  )
+                                ])
                               ])
-                            ])
-                          ]
-                        )
-                      })
+                            ]
+                          )
+                        }),
+                        _vm._v(" "),
+                        _vm._m(1)
+                      ],
+                      2
                     )
                   ]
                 : _vm._e()
@@ -31274,6 +31280,14 @@ var staticRenderFns = [
         _vm._v("Pixybot")
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "addProject" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("add")])
+    ])
   }
 ]
 render._withStripped = true
@@ -31347,7 +31361,7 @@ var content = __webpack_require__(76);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(78)("567c3d80", content, false, {});
+var update = __webpack_require__(78)("7c379b60", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -35877,6 +35891,7 @@ var render = function() {
                     expression: "qr.title"
                   }
                 ],
+                staticClass: "quickReplyInput",
                 attrs: { placeholder: "Title", maxlength: "20" },
                 domProps: { value: _vm.qr.title },
                 on: {
@@ -35892,7 +35907,7 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _c("span", { staticClass: "limitReplyTitle" }, [
+              _c("span", { staticClass: "limitReplyTitle limitReply" }, [
                 _vm._v(_vm._s(_vm.qr.textLimitTitle))
               ])
             ]),
@@ -58908,88 +58923,98 @@ var render = function() {
       _vm._v(" "),
       _vm._m(2),
       _vm._v(" "),
-      _c("div", { staticClass: "broadcastContentList schedule" }, [
-        _c(
-          "ul",
-          { staticClass: "broadcastScheduleListRoot" },
-          [
-            _vm._l(this.triggerList, function(trigger, index) {
-              return [
-                _c(
-                  "li",
-                  { key: index, staticClass: "broadcastScheduleList" },
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        class: {
-                          activeBroadcast:
-                            _vm.$route.params.triggerid == trigger.id
-                        },
-                        attrs: {
-                          to: {
-                            name: "project.broadcast.trigger",
-                            params: { triggerid: trigger.id }
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        " +
-                            _vm._s(trigger.duration) +
-                            "\n                        "
-                        ),
-                        trigger.duration_type === 1
-                          ? [
+      this.triggerList.length >= 1
+        ? [
+            _c("div", { staticClass: "broadcastContentList schedule" }, [
+              _c(
+                "ul",
+                { staticClass: "broadcastScheduleListRoot" },
+                [
+                  _vm._l(this.triggerList, function(trigger, index) {
+                    return [
+                      _c(
+                        "li",
+                        { key: index, staticClass: "broadcastScheduleList" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              class: {
+                                activeBroadcast:
+                                  _vm.$route.params.triggerid == trigger.id
+                              },
+                              attrs: {
+                                to: {
+                                  name: "project.broadcast.trigger",
+                                  params: { triggerid: trigger.id }
+                                }
+                              }
+                            },
+                            [
                               _vm._v(
-                                _vm._s(
-                                  trigger.duration > 1 ? "minutes" : "minute"
-                                )
-                              )
-                            ]
-                          : _vm._e(),
-                        _vm._v(" "),
-                        trigger.duration_type === 2
-                          ? [
+                                "\n                            " +
+                                  _vm._s(trigger.duration) +
+                                  "\n                            "
+                              ),
+                              trigger.duration_type === 1
+                                ? [
+                                    _vm._v(
+                                      _vm._s(
+                                        trigger.duration > 1
+                                          ? "minutes"
+                                          : "minute"
+                                      )
+                                    )
+                                  ]
+                                : _vm._e(),
+                              _vm._v(" "),
+                              trigger.duration_type === 2
+                                ? [
+                                    _vm._v(
+                                      _vm._s(
+                                        trigger.duration > 1 ? "hours" : "hour"
+                                      )
+                                    )
+                                  ]
+                                : _vm._e(),
+                              _vm._v(" "),
+                              trigger.duration_type === 3
+                                ? [
+                                    _vm._v(
+                                      _vm._s(
+                                        trigger.duration > 1 ? "days" : "day"
+                                      )
+                                    )
+                                  ]
+                                : _vm._e(),
                               _vm._v(
-                                _vm._s(trigger.duration > 1 ? "hours" : "hour")
-                              )
-                            ]
-                          : _vm._e(),
-                        _vm._v(" "),
-                        trigger.duration_type === 3
-                          ? [
-                              _vm._v(
-                                _vm._s(trigger.duration > 1 ? "days" : "day")
-                              )
-                            ]
-                          : _vm._e(),
-                        _vm._v(
-                          "\n                         after \n                        "
-                        ),
-                        trigger.trigger_type === 1
-                          ? [_vm._v("first interaction")]
-                          : _vm._e(),
-                        _vm._v(" "),
-                        trigger.trigger_type === 2
-                          ? [_vm._v("last interaction")]
-                          : _vm._e(),
-                        _vm._v(" "),
-                        trigger.trigger_type === 3
-                          ? [_vm._v("attribute set")]
-                          : _vm._e()
-                      ],
-                      2
-                    )
-                  ],
-                  1
-                )
-              ]
-            })
-          ],
-          2
-        )
-      ]),
+                                "\n                             after \n                            "
+                              ),
+                              trigger.trigger_type === 1
+                                ? [_vm._v("first interaction")]
+                                : _vm._e(),
+                              _vm._v(" "),
+                              trigger.trigger_type === 2
+                                ? [_vm._v("last interaction")]
+                                : _vm._e(),
+                              _vm._v(" "),
+                              trigger.trigger_type === 3
+                                ? [_vm._v("attribute set")]
+                                : _vm._e()
+                            ],
+                            2
+                          )
+                        ],
+                        1
+                      )
+                    ]
+                  })
+                ],
+                2
+              )
+            ])
+          ]
+        : _vm._e(),
       _vm._v(" "),
       _vm.creatingTrigger
         ? [
@@ -59021,39 +59046,45 @@ var render = function() {
       _vm._v(" "),
       _vm._m(3),
       _vm._v(" "),
-      _c("div", { staticClass: "broadcastContentList schedule" }, [
-        _c(
-          "ul",
-          { staticClass: "broadcastScheduleListRoot" },
-          [
-            _vm._l(this.scheduleList, function(schedule, index) {
-              return [
-                _c(
-                  "li",
-                  { key: index, staticClass: "broadcastScheduleList" },
-                  [
-                    _c("router-link", {
-                      class: {
-                        activeBroadcast:
-                          _vm.$route.params.scheduleid == schedule.id
-                      },
-                      attrs: {
-                        to: {
-                          name: "project.broadcast.schedule",
-                          params: { scheduleid: schedule.id }
-                        }
-                      },
-                      domProps: { innerHTML: _vm._s(_vm.scheduleName(index)) }
-                    })
-                  ],
-                  1
-                )
-              ]
-            })
-          ],
-          2
-        )
-      ]),
+      this.scheduleList.length >= 1
+        ? [
+            _c("div", { staticClass: "broadcastContentList schedule" }, [
+              _c(
+                "ul",
+                { staticClass: "broadcastScheduleListRoot" },
+                [
+                  _vm._l(this.scheduleList, function(schedule, index) {
+                    return [
+                      _c(
+                        "li",
+                        { key: index, staticClass: "broadcastScheduleList" },
+                        [
+                          _c("router-link", {
+                            class: {
+                              activeBroadcast:
+                                _vm.$route.params.scheduleid == schedule.id
+                            },
+                            attrs: {
+                              to: {
+                                name: "project.broadcast.schedule",
+                                params: { scheduleid: schedule.id }
+                              }
+                            },
+                            domProps: {
+                              innerHTML: _vm._s(_vm.scheduleName(index))
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]
+                  })
+                ],
+                2
+              )
+            ])
+          ]
+        : _vm._e(),
       _vm._v(" "),
       _vm.creatingSchedule
         ? [

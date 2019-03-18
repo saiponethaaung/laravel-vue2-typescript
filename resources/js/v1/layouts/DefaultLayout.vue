@@ -27,6 +27,7 @@
                     >
                         <i class="material-icons">question_answer</i>
                         <span class="icon-label">Inbox</span>
+                        <!-- <div class="reddot"></div> -->
                     </router-link>
                 </li>
                 <li>
@@ -132,6 +133,9 @@
                                         >{{ project.name ? project.name : '-' }}</h4>
                                     </div>
                                 </router-link>
+                                <div class="addProject">
+                                    <i class="material-icons">add</i>
+                                </div>
                             </div>
                         </template>
                     </div>
@@ -275,6 +279,7 @@ export default class DefaultLayout extends Vue {
     private updatingStatus: boolean = false;
     private actionTime: string = "";
     private reload: boolean = false;
+    private createProject: boolean = false;
 
     mounted() {
         this.initSendToMessenger();

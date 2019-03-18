@@ -11080,6 +11080,39 @@ a:hover {
   border-bottom-right-radius: 0 !important;
 }
 
+.reddot {
+  width: 5px;
+  height: 5px;
+  background: #ff0000;
+  border-radius: 50%;
+  position: absolute;
+  margin-left: 50px;
+}
+
+.addProject {
+  width: 100%;
+  cursor: pointer;
+  height: 40px;
+  max-height: 40px;
+  font-size: 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: #f7f6f6;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 0 6px;
+  text-align: center;
+  line-height: 15px;
+  color: #aaaaaa;
+}
+
 .chatBotHeading {
   font-size: 18px;
   font-weight: bold;
@@ -12812,6 +12845,14 @@ input.required::placeholder {
   height: 30px;
   line-height: 30px;
   padding-left: 10px;
+}
+
+.limitReply {
+  display: none;
+}
+
+.quickReplyInput:focus + .limitReply {
+  display: block;
 }
 
 .userInputRootContainer {
@@ -15212,7 +15253,7 @@ input.required::placeholder {
 }
 
 .bcs .btnClick {
-  margin: 0;
+  margin-bottom: 20px;
 }
 
 .activeBroadcast {

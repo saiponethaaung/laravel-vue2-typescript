@@ -26,14 +26,15 @@ class ChatUserController extends Controller
             });
         }]);
         
-        $attributes->whereHas('chatValue', function($query) use ($request) {
-            $query->whereHas('user', function($query) use ($request){
-                $query->whereHas('projectPage', function($query) use ($request) {
-                    $query->where('id', $request->attributes->get('project_page')->id);
-                    $query->where('project_id', $request->attributes->get('project')->id);
-                });
-            });
-        });
+        $attributes->where('project_id', $request->attributes->get('project')->id);
+        // $attributes->whereHas('chatValue', function($query) use ($request) {
+        //     $query->whereHas('user', function($query) use ($request){
+        //         $query->whereHas('projectPage', function($query) use ($request) {
+        //             $query->where('id', $request->attributes->get('project_page')->id);
+        //             $query->where('project_id', $request->attributes->get('project')->id);
+        //         });
+        //     });
+        // });
         
         $attributes = $attributes->get();
     

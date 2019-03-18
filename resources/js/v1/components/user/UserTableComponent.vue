@@ -64,7 +64,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="ultWrapper">
+                            <div class="ultWrapper hoverCursor" @click="openAttributePop(index)">
                                 {{ user.name }}
                             </div>
                         </td>

@@ -438,7 +438,7 @@ class UpdateController extends Controller
             
             if($input['attribute']) {
                 $attr = ChatAttribute::where(
-                    DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $input['attribute'].'%'
+                    DB::raw('attribute COLLATE utf8mb4_bin'), '=', $input['attribute']
                 )
                 ->where('project_id', '=', $request->attributes->get('project')->id)
                 ->first();
@@ -553,7 +553,7 @@ class UpdateController extends Controller
             
             if($input['attribute']) {
                 $attr = ChatAttribute::where(
-                    DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $input['attribute'].'%'
+                    DB::raw('attribute COLLATE utf8mb4_bin'), '=', $input['attribute']
                 )
                 ->where('project_id', $request->attributes->get('project')->id)
                 ->first();
@@ -715,7 +715,7 @@ class UpdateController extends Controller
             } else {
                 if(!empty($input['attrTitle'])) {
                     $attr = ChatAttribute::where(
-                        DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $input['attrTitle'].'%'
+                        DB::raw('attribute COLLATE utf8mb4_bin'), '=', $input['attrTitle']
                     )
                     ->where('project_id', $request->attributes->get('project')->id)
                     ->first();

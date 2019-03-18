@@ -314,10 +314,32 @@
         margin-bottom: 0;
         li {
             padding: 10px 5px;
+            width: 100%;
+            word-wrap: break-word;
             cursor: pointer;
             &:hover {
                 background: rgba(0,0,0,0.2);
             }
+        }
+    }
+}
+
+.attrTitleInputSuggestion {
+    .attrKeySuggestCon {
+        opacity: 1;
+        visibility: visible;
+        height: 250px;
+        overflow: auto;
+    }
+}
+
+.hasKeywordSuggest {
+    border-bottom-left-radius: 0px!important;
+    border-bottom-right-radius: 0px!important;
+    &.qrAttr {
+        margin: 0;
+        & + .attrKeySuggestCon {
+            margin-bottom: 15px;
         }
     }
 }

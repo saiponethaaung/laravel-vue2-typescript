@@ -70,12 +70,27 @@
                     <div class="attributeNotice">
                         <span>Save reply as attribute:</span>
                     </div>
-                    <div>
+                    <div class="attrTitleInputSuggestion" ref="attrTitleSuggest">
                         <input
                             placeholder="<Set attribute>"
+                            class="qrAttr"
                             v-model="qr.attribute"
                             v-on:blur="qr.saveContent()"
+                            @keyup="searchKeySuggestion"
+                            :class="{'hasKeywordSuggest': keySuggestion.length>0}"
                         >
+                        <template v-if="keySuggestion.length>0">
+                            <div class="attrKeySuggestCon" ref="suggestion">
+                                <ul>
+                                    <template v-for="(key, index) in keySuggestion">
+                                        <li
+                                            :key="index"
+                                            @click="qr.attribute=key;keySuggestion=[];"
+                                        >{{ key }}</li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </template>
                     </div>
                     <div>
                         <input
@@ -108,6 +123,8 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import QuickReplyItemModel from "../../../models/bots/QuickReplyItemModel";
+import Axios, { CancelTokenSource } from "axios";
+import AjaxErrorHandler from "../../../utils/AjaxErrorHandler";
 
 @Component
 export default class QuickReplyItemComponent extends Vue {
@@ -123,5 +140,88 @@ export default class QuickReplyItemComponent extends Vue {
 
     @Emit("closeOtherSection")
     closeOtherSection(index: any) {}
+
+    private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
+
+    private keyTimeout: any = null;
+    private keyLoading: boolean = false;
+    private showSuggest: boolean = false;
+    private keySuggestion: any[] = [];
+    private keyCancelToken: CancelTokenSource = Axios.CancelToken.source();
+
+    async searchKeySuggestion(e: any) {
+        console.log(e);
+        if (
+            e.keyCode == 37 ||
+            e.keyCode == 38 ||
+            e.keyCode == 39 ||
+            e.keyCode == 40 ||
+            e.keyCode == 17 ||
+            e.keyCode == 16 ||
+            e.keyCode == 18 ||
+            (e.ctrlKey && e.keyCode == 65)
+        ) {
+            return;
+        }
+
+        this.keyCancelToken.cancel();
+        this.keyLoading = false;
+        this.showSuggest = true;
+        clearTimeout(this.keyTimeout);
+
+        if (this.qr.attribute == "") return;
+
+        this.keyLoading = true;
+        this.keyTimeout = setTimeout(async () => {
+            this.keyCancelToken = Axios.CancelToken.source();
+
+            this.keySuggestion = [];
+
+            let data = new FormData();
+            data.append("keyword", this.qr.attribute);
+
+            await Axios({
+                url: `/api/v1/project/${
+                    this.$store.state.projectInfo.id
+                }/attributes/serach/attribute`,
+                data: data,
+                method: "post",
+                cancelToken: this.keyCancelToken.token
+            })
+                .then(res => {
+                    this.keySuggestion = res.data.data;
+                })
+                .catch(err => {
+                    if (err.response) {
+                        this.$store.state.errorMesg.push(
+                            this.ajaxHandler.globalHandler(
+                                err,
+                                "Failed to load attribute name suggestion!"
+                            )
+                        );
+                    }
+                });
+
+            this.keyLoading = false;
+        }, 1000);
+    }
+
+    documentClick(e: any) {
+        let el: any = this.$refs.attrTitleSuggest;
+        let target = e.target;
+        if (el !== target && !el.contains(target)) {
+            this.keySuggestion = [];
+            return null;
+        }
+    }
+
+    created() {
+        document.addEventListener("click", this.documentClick);
+    }
+
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener("click", this.documentClick);
+    }
 }
 </script>

@@ -10737,9 +10737,7 @@ a.text-dark:focus {
 #sideMenu {
   width: 72px;
   height: inherit;
-  background: #f7f6f6;
-  -webkit-box-shadow: 1px 0px 7px 0px rgba(0, 0, 0, 0.4);
-          box-shadow: 1px 0px 7px 0px rgba(0, 0, 0, 0.4);
+  background: #ffffff;
   position: relative;
   z-index: 11;
 }
@@ -10765,6 +10763,10 @@ a.text-dark:focus {
   color: #aaaaaa;
   text-decoration: none;
   position: relative;
+}
+
+#sideMenu #sideNav a .material-icons {
+  font-size: 28px;
 }
 
 #sideMenu #sideNav a .imgIcon {
@@ -10804,7 +10806,7 @@ a.text-dark:focus {
 }
 
 #sideMenu #sideNav a figure img {
-  width: 24px;
+  width: 30px;
 }
 
 #sideMenu #sideNav a .icon-label {
@@ -10845,7 +10847,7 @@ a.text-dark:focus {
 #mainContent {
   width: calc(100% - 72px);
   height: inherit;
-  background: peru;
+  border-left: 1px solid #ebebeb;
 }
 
 #headerContent {
@@ -11078,6 +11080,10 @@ a:hover {
 .hideBottomRadius {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
+}
+
+.hoverCursor {
+  cursor: pointer;
 }
 
 .chatBotHeading {
@@ -14589,11 +14595,33 @@ input.required::placeholder {
 
 .attrKeySuggestCon ul li {
   padding: 10px 5px;
+  width: 100%;
+  word-wrap: break-word;
   cursor: pointer;
 }
 
 .attrKeySuggestCon ul li:hover {
   background: rgba(0, 0, 0, 0.2);
+}
+
+.attrTitleInputSuggestion .attrKeySuggestCon {
+  opacity: 1;
+  visibility: visible;
+  height: 250px;
+  overflow: auto;
+}
+
+.hasKeywordSuggest {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.hasKeywordSuggest.qrAttr {
+  margin: 0;
+}
+
+.hasKeywordSuggest.qrAttr + .attrKeySuggestCon {
+  margin-bottom: 15px;
 }
 
 .floatingLoading {

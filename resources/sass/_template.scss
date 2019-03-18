@@ -9,8 +9,7 @@
 #sideMenu {
     width: $sidebarWidth;
     height: inherit;
-    background: #f7f6f6;
-    box-shadow: 1px 0px 7px 0px rgba(0,0,0,0.4);
+    background: #ffffff;
     position: relative;
     z-index: 11;
     #sideNav {
@@ -26,6 +25,9 @@
             color: $iconPrimary;
             text-decoration: none;
             position: relative;
+            .material-icons {
+                font-size: 28px;
+            }
             .imgIcon {
                 display: block;
             }
@@ -56,7 +58,7 @@
                 width: 100%;
                 height: 100%;
                 img {
-                    width: 24px;
+                    width: 30px;
                 }
             }
             .icon-label {
@@ -99,7 +101,7 @@
 #mainContent {
     width: calc(100% - #{$sidebarWidth});
     height: inherit;
-    background: peru;
+    border-left: 1px solid $borderPrimary;
 }
 
 #headerContent {
@@ -289,4 +291,8 @@ a:hover {
 .hideBottomRadius {
     border-bottom-left-radius: 0!important;
     border-bottom-right-radius: 0!important;
+}
+
+.hoverCursor {
+    cursor: pointer;
 }

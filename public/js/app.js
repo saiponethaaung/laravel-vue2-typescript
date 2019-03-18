@@ -33102,16 +33102,28 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
         this.blockList = [];
         this.blockToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
         this.updateToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+        this.keyTimeout = null;
+        this.keyLoading = false;
+        this.showSuggest = false;
+        this.keySuggestion = [];
+        this.keyCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
     }
-    closeContent(status) { }
+    closeContent(status) {
+        this.keySuggestion = [];
+    }
     documentClick(e) {
         let el = this.$refs.textBtn;
+        let attrTitleSuggest = this.$refs.attrTitleSuggest;
         let target = e.target;
         if (el !== target && !el.contains(target)) {
             this.updateContent();
             setTimeout(() => {
                 this.closeContent(true);
             }, 500);
+            return null;
+        }
+        if (attrTitleSuggest !== target && !attrTitleSuggest.contains(target)) {
+            this.keySuggestion = [];
             return null;
         }
         this.closeContent(false);
@@ -33219,6 +33231,49 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
             if (close) {
                 this.closeContent(true);
             }
+        });
+    }
+    searchKeySuggestion(e) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(e);
+            if (e.keyCode == 37 ||
+                e.keyCode == 38 ||
+                e.keyCode == 39 ||
+                e.keyCode == 40 ||
+                e.keyCode == 17 ||
+                e.keyCode == 16 ||
+                e.keyCode == 18 ||
+                (e.ctrlKey && e.keyCode == 65)) {
+                return;
+            }
+            this.keyCancelToken.cancel();
+            this.keyLoading = false;
+            this.showSuggest = true;
+            clearTimeout(this.keyTimeout);
+            if (this.button.attribute.title == "")
+                return;
+            this.keyLoading = true;
+            this.keyTimeout = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                this.keyCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+                this.keySuggestion = [];
+                let data = new FormData();
+                data.append("keyword", this.button.attribute.title);
+                yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/attributes/serach/attribute`,
+                    data: data,
+                    method: "post",
+                    cancelToken: this.keyCancelToken.token
+                })
+                    .then(res => {
+                    this.keySuggestion = res.data.data;
+                })
+                    .catch(err => {
+                    if (err.response) {
+                        this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to load attribute name suggestion!"));
+                    }
+                });
+                this.keyLoading = false;
+            }), 1000);
         });
     }
     created() {
@@ -33463,32 +33518,84 @@ var render = function() {
                     _vm._v(" "),
                     _vm._m(0),
                     _vm._v(" "),
-                    _c("div", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.button.attribute.title,
-                            expression: "button.attribute.title"
-                          }
-                        ],
-                        attrs: { placeholder: "<Set attribute>" },
-                        domProps: { value: _vm.button.attribute.title },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                    _c(
+                      "div",
+                      {
+                        ref: "attrTitleSuggest",
+                        staticClass: "attrTitleInputSuggestion"
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.button.attribute.title,
+                              expression: "button.attribute.title"
                             }
-                            _vm.$set(
-                              _vm.button.attribute,
-                              "title",
-                              $event.target.value
-                            )
+                          ],
+                          class: {
+                            hasKeywordSuggest: _vm.keySuggestion.length > 0
+                          },
+                          attrs: { placeholder: "<Set attribute>" },
+                          domProps: { value: _vm.button.attribute.title },
+                          on: {
+                            keyup: _vm.searchKeySuggestion,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.button.attribute,
+                                "title",
+                                $event.target.value
+                              )
+                            }
                           }
-                        }
-                      })
-                    ]),
+                        }),
+                        _vm._v(" "),
+                        _vm.keySuggestion.length > 0
+                          ? [
+                              _c(
+                                "div",
+                                {
+                                  ref: "suggestion",
+                                  staticClass: "attrKeySuggestCon"
+                                },
+                                [
+                                  _c(
+                                    "ul",
+                                    [
+                                      _vm._l(_vm.keySuggestion, function(
+                                        key,
+                                        index
+                                      ) {
+                                        return [
+                                          _c(
+                                            "li",
+                                            {
+                                              key: index,
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.button.attribute.title = key
+                                                  _vm.keySuggestion = []
+                                                }
+                                              }
+                                            },
+                                            [_vm._v(_vm._s(key))]
+                                          )
+                                        ]
+                                      })
+                                    ],
+                                    2
+                                  )
+                                ]
+                              )
+                            ]
+                          : _vm._e()
+                      ],
+                      2
+                    ),
                     _vm._v(" "),
                     _c("div", [
                       _c("input", {
@@ -35782,17 +35889,97 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_QuickReplyItemModel__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
 
 
 let QuickReplyItemComponent = class QuickReplyItemComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__["a" /* default */]();
+        this.keyTimeout = null;
+        this.keyLoading = false;
+        this.showSuggest = false;
+        this.keySuggestion = [];
+        this.keyCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+    }
     deleteItem(index) { }
     closeOtherSection(index) { }
+    searchKeySuggestion(e) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(e);
+            if (e.keyCode == 37 ||
+                e.keyCode == 38 ||
+                e.keyCode == 39 ||
+                e.keyCode == 40 ||
+                e.keyCode == 17 ||
+                e.keyCode == 16 ||
+                e.keyCode == 18 ||
+                (e.ctrlKey && e.keyCode == 65)) {
+                return;
+            }
+            this.keyCancelToken.cancel();
+            this.keyLoading = false;
+            this.showSuggest = true;
+            clearTimeout(this.keyTimeout);
+            if (this.qr.attribute == "")
+                return;
+            this.keyLoading = true;
+            this.keyTimeout = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                this.keyCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+                this.keySuggestion = [];
+                let data = new FormData();
+                data.append("keyword", this.qr.attribute);
+                yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/attributes/serach/attribute`,
+                    data: data,
+                    method: "post",
+                    cancelToken: this.keyCancelToken.token
+                })
+                    .then(res => {
+                    this.keySuggestion = res.data.data;
+                })
+                    .catch(err => {
+                    if (err.response) {
+                        this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to load attribute name suggestion!"));
+                    }
+                });
+                this.keyLoading = false;
+            }), 1000);
+        });
+    }
+    documentClick(e) {
+        let el = this.$refs.attrTitleSuggest;
+        let target = e.target;
+        if (el !== target && !el.contains(target)) {
+            this.keySuggestion = [];
+            return null;
+        }
+    }
+    created() {
+        document.addEventListener("click", this.documentClick);
+    }
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener("click", this.documentClick);
+    }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
@@ -36017,31 +36204,79 @@ var render = function() {
               _vm._v(" "),
               _vm._m(2),
               _vm._v(" "),
-              _c("div", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.qr.attribute,
-                      expression: "qr.attribute"
-                    }
-                  ],
-                  attrs: { placeholder: "<Set attribute>" },
-                  domProps: { value: _vm.qr.attribute },
-                  on: {
-                    blur: function($event) {
-                      _vm.qr.saveContent()
-                    },
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+              _c(
+                "div",
+                {
+                  ref: "attrTitleSuggest",
+                  staticClass: "attrTitleInputSuggestion"
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.qr.attribute,
+                        expression: "qr.attribute"
                       }
-                      _vm.$set(_vm.qr, "attribute", $event.target.value)
+                    ],
+                    staticClass: "qrAttr",
+                    class: { hasKeywordSuggest: _vm.keySuggestion.length > 0 },
+                    attrs: { placeholder: "<Set attribute>" },
+                    domProps: { value: _vm.qr.attribute },
+                    on: {
+                      blur: function($event) {
+                        _vm.qr.saveContent()
+                      },
+                      keyup: _vm.searchKeySuggestion,
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.qr, "attribute", $event.target.value)
+                      }
                     }
-                  }
-                })
-              ]),
+                  }),
+                  _vm._v(" "),
+                  _vm.keySuggestion.length > 0
+                    ? [
+                        _c(
+                          "div",
+                          {
+                            ref: "suggestion",
+                            staticClass: "attrKeySuggestCon"
+                          },
+                          [
+                            _c(
+                              "ul",
+                              [
+                                _vm._l(_vm.keySuggestion, function(key, index) {
+                                  return [
+                                    _c(
+                                      "li",
+                                      {
+                                        key: index,
+                                        on: {
+                                          click: function($event) {
+                                            _vm.qr.attribute = key
+                                            _vm.keySuggestion = []
+                                          }
+                                        }
+                                      },
+                                      [_vm._v(_vm._s(key))]
+                                    )
+                                  ]
+                                })
+                              ],
+                              2
+                            )
+                          ]
+                        )
+                      ]
+                    : _vm._e()
+                ],
+                2
+              ),
               _vm._v(" "),
               _c("div", [
                 _c("input", {
@@ -55870,13 +56105,24 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", [
-                    _c("div", { staticClass: "ultWrapper" }, [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(user.name) +
-                          "\n                        "
-                      )
-                    ])
+                    _c(
+                      "div",
+                      {
+                        staticClass: "ultWrapper hoverCursor",
+                        on: {
+                          click: function($event) {
+                            _vm.openAttributePop(index)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(user.name) +
+                            "\n                        "
+                        )
+                      ]
+                    )
                   ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "utlGenderColumn" }, [

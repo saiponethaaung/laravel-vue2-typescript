@@ -62,6 +62,9 @@ class ChatBotProjectController extends Controller
     
         // Response an error if record user is failed
         if(!$recordUser['status']) {
+            FacebookRequestLogs::create([
+                'data' => 'break on failed to record'
+            ]);
             return $recordUser;
         }
 
@@ -98,6 +101,9 @@ class ChatBotProjectController extends Controller
                 'ignore' => $ignore
             ]);
         } catch(\Exception $e) {
+            FacebookRequestLogs::create([
+                'data' => 'break on failed to record mesg'
+            ]);
             // rollback if recording user chat is failed
             DB::rollback();
             return [
@@ -111,6 +117,9 @@ class ChatBotProjectController extends Controller
 
         // if user is on live chat or it's function to stop with record stop the process
         if($this->user->live_chat || $justRecord) {
+            FacebookRequestLogs::create([
+                'data' => 'break because live chat is open'
+            ]);
             return [
                 'status' => true,
                 'type' => '',

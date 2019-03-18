@@ -119,7 +119,7 @@ class GetController extends Controller
                 ],
                 'attribute' => [
                     'title' => $attrTitle,
-                    'value' => $attrValue
+                    'value' => (String) $attrValue
                 ]
             ];
         }
@@ -176,7 +176,7 @@ class GetController extends Controller
                 ],
                 'attribute' => [
                     'title' => $attrTitle,
-                    'value' => $attrValue
+                    'value' => (String) $attrValue
                 ]
             ];
         }
@@ -223,7 +223,7 @@ class GetController extends Controller
                     ],
                     'attribute' => [
                         'title' => $attrTitle,
-                        'value' => $attrValue
+                        'value' => (String) $attrValue
                     ]
                 ];
             }
@@ -286,7 +286,7 @@ class GetController extends Controller
                     ],
                     'attribute' => [
                         'title' => $attrTitle,
-                        'value' => $attrValue
+                        'value' => (String) $attrValue
                     ]
                 ];
             }

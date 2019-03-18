@@ -73,11 +73,25 @@
                             <div class="attributeNotice">
                                 <span>Save reply as attribute:</span>
                             </div>
-                            <div>
+                            <div class="attrTitleInputSuggestion" ref="attrTitleSuggest">
                                 <input
                                     placeholder="<Set attribute>"
                                     v-model="button.attribute.title"
+                                    @keyup="searchKeySuggestion"
+                                    :class="{'hasKeywordSuggest': keySuggestion.length>0}"
                                 >
+                                <template v-if="keySuggestion.length>0">
+                                    <div class="attrKeySuggestCon" ref="suggestion">
+                                        <ul>
+                                            <template v-for="(key, index) in keySuggestion">
+                                                <li
+                                                    :key="index"
+                                                    @click="button.attribute.title=key;keySuggestion=[];"
+                                                >{{ key }}</li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                </template>
                             </div>
                             <div>
                                 <input
@@ -135,11 +149,20 @@ export default class ButtonComponent extends Vue {
     private blockToken: CancelTokenSource = Axios.CancelToken.source();
     private updateToken: CancelTokenSource = Axios.CancelToken.source();
 
+    private keyTimeout: any = null;
+    private keyLoading: boolean = false;
+    private showSuggest: boolean = false;
+    private keySuggestion: any[] = [];
+    private keyCancelToken: CancelTokenSource = Axios.CancelToken.source();
+
     @Emit("closeContent")
-    closeContent(status: boolean) {}
+    closeContent(status: boolean) {
+        this.keySuggestion = [];
+    }
 
     documentClick(e: any) {
         let el: any = this.$refs.textBtn;
+        let attrTitleSuggest: any = this.$refs.attrTitleSuggest;
 
         let target = e.target;
         if (el !== target && !el.contains(target)) {
@@ -147,6 +170,11 @@ export default class ButtonComponent extends Vue {
             setTimeout(() => {
                 this.closeContent(true);
             }, 500);
+            return null;
+        }
+
+        if (attrTitleSuggest !== target && !attrTitleSuggest.contains(target)) {
+            this.keySuggestion = [];
             return null;
         }
 
@@ -287,6 +315,63 @@ export default class ButtonComponent extends Vue {
         if (close) {
             this.closeContent(true);
         }
+    }
+
+    async searchKeySuggestion(e: any) {
+        console.log(e);
+        if (
+            e.keyCode == 37 ||
+            e.keyCode == 38 ||
+            e.keyCode == 39 ||
+            e.keyCode == 40 ||
+            e.keyCode == 17 ||
+            e.keyCode == 16 ||
+            e.keyCode == 18 ||
+            (e.ctrlKey && e.keyCode == 65)
+        ) {
+            return;
+        }
+
+        this.keyCancelToken.cancel();
+        this.keyLoading = false;
+        this.showSuggest = true;
+        clearTimeout(this.keyTimeout);
+
+        if (this.button.attribute.title == "") return;
+
+        this.keyLoading = true;
+        this.keyTimeout = setTimeout(async () => {
+            this.keyCancelToken = Axios.CancelToken.source();
+
+            this.keySuggestion = [];
+
+            let data = new FormData();
+            data.append("keyword", this.button.attribute.title);
+
+            await Axios({
+                url: `/api/v1/project/${
+                    this.$store.state.projectInfo.id
+                }/attributes/serach/attribute`,
+                data: data,
+                method: "post",
+                cancelToken: this.keyCancelToken.token
+            })
+                .then(res => {
+                    this.keySuggestion = res.data.data;
+                })
+                .catch(err => {
+                    if (err.response) {
+                        this.$store.state.errorMesg.push(
+                            this.ajaxHandler.globalHandler(
+                                err,
+                                "Failed to load attribute name suggestion!"
+                            )
+                        );
+                    }
+                });
+
+            this.keyLoading = false;
+        }, 1000);
     }
 
     created() {

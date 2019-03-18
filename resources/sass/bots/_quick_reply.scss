@@ -155,3 +155,11 @@
         padding-left: 10px;
     }
 }
+
+.limitReply {
+    display: none;
+}
+
+.quickReplyInput:focus + .limitReply {
+    display: block;
+}

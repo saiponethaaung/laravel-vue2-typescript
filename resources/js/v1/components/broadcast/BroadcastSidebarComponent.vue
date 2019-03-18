@@ -26,27 +26,30 @@
                 <span>Trigger your message</span>
             </div>
         </div>
-        <div class="broadcastContentList schedule">
-            <ul class="broadcastScheduleListRoot">
-                <template v-for="(trigger, index) in this.triggerList">
-                    <li :key="index" class="broadcastScheduleList">
-                        <router-link
-                            :to="{name: 'project.broadcast.trigger', params: { triggerid: trigger.id }}"
-                            :class="{'activeBroadcast': $route.params.triggerid==trigger.id}"
-                        >
-                            {{ trigger.duration }}
-                            <template v-if="trigger.duration_type===1">{{ trigger.duration>1 ? 'minutes' : 'minute' }}</template>
-                            <template v-if="trigger.duration_type===2">{{ trigger.duration>1 ? 'hours' : 'hour' }}</template>
-                            <template v-if="trigger.duration_type===3">{{ trigger.duration>1 ? 'days' : 'day' }}</template>
-                            &nbsp;after&nbsp;
-                            <template v-if="trigger.trigger_type===1">first interaction</template>
-                            <template v-if="trigger.trigger_type===2">last interaction</template>
-                            <template v-if="trigger.trigger_type===3">attribute set</template>
-                        </router-link>
-                    </li>
-                </template>
-            </ul>
-        </div>
+
+        <template v-if="this.triggerList.length >= 1">
+            <div class="broadcastContentList schedule">
+                <ul class="broadcastScheduleListRoot">
+                    <template v-for="(trigger, index) in this.triggerList">
+                        <li :key="index" class="broadcastScheduleList">
+                            <router-link
+                                :to="{name: 'project.broadcast.trigger', params: { triggerid: trigger.id }}"
+                                :class="{'activeBroadcast': $route.params.triggerid==trigger.id}"
+                            >
+                                {{ trigger.duration }}
+                                <template v-if="trigger.duration_type===1">{{ trigger.duration>1 ? 'minutes' : 'minute' }}</template>
+                                <template v-if="trigger.duration_type===2">{{ trigger.duration>1 ? 'hours' : 'hour' }}</template>
+                                <template v-if="trigger.duration_type===3">{{ trigger.duration>1 ? 'days' : 'day' }}</template>
+                                &nbsp;after&nbsp;
+                                <template v-if="trigger.trigger_type===1">first interaction</template>
+                                <template v-if="trigger.trigger_type===2">last interaction</template>
+                                <template v-if="trigger.trigger_type===3">attribute set</template>
+                            </router-link>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
         <template v-if="creatingTrigger">
             <div class="btnClick">
                 creating...
@@ -69,19 +72,21 @@
                 <span>Schedule your message</span>
             </div>
         </div>
-        <div class="broadcastContentList schedule">
-            <ul class="broadcastScheduleListRoot">
-                <template v-for="(schedule, index) in this.scheduleList">
-                    <li :key="index" class="broadcastScheduleList">
-                        <router-link
-                            :to="{name: 'project.broadcast.schedule', params: { scheduleid: schedule.id }}"
-                            v-html="scheduleName(index)"
-                            :class="{'activeBroadcast': $route.params.scheduleid==schedule.id}"
-                        ></router-link>
-                    </li>
-                </template>
-            </ul>
-        </div>
+        <template v-if="this.scheduleList.length >= 1">
+            <div class="broadcastContentList schedule">
+                <ul class="broadcastScheduleListRoot">
+                    <template v-for="(schedule, index) in this.scheduleList">
+                        <li :key="index" class="broadcastScheduleList">
+                            <router-link
+                                :to="{name: 'project.broadcast.schedule', params: { scheduleid: schedule.id }}"
+                                v-html="scheduleName(index)"
+                                :class="{'activeBroadcast': $route.params.scheduleid==schedule.id}"
+                            ></router-link>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
         <template v-if="creatingSchedule">
             <div class="btnClick">
                 creating...

@@ -296,3 +296,30 @@ a:hover {
 .hoverCursor {
     cursor: pointer;
 }
+
+.reddot {
+    width: 5px;
+    height: 5px;
+    background: #ff0000;
+    border-radius: 50%;
+    position: absolute;
+    margin-left: 50px;
+}
+
+.addProject {
+    width: 100%;
+    cursor: pointer;
+    height: 40px;
+    max-height: 40px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $primaryChatBlock;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 0 6px;
+    text-align: center;
+    line-height: 15px;
+    color: $iconPrimary;
+}

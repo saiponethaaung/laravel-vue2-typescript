@@ -310,7 +310,7 @@ class GetController extends Controller
         $list = ChatQuickReply::with([
             'attribute',
             'blocks',
-            'blocks.section'
+            'blocks.value'
         ])->where('content_id', $content->id)->orderBy('order', 'asc')->get();
         $res = [];
 

@@ -68,7 +68,7 @@
                 v-if="!listItem.addingNewBtn && listItem.button==null"
                 @click="listItem.addButton()"
             >Add Button</div>
-            <div class="chatListButton" v-if="listItem.button!==null">
+            <div class="chatListButton populated" v-if="listItem.button!==null">
                 <div
                     @click="listItem.btnEdit=true"
                 >{{ listItem.button.title ? listItem.button.title : 'Button Name' }}</div>
@@ -94,9 +94,9 @@
             <error-component :mesg="listItem.errorMesg" @closeError="listItem.errorMesg=''"></error-component>
         </template>
         <div class="requiredNotiCon">
-            <div class="requiredNotiText">
-                Set up at least one more item field: subtitle, button or image
-            </div>
+            <div
+                class="requiredNotiText"
+            >Set up at least one more item field: subtitle, button or image</div>
         </div>
     </li>
 </template>

@@ -12239,9 +12239,9 @@ input.required::placeholder {
   cursor: pointer;
 }
 
-.chatListButton:hover {
-  color: #448af2;
-  border-color: #448af2;
+.chatListButton.populated {
+  color: #c238eb;
+  border-color: #c238eb;
 }
 
 .galleListRoot {

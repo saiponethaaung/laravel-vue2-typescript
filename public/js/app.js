@@ -34860,7 +34860,7 @@ var render = function() {
         _vm.listItem.button !== null
           ? _c(
               "div",
-              { staticClass: "chatListButton" },
+              { staticClass: "chatListButton populated" },
               [
                 _c(
                   "div",
@@ -34963,9 +34963,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "requiredNotiCon" }, [
       _c("div", { staticClass: "requiredNotiText" }, [
-        _vm._v(
-          "\n            Set up at least one more item field: subtitle, button or image\n        "
-        )
+        _vm._v("Set up at least one more item field: subtitle, button or image")
       ])
     ])
   }

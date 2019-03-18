@@ -145,9 +145,9 @@
     min-height: 22px;
     position: relative;
     cursor: pointer;
-    &:hover {
-        color: #448af2;
-        border-color: #448af2;
+    &.populated {
+        color: $themeColor;
+        border-color: $themeColor;
     }
 }
 

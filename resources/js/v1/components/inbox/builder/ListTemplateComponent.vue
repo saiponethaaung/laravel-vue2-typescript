@@ -21,7 +21,7 @@
                                 </figure>
                             </div>
                         </div>
-                        <div class="chatListButton listButtonDisplayBox" v-if="undefined!==list.buttons && undefined!==list.buttons[0]">
+                        <div class="chatListButton listButtonDisplayBox populated" v-if="undefined!==list.buttons && undefined!==list.buttons[0]">
                             <template v-if="list.buttons[0].type==='postback'">{{ list.buttons[0].title }}</template>
                             <template v-if="list.buttons[0].type==='web_url'">
                                 <a :href="list.buttons[0].url" >{{ list.buttons[0].title }}</a>

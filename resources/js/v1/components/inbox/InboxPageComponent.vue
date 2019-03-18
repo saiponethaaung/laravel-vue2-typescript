@@ -41,6 +41,7 @@
                                                     v-html="processContent(mesg.mesg, mesg.contentType)"
                                                 ></div>
                                             </template>
+                                            {{ mesg.createdAt }}
                                         </div>
                                     </div>
                                 </template>

@@ -11491,6 +11491,10 @@ a:hover {
   color: #c238eb;
 }
 
+.buttonActionGroup .buttonName a {
+  color: #c238eb;
+}
+
 .buttonActionGroup .buttonActionName {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -12242,6 +12246,10 @@ input.required::placeholder {
 .chatListButton.populated {
   color: #c238eb;
   border-color: #c238eb;
+}
+
+.chatListButton.populated a {
+  color: #c238eb;
 }
 
 .galleListRoot {

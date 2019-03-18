@@ -53543,7 +53543,10 @@ var render = function() {
                 undefined !== list.buttons && undefined !== list.buttons[0]
                   ? _c(
                       "div",
-                      { staticClass: "chatListButton listButtonDisplayBox" },
+                      {
+                        staticClass:
+                          "chatListButton listButtonDisplayBox populated"
+                      },
                       [
                         list.buttons[0].type === "postback"
                           ? [_vm._v(_vm._s(list.buttons[0].title))]
@@ -54144,7 +54147,12 @@ var render = function() {
                                                             )
                                                           }
                                                         })
-                                                      ]
+                                                      ],
+                                                  _vm._v(
+                                                    "\n                                        " +
+                                                      _vm._s(mesg.createdAt) +
+                                                      "\n                                    "
+                                                  )
                                                 ],
                                                 2
                                               )

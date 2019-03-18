@@ -317,6 +317,9 @@
     .buttonName {
         line-height: 20px;
         color: $themeColor;
+        a {
+            color: $themeColor;
+        }
     }
     .buttonActionName {
         white-space: nowrap;

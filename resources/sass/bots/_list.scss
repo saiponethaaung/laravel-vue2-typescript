@@ -148,6 +148,9 @@
     &.populated {
         color: $themeColor;
         border-color: $themeColor;
+        a {
+            color: $themeColor;
+        }
     }
 }
 

@@ -194,6 +194,9 @@
                     <button class="headerButtonTypeOne" @click="createNewAttribute(editIndex)">+ Add</button>
                     <button class="headerButtonTypeOne" @click="editIndex=-1">Close</button>
                 </div>
+                <template v-if="errorAttribute!==''">
+                    <error-component :mesg="errorAttribute" @closeError="errorAttribute=''"></error-component>
+                </template>
             </div>
         </div>
     </div>
@@ -209,6 +212,7 @@ export default class UserTableComponent extends Vue{
     @Prop({default: false}) userLoading!: boolean;
 
     private editIndex: number = -1;
+    private errorAttribute: string = "";
 
     get allChecked() : boolean{
         let status = false;
@@ -239,7 +243,7 @@ export default class UserTableComponent extends Vue{
             let loadAttribute = await this.userList[index].loadAttribute();
             // alert an error if the process failed
             if(!loadAttribute.status) {
-                alert(loadAttribute.mesg);
+                this.errorAttribute = loadAttribute.mesg;
             }
         }
     }
@@ -248,7 +252,7 @@ export default class UserTableComponent extends Vue{
         let update = await this.userList[user].attributes[attribute].updateAttributeName();
         
         if(!update['status']) {
-            alert(update['mesg']);
+            this.errorAttribute = update['mesg']; 
         }
     }
 
@@ -256,7 +260,7 @@ export default class UserTableComponent extends Vue{
         let update = await this.userList[user].attributes[attribute].updateAttributeValue();
         
         if(!update['status']) {
-            alert(update['mesg']);
+            this.errorAttribute = update['mesg']; 
         }
     }
 
@@ -264,7 +268,7 @@ export default class UserTableComponent extends Vue{
         let create = await this.userList[user].createAttribute();
 
         if(!create['status']) {
-            alert(create['mesg']);
+            this.errorAttribute = create['mesg'];
         }
     }
 
@@ -273,7 +277,7 @@ export default class UserTableComponent extends Vue{
             let create = await this.userList[user].deleteAttribute(attribute);
 
             if(!create['status']) {
-                alert(create['mesg']);
+                this.errorAttribute = create['mesg'];
             }
         }
     }
@@ -282,7 +286,7 @@ export default class UserTableComponent extends Vue{
         let liveChat = await user.enabledLiveChat();
 
         if(!liveChat['status']) {
-            alert(liveChat['mesg']);
+            this.errorAttribute = liveChat['mesg'];
             return;
         }
 

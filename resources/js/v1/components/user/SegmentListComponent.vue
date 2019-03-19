@@ -157,7 +157,7 @@ export default class UserSegmentListComponent extends Vue {
                         err,
                         "Failed to load user!"
                     );
-                    alert(mesg);
+                    this.errorSegment = mesg;
                 }
             });
 

@@ -69,9 +69,12 @@
                     <button
                         class="headerButtonTypeOne"
                         @click="createSegment()"
-                        :disabled="segmentList.loading || segmentName===''"
+                        :disabled="segmentList.loading"
                     >Create</button>
                 </div>
+                <template v-if="errorSegment!==''">
+                    <error-component :mesg="errorSegment" @closeError="errorSegment=''"></error-component>
+                </template>
             </div>
         </div>
     </div>
@@ -96,6 +99,7 @@ export default class UserListComponent extends Vue {
     private assignSegment: boolean = false;
     private segmentList: SegmentListModel = new SegmentListModel();
     private segmentName: string = "";
+    private errorSegment: string = "";
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
 
     @Watch("$store.state.projectInfo", { immediate: true })
@@ -107,7 +111,7 @@ export default class UserListComponent extends Vue {
         let loadSegment: any = await this.segmentList.loadSegment();
 
         if (!loadSegment["status"]) {
-            alert(loadSegment["mesg"]);
+            this.errorSegment = loadSegment["mesg"];
         }
     }
 
@@ -199,7 +203,7 @@ export default class UserListComponent extends Vue {
 
     async createSegment() {
         if (this.segmentName === "") {
-            alert("Segment name is required!");
+            this.errorSegment = "Segment name is required!";
             return;
         }
 
@@ -262,7 +266,7 @@ export default class UserListComponent extends Vue {
                         err,
                         "Failed to create segment!"
                     );
-                    alert(mesg);
+                    this.errorSegment = mesg;
                 }
             });
     }

@@ -39,6 +39,9 @@
                     </template>
                 </div>
             </form>
+            <template v-if="errorEmail!==''">
+                <error-component :mesg="errorEmail" @closeError="errorEmail=''"></error-component>
+            </template>
         </div>
     </div>
 </template>
@@ -51,6 +54,7 @@ import Axios from "axios";
 @Component
 export default class VerifyEmailComponent extends Vue {
     private loading: boolean = false;
+    private errorEmail: string = "";
     private verifyData: any = {
         email: "",
         code: ""
@@ -78,7 +82,7 @@ export default class VerifyEmailComponent extends Vue {
                         err,
                         "Failed to verify!"
                     );
-                    alert(mesg);
+                    this.errorEmail = mesg;
                 }
             });
 

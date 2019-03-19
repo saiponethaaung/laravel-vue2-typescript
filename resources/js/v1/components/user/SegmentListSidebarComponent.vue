@@ -112,6 +112,9 @@
                     <button class="headerButtonTypeOne" @click="editSegment=-1">Cancel</button>
                     <button class="headerButtonTypeOne" @click="updateSegment()" :disabled="segmentList.segments[editSegment].isAttrLoading">Update</button>
                 </div>
+                <template v-if="errorUpdate!==''">
+                    <error-component :mesg="errorUpdate" @closeError="errorUpdate=''"></error-component>
+                </template>
             </div>
         </div>
     </div>
@@ -128,6 +131,7 @@ export default class SegmentListSidebarComponent extends Vue {
     private showFilter: boolean = false;
     private showSegments: boolean = true;
     private editSegment: number = -1;
+    private errorUpdate: string = "";
 
     private segmentList: SegmentListModel = new SegmentListModel();
 
@@ -175,7 +179,8 @@ export default class SegmentListSidebarComponent extends Vue {
         let updateSegment = await this.segmentList.segments[this.editSegment].updateSegment();
 
         if(!updateSegment.status) {
-            alert(updateSegment.mesg);
+            this.errorUpdate = updateSegment.mesg;
+            // alert(updateSegment.mesg);
             return;
         }
 

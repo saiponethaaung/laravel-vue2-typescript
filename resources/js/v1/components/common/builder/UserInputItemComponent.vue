@@ -27,14 +27,27 @@
                     </ul>
                 </div>
             </div>
-            <div class="userInputAttribute">
+            <div class="userInputAttribute" ref="attrTitleSuggest">
                 <input
                     type="text"
                     v-model="ui.attribute"
                     v-on:blur="canShowError=true;ui.saveContent()"
                     placeholder="Required"
                     :class="{'required': canShowError && ui.attribute===''}"
+                    @keyup="searchKeySuggestion($event)"
                 >
+                <template v-if="keySuggestion.length>0">
+                    <div class="attrKeySuggestCon" ref="suggestion">
+                        <ul>
+                            <template v-for="(key, index) in keySuggestion">
+                                <li
+                                    :key="index"
+                                    @click="ui.attribute=key;keySuggestion=[];ui.saveContent();"
+                                >{{ key }}</li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
             </div>
         </div>
         <div class="delIcon" @click="delItem(index)">
@@ -49,6 +62,8 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import UserInputItemModel from "../../../models/bots/UserInputItemModel";
+import Axios, { CancelTokenSource } from "axios";
+import AjaxErrorHandler from "../../../utils/AjaxErrorHandler";
 
 @Component
 export default class UserInputItemComponent extends Vue {
@@ -60,12 +75,96 @@ export default class UserInputItemComponent extends Vue {
 
     private validation: Array<string> = ["Other", "Phone", "Email", "Number"];
     private canShowError: boolean = false;
+    private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
+
+    private keyTimeout: any = null;
+    private keyLoading: boolean = false;
+    private showSuggest: boolean = false;
+    private keySuggestion: any[] = [];
+    private keyCancelToken: CancelTokenSource = Axios.CancelToken.source();
 
     @Emit("closeOtherSection")
     closeOtherSection(index: any) {}
 
     @Emit("delItem")
     delItem(index: any) {}
+
+    documentClick(e: any) {
+        let el: any = this.$refs.attrTitleSuggest;
+
+        let target = e.target;
+
+        if (el !== target && !el.contains(target)) {
+            this.keySuggestion = [];
+            return null;
+        }
+    }
+
+    async searchKeySuggestion(e: any) {
+        console.log(e);
+        if (
+            e.keyCode == 37 ||
+            e.keyCode == 38 ||
+            e.keyCode == 39 ||
+            e.keyCode == 40 ||
+            e.keyCode == 17 ||
+            e.keyCode == 16 ||
+            e.keyCode == 18 ||
+            (e.ctrlKey && e.keyCode == 65)
+        ) {
+            return;
+        }
+
+        this.keyCancelToken.cancel();
+        this.keyLoading = false;
+        this.showSuggest = true;
+        clearTimeout(this.keyTimeout);
+
+        if (this.ui.attribute == "") return;
+
+        this.keyLoading = true;
+        this.keyTimeout = setTimeout(async () => {
+            this.keyCancelToken = Axios.CancelToken.source();
+
+            this.keySuggestion = [];
+
+            let data = new FormData();
+            data.append("keyword", this.ui.attribute);
+
+            await Axios({
+                url: `/api/v1/project/${
+                    this.$store.state.projectInfo.id
+                }/attributes/serach/attribute`,
+                data: data,
+                method: "post",
+                cancelToken: this.keyCancelToken.token
+            })
+                .then(res => {
+                    this.keySuggestion = res.data.data;
+                })
+                .catch(err => {
+                    if (err.response) {
+                        this.$store.state.errorMesg.push(
+                            this.ajaxHandler.globalHandler(
+                                err,
+                                "Failed to load attribute name suggestion!"
+                            )
+                        );
+                    }
+                });
+
+            this.keyLoading = false;
+        }, 1000);
+    }
+
+    created() {
+        document.addEventListener("click", this.documentClick);
+    }
+
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener("click", this.documentClick);
+    }
 }
 </script>
 

@@ -36659,12 +36659,25 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_bots_UserInputItemModel__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
 
 
 let UserInputItemComponent = class UserInputItemComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
@@ -36672,9 +36685,73 @@ let UserInputItemComponent = class UserInputItemComponent extends __WEBPACK_IMPO
         super(...arguments);
         this.validation = ["Other", "Phone", "Email", "Number"];
         this.canShowError = false;
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__["a" /* default */]();
+        this.keyTimeout = null;
+        this.keyLoading = false;
+        this.showSuggest = false;
+        this.keySuggestion = [];
+        this.keyCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
     }
     closeOtherSection(index) { }
     delItem(index) { }
+    documentClick(e) {
+        let el = this.$refs.attrTitleSuggest;
+        let target = e.target;
+        if (el !== target && !el.contains(target)) {
+            this.keySuggestion = [];
+            return null;
+        }
+    }
+    searchKeySuggestion(e) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(e);
+            if (e.keyCode == 37 ||
+                e.keyCode == 38 ||
+                e.keyCode == 39 ||
+                e.keyCode == 40 ||
+                e.keyCode == 17 ||
+                e.keyCode == 16 ||
+                e.keyCode == 18 ||
+                (e.ctrlKey && e.keyCode == 65)) {
+                return;
+            }
+            this.keyCancelToken.cancel();
+            this.keyLoading = false;
+            this.showSuggest = true;
+            clearTimeout(this.keyTimeout);
+            if (this.ui.attribute == "")
+                return;
+            this.keyLoading = true;
+            this.keyTimeout = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                this.keyCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+                this.keySuggestion = [];
+                let data = new FormData();
+                data.append("keyword", this.ui.attribute);
+                yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/attributes/serach/attribute`,
+                    data: data,
+                    method: "post",
+                    cancelToken: this.keyCancelToken.token
+                })
+                    .then(res => {
+                    this.keySuggestion = res.data.data;
+                })
+                    .catch(err => {
+                    if (err.response) {
+                        this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to load attribute name suggestion!"));
+                    }
+                });
+                this.keyLoading = false;
+            }), 1000);
+        });
+    }
+    created() {
+        document.addEventListener("click", this.documentClick);
+    }
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener("click", this.documentClick);
+    }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
@@ -36783,33 +36860,76 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "userInputAttribute" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.ui.attribute,
-                expression: "ui.attribute"
-              }
-            ],
-            class: { required: _vm.canShowError && _vm.ui.attribute === "" },
-            attrs: { type: "text", placeholder: "Required" },
-            domProps: { value: _vm.ui.attribute },
-            on: {
-              blur: function($event) {
-                _vm.canShowError = true
-                _vm.ui.saveContent()
-              },
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+        _c(
+          "div",
+          { ref: "attrTitleSuggest", staticClass: "userInputAttribute" },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.ui.attribute,
+                  expression: "ui.attribute"
                 }
-                _vm.$set(_vm.ui, "attribute", $event.target.value)
+              ],
+              class: { required: _vm.canShowError && _vm.ui.attribute === "" },
+              attrs: { type: "text", placeholder: "Required" },
+              domProps: { value: _vm.ui.attribute },
+              on: {
+                blur: function($event) {
+                  _vm.canShowError = true
+                  _vm.ui.saveContent()
+                },
+                keyup: function($event) {
+                  _vm.searchKeySuggestion($event)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.ui, "attribute", $event.target.value)
+                }
               }
-            }
-          })
-        ])
+            }),
+            _vm._v(" "),
+            _vm.keySuggestion.length > 0
+              ? [
+                  _c(
+                    "div",
+                    { ref: "suggestion", staticClass: "attrKeySuggestCon" },
+                    [
+                      _c(
+                        "ul",
+                        [
+                          _vm._l(_vm.keySuggestion, function(key, index) {
+                            return [
+                              _c(
+                                "li",
+                                {
+                                  key: index,
+                                  on: {
+                                    click: function($event) {
+                                      _vm.ui.attribute = key
+                                      _vm.keySuggestion = []
+                                      _vm.ui.saveContent()
+                                    }
+                                  }
+                                },
+                                [_vm._v(_vm._s(key))]
+                              )
+                            ]
+                          })
+                        ],
+                        2
+                      )
+                    ]
+                  )
+                ]
+              : _vm._e()
+          ],
+          2
+        )
       ]),
       _vm._v(" "),
       _c(
@@ -54079,99 +54199,141 @@ var render = function() {
                                       mesg.contentType !== 3
                                         ? _c(
                                             "div",
-                                            {
-                                              key: index,
-                                              staticClass: "chatContentCon",
-                                              class: { sender: mesg.isSend }
-                                            },
+                                            { key: index },
                                             [
-                                              !mesg.isSend ||
-                                              (mesg.isLive && mesg.isSend)
-                                                ? _c(
-                                                    "figure",
-                                                    {
-                                                      staticClass: "chatImage"
-                                                    },
-                                                    [
-                                                      _c("img", {
-                                                        attrs: {
-                                                          src: mesg.isSend
-                                                            ? "/images/sample/logo.png"
-                                                            : _vm.$store.state
-                                                                .inboxList[
-                                                                _vm.$store.state
-                                                                  .selectedInbox
-                                                              ].profile_pic
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
+                                              index == 0 ||
+                                              _vm.mesgList[index - 1].createdAt
+                                                .date !== mesg.createdAt.date
+                                                ? [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass: "chatDate"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            mesg.createdAt.date
+                                                          )
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
                                                 : _vm._e(),
                                               _vm._v(" "),
                                               _c(
                                                 "div",
-                                                { staticClass: "chatContent" },
+                                                {
+                                                  staticClass: "chatContentCon",
+                                                  class: { sender: mesg.isSend }
+                                                },
                                                 [
-                                                  mesg.contentType === 1
-                                                    ? [
-                                                        _c(
-                                                          "text-template-component",
-                                                          {
+                                                  !mesg.isSend ||
+                                                  (mesg.isLive && mesg.isSend)
+                                                    ? _c(
+                                                        "figure",
+                                                        {
+                                                          staticClass:
+                                                            "chatImage"
+                                                        },
+                                                        [
+                                                          _c("img", {
                                                             attrs: {
-                                                              content: JSON.parse(
-                                                                mesg.mesg
-                                                              )
+                                                              src: mesg.isSend
+                                                                ? "/images/sample/logo.png"
+                                                                : _vm.$store
+                                                                    .state
+                                                                    .inboxList[
+                                                                    _vm.$store
+                                                                      .state
+                                                                      .selectedInbox
+                                                                  ].profile_pic
                                                             }
-                                                          }
-                                                        )
-                                                      ]
-                                                    : mesg.contentType === 5
-                                                    ? [
-                                                        _c(
-                                                          "list-template-component",
-                                                          {
-                                                            attrs: {
-                                                              content: JSON.parse(
-                                                                mesg.mesg
-                                                              )
-                                                            }
-                                                          }
-                                                        )
-                                                      ]
-                                                    : mesg.contentType === 6
-                                                    ? [
-                                                        _c(
-                                                          "gallery-template-component",
-                                                          {
-                                                            attrs: {
-                                                              content: JSON.parse(
-                                                                mesg.mesg
-                                                              )
-                                                            }
-                                                          }
-                                                        )
-                                                      ]
-                                                    : [
-                                                        _c("div", {
-                                                          domProps: {
-                                                            innerHTML: _vm._s(
-                                                              _vm.processContent(
-                                                                mesg.mesg,
-                                                                mesg.contentType
-                                                              )
+                                                          })
+                                                        ]
+                                                      )
+                                                    : _vm._e(),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass: "chatContent"
+                                                    },
+                                                    [
+                                                      mesg.contentType === 1
+                                                        ? [
+                                                            _c(
+                                                              "text-template-component",
+                                                              {
+                                                                attrs: {
+                                                                  content: JSON.parse(
+                                                                    mesg.mesg
+                                                                  )
+                                                                }
+                                                              }
                                                             )
-                                                          }
-                                                        })
-                                                      ],
-                                                  _vm._v(
-                                                    "\n                                        " +
-                                                      _vm._s(mesg.createdAt) +
-                                                      "\n                                    "
+                                                          ]
+                                                        : mesg.contentType === 5
+                                                        ? [
+                                                            _c(
+                                                              "list-template-component",
+                                                              {
+                                                                attrs: {
+                                                                  content: JSON.parse(
+                                                                    mesg.mesg
+                                                                  )
+                                                                }
+                                                              }
+                                                            )
+                                                          ]
+                                                        : mesg.contentType === 6
+                                                        ? [
+                                                            _c(
+                                                              "gallery-template-component",
+                                                              {
+                                                                attrs: {
+                                                                  content: JSON.parse(
+                                                                    mesg.mesg
+                                                                  )
+                                                                }
+                                                              }
+                                                            )
+                                                          ]
+                                                        : [
+                                                            _c("div", {
+                                                              domProps: {
+                                                                innerHTML: _vm._s(
+                                                                  _vm.processContent(
+                                                                    mesg.mesg,
+                                                                    mesg.contentType
+                                                                  )
+                                                                )
+                                                              }
+                                                            })
+                                                          ],
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "chatTime"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              mesg.createdAt
+                                                                .time
+                                                            )
+                                                          )
+                                                        ]
+                                                      )
+                                                    ],
+                                                    2
                                                   )
-                                                ],
-                                                2
+                                                ]
                                               )
-                                            ]
+                                            ],
+                                            2
                                           )
                                         : _vm._e()
                                     ]

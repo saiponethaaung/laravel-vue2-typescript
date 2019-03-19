@@ -190,6 +190,9 @@
                         <button type="button" @click="openAdminInvite=false" :disabled="inviting">Cancel</button>
                     </div>
                 </form>
+                <template v-if="errorAdmin!==''">
+                    <error-component :mesg="errorAdmin" @closeError="errorAdmin=''"></error-component>
+                </template>
                 <div class="popProcessing" v-if="inviting">Sending an invite...</div>
             </div>
         </div>
@@ -215,6 +218,7 @@ export default class AdminComponent extends Vue {
     private showSection: number = 1;
     private inviteLoading: boolean = false;
     private memberLoading: boolean = false;
+    private errorAdmin: string = "";
 
     mounted() {
         this.getMembers();
@@ -223,17 +227,17 @@ export default class AdminComponent extends Vue {
 
     private async sendAnInvite() {
         if(this.memberInfo.email==="") {
-            alert("Email is required!");
+            this.errorAdmin = "Email is required!";
             return;
         }
 
         if(this.memberInfo.email===this.$store.state.user.email) {
-            alert("You cannot invite yourself!");
+            this.errorAdmin = "You cannot invite yourself!";
             return;
         }
 
         if(this.memberInfo.role===0) {
-            alert("Role is required!");
+            this.errorAdmin = "Role is required!";
             return;
         }
 
@@ -259,7 +263,7 @@ export default class AdminComponent extends Vue {
         }).catch(err => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
-                alert(mesg);
+                this.errorAdmin = mesg;
             }
         });
 
@@ -293,7 +297,7 @@ export default class AdminComponent extends Vue {
         }).catch(err => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
-                alert(mesg);
+                this.errorAdmin = mesg;
             }
         });
 
@@ -311,7 +315,7 @@ export default class AdminComponent extends Vue {
         }).catch(err => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
-                alert(mesg);
+                this.errorAdmin = mesg;
             }
         });
 
@@ -328,7 +332,7 @@ export default class AdminComponent extends Vue {
             }).catch(err => {
                 if(err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to cancel an invitation!');
-                    alert(mesg);
+                    this.errorAdmin = mesg;
                 }
             });
         }
@@ -344,7 +348,7 @@ export default class AdminComponent extends Vue {
             }).catch(err => {
                 if(err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to delete a member!');
-                    alert(mesg);
+                    this.errorAdmin = mesg;
                 }
             });
         }

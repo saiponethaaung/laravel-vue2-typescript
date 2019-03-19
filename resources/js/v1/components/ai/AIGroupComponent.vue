@@ -39,6 +39,10 @@
                 </div>
             </popup-component>
         </template>
+
+        <template v-if="errorAIGroup!==''">
+            <error-component :mesg="errorAIGroup" @closeError="errorAIGroup=''"></error-component>
+        </template>
     </li>
 </template>
 
@@ -53,6 +57,7 @@ export default class AIGroupComponent extends Vue {
 
     private confirmDelete: boolean = false;
     private confirmText: string = '';
+    private errorAIGroup: string = "";
 
     renameGroup() {
         this.group.option = false;
@@ -76,14 +81,14 @@ export default class AIGroupComponent extends Vue {
 
     async saveRename() {
         if(this.group.name==='') {
-            alert('Group name cannot be empty!');
+            this.errorAIGroup = "Group name cannot be empty!";
             return false;
         }
 
         let update = await this.group.updateGroupName();
         
         if(!update.status) {
-            alert(update.mesg);
+            this.errorAIGroup = update.mesg;
             this.focusName();
         }
     }

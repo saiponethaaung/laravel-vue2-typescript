@@ -50,6 +50,9 @@
                     </template>
                 </div>
             </form>
+            <template v-if="errorRegister!==''">
+                <error-component :mesg="errorRegister" @closeError="errorRegister=''"></error-component>
+            </template>
         </div>
     </div>
 </template>
@@ -62,6 +65,7 @@ import Axios from "axios";
 @Component
 export default class RegisterComponent extends Vue {
     private loading: boolean = false;
+    private errorRegister: string = "";
     private registerData: any = {
         name: "",
         email: "",
@@ -91,7 +95,7 @@ export default class RegisterComponent extends Vue {
                         err,
                         "Failed to register!"
                     );
-                    alert(mesg);
+                    this.errorRegister = mesg;
                 }
             });
 

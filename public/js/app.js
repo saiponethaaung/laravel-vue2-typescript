@@ -29386,7 +29386,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -31365,7 +31365,7 @@ var content = __webpack_require__(76);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(78)("567c3d80", content, false, {});
+var update = __webpack_require__(78)("7c379b60", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -31768,6 +31768,7 @@ let LoginComponent = class LoginComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
     constructor() {
         super(...arguments);
         this.loading = false;
+        this.errorLogin = "";
         this.loginData = {
             email: "",
             password: ""
@@ -31803,7 +31804,7 @@ let LoginComponent = class LoginComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             })
                 .catch(err => {
                 let mesg = this.ajaxHandler.globalHandler(err, "Failed to login!");
-                alert(mesg);
+                this.errorLogin = mesg;
             });
             this.loading = false;
         });
@@ -31932,8 +31933,22 @@ var render = function() {
                   ]
             ],
             2
-          )
-        ]
+          ),
+          _vm._v(" "),
+          _vm.errorLogin !== ""
+            ? [
+                _c("error-component", {
+                  attrs: { mesg: _vm.errorLogin },
+                  on: {
+                    closeError: function($event) {
+                      _vm.errorLogin = ""
+                    }
+                  }
+                })
+              ]
+            : _vm._e()
+        ],
+        2
       )
     ])
   ])
@@ -47720,12 +47735,13 @@ let ProjectListComponent = class ProjectListComponent extends __WEBPACK_IMPORTED
         super(...arguments);
         this.createBot = false;
         this.projectName = "";
+        this.errorCreate = "";
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__["a" /* default */]();
     }
     createProject() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.projectName == "") {
-                alert('Project name is required!');
+                this.errorCreate = "Project name is required!";
                 return;
             }
             let res = {
@@ -47823,61 +47839,79 @@ var render = function() {
                     "div",
                     { staticClass: "userAttributePop filterAttribute" },
                     [
-                      _c("div", { staticClass: "createReply" }, [
-                        _vm._m(2),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "projectInputName" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.projectName,
-                                expression: "projectName"
-                              }
-                            ],
-                            staticClass: "inputName",
-                            attrs: { placeholder: "Enter project name" },
-                            domProps: { value: _vm.projectName },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.projectName = $event.target.value
-                              }
-                            }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "alignBtn" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "createBtn",
-                              on: {
-                                click: function($event) {
-                                  _vm.createProject()
-                                }
-                              }
-                            },
-                            [_vm._v("Create")]
-                          ),
+                      _c(
+                        "div",
+                        { staticClass: "createReply" },
+                        [
+                          _vm._m(2),
                           _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "createBtn",
+                          _c("div", { staticClass: "projectInputName" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.projectName,
+                                  expression: "projectName"
+                                }
+                              ],
+                              staticClass: "inputName",
+                              attrs: { placeholder: "Enter project name" },
+                              domProps: { value: _vm.projectName },
                               on: {
-                                click: function($event) {
-                                  _vm.createBot = false
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.projectName = $event.target.value
                                 }
                               }
-                            },
-                            [_vm._v("Cancel")]
-                          )
-                        ])
-                      ])
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "alignBtn" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "createBtn",
+                                on: {
+                                  click: function($event) {
+                                    _vm.createProject()
+                                  }
+                                }
+                              },
+                              [_vm._v("Create")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "createBtn",
+                                on: {
+                                  click: function($event) {
+                                    _vm.createBot = false
+                                  }
+                                }
+                              },
+                              [_vm._v("Cancel")]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _vm.errorCreate !== ""
+                            ? [
+                                _c("error-component", {
+                                  attrs: { mesg: _vm.errorCreate },
+                                  on: {
+                                    closeError: function($event) {
+                                      _vm.errorCreate = ""
+                                    }
+                                  }
+                                })
+                              ]
+                            : _vm._e()
+                        ],
+                        2
+                      )
                     ]
                   )
                 ])
@@ -48853,6 +48887,7 @@ let AIGroupComponent = class AIGroupComponent extends __WEBPACK_IMPORTED_MODULE_
         super(...arguments);
         this.confirmDelete = false;
         this.confirmText = '';
+        this.errorAIGroup = "";
     }
     renameGroup() {
         this.group.option = false;
@@ -48872,12 +48907,12 @@ let AIGroupComponent = class AIGroupComponent extends __WEBPACK_IMPORTED_MODULE_
     saveRename() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.group.name === '') {
-                alert('Group name cannot be empty!');
+                this.errorAIGroup = "Group name cannot be empty!";
                 return false;
             }
             let update = yield this.group.updateGroupName();
             if (!update.status) {
-                alert(update.mesg);
+                this.errorAIGroup = update.mesg;
                 this.focusName();
             }
         });
@@ -49094,6 +49129,19 @@ var render = function() {
                 )
               ])
             ])
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errorAIGroup !== ""
+        ? [
+            _c("error-component", {
+              attrs: { mesg: _vm.errorAIGroup },
+              on: {
+                closeError: function($event) {
+                  _vm.errorAIGroup = ""
+                }
+              }
+            })
           ]
         : _vm._e()
     ],
@@ -51154,6 +51202,7 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
         this.showSection = 1;
         this.inviteLoading = false;
         this.memberLoading = false;
+        this.errorAdmin = "";
     }
     mounted() {
         this.getMembers();
@@ -51162,15 +51211,15 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
     sendAnInvite() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.memberInfo.email === "") {
-                alert("Email is required!");
+                this.errorAdmin = "Email is required!";
                 return;
             }
             if (this.memberInfo.email === this.$store.state.user.email) {
-                alert("You cannot invite yourself!");
+                this.errorAdmin = "You cannot invite yourself!";
                 return;
             }
             if (this.memberInfo.role === 0) {
-                alert("Role is required!");
+                this.errorAdmin = "Role is required!";
                 return;
             }
             this.inviting = true;
@@ -51194,7 +51243,7 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             }).catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
-                    alert(mesg);
+                    this.errorAdmin = mesg;
                 }
             });
             this.inviting = false;
@@ -51223,7 +51272,7 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             }).catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
-                    alert(mesg);
+                    this.errorAdmin = mesg;
                 }
             });
             this.memberLoading = false;
@@ -51240,7 +51289,7 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             }).catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
-                    alert(mesg);
+                    this.errorAdmin = mesg;
                 }
             });
             this.inviteLoading = false;
@@ -51257,7 +51306,7 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
                 }).catch(err => {
                     if (err.response) {
                         let mesg = this.ajaxHandler.globalHandler(err, 'Failed to cancel an invitation!');
-                        alert(mesg);
+                        this.errorAdmin = mesg;
                     }
                 });
             }
@@ -51274,7 +51323,7 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
                 }).catch(err => {
                     if (err.response) {
                         let mesg = this.ajaxHandler.globalHandler(err, 'Failed to delete a member!');
-                        alert(mesg);
+                        this.errorAdmin = mesg;
                     }
                 });
             }
@@ -51520,154 +51569,172 @@ var render = function() {
           "div",
           { staticClass: "popFixedContainer popFixedCenter popContainer" },
           [
-            _c("div", { staticClass: "adminInviteForm" }, [
-              _c(
-                "form",
-                {
-                  on: {
-                    submit: function($event) {
-                      $event.preventDefault()
-                      _vm.sendAnInvite()
+            _c(
+              "div",
+              { staticClass: "adminInviteForm" },
+              [
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        _vm.sendAnInvite()
+                      }
                     }
-                  }
-                },
-                [
-                  _c("div", { staticClass: "formHeading" }, [
-                    _c("h5", [_vm._v("Invite new member")]),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        attrs: { type: "button", disabled: _vm.inviting },
-                        on: {
-                          click: function($event) {
-                            _vm.openAdminInvite = false
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("close")
-                        ])
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", {}, [
-                    _c("label", [
-                      _c("span", [_vm._v("Email")]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.memberInfo.email,
-                            expression: "memberInfo.email"
-                          }
-                        ],
-                        attrs: {
-                          type: "email",
-                          placeholder: "Enter an email address",
-                          required: ""
-                        },
-                        domProps: { value: _vm.memberInfo.email },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.memberInfo,
-                              "email",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", {}, [
-                    _c("label", [
-                      _c("span", [_vm._v("Role")]),
+                  },
+                  [
+                    _c("div", { staticClass: "formHeading" }, [
+                      _c("h5", [_vm._v("Invite new member")]),
                       _vm._v(" "),
                       _c(
-                        "select",
+                        "button",
                         {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.memberInfo.role,
-                              expression: "memberInfo.role"
-                            }
-                          ],
-                          attrs: { required: "" },
+                          attrs: { type: "button", disabled: _vm.inviting },
                           on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.memberInfo,
-                                "role",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
+                            click: function($event) {
+                              _vm.openAdminInvite = false
                             }
                           }
                         },
                         [
-                          _c("option", { domProps: { value: 0 } }, [
-                            _vm._v("Select a role")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { domProps: { value: 1 } }, [
-                            _vm._v("Admin")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { domProps: { value: 2 } }, [
-                            _vm._v("Manager")
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("close")
                           ])
                         ]
                       )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", [
-                    _c("button", { attrs: { type: "submit" } }, [
-                      _vm._v("Invite")
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        attrs: { type: "button", disabled: _vm.inviting },
+                    _c("div", {}, [
+                      _c("label", [
+                        _c("span", [_vm._v("Email")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.memberInfo.email,
+                              expression: "memberInfo.email"
+                            }
+                          ],
+                          attrs: {
+                            type: "email",
+                            placeholder: "Enter an email address",
+                            required: ""
+                          },
+                          domProps: { value: _vm.memberInfo.email },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.memberInfo,
+                                "email",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", {}, [
+                      _c("label", [
+                        _c("span", [_vm._v("Role")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.memberInfo.role,
+                                expression: "memberInfo.role"
+                              }
+                            ],
+                            attrs: { required: "" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.memberInfo,
+                                  "role",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { domProps: { value: 0 } }, [
+                              _vm._v("Select a role")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { domProps: { value: 1 } }, [
+                              _vm._v("Admin")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { domProps: { value: 2 } }, [
+                              _vm._v("Manager")
+                            ])
+                          ]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("button", { attrs: { type: "submit" } }, [
+                        _vm._v("Invite")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          attrs: { type: "button", disabled: _vm.inviting },
+                          on: {
+                            click: function($event) {
+                              _vm.openAdminInvite = false
+                            }
+                          }
+                        },
+                        [_vm._v("Cancel")]
+                      )
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _vm.errorAdmin !== ""
+                  ? [
+                      _c("error-component", {
+                        attrs: { mesg: _vm.errorAdmin },
                         on: {
-                          click: function($event) {
-                            _vm.openAdminInvite = false
+                          closeError: function($event) {
+                            _vm.errorAdmin = ""
                           }
                         }
-                      },
-                      [_vm._v("Cancel")]
-                    )
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _vm.inviting
-                ? _c("div", { staticClass: "popProcessing" }, [
-                    _vm._v("Sending an invite...")
-                  ])
-                : _vm._e()
-            ])
+                      })
+                    ]
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.inviting
+                  ? _c("div", { staticClass: "popProcessing" }, [
+                      _vm._v("Sending an invite...")
+                    ])
+                  : _vm._e()
+              ],
+              2
+            )
           ]
         )
       : _vm._e()
@@ -55817,6 +55884,7 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
         this.assignSegment = false;
         this.segmentList = new __WEBPACK_IMPORTED_MODULE_4__models_SegmentListModel__["a" /* default */]();
         this.segmentName = "";
+        this.errorSegment = "";
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__["a" /* default */]();
     }
     initSegment() {
@@ -55826,7 +55894,7 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
             this.segmentList.setProjectId = this.$store.state.projectInfo.id;
             let loadSegment = yield this.segmentList.loadSegment();
             if (!loadSegment["status"]) {
-                alert(loadSegment["mesg"]);
+                this.errorSegment = loadSegment["mesg"];
             }
         });
     }
@@ -55913,7 +55981,7 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
     createSegment() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.segmentName === "") {
-                alert("Segment name is required!");
+                this.errorSegment = "Segment name is required!";
                 return;
             }
             let data = new FormData();
@@ -55959,7 +56027,7 @@ let UserListComponent = class UserListComponent extends __WEBPACK_IMPORTED_MODUL
                 .catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, "Failed to create segment!");
-                    alert(mesg);
+                    this.errorSegment = mesg;
                 }
             });
         });
@@ -56133,6 +56201,7 @@ let UserTableComponent = class UserTableComponent extends __WEBPACK_IMPORTED_MOD
     constructor() {
         super(...arguments);
         this.editIndex = -1;
+        this.errorAttribute = "";
     }
     get allChecked() {
         let status = false;
@@ -56160,7 +56229,7 @@ let UserTableComponent = class UserTableComponent extends __WEBPACK_IMPORTED_MOD
                 let loadAttribute = yield this.userList[index].loadAttribute();
                 // alert an error if the process failed
                 if (!loadAttribute.status) {
-                    alert(loadAttribute.mesg);
+                    this.errorAttribute = loadAttribute.mesg;
                 }
             }
         });
@@ -56169,7 +56238,7 @@ let UserTableComponent = class UserTableComponent extends __WEBPACK_IMPORTED_MOD
         return __awaiter(this, void 0, void 0, function* () {
             let update = yield this.userList[user].attributes[attribute].updateAttributeName();
             if (!update['status']) {
-                alert(update['mesg']);
+                this.errorAttribute = update['mesg'];
             }
         });
     }
@@ -56177,7 +56246,7 @@ let UserTableComponent = class UserTableComponent extends __WEBPACK_IMPORTED_MOD
         return __awaiter(this, void 0, void 0, function* () {
             let update = yield this.userList[user].attributes[attribute].updateAttributeValue();
             if (!update['status']) {
-                alert(update['mesg']);
+                this.errorAttribute = update['mesg'];
             }
         });
     }
@@ -56185,7 +56254,7 @@ let UserTableComponent = class UserTableComponent extends __WEBPACK_IMPORTED_MOD
         return __awaiter(this, void 0, void 0, function* () {
             let create = yield this.userList[user].createAttribute();
             if (!create['status']) {
-                alert(create['mesg']);
+                this.errorAttribute = create['mesg'];
             }
         });
     }
@@ -56194,7 +56263,7 @@ let UserTableComponent = class UserTableComponent extends __WEBPACK_IMPORTED_MOD
             if (confirm("Are you sure you want to delete this attribute?")) {
                 let create = yield this.userList[user].deleteAttribute(attribute);
                 if (!create['status']) {
-                    alert(create['mesg']);
+                    this.errorAttribute = create['mesg'];
                 }
             }
         });
@@ -56203,7 +56272,7 @@ let UserTableComponent = class UserTableComponent extends __WEBPACK_IMPORTED_MOD
         return __awaiter(this, void 0, void 0, function* () {
             let liveChat = yield user.enabledLiveChat();
             if (!liveChat['status']) {
-                alert(liveChat['mesg']);
+                this.errorAttribute = liveChat['mesg'];
                 return;
             }
             this.$router.push({ name: 'project.inbox' });
@@ -56433,228 +56502,264 @@ var render = function() {
     _vm._v(" "),
     _vm.editIndex > -1
       ? _c("div", { staticClass: "popFixedContainer popFixedCenter" }, [
-          _c("div", { staticClass: "userAttributePop" }, [
-            _c("div", { staticClass: "uaBodyCon" }, [
-              _c("h5", { staticClass: "uaTitle" }, [
-                _vm._v(_vm._s(_vm.userList[_vm.editIndex].name))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "uaTable" }, [
-                _c("table", { staticClass: "attributeTable" }, [
-                  _vm._m(9),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    [
-                      _vm.userList[_vm.editIndex].isAttrLoad
-                        ? [
-                            _vm.userList[_vm.editIndex].attributes.length > 0
-                              ? _vm._l(
-                                  _vm.userList[_vm.editIndex].attributes,
-                                  function(attribute, index) {
-                                    return _c(
-                                      "tr",
-                                      { key: index, staticClass: "attrRow" },
-                                      [
-                                        _c("td", { staticClass: "attrTitle" }, [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: attribute.name,
-                                                expression: "attribute.name"
-                                              }
-                                            ],
-                                            class: {
-                                              newAttribute:
-                                                attribute.name === ""
-                                            },
-                                            attrs: { type: "text" },
-                                            domProps: { value: attribute.name },
-                                            on: {
-                                              blur: function($event) {
-                                                _vm.updateAttributeName(
-                                                  _vm.editIndex,
-                                                  index
-                                                )
-                                              },
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
+          _c(
+            "div",
+            { staticClass: "userAttributePop" },
+            [
+              _c("div", { staticClass: "uaBodyCon" }, [
+                _c("h5", { staticClass: "uaTitle" }, [
+                  _vm._v(_vm._s(_vm.userList[_vm.editIndex].name))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "uaTable" }, [
+                  _c("table", { staticClass: "attributeTable" }, [
+                    _vm._m(9),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      [
+                        _vm.userList[_vm.editIndex].isAttrLoad
+                          ? [
+                              _vm.userList[_vm.editIndex].attributes.length > 0
+                                ? _vm._l(
+                                    _vm.userList[_vm.editIndex].attributes,
+                                    function(attribute, index) {
+                                      return _c(
+                                        "tr",
+                                        { key: index, staticClass: "attrRow" },
+                                        [
+                                          _c(
+                                            "td",
+                                            { staticClass: "attrTitle" },
+                                            [
+                                              _c("input", {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value: attribute.name,
+                                                    expression: "attribute.name"
+                                                  }
+                                                ],
+                                                class: {
+                                                  newAttribute:
+                                                    attribute.name === ""
+                                                },
+                                                attrs: { type: "text" },
+                                                domProps: {
+                                                  value: attribute.name
+                                                },
+                                                on: {
+                                                  blur: function($event) {
+                                                    _vm.updateAttributeName(
+                                                      _vm.editIndex,
+                                                      index
+                                                    )
+                                                  },
+                                                  input: function($event) {
+                                                    if (
+                                                      $event.target.composing
+                                                    ) {
+                                                      return
+                                                    }
+                                                    _vm.$set(
+                                                      attribute,
+                                                      "name",
+                                                      $event.target.value
+                                                    )
+                                                  }
                                                 }
-                                                _vm.$set(
-                                                  attribute,
-                                                  "name",
-                                                  $event.target.value
-                                                )
-                                              }
-                                            }
-                                          })
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("td", { staticClass: "attrValue" }, [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: attribute.value,
-                                                expression: "attribute.value"
-                                              }
-                                            ],
-                                            class: {
-                                              newAttribute:
-                                                attribute.value === ""
-                                            },
-                                            attrs: { type: "text" },
-                                            domProps: {
-                                              value: attribute.value
-                                            },
-                                            on: {
-                                              blur: function($event) {
-                                                _vm.updateAttributeValue(
-                                                  _vm.editIndex,
-                                                  index
-                                                )
-                                              },
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  attribute,
-                                                  "value",
-                                                  $event.target.value
-                                                )
-                                              }
-                                            }
-                                          }),
+                                              })
+                                            ]
+                                          ),
                                           _vm._v(" "),
                                           _c(
-                                            "button",
-                                            {
-                                              staticClass: "attrDel",
-                                              on: {
-                                                click: function($event) {
-                                                  _vm.deleteAttribute(
-                                                    _vm.editIndex,
-                                                    index
-                                                  )
-                                                }
-                                              }
-                                            },
+                                            "td",
+                                            { staticClass: "attrValue" },
                                             [
-                                              _c(
-                                                "i",
-                                                {
-                                                  staticClass: "material-icons"
+                                              _c("input", {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value: attribute.value,
+                                                    expression:
+                                                      "attribute.value"
+                                                  }
+                                                ],
+                                                class: {
+                                                  newAttribute:
+                                                    attribute.value === ""
                                                 },
-                                                [_vm._v("delete")]
+                                                attrs: { type: "text" },
+                                                domProps: {
+                                                  value: attribute.value
+                                                },
+                                                on: {
+                                                  blur: function($event) {
+                                                    _vm.updateAttributeValue(
+                                                      _vm.editIndex,
+                                                      index
+                                                    )
+                                                  },
+                                                  input: function($event) {
+                                                    if (
+                                                      $event.target.composing
+                                                    ) {
+                                                      return
+                                                    }
+                                                    _vm.$set(
+                                                      attribute,
+                                                      "value",
+                                                      $event.target.value
+                                                    )
+                                                  }
+                                                }
+                                              }),
+                                              _vm._v(" "),
+                                              _c(
+                                                "button",
+                                                {
+                                                  staticClass: "attrDel",
+                                                  on: {
+                                                    click: function($event) {
+                                                      _vm.deleteAttribute(
+                                                        _vm.editIndex,
+                                                        index
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _c(
+                                                    "i",
+                                                    {
+                                                      staticClass:
+                                                        "material-icons"
+                                                    },
+                                                    [_vm._v("delete")]
+                                                  )
+                                                ]
                                               )
                                             ]
                                           )
-                                        ])
-                                      ]
-                                    )
-                                  }
-                                )
-                              : [_vm._m(10)]
-                          ]
-                        : [_vm._m(11)],
-                      _vm._v(" "),
-                      _vm.userList[_vm.editIndex].creating > 0
-                        ? _c("tr", [
-                            _c("td", { attrs: { colspan: "2" } }, [
-                              _vm._v("Creating...")
+                                        ]
+                                      )
+                                    }
+                                  )
+                                : [_vm._m(10)]
+                            ]
+                          : [_vm._m(11)],
+                        _vm._v(" "),
+                        _vm.userList[_vm.editIndex].creating > 0
+                          ? _c("tr", [
+                              _c("td", { attrs: { colspan: "2" } }, [
+                                _vm._v("Creating...")
+                              ])
                             ])
-                          ])
-                        : _vm._e()
-                    ],
-                    2
-                  )
+                          : _vm._e()
+                      ],
+                      2
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "uaTable" }, [
+                  _c("table", { staticClass: "attributeTable" }, [
+                    _vm._m(12),
+                    _vm._v(" "),
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", { staticClass: "attrTitle" }, [
+                          _vm._v("Gender")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "attrValue" }, [
+                          _vm._v(_vm._s(_vm.userList[_vm.editIndex].gender))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", { staticClass: "attrTitle" }, [
+                          _vm._v("Last Engaged")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "attrValue" }, [
+                          _vm._v(
+                            _vm._s(_vm.userList[_vm.editIndex].lastEngaged)
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", { staticClass: "attrTitle" }, [
+                          _vm._v("Last Seen")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "attrValue" }, [
+                          _vm._v(_vm._s(_vm.userList[_vm.editIndex].lastSeen))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", { staticClass: "attrTitle" }, [
+                          _vm._v("Signed up")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "attrValue" }, [
+                          _vm._v(_vm._s(_vm.userList[_vm.editIndex].signup))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(13)
+                    ])
+                  ])
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "uaTable" }, [
-                _c("table", { staticClass: "attributeTable" }, [
-                  _vm._m(12),
-                  _vm._v(" "),
-                  _c("tbody", [
-                    _c("tr", [
-                      _c("td", { staticClass: "attrTitle" }, [
-                        _vm._v("Gender")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "attrValue" }, [
-                        _vm._v(_vm._s(_vm.userList[_vm.editIndex].gender))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { staticClass: "attrTitle" }, [
-                        _vm._v("Last Engaged")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "attrValue" }, [
-                        _vm._v(_vm._s(_vm.userList[_vm.editIndex].lastEngaged))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { staticClass: "attrTitle" }, [
-                        _vm._v("Last Seen")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "attrValue" }, [
-                        _vm._v(_vm._s(_vm.userList[_vm.editIndex].lastSeen))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { staticClass: "attrTitle" }, [
-                        _vm._v("Signed up")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "attrValue" }, [
-                        _vm._v(_vm._s(_vm.userList[_vm.editIndex].signup))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(13)
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "uaFooterCon" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "headerButtonTypeOne",
-                  on: {
-                    click: function($event) {
-                      _vm.createNewAttribute(_vm.editIndex)
+              _c("div", { staticClass: "uaFooterCon" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "headerButtonTypeOne",
+                    on: {
+                      click: function($event) {
+                        _vm.createNewAttribute(_vm.editIndex)
+                      }
                     }
-                  }
-                },
-                [_vm._v("+ Add")]
-              ),
+                  },
+                  [_vm._v("+ Add")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "headerButtonTypeOne",
+                    on: {
+                      click: function($event) {
+                        _vm.editIndex = -1
+                      }
+                    }
+                  },
+                  [_vm._v("Close")]
+                )
+              ]),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "headerButtonTypeOne",
-                  on: {
-                    click: function($event) {
-                      _vm.editIndex = -1
-                    }
-                  }
-                },
-                [_vm._v("Close")]
-              )
-            ])
-          ])
+              _vm.errorAttribute !== ""
+                ? [
+                    _c("error-component", {
+                      attrs: { mesg: _vm.errorAttribute },
+                      on: {
+                        closeError: function($event) {
+                          _vm.errorAttribute = ""
+                        }
+                      }
+                    })
+                  ]
+                : _vm._e()
+            ],
+            2
+          )
         ])
       : _vm._e()
   ])
@@ -57171,73 +57276,88 @@ var render = function() {
       _vm._v(" "),
       _vm.assignSegment
         ? _c("div", { staticClass: "popFixedContainer popFixedCenter" }, [
-            _c("div", { staticClass: "userAttributePop saveToSegmentPop" }, [
-              _c("div", { staticClass: "uaBodyCon" }, [
-                _c("h5", { staticClass: "uaTitle" }, [
-                  _vm._v("Save filter as a Segment")
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "segmentTitleCon" }, [
-                  _c("label", { staticClass: "segmentTitleLabel" }, [
-                    _vm._v("Segment Name:")
+            _c(
+              "div",
+              { staticClass: "userAttributePop saveToSegmentPop" },
+              [
+                _c("div", { staticClass: "uaBodyCon" }, [
+                  _c("h5", { staticClass: "uaTitle" }, [
+                    _vm._v("Save filter as a Segment")
                   ]),
                   _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.segmentName,
-                        expression: "segmentName"
-                      }
-                    ],
-                    staticClass: "segmentTitleInput",
-                    attrs: { type: "text", placeholder: "Segment name" },
-                    domProps: { value: _vm.segmentName },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                  _c("div", { staticClass: "segmentTitleCon" }, [
+                    _c("label", { staticClass: "segmentTitleLabel" }, [
+                      _vm._v("Segment Name:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.segmentName,
+                          expression: "segmentName"
                         }
-                        _vm.segmentName = $event.target.value
+                      ],
+                      staticClass: "segmentTitleInput",
+                      attrs: { type: "text", placeholder: "Segment name" },
+                      domProps: { value: _vm.segmentName },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.segmentName = $event.target.value
+                        }
                       }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "uaFooterCon" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "headerButtonTypeOne",
-                    on: {
-                      click: function($event) {
-                        _vm.assignSegment = false
-                      }
-                    }
-                  },
-                  [_vm._v("Cancel")]
-                ),
+                    })
+                  ])
+                ]),
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "headerButtonTypeOne",
-                    attrs: {
-                      disabled:
-                        _vm.segmentList.loading || _vm.segmentName === ""
-                    },
-                    on: {
-                      click: function($event) {
-                        _vm.createSegment()
+                _c("div", { staticClass: "uaFooterCon" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "headerButtonTypeOne",
+                      on: {
+                        click: function($event) {
+                          _vm.assignSegment = false
+                        }
                       }
-                    }
-                  },
-                  [_vm._v("Create")]
-                )
-              ])
-            ])
+                    },
+                    [_vm._v("Cancel")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "headerButtonTypeOne",
+                      attrs: { disabled: _vm.segmentList.loading },
+                      on: {
+                        click: function($event) {
+                          _vm.createSegment()
+                        }
+                      }
+                    },
+                    [_vm._v("Create")]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm.errorSegment !== ""
+                  ? [
+                      _c("error-component", {
+                        attrs: { mesg: _vm.errorSegment },
+                        on: {
+                          closeError: function($event) {
+                            _vm.errorSegment = ""
+                          }
+                        }
+                      })
+                    ]
+                  : _vm._e()
+              ],
+              2
+            )
           ])
         : _vm._e()
     ],
@@ -57742,6 +57862,7 @@ let UserSegmentListComponent = class UserSegmentListComponent extends __WEBPACK_
         this.loadUserToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
         this.userList = [];
         this.createSegment = false;
+        this.errorSegment = "";
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__["a" /* default */]();
         this.filterSegment = new __WEBPACK_IMPORTED_MODULE_1__models_AttributeFilterListModel__["a" /* default */](false, this.$store.state.projectInfo.id, []);
     }
@@ -57776,7 +57897,7 @@ let UserSegmentListComponent = class UserSegmentListComponent extends __WEBPACK_
                 .catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, "Failed to load user!");
-                    alert(mesg);
+                    this.errorSegment = mesg;
                 }
             });
             console.log("loading user by segment");
@@ -57786,7 +57907,7 @@ let UserSegmentListComponent = class UserSegmentListComponent extends __WEBPACK_
         return __awaiter(this, void 0, void 0, function* () {
             let createSegment = yield this.filterSegment.createSegment();
             if (!createSegment["status"]) {
-                alert(createSegment["mesg"]);
+                this.errorSegment = createSegment["mesg"];
                 return;
             }
             this.createSegment = false;
@@ -58027,141 +58148,165 @@ var render = function() {
       _vm._v(" "),
       _vm.createSegment
         ? _c("div", { staticClass: "popFixedContainer popFixedCenter" }, [
-            _c("div", { staticClass: "userAttributePop filterAttribute" }, [
-              _c("div", { staticClass: "uaBodyCon" }, [
-                _c("h5", { staticClass: "uaTitle" }, [
-                  _vm._v("Create new segment")
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "segmentTitleCon" }, [
-                  _c("label", { staticClass: "segmentTitleLabel" }, [
-                    _vm._v("Segment Name:")
+            _c(
+              "div",
+              { staticClass: "userAttributePop filterAttribute" },
+              [
+                _c("div", { staticClass: "uaBodyCon" }, [
+                  _c("h5", { staticClass: "uaTitle" }, [
+                    _vm._v("Create new segment")
                   ]),
                   _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.filterSegment.name,
-                        expression: "filterSegment.name"
-                      }
-                    ],
-                    staticClass: "segmentTitleInput",
-                    attrs: { type: "text", placeholder: "Segment name" },
-                    domProps: { value: _vm.filterSegment.name },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                  _c("div", { staticClass: "segmentTitleCon" }, [
+                    _c("label", { staticClass: "segmentTitleLabel" }, [
+                      _vm._v("Segment Name:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.filterSegment.name,
+                          expression: "filterSegment.name"
                         }
-                        _vm.$set(_vm.filterSegment, "name", $event.target.value)
+                      ],
+                      staticClass: "segmentTitleInput",
+                      attrs: { type: "text", placeholder: "Segment name" },
+                      domProps: { value: _vm.filterSegment.name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.filterSegment,
+                            "name",
+                            $event.target.value
+                          )
+                        }
                       }
-                    }
-                  })
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "attributeSelectorList alignAttribute" },
+                    [
+                      _vm._l(_vm.filterSegment.attributes, function(
+                        attribute,
+                        index
+                      ) {
+                        return [
+                          _c(
+                            "div",
+                            { key: index, staticClass: "attributeSelector" },
+                            [
+                              _c("attribute-selector-component", {
+                                attrs: {
+                                  isSegment: true,
+                                  attribute: attribute,
+                                  canCondition:
+                                    _vm.filterSegment.attributes.length - 1 >
+                                    index,
+                                  segmentValue: [],
+                                  segment: []
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.filterSegment.attributes.length > 1
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass: "deleteAttribute",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.filterSegment.attributes.splice(
+                                            index,
+                                            1
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "i",
+                                        { staticClass: "material-icons" },
+                                        [_vm._v("delete")]
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            ],
+                            1
+                          )
+                        ]
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "addMoreFilterButton",
+                          on: {
+                            click: function($event) {
+                              _vm.addNewFitler()
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("add")
+                          ])
+                        ]
+                      )
+                    ],
+                    2
+                  )
                 ]),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "attributeSelectorList alignAttribute" },
-                  [
-                    _vm._l(_vm.filterSegment.attributes, function(
-                      attribute,
-                      index
-                    ) {
-                      return [
-                        _c(
-                          "div",
-                          { key: index, staticClass: "attributeSelector" },
-                          [
-                            _c("attribute-selector-component", {
-                              attrs: {
-                                isSegment: true,
-                                attribute: attribute,
-                                canCondition:
-                                  _vm.filterSegment.attributes.length - 1 >
-                                  index,
-                                segmentValue: [],
-                                segment: []
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.filterSegment.attributes.length > 1
-                              ? _c(
-                                  "button",
-                                  {
-                                    staticClass: "deleteAttribute",
-                                    on: {
-                                      click: function($event) {
-                                        _vm.filterSegment.attributes.splice(
-                                          index,
-                                          1
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", { staticClass: "material-icons" }, [
-                                      _vm._v("delete")
-                                    ])
-                                  ]
-                                )
-                              : _vm._e()
-                          ],
-                          1
-                        )
-                      ]
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "addMoreFilterButton",
+                _c("div", { staticClass: "uaFooterCon" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "headerButtonTypeOne",
+                      on: {
+                        click: function($event) {
+                          _vm.createSegment = false
+                        }
+                      }
+                    },
+                    [_vm._v("Cancel")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "headerButtonTypeOne",
+                      on: {
+                        click: function($event) {
+                          _vm.createNewSegment()
+                        }
+                      }
+                    },
+                    [_vm._v("Create")]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm.errorSegment !== ""
+                  ? [
+                      _c("error-component", {
+                        attrs: { mesg: _vm.errorSegment },
                         on: {
-                          click: function($event) {
-                            _vm.addNewFitler()
+                          closeError: function($event) {
+                            _vm.errorSegment = ""
                           }
                         }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("add")
-                        ])
-                      ]
-                    )
-                  ],
-                  2
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "uaFooterCon" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "headerButtonTypeOne",
-                    on: {
-                      click: function($event) {
-                        _vm.createSegment = false
-                      }
-                    }
-                  },
-                  [_vm._v("Cancel")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "headerButtonTypeOne",
-                    on: {
-                      click: function($event) {
-                        _vm.createNewSegment()
-                      }
-                    }
-                  },
-                  [_vm._v("Create")]
-                )
-              ])
-            ])
+                      })
+                    ]
+                  : _vm._e()
+              ],
+              2
+            )
           ])
         : _vm._e()
     ],
@@ -58278,6 +58423,7 @@ let SegmentListSidebarComponent = class SegmentListSidebarComponent extends __WE
         this.showFilter = false;
         this.showSegments = true;
         this.editSegment = -1;
+        this.errorUpdate = "";
         this.segmentList = new __WEBPACK_IMPORTED_MODULE_1__models_SegmentListModel__["a" /* default */]();
     }
     initSegment() {
@@ -58324,7 +58470,8 @@ let SegmentListSidebarComponent = class SegmentListSidebarComponent extends __WE
         return __awaiter(this, void 0, void 0, function* () {
             let updateSegment = yield this.segmentList.segments[this.editSegment].updateSegment();
             if (!updateSegment.status) {
-                alert(updateSegment.mesg);
+                this.errorUpdate = updateSegment.mesg;
+                // alert(updateSegment.mesg);
                 return;
             }
             this.editSegment = -1;
@@ -58579,181 +58726,205 @@ var render = function() {
     _vm._v(" "),
     _vm.editSegment > -1
       ? _c("div", { staticClass: "popFixedContainer popFixedCenter" }, [
-          _c("div", { staticClass: "userAttributePop filterAttribute" }, [
-            _c(
-              "div",
-              { staticClass: "uaBodyCon" },
-              [
-                _c("h5", { staticClass: "uaTitle" }, [_vm._v("Edit Segment")]),
-                _vm._v(" "),
-                _c("div", { staticClass: "segmentTitleCon" }, [
-                  _c("label", { staticClass: "segmentTitleLabel" }, [
-                    _vm._v("Segment Name:")
+          _c(
+            "div",
+            { staticClass: "userAttributePop filterAttribute" },
+            [
+              _c(
+                "div",
+                { staticClass: "uaBodyCon" },
+                [
+                  _c("h5", { staticClass: "uaTitle" }, [
+                    _vm._v("Edit Segment")
                   ]),
                   _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.segmentList.segments[_vm.editSegment].name,
-                        expression: "segmentList.segments[editSegment].name"
-                      }
-                    ],
-                    staticClass: "segmentTitleInput",
-                    attrs: { type: "text", placeholder: "Segment name" },
-                    domProps: {
-                      value: _vm.segmentList.segments[_vm.editSegment].name
-                    },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                  _c("div", { staticClass: "segmentTitleCon" }, [
+                    _c("label", { staticClass: "segmentTitleLabel" }, [
+                      _vm._v("Segment Name:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.segmentList.segments[_vm.editSegment].name,
+                          expression: "segmentList.segments[editSegment].name"
                         }
-                        _vm.$set(
-                          _vm.segmentList.segments[_vm.editSegment],
-                          "name",
-                          $event.target.value
-                        )
+                      ],
+                      staticClass: "segmentTitleInput",
+                      attrs: { type: "text", placeholder: "Segment name" },
+                      domProps: {
+                        value: _vm.segmentList.segments[_vm.editSegment].name
+                      },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.segmentList.segments[_vm.editSegment],
+                            "name",
+                            $event.target.value
+                          )
+                        }
                       }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _vm.segmentList.segments[_vm.editSegment].isAttrLoading
-                  ? [
-                      _vm._v(
-                        "\n                    Loading...\n                "
-                      )
-                    ]
-                  : [
-                      _c(
-                        "div",
-                        { staticClass: "attributeSelectorList alignAttribute" },
-                        [
-                          _vm._l(
-                            _vm.segmentList.segments[_vm.editSegment]
-                              .attributes,
-                            function(attribute, index) {
-                              return [
-                                _c(
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _vm.segmentList.segments[_vm.editSegment].isAttrLoading
+                    ? [
+                        _vm._v(
+                          "\n                    Loading...\n                "
+                        )
+                      ]
+                    : [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "attributeSelectorList alignAttribute"
+                          },
+                          [
+                            _vm._l(
+                              _vm.segmentList.segments[_vm.editSegment]
+                                .attributes,
+                              function(attribute, index) {
+                                return [
+                                  _c(
+                                    "div",
+                                    {
+                                      key: index,
+                                      staticClass: "attributeSelector"
+                                    },
+                                    [
+                                      _c("attribute-selector-component", {
+                                        attrs: {
+                                          isSegment: true,
+                                          attribute: attribute,
+                                          canCondition:
+                                            _vm.segmentList.segments[
+                                              _vm.editSegment
+                                            ].attributes.length -
+                                              1 >
+                                            index,
+                                          segmentValue: [],
+                                          segment: []
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _vm.segmentList.segments[_vm.editSegment]
+                                        .attributes.length > 1
+                                        ? _c(
+                                            "button",
+                                            {
+                                              staticClass: "deleteAttribute",
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.deleteFilter(index)
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "i",
+                                                {
+                                                  staticClass: "material-icons"
+                                                },
+                                                [_vm._v("delete")]
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e()
+                                    ],
+                                    1
+                                  )
+                                ]
+                              }
+                            ),
+                            _vm._v(" "),
+                            !_vm.segmentList.segments[_vm.editSegment]
+                              .isAttrCreating
+                              ? _c(
                                   "div",
                                   {
-                                    key: index,
-                                    staticClass: "attributeSelector"
+                                    staticClass: "addMoreFilterButton",
+                                    on: {
+                                      click: function($event) {
+                                        _vm.creatNewFilter()
+                                      }
+                                    }
                                   },
                                   [
-                                    _c("attribute-selector-component", {
-                                      attrs: {
-                                        isSegment: true,
-                                        attribute: attribute,
-                                        canCondition:
-                                          _vm.segmentList.segments[
-                                            _vm.editSegment
-                                          ].attributes.length -
-                                            1 >
-                                          index,
-                                        segmentValue: [],
-                                        segment: []
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _vm.segmentList.segments[_vm.editSegment]
-                                      .attributes.length > 1
-                                      ? _c(
-                                          "button",
-                                          {
-                                            staticClass: "deleteAttribute",
-                                            on: {
-                                              click: function($event) {
-                                                _vm.deleteFilter(index)
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _c(
-                                              "i",
-                                              { staticClass: "material-icons" },
-                                              [_vm._v("delete")]
-                                            )
-                                          ]
-                                        )
-                                      : _vm._e()
-                                  ],
-                                  1
+                                    _c("i", { staticClass: "material-icons" }, [
+                                      _vm._v("add")
+                                    ])
+                                  ]
                                 )
-                              ]
-                            }
-                          ),
-                          _vm._v(" "),
-                          !_vm.segmentList.segments[_vm.editSegment]
-                            .isAttrCreating
-                            ? _c(
-                                "div",
-                                {
-                                  staticClass: "addMoreFilterButton",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.creatNewFilter()
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", { staticClass: "material-icons" }, [
-                                    _vm._v("add")
-                                  ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.segmentList.segments[_vm.editSegment]
+                              .isAttrCreating
+                              ? [
+                                  _vm._v(
+                                    "\n                            Creating...\n                        "
+                                  )
                                 ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.segmentList.segments[_vm.editSegment]
-                            .isAttrCreating
-                            ? [
-                                _vm._v(
-                                  "\n                            Creating...\n                        "
-                                )
-                              ]
-                            : _vm._e()
-                        ],
-                        2
-                      )
-                    ]
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "uaFooterCon" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "headerButtonTypeOne",
-                  on: {
-                    click: function($event) {
-                      _vm.editSegment = -1
-                    }
-                  }
-                },
-                [_vm._v("Cancel")]
+                              : _vm._e()
+                          ],
+                          2
+                        )
+                      ]
+                ],
+                2
               ),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "headerButtonTypeOne",
-                  attrs: {
-                    disabled:
-                      _vm.segmentList.segments[_vm.editSegment].isAttrLoading
-                  },
-                  on: {
-                    click: function($event) {
-                      _vm.updateSegment()
+              _c("div", { staticClass: "uaFooterCon" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "headerButtonTypeOne",
+                    on: {
+                      click: function($event) {
+                        _vm.editSegment = -1
+                      }
                     }
-                  }
-                },
-                [_vm._v("Update")]
-              )
-            ])
-          ])
+                  },
+                  [_vm._v("Cancel")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "headerButtonTypeOne",
+                    attrs: {
+                      disabled:
+                        _vm.segmentList.segments[_vm.editSegment].isAttrLoading
+                    },
+                    on: {
+                      click: function($event) {
+                        _vm.updateSegment()
+                      }
+                    }
+                  },
+                  [_vm._v("Update")]
+                )
+              ]),
+              _vm._v(" "),
+              _vm.errorUpdate !== ""
+                ? [
+                    _c("error-component", {
+                      attrs: { mesg: _vm.errorUpdate },
+                      on: {
+                        closeError: function($event) {
+                          _vm.errorUpdate = ""
+                        }
+                      }
+                    })
+                  ]
+                : _vm._e()
+            ],
+            2
+          )
         ])
       : _vm._e()
   ])
@@ -62478,6 +62649,7 @@ let RegisterComponent = class RegisterComponent extends __WEBPACK_IMPORTED_MODUL
     constructor() {
         super(...arguments);
         this.loading = false;
+        this.errorRegister = "";
         this.registerData = {
             name: "",
             email: "",
@@ -62503,7 +62675,7 @@ let RegisterComponent = class RegisterComponent extends __WEBPACK_IMPORTED_MODUL
                 .catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, "Failed to register!");
-                    alert(mesg);
+                    this.errorRegister = mesg;
                 }
             });
             this.loading = false;
@@ -62525,146 +62697,167 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "nonMemberComponent" }, [
-    _c("div", { staticClass: "nonMemberFormRoot" }, [
-      _c(
-        "form",
-        {
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              _vm.registerNow()
+    _c(
+      "div",
+      { staticClass: "nonMemberFormRoot" },
+      [
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                _vm.registerNow()
+              }
             }
-          }
-        },
-        [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "name" } }, [_vm._v("Full name")]),
+          },
+          [
+            _vm._m(0),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.registerData.name,
-                  expression: "registerData.name"
-                }
-              ],
-              attrs: {
-                type: "text",
-                id: "name",
-                required: "",
-                disabled: _vm.loading,
-                placeholder: "Full name"
-              },
-              domProps: { value: _vm.registerData.name },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "name" } }, [_vm._v("Full name")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.registerData.name,
+                    expression: "registerData.name"
                   }
-                  _vm.$set(_vm.registerData, "name", $event.target.value)
+                ],
+                attrs: {
+                  type: "text",
+                  id: "name",
+                  required: "",
+                  disabled: _vm.loading,
+                  placeholder: "Full name"
+                },
+                domProps: { value: _vm.registerData.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.registerData, "name", $event.target.value)
+                  }
                 }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+              })
+            ]),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.registerData.email,
-                  expression: "registerData.email"
-                }
-              ],
-              attrs: {
-                type: "email",
-                id: "email",
-                required: "",
-                disabled: _vm.loading,
-                placeholder: "Email"
-              },
-              domProps: { value: _vm.registerData.email },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.registerData.email,
+                    expression: "registerData.email"
                   }
-                  _vm.$set(_vm.registerData, "email", $event.target.value)
+                ],
+                attrs: {
+                  type: "email",
+                  id: "email",
+                  required: "",
+                  disabled: _vm.loading,
+                  placeholder: "Email"
+                },
+                domProps: { value: _vm.registerData.email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.registerData, "email", $event.target.value)
+                  }
                 }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "password" } }, [_vm._v("Password")]),
+              })
+            ]),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.registerData.password,
-                  expression: "registerData.password"
-                }
-              ],
-              attrs: {
-                type: "password",
-                id: "password",
-                required: "",
-                disabled: _vm.loading,
-                placeholder: "Password"
-              },
-              domProps: { value: _vm.registerData.password },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "password" } }, [_vm._v("Password")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.registerData.password,
+                    expression: "registerData.password"
                   }
-                  _vm.$set(_vm.registerData, "password", $event.target.value)
+                ],
+                attrs: {
+                  type: "password",
+                  id: "password",
+                  required: "",
+                  disabled: _vm.loading,
+                  placeholder: "Password"
+                },
+                domProps: { value: _vm.registerData.password },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.registerData, "password", $event.target.value)
+                  }
                 }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c(
+                "p",
+                { staticClass: "nonMemberFormNote" },
+                [
+                  _vm._v("Already a member? Login\n                    "),
+                  _c("router-link", { attrs: { to: { name: "login" } } }, [
+                    _vm._v("here")
+                  ])
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
             _c(
-              "p",
-              { staticClass: "nonMemberFormNote" },
+              "div",
+              { staticClass: "form-group text-center" },
               [
-                _vm._v("Already a member? Login\n                    "),
-                _c("router-link", { attrs: { to: { name: "login" } } }, [
-                  _vm._v("here")
-                ])
+                _vm.loading
+                  ? [_vm._v("Loading...")]
+                  : [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "defaultBtn",
+                          attrs: { type: "submit" }
+                        },
+                        [_vm._v("Register")]
+                      )
+                    ]
               ],
-              1
+              2
             )
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form-group text-center" },
-            [
-              _vm.loading
-                ? [_vm._v("Loading...")]
-                : [
-                    _c(
-                      "button",
-                      { staticClass: "defaultBtn", attrs: { type: "submit" } },
-                      [_vm._v("Register")]
-                    )
-                  ]
-            ],
-            2
-          )
-        ]
-      )
-    ])
+          ]
+        ),
+        _vm._v(" "),
+        _vm.errorRegister !== ""
+          ? [
+              _c("error-component", {
+                attrs: { mesg: _vm.errorRegister },
+                on: {
+                  closeError: function($event) {
+                    _vm.errorRegister = ""
+                  }
+                }
+              })
+            ]
+          : _vm._e()
+      ],
+      2
+    )
   ])
 }
 var staticRenderFns = [
@@ -62767,6 +62960,7 @@ let VerifyEmailComponent = class VerifyEmailComponent extends __WEBPACK_IMPORTED
     constructor() {
         super(...arguments);
         this.loading = false;
+        this.errorEmail = "";
         this.verifyData = {
             email: "",
             code: ""
@@ -62790,7 +62984,7 @@ let VerifyEmailComponent = class VerifyEmailComponent extends __WEBPACK_IMPORTED
                 .catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, "Failed to verify!");
-                    alert(mesg);
+                    this.errorEmail = mesg;
                 }
             });
             this.loading = false;
@@ -62812,117 +63006,138 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "nonMemberComponent" }, [
-    _c("div", { staticClass: "nonMemberFormRoot" }, [
-      _c(
-        "form",
-        {
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              _vm.registerNow()
-            }
-          }
-        },
-        [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.verifyData.email,
-                  expression: "verifyData.email"
-                }
-              ],
-              attrs: {
-                type: "email",
-                id: "email",
-                required: "",
-                disabled: _vm.loading,
-                placeholder: "Email"
-              },
-              domProps: { value: _vm.verifyData.email },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.verifyData, "email", $event.target.value)
-                }
+    _c(
+      "div",
+      { staticClass: "nonMemberFormRoot" },
+      [
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                _vm.registerNow()
               }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "code" } }, [
-              _vm._v("Verification Code")
+            }
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.verifyData.email,
+                    expression: "verifyData.email"
+                  }
+                ],
+                attrs: {
+                  type: "email",
+                  id: "email",
+                  required: "",
+                  disabled: _vm.loading,
+                  placeholder: "Email"
+                },
+                domProps: { value: _vm.verifyData.email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.verifyData, "email", $event.target.value)
+                  }
+                }
+              })
             ]),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.verifyData.code,
-                  expression: "verifyData.code"
-                }
-              ],
-              attrs: {
-                type: "text",
-                id: "code",
-                required: "",
-                disabled: _vm.loading,
-                placeholder: "Verification code"
-              },
-              domProps: { value: _vm.verifyData.code },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "code" } }, [
+                _vm._v("Verification Code")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.verifyData.code,
+                    expression: "verifyData.code"
                   }
-                  _vm.$set(_vm.verifyData, "code", $event.target.value)
+                ],
+                attrs: {
+                  type: "text",
+                  id: "code",
+                  required: "",
+                  disabled: _vm.loading,
+                  placeholder: "Verification code"
+                },
+                domProps: { value: _vm.verifyData.code },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.verifyData, "code", $event.target.value)
+                  }
                 }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c(
+                "p",
+                { staticClass: "nonMemberFormNote" },
+                [
+                  _vm._v("Not a member? Register\n                    "),
+                  _c("router-link", { attrs: { to: { name: "register" } } }, [
+                    _vm._v("here")
+                  ])
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
             _c(
-              "p",
-              { staticClass: "nonMemberFormNote" },
+              "div",
+              { staticClass: "form-group text-center" },
               [
-                _vm._v("Not a member? Register\n                    "),
-                _c("router-link", { attrs: { to: { name: "register" } } }, [
-                  _vm._v("here")
-                ])
+                _vm.loading
+                  ? [_vm._v("Loading...")]
+                  : [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "defaultBtn",
+                          attrs: { type: "submit" }
+                        },
+                        [_vm._v("Verify")]
+                      )
+                    ]
               ],
-              1
+              2
             )
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form-group text-center" },
-            [
-              _vm.loading
-                ? [_vm._v("Loading...")]
-                : [
-                    _c(
-                      "button",
-                      { staticClass: "defaultBtn", attrs: { type: "submit" } },
-                      [_vm._v("Verify")]
-                    )
-                  ]
-            ],
-            2
-          )
-        ]
-      )
-    ])
+          ]
+        ),
+        _vm._v(" "),
+        _vm.errorEmail !== ""
+          ? [
+              _c("error-component", {
+                attrs: { mesg: _vm.errorEmail },
+                on: {
+                  closeError: function($event) {
+                    _vm.errorEmail = ""
+                  }
+                }
+              })
+            ]
+          : _vm._e()
+      ],
+      2
+    )
   ])
 }
 var staticRenderFns = [

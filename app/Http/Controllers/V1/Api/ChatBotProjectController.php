@@ -86,7 +86,7 @@ class ChatBotProjectController extends Controller
             $postback = $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'];
         }
 
-        if(!empty('$mesgText')) {
+        if(!empty($mesgText)) {
             // open transaction
             DB::beginTransaction();
             try {

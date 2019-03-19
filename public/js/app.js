@@ -330,6 +330,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 class AjaxErrorHandler {
     constructor() {
         this.searchToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+        this.restrictAttribute = [
+            'first name',
+            'last name',
+            'gender',
+            'singed up',
+            'last seen'
+        ];
     }
     globalHandler(err, mesg) {
         if (undefined === mesg) {
@@ -14205,6 +14212,10 @@ class QuickReplyItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHa
         return __awaiter(this, void 0, void 0, function* () {
             this.saveToken.cancel();
             this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+            if (this.restrictAttribute.indexOf(this.attribute.toLowerCase()) > -1) {
+                this.errorMesg = `Cannot overwrite system attribute '${this.attribute}'!`;
+                return;
+            }
             let data = new FormData();
             data.append('title', this.title);
             data.append('attribute', this.attribute);
@@ -14391,6 +14402,11 @@ class UserInputItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHan
         return __awaiter(this, void 0, void 0, function* () {
             this.saveToken.cancel();
             this.saveToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+            console.log(this.restrictAttribute.indexOf(this.attribute.toLowerCase()));
+            if (this.restrictAttribute.indexOf(this.attribute.toLowerCase()) > -1) {
+                this.errorMesg = `Cannot overwrite system attribute '${this.attribute}'!`;
+                return;
+            }
             let data = new FormData();
             data.append('question', this.question);
             data.append('attribute', this.attribute);
@@ -33228,6 +33244,11 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
         return __awaiter(this, void 0, void 0, function* () {
             this.updateToken.cancel();
             this.updateToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+            console.log('check restricted', this.ajaxHandler.restrictAttribute.indexOf(this.button.attribute.title.toLowerCase()));
+            if (this.ajaxHandler.restrictAttribute.indexOf(this.button.attribute.title.toLowerCase()) > -1) {
+                this.$store.state.errorMesg.push(`Cannot overwrite system attribute '${this.button.attribute.title}'!`);
+                return;
+            }
             let data = new FormData();
             data.append("title", this.button.title);
             data.append("url", this.button.url);

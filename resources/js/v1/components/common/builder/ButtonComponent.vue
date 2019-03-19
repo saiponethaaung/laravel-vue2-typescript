@@ -271,6 +271,23 @@ export default class ButtonComponent extends Vue {
         this.updateToken.cancel();
         this.updateToken = Axios.CancelToken.source();
 
+        console.log('check restricted', this.ajaxHandler.restrictAttribute.indexOf(
+                this.button.attribute.title.toLowerCase()
+            ));
+
+        if (
+            this.ajaxHandler.restrictAttribute.indexOf(
+                this.button.attribute.title.toLowerCase()
+            ) > -1
+        ) {
+            this.$store.state.errorMesg.push(
+                `Cannot overwrite system attribute '${
+                    this.button.attribute.title
+                }'!`
+            );
+            return;
+        }
+
         let data = new FormData();
         data.append("title", this.button.title);
         data.append("url", this.button.url);

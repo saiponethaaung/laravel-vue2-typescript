@@ -55,6 +55,11 @@ export default class UserInputItemModel extends AjaxErrorHandler {
     async saveContent() {
         this.saveToken.cancel();
         this.saveToken = Axios.CancelToken.source();
+        console.log(this.restrictAttribute.indexOf(this.attribute.toLowerCase()));
+        if (this.restrictAttribute.indexOf(this.attribute.toLowerCase()) > -1) {
+            this.errorMesg = `Cannot overwrite system attribute '${this.attribute}'!`;
+            return;
+        }
 
         let data = new FormData();
         data.append('question', this.question);

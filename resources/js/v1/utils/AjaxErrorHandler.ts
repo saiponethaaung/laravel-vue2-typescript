@@ -3,18 +3,25 @@ import Axios, { CancelTokenSource } from "axios";
 export default class AjaxErrorHandler {
 
     private searchToken: CancelTokenSource = Axios.CancelToken.source();
+    public restrictAttribute: String[] = [
+        'first name',
+        'last name',
+        'gender',
+        'singed up',
+        'last seen'
+    ];
 
-    globalHandler (err: any, mesg: string) {
-        if(undefined===mesg) {
+    globalHandler(err: any, mesg: string) {
+        if (undefined === mesg) {
             return "Operation failed!";
         }
 
-        if(err.response && err.response.status) {
-            if(err.response.status===422) {
+        if (err.response && err.response.status) {
+            if (err.response.status === 422) {
                 return this.handle422(err, mesg);
             }
 
-            if(err.response.status===404) {
+            if (err.response.status === 404) {
                 return this.handle404(err, mesg);
             }
         }
@@ -22,15 +29,15 @@ export default class AjaxErrorHandler {
         return mesg;
     }
 
-    handle422 (err: any, mesg: string) {
-        if(err.response.data && err.response.data.mesg) {
+    handle422(err: any, mesg: string) {
+        if (err.response.data && err.response.data.mesg) {
             return err.response.data.mesg;
         }
         return mesg;
     }
 
-    handle404 (err: any, mesg: string) {
-        if(err.response.data && err.response.data.mesg) {
+    handle404(err: any, mesg: string) {
+        if (err.response.data && err.response.data.mesg) {
             return err.response.data.mesg;
         }
         return mesg;
@@ -38,7 +45,7 @@ export default class AjaxErrorHandler {
 
     async searchSections(keyword: string, projectid: string) {
 
-        if(undefined===keyword) {
+        if (undefined === keyword) {
             keyword = "";
         }
 
@@ -60,7 +67,7 @@ export default class AjaxErrorHandler {
         }).then((res: any) => {
             response.data = res.data.data;
         }).catch((err: any) => {
-            if(err.response) {
+            if (err.response) {
                 let mesg = this.globalHandler(err, 'Failed to serach blocks!');
                 response.status = false;
                 response.code = err.response.status;

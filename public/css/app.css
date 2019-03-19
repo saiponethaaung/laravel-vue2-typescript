@@ -11051,6 +11051,10 @@ a.text-dark:focus {
   color: #aaaaaa;
 }
 
+.delIcon .material-icons:hover {
+  color: #000000;
+}
+
 a,
 a:hover {
   text-decoration: none;
@@ -11174,6 +11178,10 @@ a:hover {
   cursor: pointer;
 }
 
+.chatBlockControl button:hover i {
+  color: #000;
+}
+
 .chatBlockControl i {
   font-size: 18px;
   cursor: pointer;
@@ -11227,6 +11235,14 @@ a:hover {
 
 .chatBlockContent.addMore {
   color: #aaaaaa;
+}
+
+.chatBlockContent:hover:not(.selectedBlock) {
+  color: #c238eb;
+}
+
+.chatBlockContent:hover:not(.selectedBlock).addMore:hover {
+  color: #000000;
 }
 
 .addMoreBlock {
@@ -11326,6 +11342,10 @@ a:hover {
   color: #ffffff;
 }
 
+.selectedBlock:hover {
+  color: none;
+}
+
 .contentBuilderWidget {
   padding-top: 50px;
   padding-left: 30px;
@@ -11374,10 +11394,23 @@ a:hover {
   font-size: 20px;
 }
 
+.contentActionList figure img {
+  height: 16px;
+  opacity: 0.4;
+}
+
 .contentActionList .contentActionName {
   font-size: 12px;
   line-height: 20px;
   margin-top: 5px;
+}
+
+.contentActionList:hover i {
+  color: #000000;
+}
+
+.contentActionList:hover figure img {
+  opacity: 1;
 }
 
 .noContent {
@@ -11687,6 +11720,10 @@ a:hover {
   font-size: 18px;
 }
 
+.conentItem .optionSection .deleteAction .material-icons:hover {
+  color: #000000;
+}
+
 .conentItem .optionSection.handle {
   top: 30px;
 }
@@ -11971,6 +12008,10 @@ input.required::placeholder {
 .addBtn i {
   font-size: 18px;
   margin-right: 8px;
+}
+
+.addBtn:hover {
+  color: #000000;
 }
 
 .limitWord {
@@ -12283,6 +12324,10 @@ input.required::placeholder {
 
 .chatListButton.populated a {
   color: #c238eb;
+}
+
+.chatListButton:hover {
+  color: #000000;
 }
 
 .galleListRoot {
@@ -12724,6 +12769,11 @@ input.required::placeholder {
 .quickReplyRootContainer > .draggable > li .quickReplyCapsule.qrAddMore .material-icons {
   font-size: 18px;
   margin-right: 3px;
+}
+
+.quickReplyRootContainer > li .quickReplyCapsule.qrAddMore:hover,
+.quickReplyRootContainer > .draggable > li .quickReplyCapsule.qrAddMore:hover {
+  color: #000000;
 }
 
 .quickReplyRootContainer > li .quickReplyCapsule .quickReplyInfoBox,
@@ -13243,6 +13293,10 @@ input.required::placeholder {
 .configSidebarLink a.activeSetting {
   color: #c238eb;
   font-weight: bold;
+}
+
+.configSidebarLink:hover a {
+  color: #c238eb;
 }
 
 .adminInviteForm {
@@ -14372,6 +14426,10 @@ input.required::placeholder {
   cursor: pointer;
 }
 
+.filterButton:hover {
+  color: #000000;
+}
+
 .userListTable {
   width: 100%;
 }
@@ -14399,6 +14457,10 @@ input.required::placeholder {
   height: 36px;
   line-height: 36px;
   font-size: 14px;
+}
+
+.userListTable .ultWrapper:hover i {
+  color: #000000;
 }
 
 .userListTable .ultChecker {
@@ -14529,6 +14591,10 @@ input.required::placeholder {
   width: 15px;
 }
 
+.userListControlCon .userListOptionCon .uloButton:hover {
+  color: #000000;
+}
+
 .segmentList {
   margin: 0;
   padding: 0;
@@ -14582,6 +14648,10 @@ input.required::placeholder {
 
 .segmentList .segmentListItem .segmentActionIcon .saiWrapper:first-child {
   margin-right: 10px;
+}
+
+.segmentList .segmentListItem .segmentActionIcon .saiWrapper:hover i {
+  color: #000000;
 }
 
 .segmentList .segmentListItem.selectedSegment .segmentListName,
@@ -14960,6 +15030,10 @@ input.required::placeholder {
   border-radius: 5px;
   margin: 5px;
   color: #aaaaaa;
+}
+
+.btnClick:hover {
+  color: #c238eb;
 }
 
 .iconAlign {

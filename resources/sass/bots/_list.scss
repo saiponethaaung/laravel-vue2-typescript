@@ -152,6 +152,9 @@
             color: $themeColor;
         }
     }
+    &:hover {
+        color: $defaultText;
+    }
 }
 
 .galleListRoot {

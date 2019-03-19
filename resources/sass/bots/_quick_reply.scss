@@ -43,6 +43,9 @@
                     font-size: 18px;
                     margin-right: 3px;
                 }
+                &:hover {
+                    color: $defaultText;
+                }
             }
             .quickReplyInfoBox {
                 display: none;

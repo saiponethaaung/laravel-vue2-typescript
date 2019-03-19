@@ -37451,9 +37451,7 @@ var render = function() {
                 on: { click: _vm.addTyping }
               },
               [
-                _c("i", { staticClass: "material-icons" }, [
-                  _vm._v("speaker_notes")
-                ]),
+                _vm._m(0),
                 _vm._v(" "),
                 _c("span", { staticClass: "contentActionName" }, [
                   _vm._v("Typing")
@@ -37544,7 +37542,16 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("figure", [
+      _c("img", { attrs: { src: "/images/icons/chatbot/typing_black.png" } })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

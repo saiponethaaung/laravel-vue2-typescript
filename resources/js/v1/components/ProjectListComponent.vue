@@ -49,6 +49,9 @@
                                     <button class="createBtn" @click="createProject()">Create</button>
                                     <button class="createBtn" @click="createBot = false">Cancel</button>
                                 </div>
+                                <template v-if="errorCreate!==''">
+                                    <error-component :mesg="errorCreate" @closeError="errorCreate=''"></error-component>
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -100,11 +103,12 @@ export default class ProjectListComponent extends Vue {
 
     private createBot: boolean = false;
     private projectName: string = "";
+    private errorCreate: string = "";
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
 
     async createProject() {
         if(this.projectName=="") {
-            alert('Project name is required!');
+            this.errorCreate = "Project name is required!";
             return;
         }
 

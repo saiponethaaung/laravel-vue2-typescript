@@ -38,6 +38,9 @@
                         <button type="submit" class="defaultBtn loginBtn">Login</button>
                     </template>
                 </div>
+                <template v-if="errorLogin!==''">
+                    <error-component :mesg="errorLogin" @closeError="errorLogin=''"></error-component>
+                </template>
             </form>
         </div>
     </div>
@@ -51,6 +54,7 @@ import Axios from "axios";
 @Component
 export default class LoginComponent extends Vue {
     private loading: boolean = false;
+    private errorLogin: string = "";
     private loginData: any = {
         email: "",
         password: ""
@@ -88,7 +92,7 @@ export default class LoginComponent extends Vue {
                     err,
                     "Failed to login!"
                 );
-                alert(mesg);
+                this.errorLogin = mesg;
             });
 
         this.loading = false;

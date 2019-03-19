@@ -79,6 +79,9 @@
                     <button class="headerButtonTypeOne" @click="createSegment=false">Cancel</button>
                     <button class="headerButtonTypeOne" @click="createNewSegment()">Create</button>
                 </div>
+                <template v-if="errorSegment!==''">
+                    <error-component :mesg="errorSegment" @closeError="errorSegment=''"></error-component>
+                </template>
             </div>
         </div>
     </div>
@@ -103,6 +106,7 @@ export default class UserSegmentListComponent extends Vue {
     private loadUserToken: CancelTokenSource = Axios.CancelToken.source();
     private userList: Array<UserListModel> = [];
     private createSegment: boolean = false;
+    private errorSegment: string = "";
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private filterSegment: AttributeFilterListModel = new AttributeFilterListModel(
         false,
@@ -164,7 +168,7 @@ export default class UserSegmentListComponent extends Vue {
         let createSegment = await this.filterSegment.createSegment();
 
         if (!createSegment["status"]) {
-            alert(createSegment["mesg"]);
+            this.errorSegment = createSegment["mesg"];
             return;
         }
 

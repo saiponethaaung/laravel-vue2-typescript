@@ -14,6 +14,9 @@
     float: right;
     color: $secondaryText;
     cursor: pointer;
+    &:hover {
+        color: $defaultText;
+    }
 }
 
 .userListTable {
@@ -44,6 +47,11 @@
         height: $standardHeight;
         line-height: $standardHeight;
         font-size: 14px;
+        &:hover {
+            i {
+                color: $defaultText;
+            }
+        }
     }
 
     .ultChecker {
@@ -167,6 +175,9 @@
                 margin-right: 8px;
                 width: 15px;
             }
+            &:hover {
+                color: $defaultText;
+            }
         }
     }
 }
@@ -218,6 +229,11 @@
                 }
                 &:first-child {
                     margin-right: 10px;
+                }
+                &:hover {
+                    i {
+                        color: $defaultText;
+                    }
                 }
             }
         }

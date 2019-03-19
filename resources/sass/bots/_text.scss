@@ -73,6 +73,9 @@
         font-size: 18px;
         margin-right: 8px;
     }
+    &:hover {
+        color: $defaultText;
+    }
 }
 
 .limitWord {

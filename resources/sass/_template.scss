@@ -259,6 +259,9 @@
     .material-icons {
         font-size: 14px;
         color: $secondaryText;
+        &:hover {
+            color: $defaultText;
+        }
     }
 }
 

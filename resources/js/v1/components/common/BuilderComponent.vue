@@ -78,7 +78,10 @@
                         <span class="contentActionName">Text</span>
                     </li>
                     <li class="contentActionList" @click="addTyping">
-                        <i class="material-icons">speaker_notes</i>
+                        <!-- <i class="material-icons">speaker_notes</i> -->
+                        <figure>
+                            <img src="/images/icons/chatbot/typing_black.png"/>
+                        </figure>
                         <span class="contentActionName">Typing</span>
                     </li>
                     <li class="contentActionList" @click="addQuickReply">

@@ -388,12 +388,20 @@ $attributePanelWidth: 336px;
                 height: 30px;
                 line-height: 30px;
                 padding: 0 7px;
-                display: inline-block;
             }
         }
 
         .attrTitle {
             width: 154px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            &:hover {
+                overflow: visible;
+                position: absolute;
+                cursor: pointer;
+            }
         }
 
         .attrValue {

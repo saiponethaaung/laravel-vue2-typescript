@@ -13852,11 +13852,20 @@ input.required::placeholder {
   height: 30px;
   line-height: 30px;
   padding: 0 7px;
-  display: inline-block;
 }
 
 .attributePanel .attributeTable .attrTitle {
   width: 154px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.attributePanel .attributeTable .attrTitle:hover {
+  overflow: visible;
+  position: absolute;
+  cursor: pointer;
 }
 
 .attributePanel .attributeTable .attrValue {

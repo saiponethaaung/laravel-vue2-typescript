@@ -232,7 +232,8 @@ $attributePanelWidth: 336px;
                 padding: 0 15px;
                 .componentTypeOne {
                     overflow: auto;
-                    padding-bottom: 30px;
+                    padding-bottom: 0px;
+                    margin-bottom: 0px;
                     padding-left: 0;
                 }
                 .chatContentBody {
@@ -624,4 +625,21 @@ $attributePanelWidth: 336px;
     .createSavedLink {
         margin-bottom: 20px;
     }
+}
+
+.chatDate {
+    width: 100;
+    height: $standardHeight;
+    line-height: $standardHeight;
+    text-align: center;
+}
+
+.chatTime {
+    margin-top: 5px;
+}
+
+.chatDate,
+.chatTime {
+    color: $dateTimeColor;
+    font-size: 11px;
 }

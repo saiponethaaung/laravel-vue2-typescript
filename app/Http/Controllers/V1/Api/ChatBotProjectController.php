@@ -86,34 +86,36 @@ class ChatBotProjectController extends Controller
             $postback = $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'];
         }
 
-        // open transaction
-        DB::beginTransaction();
-        try {
-            // Record user chat
-            $log = ProjectPageUserChat::create([
-                'content_id' => null,
-                'post_back' => $postback,
-                'from_platform' => false,
-                'mesg' => $mesgText,
-                'mesg_id' => isset($input['entry'][0]['messaging'][0]['message']['mid']) ? $input['entry'][0]['messaging'][0]['message']['mid'] : '',
-                'project_page_user_id' => $this->user->id,
-                'is_send' => false,
-                'ignore' => $ignore
-            ]);
-        } catch(\Exception $e) {
-            FacebookRequestLogs::create([
-                'data' => 'break on failed to record mesg'
-            ]);
-            // rollback if recording user chat is failed
-            DB::rollback();
-            return [
-                'status' => false,
-                'type' => 'um-record',
-                'mesg' => 'Failed to record mesg!',
-                'debugMesg' => $e->getMessage()
-            ];
+        if(!empty($mesgText)) {
+            // open transaction
+            DB::beginTransaction();
+            try {
+                // Record user chat
+                $log = ProjectPageUserChat::create([
+                    'content_id' => null,
+                    'post_back' => $postback,
+                    'from_platform' => false,
+                    'mesg' => $mesgText,
+                    'mesg_id' => isset($input['entry'][0]['messaging'][0]['message']['mid']) ? $input['entry'][0]['messaging'][0]['message']['mid'] : '',
+                    'project_page_user_id' => $this->user->id,
+                    'is_send' => false,
+                    'ignore' => $ignore
+                ]);
+            } catch(\Exception $e) {
+                FacebookRequestLogs::create([
+                    'data' => 'break on failed to record mesg'
+                ]);
+                // rollback if recording user chat is failed
+                DB::rollback();
+                return [
+                    'status' => false,
+                    'type' => 'um-record',
+                    'mesg' => 'Failed to record mesg!',
+                    'debugMesg' => $e->getMessage()
+                ];
+            }
+            DB::commit();
         }
-        DB::commit();
 
         // if user is on live chat or it's function to stop with record stop the process
         if($this->user->live_chat || $justRecord) {

@@ -9,39 +9,48 @@
                             <div class="chatHisRoot" ref="chatBox">
                                 <template v-if="prevLoading">Loading...</template>
                                 <template v-for="(mesg, index) in mesgList">
-                                    <div
-                                        v-if="mesg.contentType!==2 && mesg.contentType!==3"
-                                        :key="index"
-                                        class="chatContentCon"
-                                        :class="{'sender': mesg.isSend}"
-                                    >
-                                        <figure class="chatImage" v-if="!mesg.isSend || (mesg.isLive && mesg.isSend)">
-                                            <img
-                                                :src="mesg.isSend ? '/images/sample/logo.png' : $store.state.inboxList[$store.state.selectedInbox].profile_pic"
+                                    <div v-if="mesg.contentType!==2 && mesg.contentType!==3"
+                                            :key="index">
+                                        <template
+                                            v-if="index==0 || mesgList[index-1].createdAt.date!==mesg.createdAt.date"
+                                        >
+                                            <div class="chatDate">{{ mesg.createdAt.date }}</div>
+                                        </template>
+                                        <div
+                                            class="chatContentCon"
+                                            :class="{'sender': mesg.isSend}"
+                                        >
+                                            <figure
+                                                class="chatImage"
+                                                v-if="!mesg.isSend || (mesg.isLive && mesg.isSend)"
                                             >
-                                        </figure>
-                                        <div class="chatContent">
-                                            <template v-if="mesg.contentType===1">
-                                                <text-template-component
-                                                    :content="JSON.parse(mesg.mesg)"
-                                                ></text-template-component>
-                                            </template>
-                                            <template v-else-if="mesg.contentType===5">
-                                                <list-template-component
-                                                    :content="JSON.parse(mesg.mesg)"
-                                                ></list-template-component>
-                                            </template>
-                                            <template v-else-if="mesg.contentType===6">
-                                                <gallery-template-component
-                                                    :content="JSON.parse(mesg.mesg)"
-                                                ></gallery-template-component>
-                                            </template>
-                                            <template v-else>
-                                                <div
-                                                    v-html="processContent(mesg.mesg, mesg.contentType)"
-                                                ></div>
-                                            </template>
-                                            {{ mesg.createdAt }}
+                                                <img
+                                                    :src="mesg.isSend ? '/images/sample/logo.png' : $store.state.inboxList[$store.state.selectedInbox].profile_pic"
+                                                >
+                                            </figure>
+                                            <div class="chatContent">
+                                                <template v-if="mesg.contentType===1">
+                                                    <text-template-component
+                                                        :content="JSON.parse(mesg.mesg)"
+                                                    ></text-template-component>
+                                                </template>
+                                                <template v-else-if="mesg.contentType===5">
+                                                    <list-template-component
+                                                        :content="JSON.parse(mesg.mesg)"
+                                                    ></list-template-component>
+                                                </template>
+                                                <template v-else-if="mesg.contentType===6">
+                                                    <gallery-template-component
+                                                        :content="JSON.parse(mesg.mesg)"
+                                                    ></gallery-template-component>
+                                                </template>
+                                                <template v-else>
+                                                    <div
+                                                        v-html="processContent(mesg.mesg, mesg.contentType)"
+                                                    ></div>
+                                                </template>
+                                                <div class="chatTime">{{ mesg.createdAt.time }}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </template>
@@ -127,9 +136,16 @@
                                             v-for="(reply, index) in replyList.savedReplies"
                                             v-else
                                         >
-                                            <div class="subReply" :key="index" @click="selectReply(index)">
+                                            <div
+                                                class="subReply"
+                                                :key="index"
+                                                @click="selectReply(index)"
+                                            >
                                                 <div class="replyTitle">{{ reply.title }}</div>
-                                                <div id="reply" class="replyMessage">{{ reply.message }}</div>
+                                                <div
+                                                    id="reply"
+                                                    class="replyMessage"
+                                                >{{ reply.message }}</div>
                                             </div>
                                         </template>
                                     </div>
@@ -562,10 +578,8 @@ export default class InboxPageComponent extends Vue {
     }
 
     async selectReply(index: number) {
-
         this.mesg = this.replyList.savedReplies[index].message;
         this.saveReply = false;
-
     }
 }
 </script>

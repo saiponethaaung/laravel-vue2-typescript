@@ -15,7 +15,13 @@ trait ChatHistoryFormat
             'isLive' => $chat->is_live,
             'isSend' => $chat->is_send,
             'fromPlatform' => $chat->from_platform,
-            'createdAt' => $dateTime->format('d M, Y h:i a')
+            'createdAt' => [
+                'date' => $dateTime->format('d M, Y'),
+                'rawdate' => $dateTime->format('Ymd'),
+                'datetime' => $dateTime->format('d M, Y h:i a'),
+                'rawdatetime' => $dateTime->format('YmdHis'),
+                'time' => $dateTime->format('h:i a'),
+            ]
         ];
     }
 }

@@ -87,12 +87,13 @@ class FacebookChatbotController extends Controller
         $pageId = null;
         $userId = null;
         $projectPage = null;
+        $livePage = false;
 
         $clientid = $input['entry'][0]['id']!==$input['entry'][0]['messaging'][0]['sender']['id'] ? $input['entry'][0]['messaging'][0]['sender']['id'] : $input['entry'][0]['messaging'][0]['recipient']['id'];
 
         // if message come from dashboard "Test this bot" button
         if(isset($input['entry'][0]['messaging'][0]['optin'])) {
-
+            
             // Enable welcome status and dev status
             $welcome = true;
             $dev = true;
@@ -158,6 +159,7 @@ class FacebookChatbotController extends Controller
 
             // If page is not from default testing page check project page
             if($input['entry'][0]['id']!==config('facebook.defaultPageId')) {
+                $livePage = true;
                 $projectPage = ProjectPage::where('page_id', $pageId)->first();
                 
                 // Stop the process if project page didn't exists or project page is not linked with project
@@ -172,6 +174,7 @@ class FacebookChatbotController extends Controller
 
             // If page is not from default testing page check project page
             if($input['entry'][0]['id']!==config('facebook.defaultPageId')) {
+                $livePage = true;
                 $projectPage = ProjectPage::where('page_id', $input['entry'][0]['id'])->first();
                 if(empty($projectPage) || is_null($projectPage->project_id) || $projectPage->publish!==1) {
                     return null;
@@ -196,7 +199,7 @@ class FacebookChatbotController extends Controller
             if(is_null($projectId)) {
                 $this->sampleBot($input);
             } else {
-                $this->parseMessage($projectId, $input, $welcome, $dev);
+                $this->parseMessage($projectId, $input, $welcome, $dev, $livePage);
             }
         } catch (\Exception $e) {
             FacebookRequestLogs::create([
@@ -208,12 +211,13 @@ class FacebookChatbotController extends Controller
         }
     }
 
-    public function parseMessage($projectId, $input, $welcome=false, $dev=false)
+    public function parseMessage($projectId, $input, $welcome=false, $dev=false, $isLivePage)
     {
         $log = FacebookRequestLogs::create([
             'data' => json_encode([
                 'isWelcome' => $welcome,
                 'isDev' => $dev,
+                'isLivePage' => $isLivePage,
                 'raw' => $input,
                 'get' => $_GET,
                 'post' => $_POST,
@@ -294,7 +298,7 @@ class FacebookChatbotController extends Controller
 
                     $break = false;
 
-                    if($dev) {
+                    if($dev && !$isLivePage) {
                         array_unshift($messages['data'], [
                             'status' => true,
                             'mesg' => '',

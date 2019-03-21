@@ -84,6 +84,11 @@ export default class QuickReplyItemModel extends AjaxErrorHandler {
         this.saveToken.cancel();
         this.saveToken = Axios.CancelToken.source();
 
+        if (this.restrictAttribute.indexOf(this.attribute.toLowerCase()) > -1) {
+            this.errorMesg = `Cannot overwrite system attribute '${this.attribute}'!`;
+            return;
+        }
+
         let data = new FormData();
         data.append('title', this.title);
         data.append('attribute', this.attribute);

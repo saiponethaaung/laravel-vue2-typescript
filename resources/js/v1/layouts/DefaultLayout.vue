@@ -133,13 +133,33 @@
                                         >{{ project.name ? project.name : '-' }}</h4>
                                     </div>
                                 </router-link>
-                                <div class="addProject">
+                                <div class="addProject" @click="createBot = true">
                                     <i class="material-icons">add</i>
                                 </div>
                             </div>
                         </template>
                     </div>
                 </div>
+                <template v-if="createBot">
+                    <div class="createProject">
+                        <div class="popFixedContainer popFixedCenter">
+                            <div class="userAttributePop filterAttribute">
+                                <div class="createReply">
+                                    <div class="createProjectNav">
+                                        <span class="createTitle">Create a new project</span>
+                                    </div>
+                                    <div class="projectInputName">
+                                        <input class="inputName" placeholder="Enter project name" v-model="projectName" />
+                                    </div>
+                                    <div class="alignBtn">
+                                        <button class="createBtn" @click="createProject()">Create</button>
+                                        <button class="createBtn" @click="createBot = false">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
                 <div class="headerConent">
                     <template v-if="$store.state.user.facebook_connected">
                         <template v-if="undefined!==$store.state.projectInfo.pageConnected">
@@ -279,7 +299,8 @@ export default class DefaultLayout extends Vue {
     private updatingStatus: boolean = false;
     private actionTime: string = "";
     private reload: boolean = false;
-    private createProject: boolean = false;
+    private createBot: boolean = false;
+    private projectName: string = "";
 
     mounted() {
         this.initSendToMessenger();
@@ -441,6 +462,36 @@ export default class DefaultLayout extends Vue {
                 }
             });
         this.updatingStatus = false;
+    }
+
+    async createProject() {
+        if(this.projectName == "") {
+            alert("Project name is required!");
+            return;
+        }
+
+        let res = {
+            status: true,
+            mesg: 'Success'
+        };
+        
+        let data = new FormData();
+        data.append('name', this.projectName);
+
+
+        await Axios({
+            url: `/api/v1/project`,
+            method: 'post',
+            data: data
+        }).then(res => {
+            this.$store.state.projectList.push(res.data.data);
+        }).catch(err => {
+            if(err.response) {
+                res.status = false;
+                res.mesg = this.ajaxHandler.globalHandler(err, 'Failed to create a reply!');
+            }
+        });
+        this.createBot = false;
     }
 
     documentClick(e: any) {

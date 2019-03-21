@@ -90,6 +90,11 @@
         <div class="delIcon chatListItemDelIcon" v-if="index>1" @click="deleteItem(index)">
             <i class="material-icons">delete</i>
         </div>
+        <template v-if="isChildDeleting===index">
+            <div class="componentDeleting">
+                <div class="deletingContainer"></div>
+            </div>
+        </template>
         <template v-if="listItem.errorMesg!==''">
             <error-component :mesg="listItem.errorMesg" @closeError="listItem.errorMesg=''"></error-component>
         </template>
@@ -115,6 +120,7 @@ export default class ListItemComponent extends Vue {
     @Prop() index!: any;
     @Prop() baseUrl!: string;
     @Prop() projectid!: number;
+    @Prop() isChildDeleting: any;
 
     @Emit("delItem")
     deleteItem(index: any) {}

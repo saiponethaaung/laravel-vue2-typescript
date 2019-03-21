@@ -8,6 +8,7 @@ export default class GalleryContentModel extends ChatBlockContentModel {
     private rootUrl: string;
     private galleryContent: Array<GalleryItemModel> = [];
     private creating: boolean = false;
+    private delChild: number = -1;
     private orderToken: CancelTokenSource = Axios.CancelToken.source();
 
     constructor(content: any, baseUrl: string) {
@@ -42,6 +43,14 @@ export default class GalleryContentModel extends ChatBlockContentModel {
         this.creating = status;
     }
 
+    get isChildDeleting(): number {
+        return this.delChild;
+    }
+
+    set isChildDeleting(index: number) {
+        this.delChild = index;
+    }
+
     async createGallery() {
         this.isCreating = true;
 
@@ -60,6 +69,7 @@ export default class GalleryContentModel extends ChatBlockContentModel {
     }
 
     async delItem(index: number) {
+        this.isChildDeleting = index;
         await Axios({
             url: `${this.rootUrl}/gallery/${this.item[index].id}`,
             method: 'delete',
@@ -70,6 +80,7 @@ export default class GalleryContentModel extends ChatBlockContentModel {
                 this.errorMesg = this.globalHandler(err, 'Failed to delete a card!');
             }
         });
+        this.isChildDeleting = -1;
     }
 
     async updateOrder() {

@@ -54,19 +54,25 @@ export default new Vuex.Store({
         updateTrigger: null,
         updateSchedule: null,
         facebookReconnect: false,
-        errorMesg: []
+        errorMesg: [],
+        sessionIdentifier: localStorage.getItem('session_identifier'),
+        passwordVerify: false,
     },
     mutations: {
         logout(state) {
             localStorage.removeItem('access_token');
             localStorage.removeItem('token_created');
+            localStorage.removeItem('session_identifier');
             localStorage.removeItem('remember');
+            state.passwordVerify = false;
             state.isLogin = false;
-            state.token = '';
+            state.token = null;
         },
-        setToken(state, { token, remember }) {
+        setToken(state, { token, sessionIdentifier, remember }) {
+            state.sessionIdentifier = sessionIdentifier;
             localStorage.setItem('access_token', token);
             localStorage.setItem('token_created', new Date().getTime().toString());
+            localStorage.setItem('session_identifier', sessionIdentifier);
             localStorage.setItem('remember', undefined !== remember && remember == true ? "true" : "false");
         },
         updateUserInfo(state, { user }) {

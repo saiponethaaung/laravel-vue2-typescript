@@ -25318,6 +25318,7 @@ __WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */].beforeEac
     let proceedNext = true;
     if (__WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.token !== null) {
         __WEBPACK_IMPORTED_MODULE_0_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.token}`;
+        __WEBPACK_IMPORTED_MODULE_0_axios___default.a.defaults.headers.common['sessionIdentifier'] = __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.sessionIdentifier;
         userLoadingToken.cancel();
         userLoadingToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.autheticating = true;
@@ -25332,6 +25333,7 @@ __WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */].beforeEac
             else {
                 __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.isLogin = true;
                 __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.user = res.data;
+                __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.passwordVerify = res.data.data.passwordVerify;
             }
         }).catch(err => {
             if (err.response) {
@@ -31787,7 +31789,8 @@ let LoginComponent = class LoginComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
         this.errorLogin = "";
         this.loginData = {
             email: "",
-            password: ""
+            password: "",
+            otp: ""
         };
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */]();
     }
@@ -31796,7 +31799,7 @@ let LoginComponent = class LoginComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             this.loading = true;
             let data = new FormData();
             data.append("email", this.loginData.email);
-            data.append("password", this.loginData.password);
+            data.append("otp", this.loginData.otp);
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: "/api/user/login",
                 data: data,
@@ -31805,7 +31808,8 @@ let LoginComponent = class LoginComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
                 .then(res => {
                 if (res.data.isVerify) {
                     this.$store.commit("setToken", {
-                        token: res.data.token
+                        token: res.data.token,
+                        sessionIdentifier: res.data.sessionIdentifier
                     });
                     if (this.$route.name === "login") {
                         window.location.assign("/");
@@ -31821,6 +31825,31 @@ let LoginComponent = class LoginComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
                 .catch(err => {
                 let mesg = this.ajaxHandler.globalHandler(err, "Failed to login!");
                 this.errorLogin = mesg;
+            });
+            this.loading = false;
+        });
+    }
+    verifyPassword() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.loginData.password === "") {
+                alert("Password is required!");
+                return false;
+            }
+            let data = new FormData();
+            data.append("password", this.loginData.password);
+            this.loading = true;
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `/api/user/verify-password`,
+                data: data,
+                method: "post"
+            })
+                .then(res => {
+                this.$store.state.passwordVerify = true;
+            })
+                .catch(err => {
+                if (err.response) {
+                    this.errorLogin = this.ajaxHandler.globalHandler(err, "Failed to verify password!");
+                }
             });
             this.loading = false;
         });
@@ -31841,135 +31870,265 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "nonMemberComponent" }, [
-    _c("div", { staticClass: "nonMemberFormRoot" }, [
-      _c(
-        "form",
-        {
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.loginNow($event)
-            }
-          }
-        },
-        [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
+    _c(
+      "div",
+      { staticClass: "nonMemberFormRoot" },
+      [
+        _vm.$store.state.token === null
+          ? [
+              _c(
+                "form",
                 {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.loginData.email,
-                  expression: "loginData.email"
-                }
-              ],
-              attrs: {
-                type: "email",
-                id: "email",
-                required: "",
-                disabled: _vm.loading,
-                placeholder: "Email"
-              },
-              domProps: { value: _vm.loginData.email },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.loginData, "email", $event.target.value)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "password" } }, [_vm._v("Password")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.loginData.password,
-                  expression: "loginData.password"
-                }
-              ],
-              attrs: {
-                type: "password",
-                id: "password",
-                required: "",
-                disabled: _vm.loading,
-                placeholder: "Password"
-              },
-              domProps: { value: _vm.loginData.password },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.loginData, "password", $event.target.value)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c(
-              "p",
-              { staticClass: "nonMemberFormNote" },
-              [
-                _vm._v("Not a member? Register\n                    "),
-                _c("router-link", { attrs: { to: { name: "register" } } }, [
-                  _vm._v("here")
-                ])
-              ],
-              1
-            )
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form-group text-center" },
-            [
-              _vm.loading
-                ? [_vm._v("Loading...")]
-                : [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "defaultBtn loginBtn",
-                        attrs: { type: "submit" }
-                      },
-                      [_vm._v("Login")]
-                    )
-                  ]
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _vm.errorLogin !== ""
-            ? [
-                _c("error-component", {
-                  attrs: { mesg: _vm.errorLogin },
                   on: {
-                    closeError: function($event) {
-                      _vm.errorLogin = ""
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.loginNow($event)
                     }
                   }
-                })
-              ]
-            : _vm._e()
-        ],
-        2
-      )
-    ])
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.loginData.email,
+                          expression: "loginData.email"
+                        }
+                      ],
+                      attrs: {
+                        type: "email",
+                        id: "email",
+                        required: "",
+                        disabled: _vm.loading,
+                        placeholder: "Email"
+                      },
+                      domProps: { value: _vm.loginData.email },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.loginData, "email", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "otp" } }, [_vm._v("OTP")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.loginData.otp,
+                          expression: "loginData.otp"
+                        }
+                      ],
+                      attrs: {
+                        type: "password",
+                        id: "otp",
+                        required: "",
+                        disabled: _vm.loading,
+                        placeholder: "otp"
+                      },
+                      domProps: { value: _vm.loginData.otp },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.loginData, "otp", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "p",
+                      { staticClass: "nonMemberFormNote" },
+                      [
+                        _vm._v(
+                          "Not a member? Register\n                        "
+                        ),
+                        _c(
+                          "router-link",
+                          { attrs: { to: { name: "register" } } },
+                          [_vm._v("here")]
+                        )
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-group text-center" },
+                    [
+                      _vm.loading
+                        ? [_vm._v("Loading...")]
+                        : [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "defaultBtn loginBtn",
+                                attrs: { type: "submit" }
+                              },
+                              [_vm._v("Login")]
+                            )
+                          ]
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _vm.errorLogin !== ""
+                    ? [
+                        _c("error-component", {
+                          attrs: { mesg: _vm.errorLogin },
+                          on: {
+                            closeError: function($event) {
+                              _vm.errorLogin = ""
+                            }
+                          }
+                        })
+                      ]
+                    : _vm._e()
+                ],
+                2
+              )
+            ]
+          : [
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.verifyPassword($event)
+                    }
+                  }
+                },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "password" } }, [
+                      _vm._v("Password")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.loginData.password,
+                          expression: "loginData.password"
+                        }
+                      ],
+                      attrs: {
+                        type: "password",
+                        id: "password",
+                        required: "",
+                        disabled: _vm.loading,
+                        placeholder: "Password"
+                      },
+                      domProps: { value: _vm.loginData.password },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.loginData,
+                            "password",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("p", { staticClass: "nonMemberFormNote" }, [
+                      _vm._v(
+                        "\n                        Use different account?\n                        "
+                      ),
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "javascript:void(0);" },
+                          on: {
+                            click: function($event) {
+                              _vm.$store.commit("logout")
+                            }
+                          }
+                        },
+                        [_vm._v("Logout")]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-group text-center" },
+                    [
+                      _vm.loading
+                        ? [_vm._v("Loading...")]
+                        : [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "defaultBtn loginBtn",
+                                attrs: { type: "submit" }
+                              },
+                              [_vm._v("Submit")]
+                            )
+                          ]
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _vm.errorLogin !== ""
+                    ? [
+                        _c("error-component", {
+                          attrs: { mesg: _vm.errorLogin },
+                          on: {
+                            closeError: function($event) {
+                              _vm.errorLogin = ""
+                            }
+                          }
+                        })
+                      ]
+                    : _vm._e()
+                ],
+                2
+              )
+            ]
+      ],
+      2
+    )
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("figure", [
+      _c("img", {
+        staticClass: "navIcon",
+        attrs: { src: "/images/icons/logo.png" }
+      })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -63251,19 +63410,25 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         updateTrigger: null,
         updateSchedule: null,
         facebookReconnect: false,
-        errorMesg: []
+        errorMesg: [],
+        sessionIdentifier: localStorage.getItem('session_identifier'),
+        passwordVerify: false,
     },
     mutations: {
         logout(state) {
             localStorage.removeItem('access_token');
             localStorage.removeItem('token_created');
+            localStorage.removeItem('session_identifier');
             localStorage.removeItem('remember');
+            state.passwordVerify = false;
             state.isLogin = false;
-            state.token = '';
+            state.token = null;
         },
-        setToken(state, { token, remember }) {
+        setToken(state, { token, sessionIdentifier, remember }) {
+            state.sessionIdentifier = sessionIdentifier;
             localStorage.setItem('access_token', token);
             localStorage.setItem('token_created', new Date().getTime().toString());
+            localStorage.setItem('session_identifier', sessionIdentifier);
             localStorage.setItem('remember', undefined !== remember && remember == true ? "true" : "false");
         },
         updateUserInfo(state, { user }) {

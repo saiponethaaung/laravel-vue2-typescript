@@ -11,21 +11,28 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
+use App\Models\UserSession;
 use App\Models\RegisterToken;
+use PragmaRX\Google2FA\Google2FA;
 
 use App\Http\Controllers\V1\Api\FacebookController;
 
 use App\Notifications\SendEmailVerificationToken;
 
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
+
 class UserAuthController extends Controller
 {
     public function login(Request $request)
     {
-        $input = $request->only('email', 'password');
+        $input = $request->only('email', 'otp');
 
         $validator = Validator::make($input, [
             'email' => 'required|email',
-            'password' => 'required'
+            'otp' => 'required'
         ]);
 
         if($validator->fails()) {
@@ -38,24 +45,35 @@ class UserAuthController extends Controller
 
         $user = User::where('email', $input['email'])->first();
 
+        // If user didn't exists
         if(empty($user)) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'mesg' => 'Invalid email or username'
+                'mesg' => 'Invalid email or otp!'
             ], 422);
         }
 
-        $passwordCheck = Hash::check($input['password'], $user->password);
-
-        if(!$passwordCheck) {
+        // if user is deactivated
+        if($user->status==0) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'mesg' => 'Invalid email or username'
+                'mesg' => 'Your account is deactivated!'
             ], 422);
         }
 
+        // $passwordCheck = Hash::check($input['password'], $user->password);
+
+        // if(!$passwordCheck) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'code' => 422,
+        //         'mesg' => 'Invalid email or username'
+        //     ], 422);
+        // }
+
+        // If user email is not yet verified
         if(is_null($user->email_verified_at)) {
             return response()->json([
                 'status' => false,
@@ -64,6 +82,43 @@ class UserAuthController extends Controller
             ]);
         }
 
+        // initialize Google 2 factor authentication lib
+        $google2Fa = new Google2FA();
+        
+        // Verify otp code
+        if(!$google2Fa->verifyKey($user->auth_code, $input['otp'])) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Invalid otp code!'
+            ], 422);
+        }
+
+        $identifier = "";
+
+        // get unique identifier
+        do {
+            $identifier = str_random(247).date("Ymd");
+        } while (UserSession::where('identifier', $identifier)->count()!==0);
+
+        // create user session
+        $userSession = UserSession::create([
+            'parent_id' => $user->id,
+            'identifier' => $identifier,
+            'browser' => Agent::browser(),
+            'ip' => $_SERVER['REMOTE_ADDR'],
+            'os' => Agent::platform(),
+            'last_login' => date("Y-m-d H:i:s")
+        ]);
+
+        // activate user status if it's pending
+        if($user->status===2) {
+            $user->status = 1;
+            $user->activated_at = gmdate("Y-m-d H:i:s");
+            $user->save();
+        }
+
+        // generate token
         $token = $user->createToken('dashboard token');
 
         return response()->json([
@@ -71,6 +126,7 @@ class UserAuthController extends Controller
             'code' => 200,
             'mesg' => "Login Success",
             'token' => $token->accessToken,
+            'sessionIdentifier' => $adminSession->identifier,
             'isVerify' => true
         ]);
     }
@@ -185,5 +241,35 @@ class UserAuthController extends Controller
             'code' => 200,
             'mesg' => 'success'
         ]);
+    }
+
+    public function showQrCode(Request $request)
+    {
+        $userid = $request->input('userid');
+
+        if(is_null($userid)) {
+            abort(404);
+        }
+        
+        $user = User::where(DB::raw('md5(id)'), $userid)->first();
+
+        if(empty($user)) {
+            abort(404);
+        }
+        
+        $renderer = new ImageRenderer(
+            new RendererStyle(400),
+            new SvgImageBackEnd()
+        );
+        
+        $google2Fa = new Google2FA();
+        $qrCodeUrl = $google2Fa->getQRCodeUrl(
+            env('APP_NAME'),
+            $user->email,
+            $user->auth_code
+        );
+
+        $writer = new Writer($renderer);
+        return $writer->writeString($qrCodeUrl);
     }
 }

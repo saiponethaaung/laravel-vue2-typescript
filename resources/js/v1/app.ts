@@ -54,6 +54,7 @@ router.beforeEach(async (to, from, next) => {
 
     if (store.state.token !== null) {
         Axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.token}`;
+        Axios.defaults.headers.common['sessionIdentifier'] = store.state.sessionIdentifier;
 
         userLoadingToken.cancel();
         userLoadingToken = Axios.CancelToken.source();
@@ -70,6 +71,7 @@ router.beforeEach(async (to, from, next) => {
             } else {
                 store.state.isLogin = true;
                 store.state.user = res.data;
+                store.state.passwordVerify = res.data.data.passwordVerify;
             }
         }).catch(err => {
             if (err.response) {

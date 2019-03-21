@@ -29420,7 +29420,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -31525,7 +31525,7 @@ var content = __webpack_require__(76);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(78)("567c3d80", content, false, {});
+var update = __webpack_require__(78)("7c379b60", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -48076,11 +48076,11 @@ var render = function() {
                                 staticClass: "createBtn",
                                 on: {
                                   click: function($event) {
-                                    _vm.createProject()
+                                    _vm.createBot = false
                                   }
                                 }
                               },
-                              [_vm._v("Create")]
+                              [_vm._v("Cancel")]
                             ),
                             _vm._v(" "),
                             _c(
@@ -48089,11 +48089,11 @@ var render = function() {
                                 staticClass: "createBtn",
                                 on: {
                                   click: function($event) {
-                                    _vm.createBot = false
+                                    _vm.createProject()
                                   }
                                 }
                               },
-                              [_vm._v("Cancel")]
+                              [_vm._v("Create")]
                             )
                           ]),
                           _vm._v(" "),
@@ -48121,47 +48121,47 @@ var render = function() {
           _vm.loading
             ? [_vm._m(3)]
             : _vm._l(_vm.$store.state.projectList, function(project, index) {
-                return _c("div", { key: index }, [
-                  _c("div", { staticClass: "cardList" }, [
-                    _c("figure", { staticClass: "addIcon" }, [
-                      _c("img", {
-                        staticClass: "projectIcon",
-                        attrs: {
-                          src: project.image
-                            ? project.image
-                            : "/images/sample/logo.png"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
+                return _c(
+                  "div",
+                  { key: index },
+                  [
                     _c(
-                      "div",
-                      { staticClass: "btnProject" },
+                      "router-link",
+                      {
+                        staticClass: "projectName",
+                        attrs: {
+                          to: {
+                            name: "project.home",
+                            params: { projectid: project.id }
+                          }
+                        }
+                      },
                       [
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "projectName",
-                            attrs: {
-                              to: {
-                                name: "project.home",
-                                params: { projectid: project.id }
+                        _c("div", { staticClass: "cardList" }, [
+                          _c("figure", { staticClass: "addIcon" }, [
+                            _c("img", {
+                              staticClass: "projectIcon",
+                              attrs: {
+                                src: project.image
+                                  ? project.image
+                                  : "/images/sample/logo.png"
                               }
-                            }
-                          },
-                          [
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "btnProject" }, [
                             _vm._v(
                               "\n                                " +
                                 _vm._s(project.name) +
                                 "\n                            "
                             )
-                          ]
-                        )
-                      ],
-                      1
+                          ])
+                        ])
+                      ]
                     )
-                  ])
-                ])
+                  ],
+                  1
+                )
               })
         ],
         2

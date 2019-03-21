@@ -10984,8 +10984,12 @@ a.text-dark:focus {
   border: 1px solid #e2e2e2;
   border-radius: 5px;
   background: #ffffff;
-  color: #c238eb;
+  color: #000000;
   cursor: pointer;
+}
+
+.createProject .popFixedContainer .filterAttribute .createReply .alignBtn .createBtn:hover {
+  color: #c238eb;
 }
 
 #innnerContent {
@@ -15675,12 +15679,10 @@ input.required::placeholder {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  background: #f7f6f6;
   border-radius: 5px;
   margin-top: 20px;
   margin-left: 40px;
   margin-bottom: 30px;
-  color: #c238eb;
 }
 
 .outerCardList {
@@ -15737,7 +15739,7 @@ input.required::placeholder {
   display: flex;
   font-size: 18px;
   cursor: pointer;
-  color: #ffffff;
+  color: #000000;
   font-weight: bold;
   text-align: center;
   margin-top: 30px;
@@ -15746,8 +15748,20 @@ input.required::placeholder {
           justify-content: center;
 }
 
+.cardList .btnProject:hover {
+  color: #c238eb;
+}
+
 .addBgColor {
   background: #c238eb;
+}
+
+.addBgColor .btnProject {
+  color: #ffffff;
+}
+
+.addBgColor .btnProject:hover {
+  color: #ffffff;
 }
 
 .projectName {
@@ -15802,8 +15816,12 @@ input.required::placeholder {
   border: 1px solid #e2e2e2;
   border-radius: 5px;
   background: #ffffff;
-  color: #c238eb;
+  color: #000000;
   cursor: pointer;
+}
+
+.alignBtn .createBtn:hover {
+  color: #c238eb;
 }
 
 .aiContainerRoot {

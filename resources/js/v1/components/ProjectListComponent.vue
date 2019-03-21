@@ -46,8 +46,8 @@
                                     <input class="inputName" placeholder="Enter project name" v-model="projectName" />
                                 </div>
                                 <div class="alignBtn">
-                                    <button class="createBtn" @click="createProject()">Create</button>
                                     <button class="createBtn" @click="createBot = false">Cancel</button>
+                                    <button class="createBtn" @click="createProject()">Create</button>
                                 </div>
                                 <template v-if="errorCreate!==''">
                                     <error-component :mesg="errorCreate" @closeError="errorCreate=''"></error-component>
@@ -71,16 +71,16 @@
                 </template>
                 <template v-else>
                     <div v-for="(project, index) in $store.state.projectList" :key="index">
-                        <div class="cardList">
-                            <figure class="addIcon">
-                                <img :src="project.image ? project.image : '/images/sample/logo.png'" class="projectIcon"/>
-                            </figure>
-                            <div class="btnProject">
-                                <router-link class="projectName" :to="{name: 'project.home', params: { projectid: project.id }}">
+                        <router-link class="projectName" :to="{name: 'project.home', params: { projectid: project.id }}">
+                            <div class="cardList">
+                                <figure class="addIcon">
+                                    <img :src="project.image ? project.image : '/images/sample/logo.png'" class="projectIcon"/>
+                                </figure>
+                                <div class="btnProject">
                                     {{ project.name }}
-                                </router-link>
+                                </div>
                             </div>
-                        </div>
+                        </router-link>
                     </div>
                 </template>
             </div>

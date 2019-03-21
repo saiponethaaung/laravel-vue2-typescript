@@ -207,8 +207,11 @@
                         border: 1px solid #e2e2e2;
                         border-radius: 5px;
                         background: #ffffff;
-                        color: #c238eb;
+                        color: #000000;
                         cursor: pointer;
+                        &:hover {
+                            color: #c238eb;
+                        }
                     }
                 }
             }

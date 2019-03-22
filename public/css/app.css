@@ -10884,7 +10884,7 @@ a.text-dark:focus {
   -ms-flex-pack: distribute;
       justify-content: space-around;
   height: 40px;
-  margin-top: 18px;
+  margin-top: 7px;
 }
 
 #headerContent .headerSidebar .projectIconWrapper {
@@ -11177,6 +11177,7 @@ a:hover {
   text-align: center;
   line-height: 15px;
   color: #aaaaaa;
+  margin-top: 10px;
 }
 
 .chatBotHeading {

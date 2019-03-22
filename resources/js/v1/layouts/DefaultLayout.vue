@@ -302,7 +302,7 @@ export default class DefaultLayout extends Vue {
     private createBot: boolean = false;
     private projectName: string = "";
 
-    mounted() {
+   mounted() {
         this.initSendToMessenger();
         this.actionTime = new Date().toString();
     }

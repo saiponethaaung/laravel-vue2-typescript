@@ -105,6 +105,11 @@
                 <i class="material-icons">unfold_more</i>
             </div>
         </div>
+        <template v-if="isChildDeleting===index">
+            <div class="componentDeleting">
+                <div class="deletingContainer"></div>
+            </div>
+        </template>
         <template v-if="listItem.errorMesg!==''">
             <error-component :mesg="listItem.errorMesg" @closeError="listItem.errorMesg=''"></error-component>
         </template>
@@ -130,6 +135,7 @@ export default class GalleryItemComponent extends Vue {
     @Prop() index!: any;
     @Prop() baseUrl!: string;
     @Prop() projectid!: string;
+    @Prop() isChildDeleting: any;
 
     @Emit("delItem")
     deleteItem(index: any) {}

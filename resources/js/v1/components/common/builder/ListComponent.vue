@@ -7,6 +7,7 @@
                         :listItem="l"
                         :index="index"
                         :baseUrl="content.url"
+                        :isChildDeleting="content.isChildDeleting"
                         :projectid="content.project"
                         @delItem="delItem"
                         :key="index"

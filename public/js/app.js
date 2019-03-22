@@ -12275,6 +12275,7 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentMode
         this.buttonCreating = false;
         this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */]();
+        this.delChild = -1;
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         for (let i in content.content.content) {
             this.buildListItem(content.content.content[i]);
@@ -12316,6 +12317,12 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentMode
     }
     set btnEdit(status) {
         this.buttonEdit = status;
+    }
+    get isChildDeleting() {
+        return this.delChild;
+    }
+    set isChildDeleting(index) {
+        this.delChild = index;
     }
     addButton() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -12371,6 +12378,7 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentMode
     }
     delItem(index) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.isChildDeleting = index;
             yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/list/${this.item[index].id}`,
                 method: 'delete',
@@ -12381,6 +12389,7 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentMode
                     this.errorMesg = this.globalHandler(err, 'Failed to delete a list!');
                 }
             });
+            this.isChildDeleting = -1;
         });
     }
 }
@@ -12413,6 +12422,7 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentM
         super(content, baseUrl);
         this.galleryContent = [];
         this.creating = false;
+        this.delChild = -1;
         this.orderToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         for (let i of content.content) {
@@ -12437,6 +12447,12 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentM
     set isCreating(status) {
         this.creating = status;
     }
+    get isChildDeleting() {
+        return this.delChild;
+    }
+    set isChildDeleting(index) {
+        this.delChild = index;
+    }
     createGallery() {
         return __awaiter(this, void 0, void 0, function* () {
             this.isCreating = true;
@@ -12455,6 +12471,7 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentM
     }
     delItem(index) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.isChildDeleting = index;
             yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
                 url: `${this.rootUrl}/gallery/${this.item[index].id}`,
                 method: 'delete',
@@ -12465,6 +12482,7 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentM
                     this.errorMesg = this.globalHandler(err, 'Failed to delete a card!');
                 }
             });
+            this.isChildDeleting = -1;
         });
     }
     updateOrder() {
@@ -29404,7 +29422,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -30593,7 +30611,8 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
         this.updatingStatus = false;
         this.actionTime = "";
         this.reload = false;
-        this.createProject = false;
+        this.createBot = false;
+        this.projectName = "";
     }
     mounted() {
         this.initSendToMessenger();
@@ -30726,6 +30745,33 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
                 }
             });
             this.updatingStatus = false;
+        });
+    }
+    createProject() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.projectName == "") {
+                alert("Project name is required!");
+                return;
+            }
+            let res = {
+                status: true,
+                mesg: 'Success'
+            };
+            let data = new FormData();
+            data.append('name', this.projectName);
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: `/api/v1/project`,
+                method: 'post',
+                data: data
+            }).then(res => {
+                this.$store.state.projectList.push(res.data.data);
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.ajaxHandler.globalHandler(err, 'Failed to create a reply!');
+                }
+            });
+            this.createBot = false;
         });
     }
     documentClick(e) {
@@ -30968,283 +31014,379 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { attrs: { id: "mainContent" } }, [
-      _c("section", { attrs: { id: "headerContent" } }, [
-        _c("div", { staticClass: "sidebar headerSidebar" }, [
-          _c(
-            "div",
-            { staticClass: "projectList" },
-            [
-              _c(
-                "div",
-                {
-                  ref: "projectListDropDown",
-                  staticClass: "projectInfoContainer",
-                  on: {
-                    click: function($event) {
-                      _vm.projectOptions = !_vm.projectOptions
-                    }
-                  }
-                },
-                [
-                  _c("figure", { staticClass: "projectIconWrapper" }, [
-                    _c("img", {
-                      staticClass: "projectIcon",
-                      attrs: {
-                        src: _vm.$store.state.projectInfo.image
-                          ? _vm.$store.state.projectInfo.image
-                          : "/images/sample/Image_logo.png"
+      _c(
+        "section",
+        { attrs: { id: "headerContent" } },
+        [
+          _c("div", { staticClass: "sidebar headerSidebar" }, [
+            _c(
+              "div",
+              { staticClass: "projectList" },
+              [
+                _c(
+                  "div",
+                  {
+                    ref: "projectListDropDown",
+                    staticClass: "projectInfoContainer",
+                    on: {
+                      click: function($event) {
+                        _vm.projectOptions = !_vm.projectOptions
                       }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "projectInfo" }, [
-                    _c("h4", { staticClass: "projectName" }, [
-                      _vm._v(
-                        _vm._s(
-                          _vm.$store.state.projectInfo.name
-                            ? _vm.$store.state.projectInfo.name
-                            : "-"
-                        )
-                      )
+                    }
+                  },
+                  [
+                    _c("figure", { staticClass: "projectIconWrapper" }, [
+                      _c("img", {
+                        staticClass: "projectIcon",
+                        attrs: {
+                          src: _vm.$store.state.projectInfo.image
+                            ? _vm.$store.state.projectInfo.image
+                            : "/images/sample/Image_logo.png"
+                        }
+                      })
                     ]),
                     _vm._v(" "),
-                    _vm._m(0)
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "projectNavControl" }, [
-                    _vm.projectOptions
-                      ? _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("arrow_drop_up")
-                        ])
-                      : _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("arrow_drop_down")
-                        ])
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _vm.projectOptions
-                ? [
-                    _c(
-                      "div",
-                      { staticClass: "popProjectList" },
-                      [
-                        _vm._l(_vm.$store.state.projectList, function(
-                          project,
-                          index
-                        ) {
-                          return _c(
-                            "router-link",
+                    _c("div", { staticClass: "projectInfo" }, [
+                      _c("h4", { staticClass: "projectName" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm.$store.state.projectInfo.name
+                              ? _vm.$store.state.projectInfo.name
+                              : "-"
+                          )
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(0)
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "projectNavControl" }, [
+                      _vm.projectOptions
+                        ? _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("arrow_drop_up")
+                          ])
+                        : _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("arrow_drop_down")
+                          ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _vm.projectOptions
+                  ? [
+                      _c(
+                        "div",
+                        { staticClass: "popProjectList" },
+                        [
+                          _vm._l(_vm.$store.state.projectList, function(
+                            project,
+                            index
+                          ) {
+                            return _c(
+                              "router-link",
+                              {
+                                key: index,
+                                staticClass: "projectInfoContainer",
+                                attrs: {
+                                  to: {
+                                    name: "project.home",
+                                    params: { projectid: project.id }
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "figure",
+                                  { staticClass: "projectIconWrapper" },
+                                  [
+                                    _c("img", {
+                                      staticClass: "projectIcon",
+                                      attrs: {
+                                        src: project.image
+                                          ? project.image
+                                          : "/images/sample/logo.png"
+                                      }
+                                    })
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "projectInfo" }, [
+                                  _c("h4", { staticClass: "projectName" }, [
+                                    _vm._v(
+                                      _vm._s(project.name ? project.name : "-")
+                                    )
+                                  ])
+                                ])
+                              ]
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "div",
                             {
-                              key: index,
-                              staticClass: "projectInfoContainer",
-                              attrs: {
-                                to: {
-                                  name: "project.home",
-                                  params: { projectid: project.id }
+                              staticClass: "addProject",
+                              on: {
+                                click: function($event) {
+                                  _vm.createBot = true
                                 }
                               }
                             },
                             [
-                              _c(
-                                "figure",
-                                { staticClass: "projectIconWrapper" },
-                                [
-                                  _c("img", {
-                                    staticClass: "projectIcon",
-                                    attrs: {
-                                      src: project.image
-                                        ? project.image
-                                        : "/images/sample/logo.png"
-                                    }
-                                  })
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "projectInfo" }, [
-                                _c("h4", { staticClass: "projectName" }, [
-                                  _vm._v(
-                                    _vm._s(project.name ? project.name : "-")
-                                  )
-                                ])
+                              _c("i", { staticClass: "material-icons" }, [
+                                _vm._v("add")
                               ])
                             ]
                           )
-                        }),
-                        _vm._v(" "),
-                        _vm._m(1)
-                      ],
-                      2
+                        ],
+                        2
+                      )
+                    ]
+                  : _vm._e()
+              ],
+              2
+            )
+          ]),
+          _vm._v(" "),
+          _vm.createBot
+            ? [
+                _c("div", { staticClass: "createProject" }, [
+                  _c(
+                    "div",
+                    { staticClass: "popFixedContainer popFixedCenter" },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "userAttributePop filterAttribute" },
+                        [
+                          _c("div", { staticClass: "createReply" }, [
+                            _vm._m(1),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "projectInputName" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.projectName,
+                                    expression: "projectName"
+                                  }
+                                ],
+                                staticClass: "inputName",
+                                attrs: { placeholder: "Enter project name" },
+                                domProps: { value: _vm.projectName },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.projectName = $event.target.value
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "alignBtn" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "createBtn",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.createProject()
+                                    }
+                                  }
+                                },
+                                [_vm._v("Create")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "createBtn",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.createBot = false
+                                    }
+                                  }
+                                },
+                                [_vm._v("Cancel")]
+                              )
+                            ])
+                          ])
+                        ]
+                      )
+                    ]
+                  )
+                ])
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "headerConent" },
+            [
+              _vm.$store.state.user.facebook_connected
+                ? [
+                    undefined !== _vm.$store.state.projectInfo.pageConnected
+                      ? [
+                          _vm.$store.state.projectInfo.pageConnected
+                            ? [
+                                _vm.updatingStatus
+                                  ? _c(
+                                      "button",
+                                      {
+                                        staticClass: "headerButtonTypeOne",
+                                        attrs: { type: "button" }
+                                      },
+                                      [_vm._v("Changing status")]
+                                    )
+                                  : _c(
+                                      "button",
+                                      {
+                                        staticClass: "headerButtonTypeOne",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.changePublishStatus()
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm.$store.state.projectInfo.publish
+                                          ? [_vm._v("Deactivate Page")]
+                                          : [_vm._v("Activate Page")]
+                                      ],
+                                      2
+                                    )
+                              ]
+                            : _c(
+                                "router-link",
+                                {
+                                  staticClass: "headerButtonTypeOne",
+                                  attrs: {
+                                    to: {
+                                      name: "project.configuration",
+                                      params: {
+                                        projectid: _vm.$route.params.projectid
+                                      }
+                                    }
+                                  }
+                                },
+                                [_vm._v("Connect a page")]
+                              )
+                        ]
+                      : _vm._e()
+                  ]
+                : [
+                    _vm.$store.state.fbSdk
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "headerButtonTypeOne",
+                            attrs: { type: "button" },
+                            on: { click: _vm.fbLogin }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm.$store.state.user.facebookReconnect
+                                  ? "Reauthenticate your facebook account"
+                                  : "Connect facebook account"
+                              )
+                            )
+                          ]
+                        )
+                      : _vm._e()
+                  ],
+              _vm._v(" "),
+              undefined !== _vm.$store.state.projectInfo.id
+                ? [
+                    !_vm.reload
+                      ? _c(
+                          "div",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: !_vm.testNow && _vm.canTest,
+                                expression: "!testNow && canTest"
+                              }
+                            ],
+                            staticClass: "testChatBotBtn",
+                            class: { hideTest: _vm.hideTest }
+                          },
+                          [
+                            _vm._v("Test this bot\n                        "),
+                            _c(
+                              "div",
+                              {
+                                staticClass: "fb-send-to-messenger",
+                                attrs: {
+                                  messenger_app_id: "1155102521322007",
+                                  page_id:
+                                    _vm.$store.state.projectInfo
+                                      .pageConnected &&
+                                    _vm.$store.state.projectInfo.publish
+                                      ? _vm.$store.state.projectInfo.pageId
+                                      : _vm.$store.state.projectInfo
+                                          .testingPageId,
+                                  "data-ref":
+                                    _vm.$store.state.projectInfo.id +
+                                    "-" +
+                                    (_vm.$store.state.projectInfo
+                                      .pageConnected &&
+                                    _vm.$store.state.projectInfo.publish
+                                      ? _vm.$store.state.projectInfo.pageId
+                                      : _vm.$store.state.projectInfo
+                                          .testingPageId) +
+                                    "-" +
+                                    _vm.$store.state.user.facebook,
+                                  color: "blue",
+                                  "data-testNow": _vm.testNow,
+                                  "data-canTest": _vm.canTest,
+                                  "data-actionTime": _vm.actionTime,
+                                  size: "standard"
+                                }
+                              },
+                              [_vm._v("Send to messenger")]
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.testNow,
+                            expression: "testNow"
+                          }
+                        ],
+                        staticClass: "headerButtonTypeOne",
+                        attrs: {
+                          href:
+                            "https://m.me/" +
+                            (_vm.$store.state.projectInfo.pageConnected &&
+                            _vm.$store.state.projectInfo.publish
+                              ? _vm.$store.state.projectInfo.pageId
+                              : _vm.$store.state.projectInfo.testingPageId),
+                          target: "_blank"
+                        }
+                      },
+                      [_vm._v("View on Messenger")]
                     )
                   ]
                 : _vm._e()
             ],
             2
           )
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "headerConent" },
-          [
-            _vm.$store.state.user.facebook_connected
-              ? [
-                  undefined !== _vm.$store.state.projectInfo.pageConnected
-                    ? [
-                        _vm.$store.state.projectInfo.pageConnected
-                          ? [
-                              _vm.updatingStatus
-                                ? _c(
-                                    "button",
-                                    {
-                                      staticClass: "headerButtonTypeOne",
-                                      attrs: { type: "button" }
-                                    },
-                                    [_vm._v("Changing status")]
-                                  )
-                                : _c(
-                                    "button",
-                                    {
-                                      staticClass: "headerButtonTypeOne",
-                                      attrs: { type: "button" },
-                                      on: {
-                                        click: function($event) {
-                                          _vm.changePublishStatus()
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _vm.$store.state.projectInfo.publish
-                                        ? [_vm._v("Deactivate Page")]
-                                        : [_vm._v("Activate Page")]
-                                    ],
-                                    2
-                                  )
-                            ]
-                          : _c(
-                              "router-link",
-                              {
-                                staticClass: "headerButtonTypeOne",
-                                attrs: {
-                                  to: {
-                                    name: "project.configuration",
-                                    params: {
-                                      projectid: _vm.$route.params.projectid
-                                    }
-                                  }
-                                }
-                              },
-                              [_vm._v("Connect a page")]
-                            )
-                      ]
-                    : _vm._e()
-                ]
-              : [
-                  _vm.$store.state.fbSdk
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "headerButtonTypeOne",
-                          attrs: { type: "button" },
-                          on: { click: _vm.fbLogin }
-                        },
-                        [
-                          _vm._v(
-                            _vm._s(
-                              _vm.$store.state.user.facebookReconnect
-                                ? "Reauthenticate your facebook account"
-                                : "Connect facebook account"
-                            )
-                          )
-                        ]
-                      )
-                    : _vm._e()
-                ],
-            _vm._v(" "),
-            undefined !== _vm.$store.state.projectInfo.id
-              ? [
-                  !_vm.reload
-                    ? _c(
-                        "div",
-                        {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: !_vm.testNow && _vm.canTest,
-                              expression: "!testNow && canTest"
-                            }
-                          ],
-                          staticClass: "testChatBotBtn",
-                          class: { hideTest: _vm.hideTest }
-                        },
-                        [
-                          _vm._v("Test this bot\n                        "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "fb-send-to-messenger",
-                              attrs: {
-                                messenger_app_id: "1155102521322007",
-                                page_id:
-                                  _vm.$store.state.projectInfo.pageConnected &&
-                                  _vm.$store.state.projectInfo.publish
-                                    ? _vm.$store.state.projectInfo.pageId
-                                    : _vm.$store.state.projectInfo
-                                        .testingPageId,
-                                "data-ref":
-                                  _vm.$store.state.projectInfo.id +
-                                  "-" +
-                                  (_vm.$store.state.projectInfo.pageConnected &&
-                                  _vm.$store.state.projectInfo.publish
-                                    ? _vm.$store.state.projectInfo.pageId
-                                    : _vm.$store.state.projectInfo
-                                        .testingPageId) +
-                                  "-" +
-                                  _vm.$store.state.user.facebook,
-                                color: "blue",
-                                "data-testNow": _vm.testNow,
-                                "data-canTest": _vm.canTest,
-                                "data-actionTime": _vm.actionTime,
-                                size: "standard"
-                              }
-                            },
-                            [_vm._v("Send to messenger")]
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: _vm.testNow,
-                          expression: "testNow"
-                        }
-                      ],
-                      staticClass: "headerButtonTypeOne",
-                      attrs: {
-                        href:
-                          "https://m.me/" +
-                          (_vm.$store.state.projectInfo.pageConnected &&
-                          _vm.$store.state.projectInfo.publish
-                            ? _vm.$store.state.projectInfo.pageId
-                            : _vm.$store.state.projectInfo.testingPageId),
-                        target: "_blank"
-                      }
-                    },
-                    [_vm._v("View on Messenger")]
-                  )
-                ]
-              : _vm._e()
-          ],
-          2
-        )
-      ]),
+        ],
+        2
+      ),
       _vm._v(" "),
       _c(
         "section",
@@ -31307,8 +31449,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "addProject" }, [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("add")])
+    return _c("div", { staticClass: "createProjectNav" }, [
+      _c("span", { staticClass: "createTitle" }, [
+        _vm._v("Create a new project")
+      ])
     ])
   }
 ]
@@ -31383,7 +31527,7 @@ var content = __webpack_require__(76);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(78)("567c3d80", content, false, {});
+var update = __webpack_require__(78)("7c379b60", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -34856,6 +35000,9 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], ListItemComponent.prototype, "projectid", void 0);
 __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], ListItemComponent.prototype, "isChildDeleting", void 0);
+__decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("delItem")
 ], ListItemComponent.prototype, "deleteItem", null);
 ListItemComponent = __decorate([
@@ -35147,6 +35294,8 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
+      _vm.isChildDeleting === _vm.index ? [_vm._m(0)] : _vm._e(),
+      _vm._v(" "),
       _vm.listItem.errorMesg !== ""
         ? [
             _c("error-component", {
@@ -35160,12 +35309,20 @@ var render = function() {
           ]
         : _vm._e(),
       _vm._v(" "),
-      _vm._m(0)
+      _vm._m(1)
     ],
     2
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "componentDeleting" }, [
+      _c("div", { staticClass: "deletingContainer" })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -35208,6 +35365,7 @@ var render = function() {
                   listItem: l,
                   index: index,
                   baseUrl: _vm.content.url,
+                  isChildDeleting: _vm.content.isChildDeleting,
                   projectid: _vm.content.project
                 },
                 on: { delItem: _vm.delItem }
@@ -35492,6 +35650,9 @@ __decorate([
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], GalleryItemComponent.prototype, "projectid", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], GalleryItemComponent.prototype, "isChildDeleting", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("delItem")
 ], GalleryItemComponent.prototype, "deleteItem", null);
@@ -35804,6 +35965,8 @@ var render = function() {
         _vm._m(0)
       ]),
       _vm._v(" "),
+      _vm.isChildDeleting === _vm.index ? [_vm._m(1)] : _vm._e(),
+      _vm._v(" "),
       _vm.listItem.errorMesg !== ""
         ? [
             _c("error-component", {
@@ -35817,7 +35980,7 @@ var render = function() {
           ]
         : _vm._e(),
       _vm._v(" "),
-      _vm._m(1)
+      _vm._m(2)
     ],
     2
   )
@@ -35829,6 +35992,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "horizontalDrag galleryDrag" }, [
       _c("i", { staticClass: "material-icons" }, [_vm._v("unfold_more")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "componentDeleting" }, [
+      _c("div", { staticClass: "deletingContainer" })
     ])
   },
   function() {
@@ -35891,6 +36062,7 @@ var render = function() {
                         listItem: l,
                         index: index,
                         baseUrl: _vm.content.url,
+                        isChildDeleting: _vm.content.isChildDeleting,
                         projectid: _vm.content.project
                       },
                       on: { delItem: _vm.delItem }
@@ -48063,11 +48235,11 @@ var render = function() {
                                 staticClass: "createBtn",
                                 on: {
                                   click: function($event) {
-                                    _vm.createProject()
+                                    _vm.createBot = false
                                   }
                                 }
                               },
-                              [_vm._v("Create")]
+                              [_vm._v("Cancel")]
                             ),
                             _vm._v(" "),
                             _c(
@@ -48076,11 +48248,11 @@ var render = function() {
                                 staticClass: "createBtn",
                                 on: {
                                   click: function($event) {
-                                    _vm.createBot = false
+                                    _vm.createProject()
                                   }
                                 }
                               },
-                              [_vm._v("Cancel")]
+                              [_vm._v("Create")]
                             )
                           ]),
                           _vm._v(" "),
@@ -48108,47 +48280,47 @@ var render = function() {
           _vm.loading
             ? [_vm._m(3)]
             : _vm._l(_vm.$store.state.projectList, function(project, index) {
-                return _c("div", { key: index }, [
-                  _c("div", { staticClass: "cardList" }, [
-                    _c("figure", { staticClass: "addIcon" }, [
-                      _c("img", {
-                        staticClass: "projectIcon",
-                        attrs: {
-                          src: project.image
-                            ? project.image
-                            : "/images/sample/logo.png"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
+                return _c(
+                  "div",
+                  { key: index },
+                  [
                     _c(
-                      "div",
-                      { staticClass: "btnProject" },
+                      "router-link",
+                      {
+                        staticClass: "projectName",
+                        attrs: {
+                          to: {
+                            name: "project.home",
+                            params: { projectid: project.id }
+                          }
+                        }
+                      },
                       [
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "projectName",
-                            attrs: {
-                              to: {
-                                name: "project.home",
-                                params: { projectid: project.id }
+                        _c("div", { staticClass: "cardList" }, [
+                          _c("figure", { staticClass: "addIcon" }, [
+                            _c("img", {
+                              staticClass: "projectIcon",
+                              attrs: {
+                                src: project.image
+                                  ? project.image
+                                  : "/images/sample/logo.png"
                               }
-                            }
-                          },
-                          [
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "btnProject" }, [
                             _vm._v(
                               "\n                                " +
                                 _vm._s(project.name) +
                                 "\n                            "
                             )
-                          ]
-                        )
-                      ],
-                      1
+                          ])
+                        ])
+                      ]
                     )
-                  ])
-                ])
+                  ],
+                  1
+                )
               })
         ],
         2

@@ -15,6 +15,7 @@ export default class ListContentModel extends ChatBlockContentModel {
     private buttonCreating: boolean = false;
     private buttonToken: CancelTokenSource = Axios.CancelToken.source();
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
+    private delChild: number = -1;
 
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
@@ -73,6 +74,14 @@ export default class ListContentModel extends ChatBlockContentModel {
         this.buttonEdit = status;
     }
 
+    get isChildDeleting(): number {
+        return this.delChild;
+    }
+
+    set isChildDeleting(index: number) {
+        this.delChild = index;
+    }
+
     async addButton() {
         this.addingNewBtn = true;
 
@@ -128,6 +137,7 @@ export default class ListContentModel extends ChatBlockContentModel {
     }
 
     async delItem(index: number) {
+        this.isChildDeleting = index;
         await Axios({
             url: `${this.rootUrl}/list/${this.item[index].id}`,
             method: 'delete',
@@ -138,5 +148,6 @@ export default class ListContentModel extends ChatBlockContentModel {
                 this.errorMesg = this.globalHandler(err, 'Failed to delete a list!');
             }
         });
+        this.isChildDeleting = -1;
     }
 }

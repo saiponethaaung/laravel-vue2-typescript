@@ -10884,7 +10884,7 @@ a.text-dark:focus {
   -ms-flex-pack: distribute;
       justify-content: space-around;
   height: 40px;
-  margin-top: 18px;
+  margin-top: 7px;
 }
 
 #headerContent .headerSidebar .projectIconWrapper {
@@ -10934,6 +10934,62 @@ a.text-dark:focus {
   line-height: 72px;
   border-bottom: 1px solid #ebebeb;
   padding: 0 15px;
+}
+
+.createProject .popFixedContainer .userAttributePop {
+  max-height: 200px;
+  background: #f5f6f7;
+}
+
+.createProject .popFixedContainer .filterAttribute {
+  width: 350px;
+}
+
+.createProject .popFixedContainer .filterAttribute .createReply .createProjectNav {
+  background-color: #f5f6f7;
+  border-bottom: 1px solid #e5e5e5;
+  line-height: 41px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 5px;
+}
+
+.createProject .popFixedContainer .filterAttribute .createReply .createProjectNav .createTitle {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.createProject .popFixedContainer .filterAttribute .createReply .projectInputName {
+  margin: 30px;
+}
+
+.createProject .popFixedContainer .filterAttribute .createReply .projectInputName .inputName {
+  width: 290px;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+}
+
+.createProject .popFixedContainer .filterAttribute .createReply .alignBtn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  float: right;
+  margin-right: 20px;
+}
+
+.createProject .popFixedContainer .filterAttribute .createReply .alignBtn .createBtn {
+  width: 60px;
+  margin-right: 10px;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #000000;
+  cursor: pointer;
+}
+
+.createProject .popFixedContainer .filterAttribute .createReply .alignBtn .createBtn:hover {
+  color: #c238eb;
 }
 
 #innnerContent {
@@ -11121,6 +11177,7 @@ a:hover {
   text-align: center;
   line-height: 15px;
   color: #aaaaaa;
+  margin-top: 10px;
 }
 
 .chatBotHeading {
@@ -13861,11 +13918,20 @@ input.required::placeholder {
   height: 30px;
   line-height: 30px;
   padding: 0 7px;
-  display: inline-block;
 }
 
 .attributePanel .attributeTable .attrTitle {
   width: 154px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.attributePanel .attributeTable .attrTitle:hover {
+  overflow: visible;
+  position: absolute;
+  cursor: pointer;
 }
 
 .attributePanel .attributeTable .attrValue {
@@ -15614,12 +15680,10 @@ input.required::placeholder {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  background: #f7f6f6;
   border-radius: 5px;
   margin-top: 20px;
   margin-left: 40px;
   margin-bottom: 30px;
-  color: #c238eb;
 }
 
 .outerCardList {
@@ -15676,7 +15740,7 @@ input.required::placeholder {
   display: flex;
   font-size: 18px;
   cursor: pointer;
-  color: #ffffff;
+  color: #000000;
   font-weight: bold;
   text-align: center;
   margin-top: 30px;
@@ -15685,8 +15749,20 @@ input.required::placeholder {
           justify-content: center;
 }
 
+.cardList .btnProject:hover {
+  color: #c238eb;
+}
+
 .addBgColor {
   background: #c238eb;
+}
+
+.addBgColor .btnProject {
+  color: #ffffff;
+}
+
+.addBgColor .btnProject:hover {
+  color: #ffffff;
 }
 
 .projectName {
@@ -15741,8 +15817,12 @@ input.required::placeholder {
   border: 1px solid #e2e2e2;
   border-radius: 5px;
   background: #ffffff;
-  color: #c238eb;
+  color: #000000;
   cursor: pointer;
+}
+
+.alignBtn .createBtn:hover {
+  color: #c238eb;
 }
 
 .aiContainerRoot {

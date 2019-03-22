@@ -7,7 +7,7 @@
                     <div class="chatInfoPanel">
                         <div class="chatHisCon" v-on:scroll="scrollCallback()">
                             <div class="chatHisRoot" ref="chatBox">
-                                <template v-if="prevLoading">Loading...</template>
+                                <template>Loading...</template>
                                 <template v-for="(mesg, index) in mesgList">
                                     <div v-if="mesg.contentType!==2 && mesg.contentType!==3"
                                             :key="index">

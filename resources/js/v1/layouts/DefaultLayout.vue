@@ -27,7 +27,7 @@
                     >
                         <i class="material-icons">question_answer</i>
                         <span class="icon-label">Inbox</span>
-                        <!-- <div class="reddot"></div> -->
+                        <div class="reddot" v-if="$store.state.haveLiveChat"></div>
                     </router-link>
                 </li>
                 <li>

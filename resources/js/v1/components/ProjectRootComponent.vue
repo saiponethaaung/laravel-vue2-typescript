@@ -38,6 +38,7 @@ export default class ProjectRootComponent extends Vue {
                 this.$store.commit("setProjectInfo", {
                     project: res.data.data
                 });
+                this.$store.state.haveLiveChat = res.data.data.haveLiveChat;
             })
             .catch((err: any) => {
                 if (err.response) {

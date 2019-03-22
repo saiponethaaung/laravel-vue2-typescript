@@ -34,6 +34,7 @@
                         :class="{'required': listItem.title=='' && listItem.canShowError}"
                         v-on:blur="listItem.saveContent()"
                     >
+                    <div class="reddot" v-if="listItem.canShowError && listItem.title!=='' && (listItem.sub==='' && listItem.image==='' && listItem.buttons.length==0)"></div>
                     <span class="limitGalleryTitle limitSub">{{ listItem.textLimitTitle }}</span>
                 </div>
                 <div class="inputConLimitWrapper">
@@ -139,5 +140,6 @@ export default class GalleryItemComponent extends Vue {
 
     @Emit("delItem")
     deleteItem(index: any) {}
+
 }
 </script>

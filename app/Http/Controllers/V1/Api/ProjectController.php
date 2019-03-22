@@ -119,11 +119,13 @@ class ProjectController extends Controller
             'pageId' => config('facebook.defaultPageId'),
             'testingPageId' => config('facebook.defaultPageId'),
             'pageConnected' => false,
-            'publish' => false
+            'publish' => false,
+            'haveLiveChat' => false,
         ];
 
         $reAuth = false;
         $pageInfo = null;
+        $liveChat = 0;
 
         if(is_null($project->project->page)==false) {
             // @codeCoverageIgnoreStart
@@ -148,6 +150,12 @@ class ProjectController extends Controller
                 ProjectPage::where('id', $project->project->page->id)->update([
                     'page_icon' => $pageInfo['data']['picture']['url']
                 ]);
+                $liveChat = ProjectPageUser::where('live_chat', 1)->count();
+                if($liveChat > 0) {
+                    $res['haveLiveChat'] = true;
+                } else {
+                    $res['haveLiveChat'] = false;
+                }
             } else {
                 $reAuth = true;
             }
@@ -159,7 +167,7 @@ class ProjectController extends Controller
             'code' => 200,
             'data' => $res,
             'reAuthenticate' => $reAuth,
-            'raw' => $pageInfo
+            'raw' => $pageInfo,
         ]);
     }
     
@@ -205,7 +213,7 @@ class ProjectController extends Controller
 
         return response()->json([
             'status' => true,
-            'code' => 200,
+            'code' => 210,
             'data' => $res
         ], 200);
     }

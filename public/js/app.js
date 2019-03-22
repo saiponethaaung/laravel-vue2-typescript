@@ -29422,7 +29422,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -30891,7 +30891,11 @@ var render = function() {
                   _vm._v("question_answer")
                 ]),
                 _vm._v(" "),
-                _c("span", { staticClass: "icon-label" }, [_vm._v("Inbox")])
+                _c("span", { staticClass: "icon-label" }, [_vm._v("Inbox")]),
+                _vm._v(" "),
+                _vm.$store.state.haveLiveChat
+                  ? _c("div", { staticClass: "reddot" })
+                  : _vm._e()
               ]
             )
           ],
@@ -31527,7 +31531,7 @@ var content = __webpack_require__(76);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(78)("567c3d80", content, false, {});
+var update = __webpack_require__(78)("7c379b60", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -33459,6 +33463,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
         this.showSuggest = false;
         this.keySuggestion = [];
         this.keyCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+        this.loading = false;
     }
     closeContent(status) {
         this.keySuggestion = [];
@@ -33482,6 +33487,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
     }
     loadSuggestion() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.loading = true;
             let suggestion = yield this.ajaxHandler.searchSections(this.blockKeyword, this.projectid);
             if (suggestion.type === "cancel")
                 return;
@@ -33490,6 +33496,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
                 return;
             }
             this.blockList = suggestion.data;
+            this.loading = false;
         });
     }
     addBlock(block, section) {
@@ -33832,42 +33839,53 @@ var render = function() {
                                 _c(
                                   "div",
                                   { staticClass: "sugContainer" },
-                                  _vm._l(_vm.blockList, function(b, index) {
-                                    return _c(
-                                      "div",
-                                      { key: index, staticClass: "sugBlock" },
-                                      [
-                                        _c(
-                                          "div",
-                                          { staticClass: "sugBlockTitle" },
-                                          [_vm._v(_vm._s(b.title))]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "div",
-                                          { staticClass: "sugBlockSec" },
-                                          _vm._l(b.contents, function(
-                                            s,
-                                            sindex
-                                          ) {
-                                            return _c(
-                                              "div",
-                                              {
-                                                key: sindex,
-                                                staticClass: "sugBlockSecTitle",
-                                                on: {
-                                                  click: function($event) {
-                                                    _vm.addBlock(index, sindex)
+                                  [
+                                    _vm.loading
+                                      ? _c("div", [_vm._v("Loading...")])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm._l(_vm.blockList, function(b, index) {
+                                      return _c(
+                                        "div",
+                                        { key: index, staticClass: "sugBlock" },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "sugBlockTitle" },
+                                            [_vm._v(_vm._s(b.title))]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "sugBlockSec" },
+                                            _vm._l(b.contents, function(
+                                              s,
+                                              sindex
+                                            ) {
+                                              return _c(
+                                                "div",
+                                                {
+                                                  key: sindex,
+                                                  staticClass:
+                                                    "sugBlockSecTitle",
+                                                  on: {
+                                                    click: function($event) {
+                                                      _vm.addBlock(
+                                                        index,
+                                                        sindex
+                                                      )
+                                                    }
                                                   }
-                                                }
-                                              },
-                                              [_vm._v(_vm._s(s.title))]
-                                            )
-                                          })
-                                        )
-                                      ]
-                                    )
-                                  })
+                                                },
+                                                [_vm._v(_vm._s(s.title))]
+                                              )
+                                            })
+                                          )
+                                        ]
+                                      )
+                                    })
+                                  ],
+                                  2
                                 )
                               ]
                             : _vm._e()
@@ -35769,6 +35787,14 @@ var render = function() {
                 }
               }
             }),
+            _vm._v(" "),
+            _vm.listItem.canShowError &&
+            _vm.listItem.title !== "" &&
+            (_vm.listItem.sub === "" &&
+              _vm.listItem.image === "" &&
+              _vm.listItem.buttons.length == 0)
+              ? _c("div", { staticClass: "reddot" })
+              : _vm._e(),
             _vm._v(" "),
             _c("span", { staticClass: "limitGalleryTitle limitSub" }, [
               _vm._v(_vm._s(_vm.listItem.textLimitTitle))
@@ -48483,6 +48509,7 @@ let ProjectRootComponent = class ProjectRootComponent extends __WEBPACK_IMPORTED
                 this.$store.commit("setProjectInfo", {
                     project: res.data.data
                 });
+                this.$store.state.haveLiveChat = res.data.data.haveLiveChat;
             })
                 .catch((err) => {
                 if (err.response) {
@@ -54615,9 +54642,7 @@ var render = function() {
                                 "div",
                                 { ref: "chatBox", staticClass: "chatHisRoot" },
                                 [
-                                  _vm.prevLoading
-                                    ? [_vm._v("Loading...")]
-                                    : _vm._e(),
+                                  [_vm._v("Loading...")],
                                   _vm._v(" "),
                                   _vm._l(_vm.mesgList, function(mesg, index) {
                                     return [
@@ -63585,6 +63610,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         errorMesg: [],
         sessionIdentifier: localStorage.getItem('session_identifier'),
         passwordVerify: false,
+        haveLiveChat: false,
     },
     mutations: {
         logout(state) {

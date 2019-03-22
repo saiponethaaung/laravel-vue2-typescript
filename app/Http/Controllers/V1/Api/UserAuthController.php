@@ -18,7 +18,10 @@ use PragmaRX\Google2FA\Google2FA;
 
 use App\Http\Controllers\V1\Api\FacebookController;
 
+use App\Notifications\SendQrCode;
 use App\Notifications\SendEmailVerificationToken;
+
+use App\Traits\Common\GenerateUniqueOTPCodeTrait;
 
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
@@ -226,6 +229,9 @@ class UserAuthController extends Controller
             $user->save();
             $token->status = 0;
             $token->save();
+            $user->auth_code = $this->generateUniqueCode();
+            $user->save();
+            $user->notify(new SendQrCode($this->getImageQr($user->id)));
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
@@ -240,7 +246,7 @@ class UserAuthController extends Controller
         return response()->json([
             'status' => true,
             'code' => 200,
-            'mesg' => 'success'
+            'mesg' => 'Qrcode is send to your email.'
         ]);
     }
 

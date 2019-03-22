@@ -74,7 +74,7 @@ class Kernel extends HttpKernel
         'verifyAIGroup' => \App\Http\Middleware\AI\ValidateGroupId::class,
         'verifyAIGroupRule' => \App\Http\Middleware\AI\ValidateRuleId::class,
         'verifyAIGroupRuleResponse' => \App\Http\Middleware\AI\ValidateResponseId::class,
-        'verifyUserSession' => \App\Http\Middleware\verifyUserSession::class,
+        'verifyUserSession' => \App\Http\Middleware\VerifyUserSession::class,
     ];
 
     /**

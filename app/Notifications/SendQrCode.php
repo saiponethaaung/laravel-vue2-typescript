@@ -42,7 +42,7 @@ class SendQrCode extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                ->subject('Email verification code')
+                ->subject('QR code')
                 ->markdown('v1.mail.qrCode', ['qrImage' => $this->qrImage]);
     }
 

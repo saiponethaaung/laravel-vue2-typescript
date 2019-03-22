@@ -22,6 +22,7 @@ Route::any('/queue-tester', 'TestController@startQueue');
 Route::post('/user/login', 'V1\\Api\\UserAuthController@login')->name('api.login');
 Route::post('/user/register', 'V1\\Api\\UserAuthController@register')->name('api.register');
 Route::post('/user/verify', 'V1\\Api\\UserAuthController@verifyToken')->name('api.verify');
+Route::post('/user/otp-resend', 'V1\\Api\\UserAuthController@resendOtp')->name('api.otp.resend');
 Route::get('/qr', 'V1\\Api\\UserAuthController@showQrCode')->name('api.qr.generate');
 
 Route::any('/facebook/chatbot/$2y$12$uyP735FKW7vuSYmlAEhF/OOoo1vCaWZN7zIEeFEhYbAw2qv8X4ffe', 'V1\\Api\\FacebookChatbotController@index');

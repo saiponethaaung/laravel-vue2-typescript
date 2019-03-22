@@ -31,7 +31,7 @@ use BaconQrCode\Writer;
 class UserAuthController extends Controller
 {
     use GenerateUniqueOTPCodeTrait;
-    
+
     public function login(Request $request)
     {
         $input = $request->only('email', 'otp');
@@ -231,6 +231,8 @@ class UserAuthController extends Controller
             $user->save();
             $token->status = 0;
             $token->save();
+
+            // Otp to user
             $user->auth_code = $this->generateUniqueCode();
             $user->save();
             $user->notify(new SendQrCode($this->getImageQr($user->id)));
@@ -326,5 +328,46 @@ class UserAuthController extends Controller
 
         $writer = new Writer($renderer);
         return $writer->writeString($qrCodeUrl);
+    }
+
+    public function resendOtp(Request $request)
+    {
+        $input = $request->only('email');
+
+        $validator = Validator::make($input, [
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        $user = User::where('email', $input['email'])->first();
+
+        try {
+            // Otp to user
+            $user->notify(new SendQrCode($this->getImageQr($user->id)));
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to verify!'
+            ], 422);
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Qrcode is send to your email.'
+        ]);
+    }
+
+    public function resendPassword(Request $request)
+    {
+        
     }
 }

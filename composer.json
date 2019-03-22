@@ -34,7 +34,8 @@
             "database/factories"
         ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "PixyBots\\": "app/PixyBots/"
         }
     },
     "autoload-dev": {

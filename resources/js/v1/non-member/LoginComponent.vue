@@ -30,7 +30,8 @@
                     </div>
                     <div class="form-group">
                         <p class="nonMemberFormNote">Not a member? Register
-                            <router-link :to="{name: 'register'}">here</router-link>
+                            <router-link :to="{name: 'register'}">here</router-link>.<br/>
+                            Lost your otp? Retrive <router-link :to="{name: 'qrcode.resend'}">here</router-link>.
                         </p>
                     </div>
                     <div class="form-group text-center">

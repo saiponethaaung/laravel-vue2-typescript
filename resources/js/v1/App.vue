@@ -10,7 +10,7 @@
         </template>
         <template v-else>
             <template v-if="!$store.state.autheticating">
-                <template v-if="$route.name==='register' || $route.name==='verify'">
+                <template v-if="$route.name==='register' || $route.name==='verify' || $route.name==='qrcode.resend'">
                     <router-view></router-view>
                 </template>
                 <template v-else>

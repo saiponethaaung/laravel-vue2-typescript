@@ -1,39 +1,29 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-
-import Example from '../Example.vue';
-
-import RouterViewComponent from '../configuration/RouterViewComponent.vue';
-
+import AIComponent from '../components/ai/AIComponent.vue';
+import BroadcastComponent from '../components/broadcast/BroadcastComponent.vue';
+import BroadcastScheduleComponent from '../components/broadcast/BroadcastScheduleComponent.vue';
+import BroadcastSendNowComponent from '../components/broadcast/BroadcastSendNowComponent.vue';
+import BroadcastSidebarComponent from '../components/broadcast/BroadcastSidebarComponent.vue';
+import BroadcastTriggerComponent from '../components/broadcast/BroadcastTriggerComponent.vue';
+import ChatBotComponent from '../components/chatbot/ContentComponent.vue';
+import ChatBotSidebar from '../components/chatbot/SidebarComponent.vue';
+import InboxPageComponent from '../components/inbox/InboxPageComponent.vue';
+import InboxPageSidebarComponent from '../components/inbox/InboxPageSidebarComponent.vue';
 import ProjectListComponent from '../components/ProjectListComponent.vue';
 import ProjectRootComponent from '../components/ProjectRootComponent.vue';
-
-import AIComponent from '../components/ai/AIComponent.vue';
-
-import ProjectConfigrationComponent from '../components/setting/ProjectConfigrationComponent.vue';
-import SettingSidebarComponent from '../components/setting/SettingSidebarComponent.vue';
 import AdminComponent from '../components/setting/AdminComponent.vue';
 import PersistentMenuComponent from '../components/setting/PersistentMenuComponent.vue';
 import ProfileComponent from '../components/setting/ProfileComponent.vue';
-
-import ChatBotComponent from '../components/chatbot/ContentComponent.vue';
-import ChatBotSidebar from '../components/chatbot/SidebarComponent.vue';
-
-import InboxPageComponent from '../components/inbox/InboxPageComponent.vue';
-import InboxPageSidebarComponent from '../components/inbox/InboxPageSidebarComponent.vue';
-
-import UserListComponent from '../components/user/UserListComponent.vue';
-import UserListSidebarComponent from '../components/user/UserListSidebarComponent.vue';
+import ProjectConfigrationComponent from '../components/setting/ProjectConfigrationComponent.vue';
+import SettingSidebarComponent from '../components/setting/SettingSidebarComponent.vue';
 import UserSegmentListComponent from '../components/user/SegmentListComponent.vue';
 import UserSegmentListSidebarComponent from '../components/user/SegmentListSidebarComponent.vue';
-
-import BroadcastComponent from '../components/broadcast/BroadcastComponent.vue';
-import BroadcastSidebarComponent from '../components/broadcast/BroadcastSidebarComponent.vue';
-import BroadcastSendNowComponent from '../components/broadcast/BroadcastSendNowComponent.vue';
-import BroadcastTriggerComponent from '../components/broadcast/BroadcastTriggerComponent.vue';
-import BroadcastScheduleComponent from '../components/broadcast/BroadcastScheduleComponent.vue';
-
+import UserListComponent from '../components/user/UserListComponent.vue';
+import UserListSidebarComponent from '../components/user/UserListSidebarComponent.vue';
+import RouterViewComponent from '../configuration/RouterViewComponent.vue';
 import RegisterComponent from '../non-member/RegisterComponent.vue';
+import ResendOtpComponent from '../non-member/ResendOtpComponent.vue';
 import VerifyEmailComponent from '../non-member/VerifyEmailComponent.vue';
 
 Vue.use(VueRouter);
@@ -56,6 +46,11 @@ export default new VueRouter({
             path: '/register',
             name: 'register',
             component: RegisterComponent
+        },
+        {
+            path: '/otp-resend',
+            name: 'qrcode.resend',
+            component: ResendOtpComponent
         },
         {
             path: '/verification',

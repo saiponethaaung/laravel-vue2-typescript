@@ -30891,7 +30891,11 @@ var render = function() {
                   _vm._v("question_answer")
                 ]),
                 _vm._v(" "),
-                _c("span", { staticClass: "icon-label" }, [_vm._v("Inbox")])
+                _c("span", { staticClass: "icon-label" }, [_vm._v("Inbox")]),
+                _vm._v(" "),
+                _vm.$store.state.haveLiveChat
+                  ? _c("div", { staticClass: "reddot" })
+                  : _vm._e()
               ]
             )
           ],
@@ -33472,6 +33476,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
         this.showSuggest = false;
         this.keySuggestion = [];
         this.keyCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
+        this.loading = false;
     }
     closeContent(status) {
         this.keySuggestion = [];
@@ -33495,6 +33500,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
     }
     loadSuggestion() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.loading = true;
             let suggestion = yield this.ajaxHandler.searchSections(this.blockKeyword, this.projectid);
             if (suggestion.type === "cancel")
                 return;
@@ -33503,6 +33509,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
                 return;
             }
             this.blockList = suggestion.data;
+            this.loading = false;
         });
     }
     addBlock(block, section) {
@@ -33845,42 +33852,53 @@ var render = function() {
                                 _c(
                                   "div",
                                   { staticClass: "sugContainer" },
-                                  _vm._l(_vm.blockList, function(b, index) {
-                                    return _c(
-                                      "div",
-                                      { key: index, staticClass: "sugBlock" },
-                                      [
-                                        _c(
-                                          "div",
-                                          { staticClass: "sugBlockTitle" },
-                                          [_vm._v(_vm._s(b.title))]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "div",
-                                          { staticClass: "sugBlockSec" },
-                                          _vm._l(b.contents, function(
-                                            s,
-                                            sindex
-                                          ) {
-                                            return _c(
-                                              "div",
-                                              {
-                                                key: sindex,
-                                                staticClass: "sugBlockSecTitle",
-                                                on: {
-                                                  click: function($event) {
-                                                    _vm.addBlock(index, sindex)
+                                  [
+                                    _vm.loading
+                                      ? _c("div", [_vm._v("Loading...")])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm._l(_vm.blockList, function(b, index) {
+                                      return _c(
+                                        "div",
+                                        { key: index, staticClass: "sugBlock" },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "sugBlockTitle" },
+                                            [_vm._v(_vm._s(b.title))]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "sugBlockSec" },
+                                            _vm._l(b.contents, function(
+                                              s,
+                                              sindex
+                                            ) {
+                                              return _c(
+                                                "div",
+                                                {
+                                                  key: sindex,
+                                                  staticClass:
+                                                    "sugBlockSecTitle",
+                                                  on: {
+                                                    click: function($event) {
+                                                      _vm.addBlock(
+                                                        index,
+                                                        sindex
+                                                      )
+                                                    }
                                                   }
-                                                }
-                                              },
-                                              [_vm._v(_vm._s(s.title))]
-                                            )
-                                          })
-                                        )
-                                      ]
-                                    )
-                                  })
+                                                },
+                                                [_vm._v(_vm._s(s.title))]
+                                              )
+                                            })
+                                          )
+                                        ]
+                                      )
+                                    })
+                                  ],
+                                  2
                                 )
                               ]
                             : _vm._e()
@@ -35782,6 +35800,14 @@ var render = function() {
                 }
               }
             }),
+            _vm._v(" "),
+            _vm.listItem.canShowError &&
+            _vm.listItem.title !== "" &&
+            (_vm.listItem.sub === "" &&
+              _vm.listItem.image === "" &&
+              _vm.listItem.buttons.length == 0)
+              ? _c("div", { staticClass: "reddot" })
+              : _vm._e(),
             _vm._v(" "),
             _c("span", { staticClass: "limitGalleryTitle limitSub" }, [
               _vm._v(_vm._s(_vm.listItem.textLimitTitle))
@@ -45124,7 +45150,7 @@ Popper.Defaults = Defaults;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__configuration_RouterViewComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__configuration_RouterViewComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__non_member_RegisterComponent_vue__ = __webpack_require__(250);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__non_member_RegisterComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__non_member_RegisterComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__non_member_ResendOtpComponent_vue__ = __webpack_require__(272);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__non_member_ResendOtpComponent_vue__ = __webpack_require__(253);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__non_member_ResendOtpComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__non_member_ResendOtpComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__non_member_VerifyEmailComponent_vue__ = __webpack_require__(256);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__non_member_VerifyEmailComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__non_member_VerifyEmailComponent_vue__);
@@ -55985,9 +56011,7 @@ var render = function() {
                                 "div",
                                 { ref: "chatBox", staticClass: "chatHisRoot" },
                                 [
-                                  _vm.prevLoading
-                                    ? [_vm._v("Loading...")]
-                                    : _vm._e(),
+                                  [_vm._v("Loading...")],
                                   _vm._v(" "),
                                   _vm._l(_vm.mesgList, function(mesg, index) {
                                     return [
@@ -57992,6 +58016,7 @@ let ProjectRootComponent = class ProjectRootComponent extends __WEBPACK_IMPORTED
                 this.$store.commit("setProjectInfo", {
                     project: res.data.data
                 });
+                this.$store.state.haveLiveChat = res.data.data.haveLiveChat;
             })
                 .catch((err) => {
                 if (err.response) {
@@ -63263,9 +63288,252 @@ if (false) {
 }
 
 /***/ }),
-/* 253 */,
-/* 254 */,
-/* 255 */,
+/* 253 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(254)
+/* template */
+var __vue_template__ = __webpack_require__(255)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/non-member/ResendOtpComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-bd395ce8", Component.options)
+  } else {
+    hotAPI.reload("data-v-bd395ce8", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 254 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+let ResendOtpComponent = class ResendOtpComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.loading = false;
+        this.errorEmail = "";
+        this.verifyData = {
+            email: "",
+            code: ""
+        };
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */]();
+    }
+    sendNow() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loading = true;
+            let data = new FormData();
+            data.append("email", this.verifyData.email);
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: "/api/user/otp-resend",
+                data: data,
+                method: "POST"
+            })
+                .then(res => {
+                this.$router.push({ name: "login" });
+            })
+                .catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to verify!");
+                    this.errorEmail = mesg;
+                }
+            });
+            this.loading = false;
+        });
+    }
+};
+ResendOtpComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], ResendOtpComponent);
+/* harmony default export */ __webpack_exports__["default"] = (ResendOtpComponent);
+
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "nonMemberComponent" }, [
+    _c(
+      "div",
+      { staticClass: "nonMemberFormRoot" },
+      [
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                _vm.sendNow()
+              }
+            }
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.verifyData.email,
+                    expression: "verifyData.email"
+                  }
+                ],
+                attrs: {
+                  type: "email",
+                  id: "email",
+                  required: "",
+                  disabled: _vm.loading,
+                  placeholder: "Email"
+                },
+                domProps: { value: _vm.verifyData.email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.verifyData, "email", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c(
+                "p",
+                { staticClass: "nonMemberFormNote" },
+                [
+                  _vm._v("Not a member? Register\n                    "),
+                  _c("router-link", { attrs: { to: { name: "register" } } }, [
+                    _vm._v("here")
+                  ])
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "form-group text-center" },
+              [
+                _vm.loading
+                  ? [_vm._v("Loading...")]
+                  : [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "defaultBtn",
+                          attrs: { type: "submit" }
+                        },
+                        [_vm._v("Send OTP")]
+                      )
+                    ]
+              ],
+              2
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _vm.errorEmail !== ""
+          ? [
+              _c("error-component", {
+                attrs: { mesg: _vm.errorEmail },
+                on: {
+                  closeError: function($event) {
+                    _vm.errorEmail = ""
+                  }
+                }
+              })
+            ]
+          : _vm._e()
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("figure", [
+      _c("img", {
+        staticClass: "navIcon",
+        attrs: { src: "/images/icons/logo.png" }
+      })
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-bd395ce8", module.exports)
+  }
+}
+
+/***/ }),
 /* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -63609,6 +63877,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         errorMesg: [],
         sessionIdentifier: localStorage.getItem('session_identifier'),
         passwordVerify: false,
+        haveLiveChat: false,
     },
     mutations: {
         logout(state) {
@@ -64633,262 +64902,6 @@ var index_esm = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 262 */,
-/* 263 */,
-/* 264 */,
-/* 265 */,
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */,
-/* 271 */,
-/* 272 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(273)
-/* template */
-var __vue_template__ = __webpack_require__(274)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/v1/non-member/ResendOtpComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-bd395ce8", Component.options)
-  } else {
-    hotAPI.reload("data-v-bd395ce8", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 273 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-
-
-
-let ResendOtpComponent = class ResendOtpComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
-    constructor() {
-        super(...arguments);
-        this.loading = false;
-        this.errorEmail = "";
-        this.verifyData = {
-            email: "",
-            code: ""
-        };
-        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */]();
-    }
-    sendNow() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.loading = true;
-            let data = new FormData();
-            data.append("email", this.verifyData.email);
-            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
-                url: "/api/user/otp-resend",
-                data: data,
-                method: "POST"
-            })
-                .then(res => {
-                this.$router.push({ name: "login" });
-            })
-                .catch(err => {
-                if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to verify!");
-                    this.errorEmail = mesg;
-                }
-            });
-            this.loading = false;
-        });
-    }
-};
-ResendOtpComponent = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
-], ResendOtpComponent);
-/* harmony default export */ __webpack_exports__["default"] = (ResendOtpComponent);
-
-
-/***/ }),
-/* 274 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "nonMemberComponent" }, [
-    _c(
-      "div",
-      { staticClass: "nonMemberFormRoot" },
-      [
-        _c(
-          "form",
-          {
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                _vm.sendNow()
-              }
-            }
-          },
-          [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.verifyData.email,
-                    expression: "verifyData.email"
-                  }
-                ],
-                attrs: {
-                  type: "email",
-                  id: "email",
-                  required: "",
-                  disabled: _vm.loading,
-                  placeholder: "Email"
-                },
-                domProps: { value: _vm.verifyData.email },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.verifyData, "email", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c(
-                "p",
-                { staticClass: "nonMemberFormNote" },
-                [
-                  _vm._v("Not a member? Register\n                    "),
-                  _c("router-link", { attrs: { to: { name: "register" } } }, [
-                    _vm._v("here")
-                  ])
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "form-group text-center" },
-              [
-                _vm.loading
-                  ? [_vm._v("Loading...")]
-                  : [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "defaultBtn",
-                          attrs: { type: "submit" }
-                        },
-                        [_vm._v("Send OTP")]
-                      )
-                    ]
-              ],
-              2
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _vm.errorEmail !== ""
-          ? [
-              _c("error-component", {
-                attrs: { mesg: _vm.errorEmail },
-                on: {
-                  closeError: function($event) {
-                    _vm.errorEmail = ""
-                  }
-                }
-              })
-            ]
-          : _vm._e()
-      ],
-      2
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("figure", [
-      _c("img", {
-        staticClass: "navIcon",
-        attrs: { src: "/images/icons/logo.png" }
-      })
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-bd395ce8", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

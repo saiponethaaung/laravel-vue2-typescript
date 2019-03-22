@@ -52,6 +52,7 @@
                                 >
                                 <template v-if="blockList.length>0">
                                     <div class="sugContainer">
+                                        <div v-if="loading">Loading...</div>
                                         <div
                                             v-for="(b, index) in blockList"
                                             :key="index"
@@ -154,6 +155,7 @@ export default class ButtonComponent extends Vue {
     private showSuggest: boolean = false;
     private keySuggestion: any[] = [];
     private keyCancelToken: CancelTokenSource = Axios.CancelToken.source();
+    private loading: boolean = false;
 
     @Emit("closeContent")
     closeContent(status: boolean) {
@@ -182,6 +184,7 @@ export default class ButtonComponent extends Vue {
     }
 
     async loadSuggestion() {
+        this.loading = true;
         let suggestion = await this.ajaxHandler.searchSections(
             this.blockKeyword,
             this.projectid
@@ -195,6 +198,7 @@ export default class ButtonComponent extends Vue {
         }
 
         this.blockList = suggestion.data;
+        this.loading = false;
     }
 
     async addBlock(block: number, section: number) {

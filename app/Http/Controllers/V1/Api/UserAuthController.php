@@ -21,7 +21,7 @@ use App\Http\Controllers\V1\Api\FacebookController;
 use App\Notifications\SendEmailVerificationToken;
 
 use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 
@@ -306,7 +306,7 @@ class UserAuthController extends Controller
         
         $renderer = new ImageRenderer(
             new RendererStyle(400),
-            new SvgImageBackEnd()
+            new ImagickImageBackEnd()
         );
         
         $google2Fa = new Google2FA();

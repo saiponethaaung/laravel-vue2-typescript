@@ -30,6 +30,8 @@ use BaconQrCode\Writer;
 
 class UserAuthController extends Controller
 {
+    use GenerateUniqueOTPCodeTrait;
+    
     public function login(Request $request)
     {
         $input = $request->only('email', 'otp');

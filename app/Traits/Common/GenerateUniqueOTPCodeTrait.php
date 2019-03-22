@@ -23,14 +23,8 @@ trait GenerateUniqueOTPCodeTrait
         return $code;
     }
 
-    public function getImageQr($email, $code)
+    public function getImageQr($id)
     {
-        $g2fa = new Google2FA();
-        $g2fa->setAllowInsecureCallToGoogleApis(true);
-        return $g2fa->getQRCodeGoogleUrl(
-            env('APP_NAME'),
-            $email,
-            $code
-        );
+        return route('api.qr.generate', ['userid' => md5($id)]);
     }
 }

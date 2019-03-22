@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\Api;
 use DB;
 use Auth;
 use Hash;
+use Agent;
 use Validator;
 
 use Illuminate\Http\Request;
@@ -126,7 +127,7 @@ class UserAuthController extends Controller
             'code' => 200,
             'mesg' => "Login Success",
             'token' => $token->accessToken,
-            'sessionIdentifier' => $adminSession->identifier,
+            'sessionIdentifier' => $userSession->identifier,
             'isVerify' => true
         ]);
     }
@@ -240,6 +241,52 @@ class UserAuthController extends Controller
             'status' => true,
             'code' => 200,
             'mesg' => 'success'
+        ]);
+    }
+
+    public function verifyPassword(Request $request) {
+        $input = $request->only('password');
+
+        $validator = Validator::make($input, [
+            'password' => 'required',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => $validator->errors()->all()[0]
+            ], 422);
+        }
+
+        if(!Hash::check($input['password'], Auth::guard('api')->user()->password)) {
+            if($request->attributes->get('sessionInfo')->wrong_attempted<3) {
+                $request->attributes->get('sessionInfo')->wrong_attempted++;
+                $request->attributes->get('sessionInfo')->save();
+            } else {
+                $request->attributes->get('sessionInfo')->is_valid = 0;
+                $request->attributes->get('sessionInfo')->save();
+                return response()->json([
+                    'status' => false,
+                    'code' => 401,
+                    'mesg' => 'You have type wrong password 3 times please login with email again!'
+                ], 401);
+            }
+
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Wrong password!'
+            ], 422);
+        }
+
+        $request->attributes->get('sessionInfo')->is_verify = 1;
+        $request->attributes->get('sessionInfo')->save();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Password verification success!'
         ]);
     }
 

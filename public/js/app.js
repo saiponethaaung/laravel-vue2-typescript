@@ -25332,7 +25332,7 @@ __WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */].beforeEac
             }
             else {
                 __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.isLogin = true;
-                __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.user = res.data;
+                __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.user = res.data.data.profile;
                 __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.passwordVerify = res.data.data.passwordVerify;
             }
         }).catch(err => {
@@ -31882,7 +31882,7 @@ var render = function() {
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.loginNow($event)
+                      _vm.loginNow()
                     }
                   }
                 },
@@ -32012,7 +32012,7 @@ var render = function() {
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.verifyPassword($event)
+                      _vm.verifyPassword()
                     }
                   }
                 },
@@ -32162,7 +32162,7 @@ var render = function() {
     "div",
     {},
     [
-      _vm.$store.state.isLogin
+      _vm.$store.state.isLogin && _vm.$store.state.passwordVerify
         ? [
             _vm.$route.name !== "home"
               ? [_c("default-layout")]

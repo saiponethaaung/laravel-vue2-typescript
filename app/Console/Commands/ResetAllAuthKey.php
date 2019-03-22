@@ -48,7 +48,7 @@ class ResetAllAuthKey extends Command
         foreach($users as $user) {
             $user->auth_code = $this->generateUniqueCode();
             $user->save();
-            $user->notify(new SendQrCode($this->getImageQr($user->email, $user->auth_code)));
+            $user->notify(new SendQrCode($this->getImageQr($user->id)));
         }
     }
 }

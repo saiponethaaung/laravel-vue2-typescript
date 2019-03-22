@@ -2,7 +2,7 @@
     <div class="nonMemberComponent">
         <div class="nonMemberFormRoot">
             <template v-if="$store.state.token===null">
-                <form @submit.prevent="loginNow">
+                <form @submit.prevent="loginNow()">
                     <figure>
                         <img src="/images/icons/logo.png" class="navIcon">
                     </figure>
@@ -45,7 +45,7 @@
                 </form>
             </template>
             <template v-else>
-                <form @submit.prevent="verifyPassword">
+                <form @submit.prevent="verifyPassword()">
                     <figure>
                         <img src="/images/icons/logo.png" class="navIcon">
                     </figure>

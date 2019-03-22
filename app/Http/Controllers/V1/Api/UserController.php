@@ -19,6 +19,9 @@ class UserController extends Controller
 {
     public function getProfile(Request $request)
     {
+        $request->attributes->get('sessionInfo')->last_login = gmdate('Y-m-d H:i:s');
+        $request->attributes->get('sessionInfo')->save();
+
         $user = $request->user();
         $user['facebook_connected'] = true;
 
@@ -41,7 +44,15 @@ class UserController extends Controller
         // unset($user['facebook']);
         unset($user['facebook_token']);
 
-        return $user;
+        return [
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success',
+            'data' => [
+                'profile' => $user,
+                'passwordVerify' => $request->attributes->get('sessionInfo')->is_verify==0 ? false : true
+            ]
+        ];
     }
 
     public function connectFacebook(Request $request)

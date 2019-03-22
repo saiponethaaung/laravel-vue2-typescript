@@ -70,7 +70,7 @@ router.beforeEach(async (to, from, next) => {
                 router.push({ name: 'home' });
             } else {
                 store.state.isLogin = true;
-                store.state.user = res.data;
+                store.state.user = res.data.data.profile;
                 store.state.passwordVerify = res.data.data.passwordVerify;
             }
         }).catch(err => {

@@ -1,6 +1,6 @@
 <template>
     <div class>
-        <template v-if="$store.state.isLogin">
+        <template v-if="$store.state.isLogin && $store.state.passwordVerify">
             <template v-if="$route.name!=='home'">
                 <default-layout></default-layout>
             </template>
@@ -22,7 +22,10 @@
             <div class="floatingLoading">Loading...</div>
         </template>
         <template v-if="$store.state.errorMesg.length>0">
-            <error-component :mesg="$store.state.errorMesg[0]" @closeError="$store.state.errorMesg.splice(0, 1)"></error-component>
+            <error-component
+                :mesg="$store.state.errorMesg[0]"
+                @closeError="$store.state.errorMesg.splice(0, 1)"
+            ></error-component>
         </template>
     </div>
 </template>

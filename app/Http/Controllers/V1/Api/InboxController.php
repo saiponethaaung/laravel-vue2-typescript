@@ -7,6 +7,7 @@ use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Models\ProjectPage;
 use App\Models\ProjectPageUser;
 use App\Models\ProjectPageUserFav;
 use App\Models\ProjectPageUserChat;
@@ -207,7 +208,7 @@ class InboxController extends Controller
     }
 
     public function changeLiveChatStatus(Request $request)
-    {
+    {       
         if(is_null($request->input('status')) || empty($request->input('status')) || !in_array($request->input('status'), ['true', 'false'])) {
             return response()->json([
                 'status' => false,
@@ -218,9 +219,20 @@ class InboxController extends Controller
 
         DB::beginTransaction();
 
+        $res = [
+            'haveLiveChat' => false
+        ];
+
         try {
             $request->attributes->get('project_page_user')->live_chat = $request->input('status')==='true' ? 1 : 0;
             $request->attributes->get('project_page_user')->save();
+
+            $live = ProjectPageUser::where('project_page_id', $request->attributes->get('project_page')->id)->where('live_chat', 1)->count();
+            if($live > 0) {
+                $res['haveLiveChat'] = true;
+            } else {
+                $res['haveLiveChat'] = false;
+            }
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
@@ -235,6 +247,7 @@ class InboxController extends Controller
         return response()->json([
             'status' => true,
             'code' => 200,
+            'data' => $res,
             'mesg' => 'success'
         ]);
     }

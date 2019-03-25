@@ -55019,6 +55019,7 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                     status: true
                 });
                 this.$store.state.chatFilter = 0;
+                this.$store.state.haveLiveChat = true;
             })
                 .catch(err => { });
         });
@@ -55038,6 +55039,7 @@ let InboxPageComponent = class InboxPageComponent extends __WEBPACK_IMPORTED_MOD
                     status: false
                 });
                 this.$store.state.chatFilter = 1;
+                this.$store.state.haveLiveChat = res.data.data.haveLiveChat;
             })
                 .catch(err => { });
         });

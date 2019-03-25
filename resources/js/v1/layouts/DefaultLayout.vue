@@ -152,8 +152,8 @@
                                         <input class="inputName" placeholder="Enter project name" v-model="projectName" />
                                     </div>
                                     <div class="alignBtn">
-                                        <button class="createBtn" @click="createProject()">Create</button>
                                         <button class="createBtn" @click="createBot = false">Cancel</button>
+                                        <button class="createBtn" @click="createProject()">Create</button>
                                     </div>
                                 </div>
                             </div>

@@ -552,6 +552,7 @@ export default class InboxPageComponent extends Vue {
                     status: true
                 });
                 this.$store.state.chatFilter = 0;
+                this.$store.state.haveLiveChat = true;
             })
             .catch(err => {});
     }
@@ -573,6 +574,7 @@ export default class InboxPageComponent extends Vue {
                     status: false
                 });
                 this.$store.state.chatFilter = 1;
+                this.$store.state.haveLiveChat = res.data.data.haveLiveChat;
             })
             .catch(err => {});
     }

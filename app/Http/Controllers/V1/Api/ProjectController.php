@@ -150,7 +150,7 @@ class ProjectController extends Controller
                 ProjectPage::where('id', $project->project->page->id)->update([
                     'page_icon' => $pageInfo['data']['picture']['url']
                 ]);
-                $liveChat = ProjectPageUser::where('live_chat', 1)->count();
+                $liveChat = ProjectPageUser::where('project_page_id', $project->project->page->id)->where('live_chat', 1)->count();
                 if($liveChat > 0) {
                     $res['haveLiveChat'] = true;
                 } else {

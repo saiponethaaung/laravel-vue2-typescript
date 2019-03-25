@@ -2,9 +2,13 @@
     <div class="inheritHFW">
         <template v-if="$store.state.chatBot.section>0 && $store.state.chatBot.block>0">
             <template v-if="isLoading">
-                Loading...
+                <div class="contentRoot">
+                    <div class="builderSectionInfo">
+                        Loading...
+                    </div>
+                </div>
             </template>
-            <template v-else>
+            <template v-else-if="section!==null">
                 <builder-component
                     :isBroadcast="false"
                     :value="contents"
@@ -54,16 +58,14 @@ export default class ContentComponent extends Vue {
         }).then((res: any) => {
             this.contents = res.data.content;
             this.section = res.data.section;
+            this.isLoading = false;
         }).catch((err: any) => {
             if(err.response) {
                 let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
                 alert(mesg);
-            } else {
-                this.loadingToken.cancel();
+                this.isLoading = false;
             }
         });
-
-        this.isLoading = false;
     }
 }
 </script>

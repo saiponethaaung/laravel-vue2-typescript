@@ -53909,16 +53909,14 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
             }).then((res) => {
                 this.contents = res.data.content;
                 this.section = res.data.section;
+                this.isLoading = false;
             }).catch((err) => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
                     alert(mesg);
-                }
-                else {
-                    this.loadingToken.cancel();
+                    this.isLoading = false;
                 }
             });
-            this.isLoading = false;
         });
     }
 };
@@ -53946,8 +53944,9 @@ var render = function() {
       _vm.$store.state.chatBot.section > 0 && _vm.$store.state.chatBot.block > 0
         ? [
             _vm.isLoading
-              ? [_vm._v("\n            Loading...\n        ")]
-              : [
+              ? [_vm._m(0)]
+              : _vm.section !== null
+              ? [
                   _c("builder-component", {
                     attrs: {
                       isBroadcast: false,
@@ -53956,13 +53955,24 @@ var render = function() {
                     }
                   })
                 ]
+              : _vm._e()
           ]
-        : [_vm._m(0)]
+        : [_vm._m(1)]
     ],
     2
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "contentRoot" }, [
+      _c("div", { staticClass: "builderSectionInfo" }, [
+        _vm._v("\n                    Loading...\n                ")
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -54609,7 +54619,9 @@ var render = function() {
                                       [
                                         _c(
                                           "i",
-                                          { staticClass: "material-icons" },
+                                          {
+                                            staticClass: "material-icons spin"
+                                          },
                                           [_vm._v("autorenew")]
                                         )
                                       ]
@@ -54693,7 +54705,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "delPopActionFooter" }, [
-                _c("div", [
+                _c("div", { staticClass: "delPopActionCon" }, [
                   _c(
                     "button",
                     {

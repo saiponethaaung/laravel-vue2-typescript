@@ -54,7 +54,7 @@
                                 <i class="material-icons">add</i>
                             </div>
                             <div slot="footer" v-else class="chatBlockContent addMore ignore-block">
-                                <i class="material-icons">autorenew</i>
+                                <i class="material-icons spin">autorenew</i>
                             </div>
                         </draggable>
                     </template>
@@ -89,7 +89,7 @@
                     </ul>
                 </div>
                 <div class="delPopActionFooter">
-                    <div>
+                    <div class="delPopActionCon">
                         <button @click="showDelConfirm=false;delBlockIndex=-1;">Cancel</button>
                         <button
                             @click="blocks[delBlockIndex].allowDelete=true;showDelConfirm=false;deleteChatBlock();"

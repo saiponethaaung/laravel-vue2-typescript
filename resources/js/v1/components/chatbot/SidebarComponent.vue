@@ -1,111 +1,114 @@
 <template>
-  <div>
-    <h3 class="chatBotHeading">Chatbot</h3>
-    <template v-if="blockLoading">Loading...</template>
-    <template v-else>
-      <draggable v-model="blocks" @end="updateBlockOrder" handle="orderBlock">
-        <div v-for="(block, index) in blocks" :key="index" class="chatBlock">
-          <template v-if="block.lock">
-            <h5 class="chatBlockHeading">{{ block.title }}</h5>
-            <div class="chatBlockContentList">
-              <div
-                v-for="(section, sIndex) in block.sections"
-                :key="sIndex"
-                class="chatBlockContent"
-                @click="selectBlock(index, sIndex)"
-                :class="{'selectedBlock': selectedBlock==section.id}"
-              >
-                {{ section.title }}
-                <!-- <div class="errorAlert"></div> -->
-              </div>
-            </div>
-          </template>
-          <template v-else>
-            <input
-              type="text"
-              v-model="block.title"
-              @blur="updateBlock(index)"
-              class="chatBlockHeading"
-              :disabled="block.updating"
-            >
-            <div class="chatBlockControl">
-              <button @click="delBlockIndex=index">
-                <i class="material-icons">delete</i>
-              </button>
-            </div>
-            <!-- <div class="orderBlock">order</div> -->
-            <draggable
-              class="chatBlockContentList"
-              v-model="block.sections"
-              draggable=".sortCBC"
-              filter=".ignore-block"
-              @end="updateSectionOrder(index)"
-            >
-              <div
-                v-for="(section, sIndex) in block.sections"
-                :key="`${index}-${sIndex}`"
-                class="chatBlockContent sortCBC"
-                @click="selectBlock(index, sIndex)"
-                :class="{'selectedBlock': selectedBlock==section.id}"
-              >
-                {{ section.shortenTitle }}
-                <!-- <div class="errorAlert" v-if="$store.state.haveLiveChat"></div> -->
-                <!-- <span class="blockOption" @click="delSection()">
-                  <i class="material-icons">more_horiz</i>
-                </span> -->
-                <!-- <span class="menuOption">Delete</span> -->
-              </div>
-              <div
-                slot="footer"
-                v-if="!block.isSecCreating"
-                class="chatBlockContent addMore ignore-block"
-                @click="block.createNewSection()"
-              >
-                <i class="material-icons">add</i>
-              </div>
-              <div slot="footer" v-else class="chatBlockContent addMore ignore-block">
-                <i class="material-icons">autorenew</i>
-              </div>
-            </draggable>
-          </template>
-        </div>
-        <template v-if="creating">Creating...</template>
+    <div>
+        <h3 class="chatBotHeading">Chatbot</h3>
+        <template v-if="blockLoading">Loading...</template>
         <template v-else>
-          <button class="addMoreBlock" @click="createBlock">
-            <i class="material-icons">add</i> Add More
-          </button>
+            <draggable v-model="blocks" @end="updateBlockOrder" handle="orderBlock">
+                <div v-for="(block, index) in blocks" :key="index" class="chatBlock">
+                <template v-if="block.lock">
+                    <h5 class="chatBlockHeading">{{ block.title }}</h5>
+                    <div class="chatBlockContentList">
+                    <div
+                        v-for="(section, sIndex) in block.sections"
+                        :key="sIndex"
+                        class="chatBlockContent"
+                        @click="selectBlock(index, sIndex)"
+                        :class="{'selectedBlock': selectedBlock==section.id}"
+                    >
+                        {{ section.title }}
+                        <!-- <div class="errorAlert"></div> -->
+                    </div>
+                    </div>
+                </template>
+                <template v-else>
+                    <input
+                    type="text"
+                    v-model="block.title"
+                    @blur="updateBlock(index)"
+                    class="chatBlockHeading"
+                    :disabled="block.updating"
+                    >
+                    <div class="chatBlockControl">
+                    <button @click="delBlockIndex=index">
+                        <i class="material-icons">delete</i>
+                    </button>
+                    </div>
+                    <!-- <div class="orderBlock">order</div> -->
+                    <draggable
+                    class="chatBlockContentList"
+                    v-model="block.sections"
+                    draggable=".sortCBC"
+                    filter=".ignore-block"
+                    @end="updateSectionOrder(index)"
+                    >
+                    <div
+                        v-for="(section, sIndex) in block.sections"
+                        :key="`${index}-${sIndex}`"
+                        class="chatBlockContent sortCBC"
+                        @click="selectBlock(index, sIndex)"
+                        :class="{'selectedBlock': selectedBlock==section.id}"
+                    >
+                        {{ section.shortenTitle }}
+                        <!-- <div class="errorAlert" v-if="$store.state.haveLiveChat"></div> -->
+                        <!-- <span class="blockOption" @click="delSection()">
+                        <i class="material-icons">more_horiz</i>
+                        </span> -->
+                        <!-- <span class="menuOption">Delete</span> -->
+                    </div>
+                    <div
+                        slot="footer"
+                        v-if="!block.isSecCreating"
+                        class="chatBlockContent addMore ignore-block"
+                        @click="block.createNewSection()"
+                    >
+                        <i class="material-icons">add</i>
+                    </div>
+                    <div slot="footer" v-else class="chatBlockContent addMore ignore-block">
+                        <i class="material-icons">autorenew</i>
+                    </div>
+                    </draggable>
+                </template>
+                </div>
+                <template v-if="creating">Creating...</template>
+                <template v-else>
+                <button class="addMoreBlock" @click="createBlock">
+                    <i class="material-icons">add</i> Add More
+                </button>
+                </template>
+                <template v-if="showDelConfirm">
+                    <popup-component :type="1">
+                        <button class="closePopConfirm" @click="showDelConfirm=false;delBlockIndex=-1;">
+                            <i class="material-icons">close</i>
+                        </button>
+                        <div class="delPopContent">
+                            <p class="delPopHeading">
+                                Are you sure you want to delete the
+                                <b>{{ blocks[delBlockIndex].title }}</b>?
+                                <br>
+                                <span
+                                    class="noticeList"
+                                >It will effect the chatbot as following section are connected...</span>
+                            </p>
+                            <ul class="listOfSection">
+                                <li
+                                    v-for="(sub, index) in blocks[delBlockIndex].sections"
+                                    :key="index"
+                                >{{ sub.title }}</li>
+                            </ul>
+                        </div>
+                        <div class="delPopActionFooter">
+                            <div class="delPopActionCon">
+                                <button @click="showDelConfirm=false;delBlockIndex=-1;">Cancel</button>
+                                <button
+                                    @click="blocks[delBlockIndex].allowDelete=true;showDelConfirm=false;deleteChatBlock();"
+                                >Ok</button>
+                            </div>
+                        </div>
+                    </popup-component>
+                </template>
+            </draggable>
         </template>
-      </draggable>
-    </template>
-    <template v-if="showDelConfirm">
-      <popup-component :type="1">
-        <button class="closePopConfirm" @click="showDelConfirm=false;delBlockIndex=-1;">
-          <i class="material-icons">close</i>
-        </button>
-        <div class="delPopContent">
-          <p class="delPopHeading">
-            Are you sure you want to delete the
-            <b>{{ blocks[delBlockIndex].title }}</b>?
-            <br>
-            <span
-              class="noticeList"
-            >It will effect the chatbot as following section are connected...</span>
-          </p>
-          <ul class="listOfSection">
-            <li v-for="(sub, index) in blocks[delBlockIndex].sections" :key="index">{{ sub.title }}</li>
-          </ul>
-        </div>
-        <div class="delPopActionFooter">
-          <div>
-            <button @click="showDelConfirm=false;delBlockIndex=-1;">Cancel</button>
-            <button
-              @click="blocks[delBlockIndex].allowDelete=true;showDelConfirm=false;deleteChatBlock();"
-            >Ok</button>
-          </div>
-        </div>
-      </popup-component>
-    </template>
-  </div>
+    </div>
 </template>
 
 <script lang="ts">

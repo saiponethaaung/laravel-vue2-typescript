@@ -31,6 +31,7 @@
 .responseDelete,
 .builderSectionInfo,
 .adminHeadingCon,
+.delPopActionFooter .delPopActionCon,
 .userInputValidationCon .userInputValidationValue,
 .configSidebarLink a,
 .sectionList,
@@ -11180,6 +11181,24 @@ a:hover {
   margin-top: 10px;
 }
 
+.spin {
+  -webkit-animation: spin 24s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
 .chatBotHeading {
   font-size: 18px;
   font-weight: bold;
@@ -11415,18 +11434,17 @@ a:hover {
 .delPopContent .listOfSection {
   list-style: none;
   margin: 0;
-  padding: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  padding-left: 0;
 }
 
 .delPopContent .listOfSection li {
-  margin-right: 11px;
+  display: inline;
+  margin-right: 3px;
+  font-size: 13px;
 }
 
 .delPopContent .listOfSection li::after {
-  content: ",";
+  content: ", ";
 }
 
 .delPopContent .listOfSection li:last-child::after {
@@ -11435,6 +11453,28 @@ a:hover {
 
 .delPopActionFooter {
   border-top: 1px solid #e2e2e2;
+}
+
+.delPopActionFooter .delPopActionCon {
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  height: 36px;
+}
+
+.delPopActionFooter .delPopActionCon button {
+  width: 50%;
+  border: none;
+  background: transparent;
+  height: inherit;
+  cursor: pointer;
+}
+
+.delPopActionFooter .delPopActionCon button:first-child {
+  border-right: 1px solid #e2e2e2;
+}
+
+.delPopActionFooter .delPopActionCon button:last-child {
+  border-left: 1px solid #e2e2e2;
 }
 
 .selectedBlock {
@@ -11497,6 +11537,11 @@ a:hover {
 .contentActionList figure img {
   height: 16px;
   opacity: 0.4;
+}
+
+.contentActionList figure + .contentActionName {
+  position: relative;
+  top: -3px;
 }
 
 .contentActionList .contentActionName {

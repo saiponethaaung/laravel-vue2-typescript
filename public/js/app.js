@@ -53909,16 +53909,14 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
             }).then((res) => {
                 this.contents = res.data.content;
                 this.section = res.data.section;
+                this.isLoading = false;
             }).catch((err) => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
                     alert(mesg);
-                }
-                else {
-                    this.loadingToken.cancel();
+                    this.isLoading = false;
                 }
             });
-            this.isLoading = false;
         });
     }
 };
@@ -53946,8 +53944,9 @@ var render = function() {
       _vm.$store.state.chatBot.section > 0 && _vm.$store.state.chatBot.block > 0
         ? [
             _vm.isLoading
-              ? [_vm._v("\n            Loading...\n        ")]
-              : [
+              ? [_vm._m(0)]
+              : _vm.section !== null
+              ? [
                   _c("builder-component", {
                     attrs: {
                       isBroadcast: false,
@@ -53956,13 +53955,24 @@ var render = function() {
                     }
                   })
                 ]
+              : _vm._e()
           ]
-        : [_vm._m(0)]
+        : [_vm._m(1)]
     ],
     2
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "contentRoot" }, [
+      _c("div", { staticClass: "builderSectionInfo" }, [
+        _vm._v("\n                    Loading...\n                ")
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -54486,9 +54496,9 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "\n              " +
+                                      "\n                    " +
                                         _vm._s(section.title) +
-                                        "\n              "
+                                        "\n                    "
                                     )
                                   ]
                                 )
@@ -54582,9 +54592,9 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n              " +
+                                        "\n                    " +
                                           _vm._s(section.shortenTitle) +
-                                          "\n              "
+                                          "\n                    "
                                       )
                                     ]
                                   )
@@ -54650,95 +54660,105 @@ var render = function() {
                           _c("i", { staticClass: "material-icons" }, [
                             _vm._v("add")
                           ]),
-                          _vm._v(" Add More\n        ")
+                          _vm._v(" Add More\n            ")
                         ]
                       )
+                    ],
+                _vm._v(" "),
+                _vm.showDelConfirm
+                  ? [
+                      _c("popup-component", { attrs: { type: 1 } }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "closePopConfirm",
+                            on: {
+                              click: function($event) {
+                                _vm.showDelConfirm = false
+                                _vm.delBlockIndex = -1
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("close")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "delPopContent" }, [
+                          _c("p", { staticClass: "delPopHeading" }, [
+                            _vm._v(
+                              "\n                            Are you sure you want to delete the\n                            "
+                            ),
+                            _c("b", [
+                              _vm._v(
+                                _vm._s(_vm.blocks[_vm.delBlockIndex].title)
+                              )
+                            ]),
+                            _vm._v("?\n                            "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "noticeList" }, [
+                              _vm._v(
+                                "It will effect the chatbot as following section are connected..."
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "ul",
+                            { staticClass: "listOfSection" },
+                            _vm._l(
+                              _vm.blocks[_vm.delBlockIndex].sections,
+                              function(sub, index) {
+                                return _c("li", { key: index }, [
+                                  _vm._v(_vm._s(sub.title))
+                                ])
+                              }
+                            )
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "delPopActionFooter" }, [
+                          _c("div", { staticClass: "delPopActionCon" }, [
+                            _c(
+                              "button",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    _vm.showDelConfirm = false
+                                    _vm.delBlockIndex = -1
+                                  }
+                                }
+                              },
+                              [_vm._v("Cancel")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    _vm.blocks[
+                                      _vm.delBlockIndex
+                                    ].allowDelete = true
+                                    _vm.showDelConfirm = false
+                                    _vm.deleteChatBlock()
+                                  }
+                                }
+                              },
+                              [_vm._v("Ok")]
+                            )
+                          ])
+                        ])
+                      ])
                     ]
+                  : _vm._e()
               ],
               2
             )
-          ],
-      _vm._v(" "),
-      _vm.showDelConfirm
-        ? [
-            _c("popup-component", { attrs: { type: 1 } }, [
-              _c(
-                "button",
-                {
-                  staticClass: "closePopConfirm",
-                  on: {
-                    click: function($event) {
-                      _vm.showDelConfirm = false
-                      _vm.delBlockIndex = -1
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "material-icons" }, [_vm._v("close")])]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "delPopContent" }, [
-                _c("p", { staticClass: "delPopHeading" }, [
-                  _vm._v(
-                    "\n          Are you sure you want to delete the\n          "
-                  ),
-                  _c("b", [
-                    _vm._v(_vm._s(_vm.blocks[_vm.delBlockIndex].title))
-                  ]),
-                  _vm._v("?\n          "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "noticeList" }, [
-                    _vm._v(
-                      "It will effect the chatbot as following section are connected..."
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "ul",
-                  { staticClass: "listOfSection" },
-                  _vm._l(_vm.blocks[_vm.delBlockIndex].sections, function(
-                    sub,
-                    index
-                  ) {
-                    return _c("li", { key: index }, [_vm._v(_vm._s(sub.title))])
-                  })
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "delPopActionFooter" }, [
-                _c("div", [
-                  _c(
-                    "button",
-                    {
-                      on: {
-                        click: function($event) {
-                          _vm.showDelConfirm = false
-                          _vm.delBlockIndex = -1
-                        }
-                      }
-                    },
-                    [_vm._v("Cancel")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      on: {
-                        click: function($event) {
-                          _vm.blocks[_vm.delBlockIndex].allowDelete = true
-                          _vm.showDelConfirm = false
-                          _vm.deleteChatBlock()
-                        }
-                      }
-                    },
-                    [_vm._v("Ok")]
-                  )
-                ])
-              ])
-            ])
           ]
-        : _vm._e()
     ],
     2
   )

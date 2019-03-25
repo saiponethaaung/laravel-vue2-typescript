@@ -92,6 +92,49 @@
     }
 }
 
+.blockOption {
+    position: absolute;
+    margin-left: 60px;
+    margin-top: 5px;
+    background: #fff;
+    z-index: 1;
+    color: #000000;
+    &:hover {
+        // color: #fff;
+    }
+    i {
+        font-size: 18px;
+    }
+}
+
+.menuOption {
+    position: absolute;
+    list-style: none;
+    padding: 0;
+    top: 305px;
+    left: 110px;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    z-index: 11;
+    background: #fff;
+    li {
+        padding: 5px 10px;
+        &:hover {
+            background: #e7e7e780;
+        }
+    }
+}
+
+.errorAlert {
+    width: 5px;
+    height: 5px;
+    background: #ff0000;
+    border-radius: 50%;
+    position: absolute;
+    margin-left: 70px;
+    margin-top: -25px;
+}
+
 .addMoreBlock {
     cursor: pointer;
     height: 30px;

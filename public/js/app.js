@@ -54124,8 +54124,7 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                 if (this.blocks[i].id != this.$store.state.delBot.block)
                     continue;
                 for (let s in this.blocks[i].sections) {
-                    if (this.blocks[i].sections[s].id !=
-                        this.$store.state.delBot.section)
+                    if (this.blocks[i].sections[s].id != this.$store.state.delBot.section)
                         continue;
                     this.blocks[i].sections.splice(parseInt(s), 1);
                     this.selectedBlock = 0;
@@ -54145,8 +54144,7 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                 if (this.blocks[i].id != this.$store.state.updateBot.block)
                     continue;
                 for (let s in this.blocks[i].sections) {
-                    if (this.blocks[i].sections[s].id !=
-                        this.$store.state.updateBot.section)
+                    if (this.blocks[i].sections[s].id != this.$store.state.updateBot.section)
                         continue;
                     this.blocks[i].sections[s].title = this.$store.state.updateBot.title;
                     break;
@@ -54227,6 +54225,10 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                     alert("Failed to order!");
                 }
             });
+        });
+    }
+    delSection() {
+        return __awaiter(this, void 0, void 0, function* () {
         });
     }
 };
@@ -54482,7 +54484,13 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_vm._v(_vm._s(section.title))]
+                                  [
+                                    _vm._v(
+                                      "\n              " +
+                                        _vm._s(section.title) +
+                                        "\n              "
+                                    )
+                                  ]
                                 )
                               })
                             )
@@ -54572,7 +54580,13 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [_vm._v(_vm._s(section.shortenTitle))]
+                                    [
+                                      _vm._v(
+                                        "\n              " +
+                                          _vm._s(section.shortenTitle) +
+                                          "\n              "
+                                      )
+                                    ]
                                   )
                                 }),
                                 _vm._v(" "),
@@ -54636,7 +54650,7 @@ var render = function() {
                           _c("i", { staticClass: "material-icons" }, [
                             _vm._v("add")
                           ]),
-                          _vm._v(" Add More\n                ")
+                          _vm._v(" Add More\n        ")
                         ]
                       )
                     ]
@@ -54665,12 +54679,12 @@ var render = function() {
               _c("div", { staticClass: "delPopContent" }, [
                 _c("p", { staticClass: "delPopHeading" }, [
                   _vm._v(
-                    "\n                    Are you sure you want to delete the\n                    "
+                    "\n          Are you sure you want to delete the\n          "
                   ),
                   _c("b", [
                     _vm._v(_vm._s(_vm.blocks[_vm.delBlockIndex].title))
                   ]),
-                  _vm._v("?\n                    "),
+                  _vm._v("?\n          "),
                   _c("br"),
                   _vm._v(" "),
                   _c("span", { staticClass: "noticeList" }, [

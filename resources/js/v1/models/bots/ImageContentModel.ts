@@ -10,6 +10,7 @@ export default class ImageContentModel extends ChatBlockContentModel {
     };
     private uploading: boolean = false;
     private imageToken: CancelTokenSource = Axios.CancelToken.source();
+    public deletingImage: boolean = false;
 
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
@@ -31,6 +32,10 @@ export default class ImageContentModel extends ChatBlockContentModel {
 
     set isUploading(status: boolean) {
         this.uploading = status;
+    }
+    
+    get showWarning() {
+        return true;
     }
 
     async imageUpload(e: any) {
@@ -58,6 +63,7 @@ export default class ImageContentModel extends ChatBlockContentModel {
     }
 
     async delImage() {
+        this.deletingImage = true;
         await Axios({
             url: `${this.rootUrl}`,
             method: 'delete',
@@ -68,5 +74,6 @@ export default class ImageContentModel extends ChatBlockContentModel {
                 this.errorMesg = this.globalHandler(err, 'Failed to delete an image!');
             }
         });
+        this.deletingImage = false;
     }
 }

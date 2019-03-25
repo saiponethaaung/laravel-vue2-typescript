@@ -36,6 +36,10 @@ export default class UserInputContentModel extends ChatBlockContentModel {
     set isCreating(status: boolean) {
         this.creating = status;
     }
+    
+    get showWarning() {
+        return true;
+    }
 
     async createUserInpt() {
         this.isCreating = true;

@@ -47,6 +47,10 @@ export default class QuickReplyContentModel extends ChatBlockContentModel {
         this.delChild = index;
     }
 
+    get showWarning() {
+        return true;
+    }
+
     async createQuickReply() {
         this.isCreating = true;
 

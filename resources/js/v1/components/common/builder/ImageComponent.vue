@@ -3,18 +3,33 @@
         <figure class="imageComponentCon">
             <template v-if="content.image">
                 <img :src="content.image"/>
-                <div class="hoverOptions" @click="content.delImage()">
-                    <div class="removeIcon">
-                        <i class="material-icons">close</i>
-                        <span>remove</span>
+                <template v-if="content.deletingImage">
+                    <div class="deletingImage">
+                        <div class="galleLoader">
+                            <loading-component></loading-component>
+                        </div>
                     </div>
-                </div>
+                </template>
+                <template v-else>
+                    <div class="hoverOptions" @click="content.delImage()">
+                        <div class="removeIcon">
+                            <i class="material-icons">close</i>
+                            <span>remove</span>
+                        </div>
+                    </div>
+                </template>
             </template>
             <template v-else>
                 <label>
-                    <i class="material-icons">photo_camera</i>
-                    <!-- <input type="file"/> -->
-                    <input type="file" @change="content.imageUpload($event)"/>
+                    <template v-if="content.isUploading">
+                        <div class="galleLoader">
+                            <loading-component></loading-component>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <i class="material-icons">photo_camera</i>
+                        <input type="file" @change="content.imageUpload($event)"/>
+                    </template>
                 </label>
             </template>
         </figure>

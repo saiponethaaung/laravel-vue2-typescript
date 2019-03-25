@@ -66,6 +66,10 @@ export default class TextContentModel extends ChatBlockContentModel {
         this.buttonEditIndex = index;
     }
 
+    get showWarning() {
+        return this.textContent.content==='';
+    }
+
     async addButton() {
         this.addingNewBtn = true;
 

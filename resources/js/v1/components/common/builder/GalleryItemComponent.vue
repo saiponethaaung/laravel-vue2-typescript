@@ -10,17 +10,33 @@
                     <div class="imageCon">
                         <img :src="listItem.image">
                     </div>
-                    <div class="hoverOptions">
-                        <div class="removeIcon" @click="listItem.delImage()">
-                            <i class="material-icons">close</i>
-                            <span>remove</span>
+                    <template v-if="listItem.imageDeleting">
+                        <div class="deletingImage">
+                            <div class="galleLoader">
+                                <loading-component></loading-component>
+                            </div>
                         </div>
-                    </div>
+                    </template>
+                    <template v-else>
+                        <div class="hoverOptions">
+                            <div class="removeIcon" @click="listItem.delImage()">
+                                <i class="material-icons">close</i>
+                                <span>remove</span>
+                            </div>
+                        </div>
+                    </template>
                 </template>
                 <template v-else>
                     <label>
-                        <i class="material-icons">photo_camera</i>
-                        <input type="file" @change="listItem.imageUpload($event)">
+                        <template v-if="listItem.isUploading">
+                            <div class="galleLoader">
+                                <loading-component></loading-component>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <i class="material-icons">photo_camera</i>
+                            <input type="file" @change="listItem.imageUpload($event)">
+                        </template>
                     </label>
                 </template>
             </figure>

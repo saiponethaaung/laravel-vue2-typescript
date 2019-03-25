@@ -51,6 +51,22 @@ export default class GalleryContentModel extends ChatBlockContentModel {
         this.delChild = index;
     }
 
+    get showWarning() {
+        // show warning if there is no gallery
+        if(this.item.length===0) {
+            return false;
+        }
+
+        // show warning if gallery is incomplete
+        for(let i of this.item) {
+            if(i.title==='') return false;
+
+            // if(i.buttons.length===0)
+        }
+
+        return true;
+    }
+
     async createGallery() {
         this.isCreating = true;
 

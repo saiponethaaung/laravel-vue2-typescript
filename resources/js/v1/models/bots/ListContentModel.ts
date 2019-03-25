@@ -81,6 +81,10 @@ export default class ListContentModel extends ChatBlockContentModel {
     set isChildDeleting(index: number) {
         this.delChild = index;
     }
+    
+    get showWarning() {
+        return true;
+    }
 
     async addButton() {
         this.addingNewBtn = true;

@@ -15,6 +15,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
     private buttonToken: CancelTokenSource = Axios.CancelToken.source();
     public errorMesg: string = '';
     public canShowError: boolean = false;
+    public imageDeleting: boolean = false;
 
 
     constructor(content: galleryContent, rootUrl: string) {
@@ -164,6 +165,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
             cancelToken: this.buttonToken.token
         }).then((res) => {
             this.content.button.push(res.data.button);
+            this.btnEdit = this.content.button.length-1;
         }).catch((err) => {
             if (err.response) {
                 this.errorMesg = this.globalHandler(err, 'Failed to create new button!');
@@ -189,6 +191,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
 
     async delImage(index: number) {
         this.canShowError = true;
+        this.imageDeleting = true;
         await Axios({
             url: `${this.rootUrl}/${this.id}/image`,
             method: 'delete',
@@ -199,6 +202,8 @@ export default class GalleryItemModel extends AjaxErrorHandler {
                 this.errorMesg = this.globalHandler(err, 'Failed to delete an image!');
             }
         });
+
+        this.imageDeleting = false;
     }
 
     get textLimitTitle() {

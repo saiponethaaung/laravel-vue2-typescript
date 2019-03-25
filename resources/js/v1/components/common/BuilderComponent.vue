@@ -53,6 +53,9 @@
                             <div class="deletingContainer"></div>
                         </div>
                     </template>
+                    <template v-if="content.showWarning">
+                        this is warning
+                    </template>
                     <template v-if="content.errorMesg!==''">
                         <error-component
                             :mesg="content.errorMesg"

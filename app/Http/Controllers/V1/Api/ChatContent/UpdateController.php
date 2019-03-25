@@ -388,8 +388,7 @@ class UpdateController extends Controller
 
             $file = Image::make(Storage::disk('public')->get($upload));
                 
-            $file->resize(800, null, function ($constraint) {
-                $constraint->aspectRatio();
+            $file->fit(1300, 750, function ($constraint) {
                 $constraint->upSize();
             })->encode('jpg')->save(public_path('storage/images/gallery/'.$name.'.jpg'));
 

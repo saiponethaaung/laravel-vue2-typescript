@@ -15,6 +15,7 @@ export default class ListItemModel extends AjaxErrorHandler {
     private buttonToken: CancelTokenSource = Axios.CancelToken.source();
     public errorMesg: string = '';
     public canShowError: boolean = false;
+    public deletingImage: boolean = false;
 
     constructor(content: listContent, rootUrl: string) {
         super();
@@ -151,6 +152,7 @@ export default class ListItemModel extends AjaxErrorHandler {
     }
 
     async delImage(e: any) {
+        this.deletingImage = true;
         this.canShowError = true;
         await Axios({
             url: `${this.rootUrl}/${this.id}/image`,
@@ -162,6 +164,7 @@ export default class ListItemModel extends AjaxErrorHandler {
                 this.errorMesg = this.globalHandler(err, 'Failed to delete an image!');
             }
         });
+        this.deletingImage = false;
     }
 
     async delButton() {

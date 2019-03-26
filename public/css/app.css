@@ -12045,6 +12045,27 @@ input.required::placeholder {
   border-radius: inherit;
 }
 
+.processWarning {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background: #f7f6f6;
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.processWarning .noticIcon {
+  color: #e9604a;
+  height: auto;
+  height: 24px;
+}
+
+.processWarning p {
+  width: 100%;
+  padding-left: 13px;
+  margin: 0;
+}
+
 .botTextComponent {
   border: 1px solid #ebebeb;
   border-radius: 5px;

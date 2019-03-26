@@ -16,6 +16,8 @@ export default class ListContentModel extends ChatBlockContentModel {
     private buttonToken: CancelTokenSource = Axios.CancelToken.source();
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private delChild: number = -1;
+    public warningText = '';
+    public status = false;
 
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
@@ -83,7 +85,43 @@ export default class ListContentModel extends ChatBlockContentModel {
     }
     
     get showWarning() {
-        return true;
+        console.log('initial');
+        this.warningText = 'Chat process on messenger will stop here due to incomplete list component!';
+
+        if(this.item.length==0) {
+            return true;
+        }
+
+        for(let i in this.item) {
+            if(!this.item[i].isValid) {
+                let position: any = parseInt(i)+1;
+                switch(parseInt(i)) {
+                    case 0:
+                        position = position+'st';
+                        break;
+                        
+                    case 1:
+                        position = position+'nd';
+                        break;
+                        
+                    case 2:
+                        position = position+'rd';
+                        break;
+                        
+                    default:
+                        position = position+'th';
+                        break;
+                }
+
+                this.warningText = `Chat process on messenger will stop here because ${position} list is incomplete!`;
+                return true;
+            }
+                
+        }
+
+        console.log('closing');
+
+        return this.status;
     }
 
     async addButton() {

@@ -712,6 +712,23 @@ input.required::placeholder {
     border-radius: inherit;
 }
 
+.processWarning {
+    display: flex;
+    background: $secondaryBackground;
+    padding: 30px;
+    margin-bottom: 30px;
+    .noticIcon {
+        color: $red;
+        height: auto;
+        height: 24px;
+    }
+    p {
+        width: 100%;
+        padding-left: 13px;
+        margin: 0;
+    }
+}
+
 @import './bots/text.scss';
 @import './bots/typing.scss';
 @import './bots/list.scss';

@@ -8,6 +8,7 @@ export default class UserInputContentModel extends ChatBlockContentModel {
     private userInputContent: Array<UserInputItemModel> = [];
     private creating: boolean = false;
     private rootUrl: string = '';
+    public warningText = '';
 
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
@@ -38,7 +39,39 @@ export default class UserInputContentModel extends ChatBlockContentModel {
     }
     
     get showWarning() {
-        return true;
+        this.warningText = 'Chat process on messenger will stop here due to incomplete user input component!';
+
+        if(this.item.length==0) {
+            return true;
+        }
+
+        for(let i in this.item) {
+            if(!this.item[i].isValid) {
+                let position: any = parseInt(i)+1;
+                switch(parseInt(i)) {
+                    case 0:
+                        position = position+'st';
+                        break;
+                        
+                    case 1:
+                        position = position+'nd';
+                        break;
+                        
+                    case 2:
+                        position = position+'rd';
+                        break;
+                        
+                    default:
+                        position = position+'th';
+                        break;
+                }
+
+                this.warningText = `Chat process on messenger will stop here because ${position} user input is incomplete!`;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     async createUserInpt() {

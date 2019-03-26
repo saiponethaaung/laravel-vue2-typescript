@@ -12,6 +12,7 @@ export default class TextContentModel extends ChatBlockContentModel {
     private buttonToken: CancelTokenSource = Axios.CancelToken.source();
     private buttonCreating: boolean = false;
     private buttonEditIndex: number = -1;
+    public warningText = 'Chat process on messenger will stop here due to incomplete text component!';
 
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);

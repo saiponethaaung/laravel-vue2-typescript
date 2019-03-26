@@ -52,6 +52,15 @@ export default class UserInputItemModel extends AjaxErrorHandler {
         this.showValidation = status;
     }
 
+    get isValid() {
+        console.log('it is valid');
+        if(this.question==='' || this.attribute) {
+            return false;
+        }
+
+        return true;
+    }
+
     async saveContent() {
         this.saveToken.cancel();
         this.saveToken = Axios.CancelToken.source();

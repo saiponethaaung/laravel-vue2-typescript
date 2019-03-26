@@ -12082,6 +12082,7 @@ class TextContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentMode
         this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.buttonCreating = false;
         this.buttonEditIndex = -1;
+        this.warningText = 'Chat process on messenger will stop here due to incomplete text component!';
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         this.textContent = {
             content: content.content.text,
@@ -12217,6 +12218,9 @@ class TypingContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMo
     set duration(duration) {
         this.typingContent.duration = duration;
     }
+    get showWarning() {
+        return false;
+    }
     saveDuration() {
         return __awaiter(this, void 0, void 0, function* () {
             this.saveToken.cancel();
@@ -12279,6 +12283,8 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentMode
         this.buttonToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */]();
         this.delChild = -1;
+        this.warningText = '';
+        this.status = false;
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         for (let i in content.content.content) {
             this.buildListItem(content.content.content[i]);
@@ -12328,7 +12334,34 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentMode
         this.delChild = index;
     }
     get showWarning() {
-        return true;
+        console.log('initial');
+        this.warningText = 'Chat process on messenger will stop here due to incomplete list component!';
+        if (this.item.length == 0) {
+            return true;
+        }
+        for (let i in this.item) {
+            if (!this.item[i].isValid) {
+                let position = parseInt(i) + 1;
+                switch (parseInt(i)) {
+                    case 0:
+                        position = position + 'st';
+                        break;
+                    case 1:
+                        position = position + 'nd';
+                        break;
+                    case 2:
+                        position = position + 'rd';
+                        break;
+                    default:
+                        position = position + 'th';
+                        break;
+                }
+                this.warningText = `Chat process on messenger will stop here because ${position} list is incomplete!`;
+                return true;
+            }
+        }
+        console.log('closing');
+        return this.status;
     }
     addButton() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -12557,6 +12590,7 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockConte
         this.rootUrl = '';
         this.delChild = -1;
         this.orderToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+        this.warningText = '';
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}/quick-reply`;
         for (let i of content.content) {
             this.buildQuickReplyItem(i);
@@ -12584,7 +12618,32 @@ class QuickReplyContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockConte
         this.delChild = index;
     }
     get showWarning() {
-        return true;
+        this.warningText = 'Chat process on messenger will stop here due to incomplete quick reply component!';
+        if (this.item.length === 0) {
+            return true;
+        }
+        for (let i in this.item) {
+            if (this.item[i].title === '') {
+                let position = parseInt(i) + 1;
+                switch (parseInt(i)) {
+                    case 0:
+                        position = position + 'st';
+                        break;
+                    case 1:
+                        position = position + 'nd';
+                        break;
+                    case 2:
+                        position = position + 'rd';
+                        break;
+                    default:
+                        position = position + 'th';
+                        break;
+                }
+                this.warningText = `Chat process on messenger will stop here because ${position} quick reply is incomplete!`;
+                return true;
+            }
+        }
+        return false;
     }
     createQuickReply() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -12670,6 +12729,7 @@ class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockConten
         this.userInputContent = [];
         this.creating = false;
         this.rootUrl = '';
+        this.warningText = '';
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}/user-input`;
         for (let i of content.content) {
             this.buildUserInputItem(i);
@@ -12691,7 +12751,32 @@ class UserInputContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockConten
         this.creating = status;
     }
     get showWarning() {
-        return true;
+        this.warningText = 'Chat process on messenger will stop here due to incomplete user input component!';
+        if (this.item.length == 0) {
+            return true;
+        }
+        for (let i in this.item) {
+            if (!this.item[i].isValid) {
+                let position = parseInt(i) + 1;
+                switch (parseInt(i)) {
+                    case 0:
+                        position = position + 'st';
+                        break;
+                    case 1:
+                        position = position + 'nd';
+                        break;
+                    case 2:
+                        position = position + 'rd';
+                        break;
+                    default:
+                        position = position + 'th';
+                        break;
+                }
+                this.warningText = `Chat process on messenger will stop here because ${position} user input is incomplete!`;
+                return true;
+            }
+        }
+        return false;
     }
     createUserInpt() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -13801,6 +13886,12 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
     set btnEdit(status) {
         this.buttonEdit = status;
     }
+    get isValid() {
+        if (this.title === '' || (this.sub === '' && this.image === '' && this.button == null)) {
+            return false;
+        }
+        return true;
+    }
     imageUpload(e) {
         return __awaiter(this, void 0, void 0, function* () {
             this.canShowError = true;
@@ -14453,6 +14544,13 @@ class UserInputItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHan
     }
     set showVal(status) {
         this.showValidation = status;
+    }
+    get isValid() {
+        console.log('it is valid');
+        if (this.question === '' || this.attribute) {
+            return false;
+        }
+        return true;
     }
     saveContent() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -25302,24 +25400,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_common_AttributeSelectorComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_common_AttributeSelectorComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_builder_ButtonComponent_vue__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_common_builder_ButtonComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_common_builder_ButtonComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_common_ErrorComponent_vue__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_common_ErrorComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_common_ErrorComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_common_FullScreenLoadingComponent_vue__ = __webpack_require__(123);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_common_FullScreenLoadingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_common_FullScreenLoadingComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_common_LoadingComponent_vue__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_common_LoadingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_common_LoadingComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_common_PopupComponent_vue__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_common_PopupComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_common_PopupComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_common_SpinnerDropDownComponent_vue__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_common_SpinnerDropDownComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_common_SpinnerDropDownComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_common_TimeInputComponent_vue__ = __webpack_require__(132);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_common_TimeInputComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_common_TimeInputComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__configuration_bootstrap__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__configuration_route__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__configuration_store__ = __webpack_require__(259);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_builder_WarningComponent_vue__ = __webpack_require__(272);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_common_builder_WarningComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_common_builder_WarningComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_common_BuilderComponent_vue__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_common_BuilderComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_common_BuilderComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_common_ErrorComponent_vue__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_common_ErrorComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_common_ErrorComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_common_FullScreenLoadingComponent_vue__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_common_FullScreenLoadingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_common_FullScreenLoadingComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_common_LoadingComponent_vue__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_common_LoadingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_common_LoadingComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_common_PopupComponent_vue__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_common_PopupComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_common_PopupComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_common_SpinnerDropDownComponent_vue__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_common_SpinnerDropDownComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_common_SpinnerDropDownComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_common_TimeInputComponent_vue__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_common_TimeInputComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_common_TimeInputComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__configuration_bootstrap__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__configuration_route__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__configuration_store__ = __webpack_require__(259);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -25352,17 +25452,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
+
 Object(__WEBPACK_IMPORTED_MODULE_1_v_calendar__["setupCalendar"])({
     firstDayOfWeek: 2,
 });
 let eventHub = new __WEBPACK_IMPORTED_MODULE_2_vue__["default"]();
 let userLoadingToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
-let ajaxHandler = new __WEBPACK_IMPORTED_MODULE_17__utils_AjaxErrorHandler__["a" /* default */]();
+let ajaxHandler = new __WEBPACK_IMPORTED_MODULE_18__utils_AjaxErrorHandler__["a" /* default */]();
 window.fbSdkLoaded = false;
 function logoutResponseHandler(error) {
     // if has response show the error
     if (error.response.status === 401) {
-        __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.commit('logout');
+        __WEBPACK_IMPORTED_MODULE_17__configuration_store__["a" /* default */].state.commit('logout');
         return;
     }
     else {
@@ -25370,26 +25471,26 @@ function logoutResponseHandler(error) {
     }
 }
 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.interceptors.response.use(response => response, logoutResponseHandler);
-__WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */].beforeEach((to, from, next) => __awaiter(this, void 0, void 0, function* () {
+__WEBPACK_IMPORTED_MODULE_16__configuration_route__["a" /* default */].beforeEach((to, from, next) => __awaiter(this, void 0, void 0, function* () {
     let proceedNext = true;
-    if (__WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.token !== null) {
-        __WEBPACK_IMPORTED_MODULE_0_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.token}`;
-        __WEBPACK_IMPORTED_MODULE_0_axios___default.a.defaults.headers.common['sessionIdentifier'] = __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.sessionIdentifier;
+    if (__WEBPACK_IMPORTED_MODULE_17__configuration_store__["a" /* default */].state.token !== null) {
+        __WEBPACK_IMPORTED_MODULE_0_axios___default.a.defaults.headers.common['Authorization'] = `Bearer ${__WEBPACK_IMPORTED_MODULE_17__configuration_store__["a" /* default */].state.token}`;
+        __WEBPACK_IMPORTED_MODULE_0_axios___default.a.defaults.headers.common['sessionIdentifier'] = __WEBPACK_IMPORTED_MODULE_17__configuration_store__["a" /* default */].state.sessionIdentifier;
         userLoadingToken.cancel();
         userLoadingToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
-        __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.autheticating = true;
+        __WEBPACK_IMPORTED_MODULE_17__configuration_store__["a" /* default */].state.autheticating = true;
         yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
             url: '/api/v1/user',
             cancelToken: userLoadingToken.token
         }).then((res) => {
             if (to.name === 'login' || to.name === 'register' || to.name === 'verify') {
                 proceedNext = false;
-                __WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */].push({ name: 'home' });
+                __WEBPACK_IMPORTED_MODULE_16__configuration_route__["a" /* default */].push({ name: 'home' });
             }
             else {
-                __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.isLogin = true;
-                __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.user = res.data.data.profile;
-                __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.passwordVerify = res.data.data.passwordVerify;
+                __WEBPACK_IMPORTED_MODULE_17__configuration_store__["a" /* default */].state.isLogin = true;
+                __WEBPACK_IMPORTED_MODULE_17__configuration_store__["a" /* default */].state.user = res.data.data.profile;
+                __WEBPACK_IMPORTED_MODULE_17__configuration_store__["a" /* default */].state.passwordVerify = res.data.data.passwordVerify;
             }
         }).catch(err => {
             if (err.response) {
@@ -25398,7 +25499,7 @@ __WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */].beforeEac
             }
         });
         if (proceedNext) {
-            __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */].state.autheticating = false;
+            __WEBPACK_IMPORTED_MODULE_17__configuration_store__["a" /* default */].state.autheticating = false;
         }
     }
     next();
@@ -25414,20 +25515,21 @@ __WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */].beforeEac
 // Vue.prototype.$eventHub = new Vue();
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('app', __WEBPACK_IMPORTED_MODULE_4__App_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('draggable', __WEBPACK_IMPORTED_MODULE_3_vuedraggable___default.a);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('popup-component', __WEBPACK_IMPORTED_MODULE_11__components_common_PopupComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('error-component', __WEBPACK_IMPORTED_MODULE_8__components_common_ErrorComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('loading-component', __WEBPACK_IMPORTED_MODULE_10__components_common_LoadingComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('builder-component', __WEBPACK_IMPORTED_MODULE_7__components_common_BuilderComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('popup-component', __WEBPACK_IMPORTED_MODULE_12__components_common_PopupComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('error-component', __WEBPACK_IMPORTED_MODULE_9__components_common_ErrorComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('loading-component', __WEBPACK_IMPORTED_MODULE_11__components_common_LoadingComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('builder-component', __WEBPACK_IMPORTED_MODULE_8__components_common_BuilderComponent_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('button-component', __WEBPACK_IMPORTED_MODULE_6__components_common_builder_ButtonComponent_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('attribute-selector-component', __WEBPACK_IMPORTED_MODULE_5__components_common_AttributeSelectorComponent_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('v-calendar', __WEBPACK_IMPORTED_MODULE_1_v_calendar__["Calendar"]);
 __WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('v-date-picker', __WEBPACK_IMPORTED_MODULE_1_v_calendar__["DatePicker"]);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('dropdown-keybase-component', __WEBPACK_IMPORTED_MODULE_12__components_common_SpinnerDropDownComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('time-input-component', __WEBPACK_IMPORTED_MODULE_13__components_common_TimeInputComponent_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('fullscreen-loading-component', __WEBPACK_IMPORTED_MODULE_9__components_common_FullScreenLoadingComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('dropdown-keybase-component', __WEBPACK_IMPORTED_MODULE_13__components_common_SpinnerDropDownComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('time-input-component', __WEBPACK_IMPORTED_MODULE_14__components_common_TimeInputComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('fullscreen-loading-component', __WEBPACK_IMPORTED_MODULE_10__components_common_FullScreenLoadingComponent_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_2_vue__["default"].component('warning-component', __WEBPACK_IMPORTED_MODULE_7__components_common_builder_WarningComponent_vue___default.a);
 new __WEBPACK_IMPORTED_MODULE_2_vue__["default"]({
-    router: __WEBPACK_IMPORTED_MODULE_15__configuration_route__["a" /* default */],
-    store: __WEBPACK_IMPORTED_MODULE_16__configuration_store__["a" /* default */],
+    router: __WEBPACK_IMPORTED_MODULE_16__configuration_route__["a" /* default */],
+    store: __WEBPACK_IMPORTED_MODULE_17__configuration_store__["a" /* default */],
     el: '#app',
     created() {
         return (function (d, s, id) {
@@ -34599,173 +34701,188 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { ref: "textcon", staticClass: "componentTypeOne" }, [
-    _c("div", { staticClass: "botTextComponent" }, [
-      _c("div", { staticClass: "btcTextRootCon" }, [
-        _c("textarea", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.content.value,
-              expression: "content.value"
-            }
-          ],
-          staticClass: "textBody",
-          attrs: { maxlength: "640" },
-          domProps: { value: _vm.content.value },
-          on: {
-            blur: function($event) {
-              _vm.saveContent()
-            },
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+  return _c(
+    "div",
+    [
+      _c("div", { ref: "textcon", staticClass: "componentTypeOne" }, [
+        _c("div", { staticClass: "botTextComponent" }, [
+          _c("div", { staticClass: "btcTextRootCon" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.content.value,
+                  expression: "content.value"
+                }
+              ],
+              staticClass: "textBody",
+              attrs: { maxlength: "640" },
+              domProps: { value: _vm.content.value },
+              on: {
+                blur: function($event) {
+                  _vm.saveContent()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.content, "value", $event.target.value)
+                }
               }
-              _vm.$set(_vm.content, "value", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "limitWord" }, [
-          _c("span", [
-            _c("div", { staticClass: "alignWord" }, [
-              _vm._v(_vm._s(_vm.textLimit))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", {
-          staticClass: "btcPlaceholder",
-          domProps: {
-            innerHTML: _vm._s(_vm.content.value.replace(/\n/g, "<br />"))
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "textBtn" },
-        [
-          _vm._l(_vm.content.buttons, function(button, index) {
-            return _c(
-              "div",
-              { key: index, staticClass: "addBtn btnCon" },
-              [
-                _c(
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "limitWord" }, [
+              _c("span", [
+                _c("div", { staticClass: "alignWord" }, [
+                  _vm._v(_vm._s(_vm.textLimit))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", {
+              staticClass: "btcPlaceholder",
+              domProps: {
+                innerHTML: _vm._s(_vm.content.value.replace(/\n/g, "<br />"))
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "textBtn" },
+            [
+              _vm._l(_vm.content.buttons, function(button, index) {
+                return _c(
                   "div",
-                  {
-                    staticClass: "buttonActionGroup",
-                    on: {
-                      click: function($event) {
-                        _vm.content.btnEditIndex = index
-                      }
-                    }
-                  },
+                  { key: index, staticClass: "addBtn btnCon" },
                   [
-                    _c("div", { staticClass: "buttonName" }, [
-                      _vm._v(
-                        _vm._s(button.title ? button.title : "Button Name")
-                      )
-                    ]),
-                    _vm._v(" "),
-                    button.type === 0 && button.block.length > 0
-                      ? _c("div", { staticClass: "buttonActionName" }, [
-                          _vm._v(_vm._s(button.block[0].title))
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    button.type === 1 && button.url
-                      ? _c("div", { staticClass: "buttonActionName" }, [
-                          _vm._v(_vm._s(button.url))
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    button.type === 2 && button.phone.number
-                      ? _c("div", { staticClass: "buttonActionName" }, [
-                          _vm._v(_vm._s(button.phone.number))
-                        ])
-                      : _vm._e()
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "delIcon",
-                    on: {
-                      click: function($event) {
-                        _vm.content.delButton(index)
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("delete")
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _vm.content.btnEditIndex === index
-                  ? _c("button-component", {
-                      attrs: {
-                        rootUrl: _vm.content.url + "/button",
-                        button: button,
-                        projectid: _vm.content.project
-                      },
-                      on: {
-                        closeContent: function(status) {
-                          if (status && _vm.content.btnEditIndex === index) {
-                            _vm.content.btnEditIndex = -1
+                    _c(
+                      "div",
+                      {
+                        staticClass: "buttonActionGroup",
+                        on: {
+                          click: function($event) {
+                            _vm.content.btnEditIndex = index
                           }
                         }
+                      },
+                      [
+                        _c("div", { staticClass: "buttonName" }, [
+                          _vm._v(
+                            _vm._s(button.title ? button.title : "Button Name")
+                          )
+                        ]),
+                        _vm._v(" "),
+                        button.type === 0 && button.block.length > 0
+                          ? _c("div", { staticClass: "buttonActionName" }, [
+                              _vm._v(_vm._s(button.block[0].title))
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        button.type === 1 && button.url
+                          ? _c("div", { staticClass: "buttonActionName" }, [
+                              _vm._v(_vm._s(button.url))
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        button.type === 2 && button.phone.number
+                          ? _c("div", { staticClass: "buttonActionName" }, [
+                              _vm._v(_vm._s(button.phone.number))
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "delIcon",
+                        on: {
+                          click: function($event) {
+                            _vm.content.delButton(index)
+                          }
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "material-icons" }, [
+                          _vm._v("delete")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.content.btnEditIndex === index
+                      ? _c("button-component", {
+                          attrs: {
+                            rootUrl: _vm.content.url + "/button",
+                            button: button,
+                            projectid: _vm.content.project
+                          },
+                          on: {
+                            closeContent: function(status) {
+                              if (
+                                status &&
+                                _vm.content.btnEditIndex === index
+                              ) {
+                                _vm.content.btnEditIndex = -1
+                              }
+                            }
+                          }
+                        })
+                      : _vm._e()
+                  ],
+                  1
+                )
+              }),
+              _vm._v(" "),
+              _vm.content.addingNewBtn
+                ? _c("div", { staticClass: "addBtn btnCon" }, [
+                    _vm._v("Creating...")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.content.buttons.length < 3 && !_vm.content.addingNewBtn
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "addBtn",
+                      on: {
+                        click: function($event) {
+                          _vm.content.addButton()
+                        }
                       }
-                    })
-                  : _vm._e()
-              ],
-              1
-            )
-          }),
+                    },
+                    [
+                      _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("add")
+                      ]),
+                      _vm._v("Add Button\n                ")
+                    ]
+                  )
+                : _vm._e()
+            ],
+            2
+          ),
           _vm._v(" "),
-          _vm.content.addingNewBtn
-            ? _c("div", { staticClass: "addBtn btnCon" }, [
-                _vm._v("Creating...")
+          _vm.content.isUpdating
+            ? _c("div", { staticClass: "loadingConV1" }, [
+                _c(
+                  "div",
+                  { staticClass: "loadingInnerConV1" },
+                  [_c("loading-component")],
+                  1
+                )
               ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.content.buttons.length < 3 && !_vm.content.addingNewBtn
-            ? _c(
-                "div",
-                {
-                  staticClass: "addBtn",
-                  on: {
-                    click: function($event) {
-                      _vm.content.addButton()
-                    }
-                  }
-                },
-                [
-                  _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-                  _vm._v("Add Button\n            ")
-                ]
-              )
             : _vm._e()
-        ],
-        2
-      ),
+        ])
+      ]),
       _vm._v(" "),
-      _vm.content.isUpdating
-        ? _c("div", { staticClass: "loadingConV1" }, [
-            _c(
-              "div",
-              { staticClass: "loadingInnerConV1" },
-              [_c("loading-component")],
-              1
-            )
-          ])
+      _vm.content.showWarning
+        ? _c("warning-component", { attrs: { mesg: _vm.content.warningText } })
         : _vm._e()
-    ])
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -35441,159 +35558,174 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "componentTypeOne" }, [
-    _c("div", { staticClass: "chatListComponentRoot" }, [
-      _c(
-        "ul",
-        { staticClass: "chatListRoot" },
-        [
-          _vm._l(_vm.content.item, function(l, index) {
-            return [
-              _c("list-item-component", {
-                key: index,
-                attrs: {
-                  listItem: l,
-                  index: index,
-                  baseUrl: _vm.content.url,
-                  isChildDeleting: _vm.content.isChildDeleting,
-                  projectid: _vm.content.project
-                },
-                on: { delItem: _vm.delItem }
-              })
-            ]
-          }),
-          _vm._v(" "),
-          _vm.content.isCreating
-            ? _c("li", { staticClass: "addMoreChatListItem addBtn" }, [
-                _vm._v("Creating...")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.content.item.length < 4 && !_vm.content.isCreating
-            ? _c(
-                "li",
-                {
-                  staticClass: "addMoreChatListItem addBtn",
-                  on: { click: _vm.createNewList }
-                },
-                [_vm._v("+ Add Item")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.content.button !== null
-            ? _c(
-                "li",
-                { staticClass: "chatListRootButton addBtn" },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "buttonActionGroup",
-                      on: {
-                        click: function($event) {
-                          _vm.content.btnEdit = true
-                        }
-                      }
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "componentTypeOne" }, [
+        _c("div", { staticClass: "chatListComponentRoot" }, [
+          _c(
+            "ul",
+            { staticClass: "chatListRoot" },
+            [
+              _vm._l(_vm.content.item, function(l, index) {
+                return [
+                  _c("list-item-component", {
+                    key: index,
+                    attrs: {
+                      listItem: l,
+                      index: index,
+                      baseUrl: _vm.content.url,
+                      isChildDeleting: _vm.content.isChildDeleting,
+                      projectid: _vm.content.project
                     },
+                    on: { delItem: _vm.delItem }
+                  })
+                ]
+              }),
+              _vm._v(" "),
+              _vm.content.isCreating
+                ? _c("li", { staticClass: "addMoreChatListItem addBtn" }, [
+                    _vm._v("Creating...")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.content.item.length < 4 && !_vm.content.isCreating
+                ? _c(
+                    "li",
+                    {
+                      staticClass: "addMoreChatListItem addBtn",
+                      on: { click: _vm.createNewList }
+                    },
+                    [_vm._v("+ Add Item")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.content.button !== null
+                ? _c(
+                    "li",
+                    { staticClass: "chatListRootButton addBtn" },
                     [
-                      _c("div", { staticClass: "buttonName" }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.content.button.title
-                              ? _vm.content.button.title
-                              : "Button Name"
-                          )
-                        )
-                      ]),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "buttonActionGroup",
+                          on: {
+                            click: function($event) {
+                              _vm.content.btnEdit = true
+                            }
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "buttonName" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm.content.button.title
+                                  ? _vm.content.button.title
+                                  : "Button Name"
+                              )
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _vm.content.button.type === 0 &&
+                          _vm.content.button.block.length > 0
+                            ? _c("div", { staticClass: "buttonActionName" }, [
+                                _vm._v(
+                                  _vm._s(_vm.content.button.block[0].title)
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.content.button.type === 1 &&
+                          _vm.content.button.url
+                            ? _c("div", { staticClass: "buttonActionName" }, [
+                                _vm._v(_vm._s(_vm.content.button.url))
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.content.button.type === 2 &&
+                          _vm.content.button.phone.number
+                            ? _c("div", { staticClass: "buttonActionName" }, [
+                                _vm._v(_vm._s(_vm.content.button.phone.number))
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
                       _vm._v(" "),
-                      _vm.content.button.type === 0 &&
-                      _vm.content.button.block.length > 0
-                        ? _c("div", { staticClass: "buttonActionName" }, [
-                            _vm._v(_vm._s(_vm.content.button.block[0].title))
+                      _c(
+                        "div",
+                        {
+                          staticClass: "delIcon",
+                          on: {
+                            click: function($event) {
+                              _vm.content.delButton()
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("delete")
                           ])
-                        : _vm._e(),
+                        ]
+                      ),
                       _vm._v(" "),
-                      _vm.content.button.type === 1 && _vm.content.button.url
-                        ? _c("div", { staticClass: "buttonActionName" }, [
-                            _vm._v(_vm._s(_vm.content.button.url))
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.content.button.type === 2 &&
-                      _vm.content.button.phone.number
-                        ? _c("div", { staticClass: "buttonActionName" }, [
-                            _vm._v(_vm._s(_vm.content.button.phone.number))
-                          ])
+                      _vm.content.btnEdit
+                        ? _c("button-component", {
+                            attrs: {
+                              rootUrl: _vm.content.url + "/button",
+                              button: _vm.content.button,
+                              projectid: _vm.content.project
+                            },
+                            on: {
+                              closeContent: function(status) {
+                                if (status && _vm.content.btnEdit === true) {
+                                  _vm.content.btnEdit = false
+                                }
+                              }
+                            }
+                          })
                         : _vm._e()
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.content.button == null && !_vm.content.addingNewBtn
+                ? _c(
                     "div",
                     {
-                      staticClass: "delIcon",
+                      staticClass: "addBtn",
                       on: {
                         click: function($event) {
-                          _vm.content.delButton()
+                          _vm.content.addButton()
                         }
                       }
                     },
                     [
                       _c("i", { staticClass: "material-icons" }, [
-                        _vm._v("delete")
-                      ])
+                        _vm._v("add")
+                      ]),
+                      _vm._v("Add Button\n                ")
                     ]
-                  ),
-                  _vm._v(" "),
-                  _vm.content.btnEdit
-                    ? _c("button-component", {
-                        attrs: {
-                          rootUrl: _vm.content.url + "/button",
-                          button: _vm.content.button,
-                          projectid: _vm.content.project
-                        },
-                        on: {
-                          closeContent: function(status) {
-                            if (status && _vm.content.btnEdit === true) {
-                              _vm.content.btnEdit = false
-                            }
-                          }
-                        }
-                      })
-                    : _vm._e()
-                ],
-                1
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.content.button == null && !_vm.content.addingNewBtn
-            ? _c(
-                "div",
-                {
-                  staticClass: "addBtn",
-                  on: {
-                    click: function($event) {
-                      _vm.content.addButton()
-                    }
-                  }
-                },
-                [
-                  _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-                  _vm._v("Add Button\n            ")
-                ]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.content.addingNewBtn
-            ? _c("div", { staticClass: "addBtn btnCon" }, [
-                _vm._v("Creating...")
-              ])
-            : _vm._e()
-        ],
-        2
-      )
-    ])
-  ])
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.content.addingNewBtn
+                ? _c("div", { staticClass: "addBtn btnCon" }, [
+                    _vm._v("Creating...")
+                  ])
+                : _vm._e()
+            ],
+            2
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _vm.content.showWarning
+        ? _c("warning-component", { attrs: { mesg: _vm.content.warningText } })
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -36913,88 +37045,100 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "componentTypeOne quickReplyRoot" },
     [
       _c(
-        "ul",
-        { ref: "dropdownMenu", staticClass: "quickReplyRootContainer" },
+        "div",
+        { staticClass: "componentTypeOne quickReplyRoot" },
         [
           _c(
-            "draggable",
-            {
-              staticClass: "draggable",
-              attrs: { handle: ".horizontalDrag" },
-              on: { end: _vm.updateOrder },
-              model: {
-                value: _vm.content.item,
-                callback: function($$v) {
-                  _vm.$set(_vm.content, "item", $$v)
-                },
-                expression: "content.item"
-              }
-            },
+            "ul",
+            { ref: "dropdownMenu", staticClass: "quickReplyRootContainer" },
             [
-              _vm._l(_vm.content.item, function(qr, index) {
-                return [
-                  _c("quick-reply-item-component", {
-                    key: index,
-                    attrs: {
-                      qr: qr,
-                      isChildDeleting: _vm.content.isChildDeleting,
-                      index: index
+              _c(
+                "draggable",
+                {
+                  staticClass: "draggable",
+                  attrs: { handle: ".horizontalDrag" },
+                  on: { end: _vm.updateOrder },
+                  model: {
+                    value: _vm.content.item,
+                    callback: function($$v) {
+                      _vm.$set(_vm.content, "item", $$v)
                     },
-                    on: {
-                      delItem: _vm.delItem,
-                      closeOtherSection: _vm.closeOtherSection
-                    }
+                    expression: "content.item"
+                  }
+                },
+                [
+                  _vm._l(_vm.content.item, function(qr, index) {
+                    return [
+                      _c("quick-reply-item-component", {
+                        key: index,
+                        attrs: {
+                          qr: qr,
+                          isChildDeleting: _vm.content.isChildDeleting,
+                          index: index
+                        },
+                        on: {
+                          delItem: _vm.delItem,
+                          closeOtherSection: _vm.closeOtherSection
+                        }
+                      })
+                    ]
                   })
-                ]
-              })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _vm.content.item.length < 11
+                ? _c("li", [
+                    _vm.content.isCreating
+                      ? _c(
+                          "div",
+                          { staticClass: "quickReplyCapsule qrAddMore" },
+                          [_vm._v("Creating...")]
+                        )
+                      : _c(
+                          "div",
+                          {
+                            staticClass: "quickReplyCapsule qrAddMore",
+                            on: { click: _vm.createNewQuickReply }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("add")
+                            ]),
+                            _vm._v("Add Quick Reply\n                ")
+                          ]
+                        )
+                  ])
+                : _vm._e()
             ],
-            2
+            1
           ),
           _vm._v(" "),
-          _vm.content.item.length < 11
-            ? _c("li", [
-                _vm.content.isCreating
-                  ? _c("div", { staticClass: "quickReplyCapsule qrAddMore" }, [
-                      _vm._v("Creating...")
-                    ])
-                  : _c(
-                      "div",
-                      {
-                        staticClass: "quickReplyCapsule qrAddMore",
-                        on: { click: _vm.createNewQuickReply }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("add")
-                        ]),
-                        _vm._v("Add Quick Reply\n            ")
-                      ]
-                    )
-              ])
+          !_vm.isValid ? [_vm._m(0)] : _vm._e(),
+          _vm._v(" "),
+          _vm.content.errorMesg !== ""
+            ? [
+                _c("error-component", {
+                  attrs: { mesg: _vm.content.errorMesg },
+                  on: {
+                    closeError: function($event) {
+                      _vm.content.errorMesg = ""
+                    }
+                  }
+                })
+              ]
             : _vm._e()
         ],
-        1
+        2
       ),
       _vm._v(" "),
-      !_vm.isValid ? [_vm._m(0)] : _vm._e(),
-      _vm._v(" "),
-      _vm.content.errorMesg !== ""
-        ? [
-            _c("error-component", {
-              attrs: { mesg: _vm.content.errorMesg },
-              on: {
-                closeError: function($event) {
-                  _vm.content.errorMesg = ""
-                }
-              }
-            })
-          ]
+      _vm.content.showWarning
+        ? _c("warning-component", { attrs: { mesg: _vm.content.warningText } })
         : _vm._e()
     ],
-    2
+    1
   )
 }
 var staticRenderFns = [
@@ -37472,72 +37616,82 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "componentTypeOne" }, [
-    _c("div", { staticClass: "userInputRootContainer" }, [
-      _c("div", { staticClass: "userInputInnerContainer" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("p", { staticClass: "userInputDesc" }, [
-          _vm._v(
-            "Ask bot users questions and save their responses to user attributes. You can then utilize user attributes in broadcasting user filters."
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _c(
-            "ul",
-            { ref: "dropdownMenu", staticClass: "userInputList" },
-            [
-              _vm._m(1),
-              _vm._v(" "),
-              _vm._l(_vm.content.item, function(ui, index) {
-                return [
-                  _c("user-input-item-component", {
-                    key: index,
-                    attrs: { index: index, ui: ui },
-                    on: {
-                      closeOtherSection: _vm.closeOtherSection,
-                      delItem: _vm.delItem
-                    }
-                  })
-                ]
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            [
-              _vm.content.isCreating
-                ? [_vm._v("Creating...")]
-                : [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "addMoreRule",
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "componentTypeOne" }, [
+        _c("div", { staticClass: "userInputRootContainer" }, [
+          _c("div", { staticClass: "userInputInnerContainer" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("p", { staticClass: "userInputDesc" }, [
+              _vm._v(
+                "Ask bot users questions and save their responses to user attributes. You can then utilize user attributes in broadcasting user filters."
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", [
+              _c(
+                "ul",
+                { ref: "dropdownMenu", staticClass: "userInputList" },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _vm._l(_vm.content.item, function(ui, index) {
+                    return [
+                      _c("user-input-item-component", {
+                        key: index,
+                        attrs: { index: index, ui: ui },
                         on: {
-                          click: function($event) {
-                            _vm.createNewUserInput()
-                          }
+                          closeOtherSection: _vm.closeOtherSection,
+                          delItem: _vm.delItem
                         }
-                      },
-                      [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("add")
-                        ]),
-                        _vm._v(" "),
-                        _c("span", [_vm._v("Add Fields")])
+                      })
+                    ]
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                [
+                  _vm.content.isCreating
+                    ? [_vm._v("Creating...")]
+                    : [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "addMoreRule",
+                            on: {
+                              click: function($event) {
+                                _vm.createNewUserInput()
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("add")
+                            ]),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Add Fields")])
+                          ]
+                        )
                       ]
-                    )
-                  ]
-            ],
-            2
-          )
+                ],
+                2
+              )
+            ])
+          ])
         ])
-      ])
-    ])
-  ])
+      ]),
+      _vm._v(" "),
+      _vm.content.showWarning
+        ? _c("warning-component", { attrs: { mesg: _vm.content.warningText } })
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -37873,14 +38027,6 @@ var render = function() {
                         _c("div", { staticClass: "componentDeleting" }, [
                           _c("div", { staticClass: "deletingContainer" })
                         ])
-                      ]
-                    : _vm._e(),
-                  _vm._v(" "),
-                  content.showWarning
-                    ? [
-                        _vm._v(
-                          "\n                    this is warning\n                "
-                        )
                       ]
                     : _vm._e(),
                   _vm._v(" "),
@@ -65039,6 +65185,123 @@ var index_esm = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(273)
+/* template */
+var __vue_template__ = __webpack_require__(274)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/common/builder/WarningComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2d270a06", Component.options)
+  } else {
+    hotAPI.reload("data-v-2d270a06", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 273 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+let WarningComponent = class WarningComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
+        type: String
+    })
+], WarningComponent.prototype, "mesg", void 0);
+WarningComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], WarningComponent);
+/* harmony default export */ __webpack_exports__["default"] = (WarningComponent);
+
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "processWarning" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("p", [_vm._v("\n        " + _vm._s(_vm.mesg) + "\n    ")])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "noticIcon" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("warning")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2d270a06", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

@@ -22,6 +22,10 @@ export default class TypingContentModel extends ChatBlockContentModel {
         this.typingContent.duration = duration;
     }
 
+    get showWarning() {
+        return false;
+    }
+
     async saveDuration() {
         this.saveToken.cancel();
         this.saveToken = Axios.CancelToken.source();

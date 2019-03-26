@@ -126,6 +126,14 @@ export default class ListItemModel extends AjaxErrorHandler {
         this.buttonEdit = status;
     }
 
+    get isValid() {
+        if(this.title==='' || (this.sub==='' && this.image==='' && this.button==null)) {
+            return false;
+        }
+
+        return true;
+    }
+
     async imageUpload(e: any) {
         this.canShowError = true;
         this.imageToken.cancel();

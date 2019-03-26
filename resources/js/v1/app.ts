@@ -12,6 +12,7 @@ import draggable from 'vuedraggable';
 import App from './App.vue';
 import AttributeSelectorComponent from './components/common/AttributeSelectorComponent.vue';
 import ButtonComponent from './components/common/builder/ButtonComponent.vue';
+import WarningComponent from './components/common/builder/WarningComponent.vue';
 import BuilderComponent from './components/common/BuilderComponent.vue';
 import ErrorComponent from './components/common/ErrorComponent.vue';
 import FullScreenLoadingComponent from './components/common/FullScreenLoadingComponent.vue';
@@ -111,6 +112,7 @@ Vue.component('v-date-picker', DatePicker);
 Vue.component('dropdown-keybase-component', DropDownComponent);
 Vue.component('time-input-component', TimeInputComponent);
 Vue.component('fullscreen-loading-component', FullScreenLoadingComponent);
+Vue.component('warning-component', WarningComponent);
 
 new Vue({
     router,

@@ -1,47 +1,50 @@
 <template>
-    <div class="componentTypeOne">
-        <div class="userInputRootContainer">
-            <div class="userInputInnerContainer">
-                <div class="userInputHeading">
-                    <div class="uihIcon">
-                        <i class="material-icons">textsms</i>
+    <div>
+        <div class="componentTypeOne">
+            <div class="userInputRootContainer">
+                <div class="userInputInnerContainer">
+                    <div class="userInputHeading">
+                        <div class="uihIcon">
+                            <i class="material-icons">textsms</i>
+                        </div>
+                        <span class="uihText">User Input</span>
                     </div>
-                    <span class="uihText">User Input</span>
-                </div>
-                <p
-                    class="userInputDesc"
-                >Ask bot users questions and save their responses to user attributes. You can then utilize user attributes in broadcasting user filters.</p>
-                <div>
-                    <ul class="userInputList" ref="dropdownMenu">
-                        <li class="userInputHeading">
-                            <div class="userInputForm">
-                                <div class="userInputQuestion">Message to user *</div>
-                                <div class="userInputValidation">Validation</div>
-                                <div class="userInputAttribute">Save answer to attribute *</div>
-                            </div>
-                        </li>
-                        <template v-for="(ui, index) in content.item">
-                            <user-input-item-component
-                                :index="index"
-                                :ui="ui"
-                                :key="index"
-                                @closeOtherSection="closeOtherSection"
-                                @delItem="delItem"
-                            ></user-input-item-component>
-                        </template>
-                    </ul>
+                    <p
+                        class="userInputDesc"
+                    >Ask bot users questions and save their responses to user attributes. You can then utilize user attributes in broadcasting user filters.</p>
                     <div>
-                        <template v-if="content.isCreating">Creating...</template>
-                        <template v-else>
-                            <button class="addMoreRule" @click="createNewUserInput()">
-                                <i class="material-icons">add</i>
-                                <span>Add Fields</span>
-                            </button>
-                        </template>
+                        <ul class="userInputList" ref="dropdownMenu">
+                            <li class="userInputHeading">
+                                <div class="userInputForm">
+                                    <div class="userInputQuestion">Message to user *</div>
+                                    <div class="userInputValidation">Validation</div>
+                                    <div class="userInputAttribute">Save answer to attribute *</div>
+                                </div>
+                            </li>
+                            <template v-for="(ui, index) in content.item">
+                                <user-input-item-component
+                                    :index="index"
+                                    :ui="ui"
+                                    :key="index"
+                                    @closeOtherSection="closeOtherSection"
+                                    @delItem="delItem"
+                                ></user-input-item-component>
+                            </template>
+                        </ul>
+                        <div>
+                            <template v-if="content.isCreating">Creating...</template>
+                            <template v-else>
+                                <button class="addMoreRule" @click="createNewUserInput()">
+                                    <i class="material-icons">add</i>
+                                    <span>Add Fields</span>
+                                </button>
+                            </template>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <warning-component :mesg="content.warningText" v-if="content.showWarning"></warning-component>
     </div>
 </template>
 

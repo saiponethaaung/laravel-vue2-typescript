@@ -98,12 +98,137 @@ class ChatBotController extends Controller
     private function parseSection($sections)
     {
         $res = [];
+        $res1 = [];
         foreach($sections as $section) {
+            $contents = app('App\Http\Controllers\V1\Api\ChatContent\GetController')->loadContentForValidation($section->id);
+            
             $parsed = [
                 'id' => $section->id,
-                'title' => $section->title
+                'title' => $section->title,
+                'isValid' => true,
+                'contents' => null
             ];
+
+            foreach($contents as $content) {
+                $break = false;
+                $button = true;
+                switch($content['type']) {
+                    case(1):
+                    $button = $this->validateButton($content['content']['button']);
+                    if(empty($content['content']['text']) || !$button) {
+                        $parsed['isValid'] = false;
+                        $break = true;
+                    }
+                    break;
+
+                    case(3):
+                    foreach($content['content'] as $content) {
+                        if(empty($content['title'])) {
+                            $parsed['isValid'] = false;
+                            $break = true;
+                        }
+                    }
+                    break;
+                    
+                    case(4):
+                    foreach($content['content'] as $content) {
+                        if(empty($content['question']) || empty($content['attribute']['title'])) {
+                            $parsed['isValid'] = false;
+                            $break = true;
+                        }
+                    }
+                    break;
+
+                    case(6):
+                    foreach($content['content'] as $content) {
+                        if(empty($content['title']) || (empty($content['sub']) || empty($content['url']))) {
+                            $parsed['isValid'] = false;
+                            $break = true;
+                        }
+                    }
+                    $parsed['contents'] = $content;
+                    break;
+
+                    // if(empty($content['content']['question'])) {
+                    //     $parsed['isValid'] = false;
+                    //     $break = true;
+                    // }
+                    // // $parsed['contents'] = $content['content']->$parsed['content']['question'];
+                    //     break;
+                       
+                        // if($btn = false) {
+                        //     $parsed['isValid'] = false;
+                        //     $break = true;
+                        // }
+                        // break;
+        
+                        // $parsed['isValid'] = $this->validateButton($content['content']['button']);
+        
+                        // if($parsed['isValid'] = false) break;
+
+                }
+                
+                
+                
+                if($break) break;
+            }
+            
+            
+            // if($section->contents[0]->type == 1 && $section->contents[0]->) {
+            //     $parsed['isValid'] = false;
+            // }
+
             $res[] = $parsed;
+        }
+
+        return $res;
+    }
+
+    private function validateButton($buttons) {
+        
+        foreach($buttons as $button) {
+            if(empty($button['title'])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function parseContent($contents) 
+    {
+        $res = [];
+        foreach($contents as $content) {
+            $parsed = [
+                'id' => $content->id,
+                'content' => $content->content,
+                'galleryList' => $this->parseGallery($content->galleryList)
+            ];
+
+            $res[] = $parsed;
+        }
+
+        return $res;
+    }
+
+    private function parseGallery($galleryList) 
+    {
+        $res = [
+            'count' => 0,
+            'isError' => false
+        ];
+
+        foreach($galleryList as $gallery) {
+            $parsed = [
+                'id' => $gallery->id,
+                'title' => $gallery->title,
+                'sub' => $gallery->sub
+            ];
+            $res['count']++;
+        } 
+
+        if($res['count'] < 3) {
+            $res['isError'] = true;
         }
 
         return $res;

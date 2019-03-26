@@ -16,7 +16,7 @@
                         :class="{'selectedBlock': selectedBlock==section.id}"
                     >
                         {{ section.title }}
-                        <!-- <div class="errorAlert"></div> -->
+                        <div class="errorAlert" v-if="$store.state.isError"></div>
                     </div>
                     </div>
                 </template>
@@ -29,9 +29,9 @@
                     :disabled="block.updating"
                     >
                     <div class="chatBlockControl">
-                    <button @click="delBlockIndex=index">
-                        <i class="material-icons">delete</i>
-                    </button>
+                        <button @click="delBlockIndex=index">
+                            <i class="material-icons">delete</i>
+                        </button>
                     </div>
                     <!-- <div class="orderBlock">order</div> -->
                     <draggable
@@ -41,31 +41,31 @@
                     filter=".ignore-block"
                     @end="updateSectionOrder(index)"
                     >
-                    <div
-                        v-for="(section, sIndex) in block.sections"
-                        :key="`${index}-${sIndex}`"
-                        class="chatBlockContent sortCBC"
-                        @click="selectBlock(index, sIndex)"
-                        :class="{'selectedBlock': selectedBlock==section.id}"
-                    >
-                        {{ section.shortenTitle }}
-                        <!-- <div class="errorAlert" v-if="$store.state.haveLiveChat"></div> -->
-                        <!-- <span class="blockOption" @click="delSection()">
-                        <i class="material-icons">more_horiz</i>
-                        </span> -->
-                        <!-- <span class="menuOption">Delete</span> -->
-                    </div>
-                    <div
-                        slot="footer"
-                        v-if="!block.isSecCreating"
-                        class="chatBlockContent addMore ignore-block"
-                        @click="block.createNewSection()"
-                    >
-                        <i class="material-icons">add</i>
-                    </div>
-                    <div slot="footer" v-else class="chatBlockContent addMore ignore-block">
-                        <i class="material-icons">autorenew</i>
-                    </div>
+                        <div
+                            v-for="(section, sIndex) in block.sections"
+                            :key="`${index}-${sIndex}`"
+                            class="chatBlockContent sortCBC"
+                            @click="selectBlock(index, sIndex)"
+                            :class="{'selectedBlock': selectedBlock==section.id}"
+                        >
+                            {{ section.shortenTitle }}
+                            <div class="errorAlert" v-if="$store.state.isError"></div>
+                            <!-- <span class="blockOption" @click="showOption=!showOption">
+                                <i class="material-icons">more_horiz</i>
+                            </span>
+                            <span class="menuOption" v-if="showOption">Delete</span> -->
+                        </div>
+                        <div
+                            slot="footer"
+                            v-if="!block.isSecCreating"
+                            class="chatBlockContent addMore ignore-block"
+                            @click="block.createNewSection()"
+                        >
+                            <i class="material-icons">add</i>
+                        </div>
+                        <div slot="footer" v-else class="chatBlockContent addMore ignore-block">
+                            <i class="material-icons">autorenew</i>
+                        </div>
                     </draggable>
                 </template>
                 </div>
@@ -126,6 +126,7 @@ export default class SidebarComponent extends Vue {
   private blocks: Array<ChatBlockModel> = [];
   private selectedBlock: number = 0;
   private cancelBlockOrder: CancelTokenSource = Axios.CancelToken.source();
+  private showOption: boolean = false;
 
   async mounted() {
     await this.loadBlocks();

@@ -54081,6 +54081,7 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
         this.blocks = [];
         this.selectedBlock = 0;
         this.cancelBlockOrder = __WEBPACK_IMPORTED_MODULE_3_axios___default.a.CancelToken.source();
+        this.showOption = false;
     }
     mounted() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -54499,7 +54500,10 @@ var render = function() {
                                       "\n                    " +
                                         _vm._s(section.title) +
                                         "\n                    "
-                                    )
+                                    ),
+                                    _vm.$store.state.isError
+                                      ? _c("div", { staticClass: "errorAlert" })
+                                      : _vm._e()
                                   ]
                                 )
                               })
@@ -54592,10 +54596,15 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                    " +
+                                        "\n                        " +
                                           _vm._s(section.shortenTitle) +
-                                          "\n                    "
-                                      )
+                                          "\n                        "
+                                      ),
+                                      _vm.$store.state.isError
+                                        ? _c("div", {
+                                            staticClass: "errorAlert"
+                                          })
+                                        : _vm._e()
                                     ]
                                   )
                                 }),
@@ -63913,7 +63922,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         errorMesg: [],
         sessionIdentifier: localStorage.getItem('session_identifier'),
         passwordVerify: false,
-        haveLiveChat: false,
+        haveLiveChat: false
     },
     mutations: {
         logout(state) {

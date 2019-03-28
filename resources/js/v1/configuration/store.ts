@@ -57,7 +57,8 @@ export default new Vuex.Store({
         errorMesg: [],
         sessionIdentifier: localStorage.getItem('session_identifier'),
         passwordVerify: false,
-        haveLiveChat: false
+        haveLiveChat: false,
+        isError: false
     },
     mutations: {
         logout(state) {

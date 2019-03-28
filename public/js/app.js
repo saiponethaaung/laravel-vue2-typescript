@@ -54500,10 +54500,7 @@ var render = function() {
                                       "\n                    " +
                                         _vm._s(section.title) +
                                         "\n                    "
-                                    ),
-                                    _vm.$store.state.isError
-                                      ? _c("div", { staticClass: "errorAlert" })
-                                      : _vm._e()
+                                    )
                                   ]
                                 )
                               })
@@ -54599,12 +54596,7 @@ var render = function() {
                                         "\n                        " +
                                           _vm._s(section.shortenTitle) +
                                           "\n                        "
-                                      ),
-                                      _vm.$store.state.isError
-                                        ? _c("div", {
-                                            staticClass: "errorAlert"
-                                          })
-                                        : _vm._e()
+                                      )
                                     ]
                                   )
                                 }),
@@ -63922,7 +63914,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         errorMesg: [],
         sessionIdentifier: localStorage.getItem('session_identifier'),
         passwordVerify: false,
-        haveLiveChat: false
+        haveLiveChat: false,
+        isError: false
     },
     mutations: {
         logout(state) {

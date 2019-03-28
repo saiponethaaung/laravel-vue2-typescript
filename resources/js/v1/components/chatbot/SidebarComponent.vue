@@ -16,7 +16,7 @@
                         :class="{'selectedBlock': selectedBlock==section.id}"
                     >
                         {{ section.title }}
-                        <div class="errorAlert" v-if="$store.state.isError"></div>
+                        <!-- <div class="errorAlert"></div> -->
                     </div>
                     </div>
                 </template>
@@ -49,7 +49,7 @@
                             :class="{'selectedBlock': selectedBlock==section.id}"
                         >
                             {{ section.shortenTitle }}
-                            <div class="errorAlert" v-if="$store.state.isError"></div>
+                            <!-- <div class="errorAlert"></div> -->
                             <!-- <span class="blockOption" @click="showOption=!showOption">
                                 <i class="material-icons">more_horiz</i>
                             </span>
@@ -227,6 +227,7 @@ export default class SidebarComponent extends Vue {
     })
       .then((res: any) => {
         for (let chatBlock of res.data.data) {
+
           this.blocks.push(
             new ChatBlockModel(chatBlock.block, chatBlock.sections)
           );

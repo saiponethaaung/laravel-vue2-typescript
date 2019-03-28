@@ -139,6 +139,13 @@ class ChatBotController extends Controller
                     }
                     break;
 
+                    case(5):
+                    foreach($content['content'] as $content) {
+                        
+                        $parsed['contents'] = $content;
+                    }
+                    break;
+
                     case(6):
                     foreach($content['content'] as $content) {
                         if(empty($content['title']) || (empty($content['sub']) || empty($content['url']))) {
@@ -146,7 +153,6 @@ class ChatBotController extends Controller
                             $break = true;
                         }
                     }
-                    $parsed['contents'] = $content;
                     break;
 
                     // if(empty($content['content']['question'])) {

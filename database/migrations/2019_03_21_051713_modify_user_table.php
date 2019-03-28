@@ -14,7 +14,11 @@ class ModifyUserTable extends Migration
     public function up()
     {
         Schema::table('users', function(Blueprint $table) {
-            $table->string('auth_code')->after('email_verified_at');
+            if(env('APP_ENV')==='testing') {
+                $table->string('auth_code')->default('')->after('email_verified_at');
+            } else {
+                $table->string('auth_code')->after('email_verified_at');
+            }
         });
     }
 

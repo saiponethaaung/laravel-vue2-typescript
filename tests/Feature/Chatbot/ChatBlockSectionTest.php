@@ -19,7 +19,9 @@ class ChatBlockSectionTest extends TestCase
         ]);
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.section.create', [
             'projectId' => $this->project->id,
@@ -55,7 +57,9 @@ class ChatBlockSectionTest extends TestCase
         ]);
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.section.update', [
             'projectId' => $this->project->id,
@@ -90,7 +94,9 @@ class ChatBlockSectionTest extends TestCase
         ]);
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.section.update', [
             'projectId' => $this->project->id,
@@ -125,7 +131,9 @@ class ChatBlockSectionTest extends TestCase
         ]);
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('delete', route('chatbot.section.update', [
             'projectId' => $this->project->id,
@@ -158,7 +166,9 @@ class ChatBlockSectionTest extends TestCase
         ]);
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('delete', route('chatbot.section.update', [
             'projectId' => $this->project->id,
@@ -181,7 +191,9 @@ class ChatBlockSectionTest extends TestCase
     public function testSearchSection()
     {
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('get', route('chatbot.section.search', [
             'projectId' => $this->project->id,

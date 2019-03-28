@@ -20,23 +20,23 @@ class LoginTest extends TestCase
 
         $featureTest = $this->post(route('api.login'), [
                 'email' => '',
-                'password' => '321123'
+                'otp' => '321123'
             ], ['Accept' => 'application/json'])
             ->assertStatus(422)
             ->assertJson($err);
     }
     
-    public function testUserLoginPasswordRequired()
+    public function testUserLoginOtpRequired()
     {
         $err = [
             'status' => false,
             'code' => 422,
-            'mesg' => 'The password field is required.'
+            'mesg' => 'The otp field is required.'
         ];
 
         $featureTest = $this->post(route('api.login'), [
                 'email' => 'saipone@pixeldirects.com',
-                'password' => ''
+                'otp' => ''
             ], ['Accept' => 'application/json'])
             ->assertStatus(422)
             ->assertJson($err);
@@ -47,34 +47,36 @@ class LoginTest extends TestCase
         $err = [
             'status' => false,
             'code' => 422,
-            'mesg' => 'Invalid email or username'
+            'mesg' => 'Invalid email or otp!'
         ];
 
         $featureTest = $this->post(route('api.login'), [
                 'email' => 'saipone@pixeldirects.com',
-                'password' => '321123'
+                'otp' => '321123'
             ], ['Accept' => 'application/json'])
             ->assertStatus(422)
             ->assertJson($err);
     }
     
-    public function testUserLoginWrongPassword()
+    public function testUserLoginWrongOtp()
     {
         User::create([
             'name' => 'Sai Pone Tha Aung',
             'email' => 'saipone@pixeldirects.com',
-            'password' => bcrypt('321123')
+            'auth_code' => '6P2YJQR32MJC4NZT',
+            'email_verified_at' => date('Y-m-d H:i:s'),
+            'password' => bcrypt('123')
         ]);
 
         $err = [
             'status' => false,
             'code' => 422,
-            'mesg' => 'Invalid email or username'
+            'mesg' => 'Invalid otp code!'
         ];
 
         $featureTest = $this->post(route('api.login'), [
                 'email' => 'saipone@pixeldirects.com',
-                'password' => '123'
+                'otp' => '123'
             ], ['Accept' => 'application/json'])
             ->assertStatus(422)
             ->assertJson($err);
@@ -85,13 +87,14 @@ class LoginTest extends TestCase
         $user = User::create([
             'name' => 'Sai Pone Tha Aung',
             'email' => 'saipone@pixeldirects.com',
-            'password' => bcrypt('321123'),
+            'auth_code' => '6P2YJQR32MJC4NZT',
             'email_verified_at' => date('Y-m-d H:i:s'),
+            'password' => bcrypt('123')
         ]);
 
         $featureTest = $this->post(route('api.login'), [
                 'email' => 'saipone@pixeldirects.com',
-                'password' => '321123'
+                'otp' => $this->g2fa->getCurrentOtp($user->auth_code)
             ], ['Accept' => 'application/json'])
             ->assertStatus(200)
             ->assertJsonStructure([

@@ -15,7 +15,9 @@ class ProjectListTest extends TestCase
     public function testGetEmptyProjectList()
     {
         $featureTest = $this->withHeaders([
-                'Authorization' => 'Bearer '.$this->token
+                'User-Agent' => $this->agent,
+                'Authorization' => 'Bearer '.$this->token,
+                'sessionIdentifier' => $this->identifier
             ])
             ->json('get', route('chatbot.project.list'), [])
             ->assertStatus(200)
@@ -36,7 +38,9 @@ class ProjectListTest extends TestCase
         });
 
         $featureTest = $this->withHeaders([
-                'Authorization' => 'Bearer '.$this->token
+                'User-Agent' => $this->agent,
+                'Authorization' => 'Bearer '.$this->token,
+                'sessionIdentifier' => $this->identifier
             ])
             ->json('get', route('chatbot.project.list'), [])
             ->assertStatus(200)
@@ -63,7 +67,9 @@ class ProjectListTest extends TestCase
     public function testGetProjectListUnauthorize()
     {
         $featureTest = $this->withHeaders([
-                'Authorization' => 'Bearer '.md5($this->token)
+                'User-Agent' => $this->agent,
+                'Authorization' => 'Bearer '.md5($this->token),
+                'sessionIdentifier' => $this->identifier
             ])
             ->json('get', route('chatbot.project.list'), [])
             ->assertStatus(401)
@@ -85,7 +91,9 @@ class ProjectListTest extends TestCase
         ]);
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('get', route('chatbot.project.info', [
             'projectId' => $project->id
@@ -133,7 +141,9 @@ class ProjectListTest extends TestCase
         $projectUser->save();
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('get', route('chatbot.project.info', [
             'projectId' => $project->id
@@ -184,7 +194,9 @@ class ProjectListTest extends TestCase
         ]);
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.project.page.publish.status', [
             'projectId' => $project->id
@@ -214,7 +226,9 @@ class ProjectListTest extends TestCase
         ]);
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.project.page.publish.status', [
             'projectId' => $project->id

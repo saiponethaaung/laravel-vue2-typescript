@@ -28,7 +28,9 @@ class MessageTagsTest extends TestCase
         
         Artisan::call('db:seed', ['--class' => 'ProjectMessageTagSeeder']);
         $unitTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('get', route('chatbot.project.message-tags', [
             'projectId' => $project->id

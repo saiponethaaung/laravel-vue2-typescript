@@ -19,7 +19,9 @@ class ProjectCreateTest extends TestCase
     public function testCreateProjectWithoutName()
     {
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.project.create'))
         ->assertStatus(422)
@@ -37,7 +39,9 @@ class ProjectCreateTest extends TestCase
         ];
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.project.create'), $data)
         ->assertStatus(201)

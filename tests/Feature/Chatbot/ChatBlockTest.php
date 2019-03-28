@@ -14,7 +14,9 @@ class ChatBlockTest extends TestCase
     public function testCreateChatBlock()
     {
         $featureTest = $this->withHeaders([
-                'Authorization' => 'Bearer '.$this->token
+                'User-Agent' => $this->agent,
+                'Authorization' => 'Bearer '.$this->token,
+                'sessionIdentifier' => $this->identifier
             ])
             ->json('post', route('chatbot.block.create', [
                 'projectId' => $this->project->id
@@ -62,7 +64,9 @@ class ChatBlockTest extends TestCase
         ]);
 
         $featureTest = $this->withHeaders([
-                'Authorization' => 'Bearer '.$this->token
+                'User-Agent' => $this->agent,
+                'Authorization' => 'Bearer '.$this->token,
+                'sessionIdentifier' => $this->identifier
             ])
             ->json('get', route('chatbot.blocks.get', [
                 'projectId' => $this->project->id
@@ -133,7 +137,9 @@ class ChatBlockTest extends TestCase
         $project = factory(\App\Models\Project::class)->create();
 
         $featureTest = $this->withHeaders([
-                'Authorization' => 'Bearer '.$this->token
+                'User-Agent' => $this->agent,
+                'Authorization' => 'Bearer '.$this->token,
+                'sessionIdentifier' => $this->identifier
             ])
             ->json('get', route('chatbot.blocks.get', [
                 'projectId' => $project->id
@@ -171,7 +177,9 @@ class ChatBlockTest extends TestCase
         ]);
 
         $featureTest = $this->withHeaders([
-                'Authorization' => 'Bearer '.$this->token
+                'User-Agent' => $this->agent,
+                'Authorization' => 'Bearer '.$this->token,
+                'sessionIdentifier' => $this->identifier
             ])
             ->json('delete', route('chatbot.block.delete', [
                 'projectId' => $this->project->id,
@@ -193,7 +201,9 @@ class ChatBlockTest extends TestCase
     public function testInvalidChatBlock()
     {
         $featureTest = $this->withHeaders([
-                'Authorization' => 'Bearer '.$this->token
+                'User-Agent' => $this->agent,
+                'Authorization' => 'Bearer '.$this->token,
+                'sessionIdentifier' => $this->identifier
             ])
             ->json('delete', route('chatbot.block.delete', [
                 'projectId' => $this->project->id,

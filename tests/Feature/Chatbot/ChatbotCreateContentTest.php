@@ -14,7 +14,9 @@ class ChatbotCreateContentTest extends TestCase
     public function createTextContentRequest()
     {
         return $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.create', [
             'projectId' => $this->project->id,
@@ -64,7 +66,9 @@ class ChatbotCreateContentTest extends TestCase
     public function testCreateTypingContent()
     {
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.create', [
             'projectId' => $this->project->id,
@@ -108,7 +112,9 @@ class ChatbotCreateContentTest extends TestCase
     public function createQuickReplyRequest()
     {
         return $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.create', [
             'projectId' => $this->project->id,
@@ -175,7 +181,9 @@ class ChatbotCreateContentTest extends TestCase
     {
         $quickReply = json_decode($this->createQuickReplyRequest()->getContent());
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.qr.create', [
             'projectId' => $this->project->id,
@@ -219,7 +227,9 @@ class ChatbotCreateContentTest extends TestCase
 
         for($count=0; $count<10; $count++) {
             $this->withHeaders([
-                'Authorization' => 'Bearer '.$this->token
+                'User-Agent' => $this->agent,
+                'Authorization' => 'Bearer '.$this->token,
+                'sessionIdentifier' => $this->identifier
             ])
             ->json('post', route('chatbot.content.qr.create', [
                 'projectId' => $this->project->id,
@@ -230,7 +240,9 @@ class ChatbotCreateContentTest extends TestCase
         }
 
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.qr.create', [
             'projectId' => $this->project->id,
@@ -254,7 +266,9 @@ class ChatbotCreateContentTest extends TestCase
     public function createUserInputRequest()
     {
         return $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.create', [
             'projectId' => $this->project->id,
@@ -318,7 +332,9 @@ class ChatbotCreateContentTest extends TestCase
     public function createListRequest()
     {
         return $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.create', [
             'projectId' => $this->project->id,
@@ -388,7 +404,9 @@ class ChatbotCreateContentTest extends TestCase
     {
         $list = json_decode($this->createListRequest()->getContent());
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.list.create', [
             'projectId' => $this->project->id,
@@ -428,7 +446,9 @@ class ChatbotCreateContentTest extends TestCase
     public function createGalleryRequest()
     {
         return $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])->json('post', route('chatbot.content.create', [
             'projectId' => $this->project->id,
             'blockId' => $this->block->id,
@@ -491,7 +511,9 @@ class ChatbotCreateContentTest extends TestCase
     {
         $gallery = json_decode($this->createGalleryRequest()->getContent());
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.gallery.create', [
             'projectId' => $this->project->id,
@@ -531,7 +553,9 @@ class ChatbotCreateContentTest extends TestCase
     public function testCreateImageContent()
     {
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.create', [
             'projectId' => $this->project->id,
@@ -580,7 +604,9 @@ class ChatbotCreateContentTest extends TestCase
     {
         $userInput = json_decode($this->createUserInputRequest()->getContent(), true);
         $featureTest = $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.ui.create', [
             'projectId' => $this->project->id,
@@ -619,7 +645,9 @@ class ChatbotCreateContentTest extends TestCase
     public function createTextButton($textContentId)
     {
         return $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.text.button.create', [
             'projectId' => $this->project->id,
@@ -691,7 +719,9 @@ class ChatbotCreateContentTest extends TestCase
     public function createGalleryButton($galleryContentId, $galleryId)
     {
         return $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.gallery.button.create', [
             'projectId' => $this->project->id,
@@ -764,7 +794,9 @@ class ChatbotCreateContentTest extends TestCase
     public function createListButton($listContentId, $listId)
     {
         return $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.list.button.create', [
                 'projectId' => $this->project->id,
@@ -835,7 +867,9 @@ class ChatbotCreateContentTest extends TestCase
     public function createListItemButton($listContentId, $listId)
     {
         return $this->withHeaders([
-            'Authorization' => 'Bearer '.$this->token
+            'User-Agent' => $this->agent,
+            'Authorization' => 'Bearer '.$this->token,
+            'sessionIdentifier' => $this->identifier
         ])
         ->json('post', route('chatbot.content.list.itme.button.create', [
                 'projectId' => $this->project->id,

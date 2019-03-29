@@ -798,6 +798,12 @@ class ChatBotProjectController extends Controller
                     $btParsed = $this->parseButton($button);
                     if($btParsed['status']) {
                         $buttons[] = $btParsed['data'];
+                    } else {
+                        if(empty($list->sub) &&
+                        (empty($list->image) || (!empty($list->image) && !Storage::disk('public')->exists('images/list/'.$list->image)))) {
+                            $status = false;
+                            break;
+                        }
                     }
                 }
 
@@ -849,6 +855,12 @@ class ChatBotProjectController extends Controller
                 $btParsed = $this->parseButton($button);
                 if($btParsed['status']) {
                     $buttons[] = $btParsed['data'];
+                } else {
+                    if(empty($list->sub) &&
+                    (empty($list->image) || (!empty($list->image) && !Storage::disk('public')->exists('images/gallery/'.$list->image)))) {
+                        $status = false;
+                        break;
+                    }
                 }
             }
 

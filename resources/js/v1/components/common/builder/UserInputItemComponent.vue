@@ -82,7 +82,11 @@ export default class UserInputItemComponent extends Vue {
     private showSuggest: boolean = false;
     private keySuggestion: any[] = [];
     private keyCancelToken: CancelTokenSource = Axios.CancelToken.source();
-
+    
+    mounted() {
+        console.log("rerender");
+    }
+    
     @Emit("closeOtherSection")
     closeOtherSection(index: any) {}
 

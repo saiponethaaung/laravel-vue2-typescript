@@ -87,7 +87,7 @@ class UpdateController extends Controller
     {
         $input = $request->only('content');
         $validator = Validator::make($input, [
-            'content' => 'required'
+            'content' => 'nullable'
         ]);
 
         if($validator->fails()) {

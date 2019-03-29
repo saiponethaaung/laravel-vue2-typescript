@@ -12463,6 +12463,8 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentM
         this.creating = false;
         this.delChild = -1;
         this.orderToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
+        this.warningText = '';
+        this.canShowError = 0;
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}`;
         for (let i of content.content) {
             this.buildGalleryItem(i);
@@ -12493,17 +12495,34 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentM
         this.delChild = index;
     }
     get showWarning() {
-        // show warning if there is no gallery
-        if (this.item.length === 0) {
-            return false;
+        console.log('initial');
+        this.warningText = 'Chat process on messenger will stop here due to incomplete gallery component!';
+        if (this.item.length == 0) {
+            return true;
         }
-        // show warning if gallery is incomplete
-        for (let i of this.item) {
-            if (i.title === '')
-                return false;
-            // if(i.buttons.length===0)
+        for (let i in this.item) {
+            if (!this.item[i].isValid) {
+                let position = parseInt(i) + 1;
+                switch (parseInt(i)) {
+                    case 0:
+                        position = position + 'st';
+                        break;
+                    case 1:
+                        position = position + 'nd';
+                        break;
+                    case 2:
+                        position = position + 'rd';
+                        break;
+                    default:
+                        position = position + 'th';
+                        break;
+                }
+                this.warningText = `Chat process on messenger will stop here because ${position} gallery is incomplete!`;
+                return true;
+            }
         }
-        return true;
+        console.log('closing');
+        return false;
     }
     createGallery() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -12840,6 +12859,7 @@ class ImageContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMod
         this.uploading = false;
         this.imageToken = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.CancelToken.source();
         this.deletingImage = false;
+        this.warningText = '';
         this.imageContent.image = content.content.image;
         this.rootUrl = `/api/v1/project/${this.project}/${this.baseUrl}/section/${this.section}/content/${this.contentId}/image`;
     }
@@ -12856,7 +12876,11 @@ class ImageContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentMod
         this.uploading = status;
     }
     get showWarning() {
-        return true;
+        this.warningText = 'Chat process on messenger will stop here due to incomplete images component!';
+        if (this.imageContent.image === '') {
+            return true;
+        }
+        return false;
     }
     imageUpload(e) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -14108,6 +14132,12 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
     set isUploading(status) {
         this.uploading = status;
     }
+    get isValid() {
+        if (this.title === '' || (this.sub === '' && this.image === '' && this.buttons.length == 0)) {
+            return false;
+        }
+        return true;
+    }
     saveContent() {
         return __awaiter(this, void 0, void 0, function* () {
             this.canShowError = true;
@@ -14547,7 +14577,7 @@ class UserInputItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHan
     }
     get isValid() {
         console.log('it is valid');
-        if (this.question === '' || this.attribute) {
+        if (this.question === '' || this.content.attribute.title === '') {
             return false;
         }
         return true;
@@ -34813,47 +34843,63 @@ var render = function() {
     [
       _c("div", { ref: "textcon", staticClass: "componentTypeOne" }, [
         _c("div", { staticClass: "botTextComponent" }, [
-          _c("div", { staticClass: "btcTextRootCon" }, [
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.content.value,
-                  expression: "content.value"
-                }
-              ],
-              staticClass: "textBody",
-              attrs: { maxlength: "640" },
-              domProps: { value: _vm.content.value },
-              on: {
-                blur: function($event) {
-                  _vm.saveContent()
-                },
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+          _c(
+            "div",
+            { staticClass: "btcTextRootCon" },
+            [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.content.value,
+                    expression: "content.value"
                   }
-                  _vm.$set(_vm.content, "value", $event.target.value)
+                ],
+                staticClass: "textBody",
+                attrs: { maxlength: "640" },
+                domProps: { value: _vm.content.value },
+                on: {
+                  blur: function($event) {
+                    _vm.saveContent()
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.content, "value", $event.target.value)
+                  }
                 }
-              }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "limitWord" }, [
-              _c("span", [
-                _c("div", { staticClass: "alignWord" }, [
-                  _vm._v(_vm._s(_vm.textLimit))
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "limitWord" }, [
+                _c("span", [
+                  _c("div", { staticClass: "alignWord" }, [
+                    _vm._v(_vm._s(_vm.textLimit))
+                  ])
                 ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", {
-              staticClass: "btcPlaceholder",
-              domProps: {
-                innerHTML: _vm._s(_vm.content.value.replace(/\n/g, "<br />"))
-              }
-            })
-          ]),
+              ]),
+              _vm._v(" "),
+              _vm.content.value === ""
+                ? [
+                    _c("div", {
+                      staticClass: "btcPlaceholder",
+                      domProps: { innerHTML: _vm._s("Text content here...") }
+                    })
+                  ]
+                : [
+                    _c("div", {
+                      staticClass: "btcPlaceholder",
+                      domProps: {
+                        innerHTML: _vm._s(
+                          _vm.content.value.replace(/\n/g, "<br />")
+                        )
+                      }
+                    })
+                  ]
+            ],
+            2
+          ),
           _vm._v(" "),
           _c(
             "div",
@@ -36397,96 +36443,106 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "componentTypeOne" },
     [
-      _c("div", { staticClass: "galleListComponentRoot" }, [
-        _c(
-          "ul",
-          { staticClass: "galleListRoot" },
-          [
+      _c(
+        "div",
+        { staticClass: "componentTypeOne" },
+        [
+          _c("div", { staticClass: "galleListComponentRoot" }, [
             _c(
-              "draggable",
-              {
-                staticClass: "draggable",
-                attrs: { handle: ".galleryDrag" },
-                on: { end: _vm.updateOrder },
-                model: {
-                  value: _vm.content.item,
-                  callback: function($$v) {
-                    _vm.$set(_vm.content, "item", $$v)
-                  },
-                  expression: "content.item"
-                }
-              },
+              "ul",
+              { staticClass: "galleListRoot" },
               [
-                _vm._l(_vm.content.item, function(l, index) {
-                  return [
-                    _c("gallery-item-component", {
-                      key: index,
-                      attrs: {
-                        listItem: l,
-                        index: index,
-                        baseUrl: _vm.content.url,
-                        isChildDeleting: _vm.content.isChildDeleting,
-                        projectid: _vm.content.project
+                _c(
+                  "draggable",
+                  {
+                    staticClass: "draggable",
+                    attrs: { handle: ".galleryDrag" },
+                    on: { end: _vm.updateOrder },
+                    model: {
+                      value: _vm.content.item,
+                      callback: function($$v) {
+                        _vm.$set(_vm.content, "item", $$v)
                       },
-                      on: { delItem: _vm.delItem }
+                      expression: "content.item"
+                    }
+                  },
+                  [
+                    _vm._l(_vm.content.item, function(l, index) {
+                      return [
+                        _c("gallery-item-component", {
+                          key: index,
+                          attrs: {
+                            listItem: l,
+                            index: index,
+                            baseUrl: _vm.content.url,
+                            isChildDeleting: _vm.content.isChildDeleting,
+                            projectid: _vm.content.project
+                          },
+                          on: { delItem: _vm.delItem }
+                        })
+                      ]
                     })
-                  ]
-                })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _vm.content.item.length < 10
+                  ? _c("li", { staticClass: "addMoreChatGallery" }, [
+                      _c(
+                        "div",
+                        { staticClass: "galleAddMore" },
+                        [
+                          _vm.content.isCreating
+                            ? [
+                                _c(
+                                  "div",
+                                  { staticClass: "galleLoader" },
+                                  [_c("loading-component")],
+                                  1
+                                )
+                              ]
+                            : [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "addMoreGalleBtn",
+                                    on: { click: _vm.createNewGallery }
+                                  },
+                                  [_vm._v("+")]
+                                )
+                              ]
+                        ],
+                        2
+                      )
+                    ])
+                  : _vm._e()
               ],
-              2
-            ),
-            _vm._v(" "),
-            _vm.content.item.length < 10
-              ? _c("li", { staticClass: "addMoreChatGallery" }, [
-                  _c(
-                    "div",
-                    { staticClass: "galleAddMore" },
-                    [
-                      _vm.content.isCreating
-                        ? [
-                            _c(
-                              "div",
-                              { staticClass: "galleLoader" },
-                              [_c("loading-component")],
-                              1
-                            )
-                          ]
-                        : [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "addMoreGalleBtn",
-                                on: { click: _vm.createNewGallery }
-                              },
-                              [_vm._v("+")]
-                            )
-                          ]
-                    ],
-                    2
-                  )
-                ])
-              : _vm._e()
-          ],
-          1
-        )
-      ]),
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _vm.content.errorMesg !== ""
+            ? [
+                _c("error-component", {
+                  attrs: { mesg: _vm.content.errorMesg },
+                  on: {
+                    closeError: function($event) {
+                      _vm.content.errorMesg = ""
+                    }
+                  }
+                })
+              ]
+            : _vm._e()
+        ],
+        2
+      ),
       _vm._v(" "),
-      _vm.content.errorMesg !== ""
-        ? [
-            _c("error-component", {
-              attrs: { mesg: _vm.content.errorMesg },
-              on: {
-                closeError: function($event) {
-                  _vm.content.errorMesg = ""
-                }
-              }
-            })
-          ]
+      _vm.content.showWarning
+        ? _c("warning-component", { attrs: { mesg: _vm.content.warningText } })
         : _vm._e()
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -37436,6 +37492,9 @@ let UserInputItemComponent = class UserInputItemComponent extends __WEBPACK_IMPO
         this.keySuggestion = [];
         this.keyCancelToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
     }
+    mounted() {
+        console.log("rerender");
+    }
     closeOtherSection(index) { }
     delItem(index) { }
     documentClick(e) {
@@ -37880,76 +37939,86 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "componentTypeOne" }, [
-    _c(
-      "figure",
-      { staticClass: "imageComponentCon" },
-      [
-        _vm.content.image
-          ? [
-              _c("img", { attrs: { src: _vm.content.image } }),
-              _vm._v(" "),
-              _vm.content.deletingImage
-                ? [
-                    _c("div", { staticClass: "deletingImage" }, [
-                      _c(
-                        "div",
-                        { staticClass: "galleLoader" },
-                        [_c("loading-component")],
-                        1
-                      )
-                    ])
-                  ]
-                : [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "hoverOptions",
-                        on: {
-                          click: function($event) {
-                            _vm.content.delImage()
-                          }
-                        }
-                      },
-                      [_vm._m(0)]
-                    )
-                  ]
-            ]
-          : [
-              _c(
-                "label",
-                [
-                  _vm.content.isUploading
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "componentTypeOne" }, [
+        _c(
+          "figure",
+          { staticClass: "imageComponentCon" },
+          [
+            _vm.content.image
+              ? [
+                  _c("img", { attrs: { src: _vm.content.image } }),
+                  _vm._v(" "),
+                  _vm.content.deletingImage
                     ? [
-                        _c(
-                          "div",
-                          { staticClass: "galleLoader" },
-                          [_c("loading-component")],
-                          1
-                        )
+                        _c("div", { staticClass: "deletingImage" }, [
+                          _c(
+                            "div",
+                            { staticClass: "galleLoader" },
+                            [_c("loading-component")],
+                            1
+                          )
+                        ])
                       ]
                     : [
-                        _c("i", { staticClass: "material-icons" }, [
-                          _vm._v("photo_camera")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
-                          attrs: { type: "file" },
-                          on: {
-                            change: function($event) {
-                              _vm.content.imageUpload($event)
+                        _c(
+                          "div",
+                          {
+                            staticClass: "hoverOptions",
+                            on: {
+                              click: function($event) {
+                                _vm.content.delImage()
+                              }
                             }
-                          }
-                        })
+                          },
+                          [_vm._m(0)]
+                        )
                       ]
-                ],
-                2
-              )
-            ]
-      ],
-      2
-    )
-  ])
+                ]
+              : [
+                  _c(
+                    "label",
+                    [
+                      _vm.content.isUploading
+                        ? [
+                            _c(
+                              "div",
+                              { staticClass: "galleLoader" },
+                              [_c("loading-component")],
+                              1
+                            )
+                          ]
+                        : [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("photo_camera")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              attrs: { type: "file" },
+                              on: {
+                                change: function($event) {
+                                  _vm.content.imageUpload($event)
+                                }
+                              }
+                            })
+                          ]
+                    ],
+                    2
+                  )
+                ]
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _vm.content.showWarning
+        ? _c("warning-component", { attrs: { mesg: _vm.content.warningText } })
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {

@@ -717,6 +717,10 @@ input.required::placeholder {
     background: $secondaryBackground;
     padding: 30px;
     margin-bottom: 30px;
+
+    &.haveMargin {
+        margin-top: 30px;
+    }
     .noticIcon {
         color: $red;
         height: auto;

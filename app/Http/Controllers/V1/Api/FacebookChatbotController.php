@@ -322,7 +322,8 @@ class FacebookChatbotController extends Controller
                         }
 
                         // If status false or first element is quick reply
-                        if($mesg['status']===false || ($index===0 && $mesg['type']===3)) continue;
+                        if($mesg['status']===false) break;
+                        if($index===0 && $mesg['type']===3) continue;
 
                         $jsonData = [
                             "recipient" => [

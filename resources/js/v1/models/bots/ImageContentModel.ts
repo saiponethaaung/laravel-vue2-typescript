@@ -11,6 +11,7 @@ export default class ImageContentModel extends ChatBlockContentModel {
     private uploading: boolean = false;
     private imageToken: CancelTokenSource = Axios.CancelToken.source();
     public deletingImage: boolean = false;
+    public warningText: string = '';
 
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
@@ -35,7 +36,12 @@ export default class ImageContentModel extends ChatBlockContentModel {
     }
     
     get showWarning() {
-        return true;
+        this.warningText = 'Chat process on messenger will stop here due to incomplete images component!';
+        if(this.imageContent.image==='') {
+            return true;
+        }
+
+        return false;
     }
 
     async imageUpload(e: any) {

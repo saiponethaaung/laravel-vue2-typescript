@@ -54,7 +54,7 @@ export default class UserInputItemModel extends AjaxErrorHandler {
 
     get isValid() {
         console.log('it is valid');
-        if(this.question==='' || this.attribute) {
+        if(this.question==='' || this.content.attribute.title==='') {
             return false;
         }
 

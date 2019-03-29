@@ -96,7 +96,7 @@ class GetController extends Controller
                 if(!is_null($block->section)) {
                     $blocks[] = [
                         'id' => $block->section->id,
-                        'title' => $block->section->title
+                        'title' => (String) $block->section->title
                     ];
                 }
 
@@ -110,7 +110,7 @@ class GetController extends Controller
             $buttonList[] = [
                 'id' => $btn->id,
                 'type' => $btn->action_type,
-                'title' => $btn->title,
+                'title' => (String) $btn->title,
                 'block' => $blocks,
                 'url' => $btn->url,
                 'phone' => [
@@ -125,7 +125,7 @@ class GetController extends Controller
         }
 
         return [
-            'text' => $content->content,
+            'text' => (String) $content->content,
             'button' => $buttonList
         ];
     }

@@ -1,42 +1,45 @@
 <template>
-    <div class="componentTypeOne">
-        <div class="galleListComponentRoot">
-            <ul class="galleListRoot">
-                <draggable
-                    v-model="content.item"
-                    class="draggable"
-                    handle=".galleryDrag"
-                    @end="updateOrder"
-                >
-                    <template v-for="(l, index) in content.item">
-                        <gallery-item-component
-                            :listItem="l"
-                            :index="index"
-                            :baseUrl="content.url"
-                            :isChildDeleting="content.isChildDeleting"
-                            :projectid="content.project"
-                            @delItem="delItem"
-                            :key="index"
-                        ></gallery-item-component>
-                    </template>
-                </draggable>
-                <li class="addMoreChatGallery" v-if="content.item.length<10">
-                    <div class="galleAddMore">
-                        <template v-if="content.isCreating">
-                            <div class="galleLoader">
-                                <loading-component></loading-component>
-                            </div>
+    <div>
+        <div class="componentTypeOne">
+            <div class="galleListComponentRoot">
+                <ul class="galleListRoot">
+                    <draggable
+                        v-model="content.item"
+                        class="draggable"
+                        handle=".galleryDrag"
+                        @end="updateOrder"
+                    >
+                        <template v-for="(l, index) in content.item">
+                            <gallery-item-component
+                                :listItem="l"
+                                :index="index"
+                                :baseUrl="content.url"
+                                :isChildDeleting="content.isChildDeleting"
+                                :projectid="content.project"
+                                @delItem="delItem"
+                                :key="index"
+                            ></gallery-item-component>
                         </template>
-                        <template v-else>
-                            <div class="addMoreGalleBtn" @click="createNewGallery">+</div>
-                        </template>
-                    </div>
-                </li>
-            </ul>
+                    </draggable>
+                    <li class="addMoreChatGallery" v-if="content.item.length<10">
+                        <div class="galleAddMore">
+                            <template v-if="content.isCreating">
+                                <div class="galleLoader">
+                                    <loading-component></loading-component>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="addMoreGalleBtn" @click="createNewGallery">+</div>
+                            </template>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <template v-if="content.errorMesg!==''">
+                <error-component :mesg="content.errorMesg" @closeError="content.errorMesg=''"></error-component>
+            </template>
         </div>
-        <template v-if="content.errorMesg!==''">
-            <error-component :mesg="content.errorMesg" @closeError="content.errorMesg=''"></error-component>
-        </template>
+        <warning-component :mesg="content.warningText" v-if="content.showWarning"></warning-component>
     </div>
 </template>
 

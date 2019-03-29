@@ -3,7 +3,6 @@ import { buttonContent, galleryContent } from "../../configuration/interface";
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
 export default class GalleryItemModel extends AjaxErrorHandler {
-
     private rootUrl: string = '';
     private content: galleryContent;
     private updating: boolean = false;
@@ -82,6 +81,14 @@ export default class GalleryItemModel extends AjaxErrorHandler {
 
     set isUploading(status: boolean) {
         this.uploading = status;
+    }
+
+    get isValid() {
+        if(this.title==='' || (this.sub==='' && this.image==='' && this.buttons.length==0)) {
+            return false;
+        }
+
+        return true;
     }
 
     async saveContent() {

@@ -10,6 +10,8 @@ export default class GalleryContentModel extends ChatBlockContentModel {
     private creating: boolean = false;
     private delChild: number = -1;
     private orderToken: CancelTokenSource = Axios.CancelToken.source();
+    public warningText = '';
+    public canShowError = 0;
 
     constructor(content: any, baseUrl: string) {
         super(content, baseUrl);
@@ -52,19 +54,43 @@ export default class GalleryContentModel extends ChatBlockContentModel {
     }
 
     get showWarning() {
-        // show warning if there is no gallery
-        if(this.item.length===0) {
-            return false;
+        console.log('initial');
+        this.warningText = 'Chat process on messenger will stop here due to incomplete gallery component!';
+
+        if(this.item.length==0) {
+            return true;
         }
 
-        // show warning if gallery is incomplete
-        for(let i of this.item) {
-            if(i.title==='') return false;
+        for(let i in this.item) {
+            if(!this.item[i].isValid) {
+                let position: any = parseInt(i)+1;
+                switch(parseInt(i)) {
+                    case 0:
+                        position = position+'st';
+                        break;
+                        
+                    case 1:
+                        position = position+'nd';
+                        break;
+                        
+                    case 2:
+                        position = position+'rd';
+                        break;
+                        
+                    default:
+                        position = position+'th';
+                        break;
+                }
 
-            // if(i.buttons.length===0)
+                this.warningText = `Chat process on messenger will stop here because ${position} gallery is incomplete!`;
+                return true;
+            }
+                
         }
 
-        return true;
+        console.log('closing');
+
+        return false
     }
 
     async createGallery() {

@@ -14,7 +14,12 @@
                             <div class="alignWord">{{ textLimit }}</div>
                         </span>
                     </div>
-                    <div class="btcPlaceholder" v-html="content.value.replace(/\n/g, '<br />')"></div>
+                    <template v-if="content.value===''">
+                        <div class="btcPlaceholder" v-html="'Text content here...'"></div>
+                    </template>
+                    <template v-else>
+                        <div class="btcPlaceholder" v-html="content.value.replace(/\n/g, '<br />')"></div>
+                    </template>
                 </div>
                 <div class="textBtn">
                     <div class="addBtn btnCon" v-for="(button, index) in content.buttons" :key="index">

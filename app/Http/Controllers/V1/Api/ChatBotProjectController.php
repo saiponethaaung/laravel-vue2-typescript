@@ -606,6 +606,15 @@ class ChatBotProjectController extends Controller
     {
         $buttons = [];
 
+        if(empty($content->content)) {
+            return [
+                'status' => false,
+                'mesg' => '',
+                'type' => 1,
+                'data' => ''
+            ];
+        }
+
         foreach($content->buttons as $button) {
             $parsed = $this->parseButton($button);
             if($parsed['status'] === true) {
@@ -653,6 +662,7 @@ class ChatBotProjectController extends Controller
     // parse quick reply to messenger support format
     public function parseQuickReply($content)
     {
+        $status = true;
         $qr = [];
         $res = [
             'status' => true,
@@ -665,6 +675,11 @@ class ChatBotProjectController extends Controller
         ];
 
         foreach($content->quickReply as $quickReply) {
+            if(empty($quickReply->title)) {
+                $status = false;
+                break;
+            }
+            
             $qr[] = [
                 'content_type' => 'text',
                 'title' => $quickReply->title,
@@ -674,7 +689,7 @@ class ChatBotProjectController extends Controller
 
         $res['data']['quick_replies'] = $qr;
 
-        if(empty($qr)) {
+        if(!$status || empty($qr)) {
             $res['status'] = false;
         }
 
@@ -689,6 +704,7 @@ class ChatBotProjectController extends Controller
             'type' => 4,
             'data' => []
         ];
+
         if(empty($content->userInput) || is_null($content->userInput)) {
             return $err;
         }

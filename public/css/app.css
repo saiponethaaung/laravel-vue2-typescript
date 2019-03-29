@@ -11321,6 +11321,52 @@ a:hover {
   color: #000000;
 }
 
+.blockOption {
+  position: absolute;
+  margin-left: 60px;
+  padding-top: 12px;
+  background: inherit;
+  height: 40px;
+  z-index: 1;
+  opacity: 0;
+}
+
+.blockOption:hover {
+  color: #000;
+  opacity: 1;
+}
+
+.blockOption:focus {
+  color: #fff;
+}
+
+.blockOption i {
+  font-size: 18px;
+}
+
+.menuOption {
+  position: absolute;
+  z-index: 2;
+  width: 80px;
+  height: 30px;
+  margin-top: 80px;
+  padding-top: 5px;
+  color: #000000;
+  background: #fff;
+  border: 1px solid #aaaaaa;
+  border-radius: 5px;
+}
+
+.errorAlert {
+  width: 5px;
+  height: 5px;
+  background: #ff0000;
+  border-radius: 50%;
+  position: absolute;
+  margin-left: 70px;
+  margin-top: -25px;
+}
+
 .addMoreBlock {
   cursor: pointer;
   height: 30px;

@@ -22,15 +22,32 @@ class GetController extends Controller
 {
     public function getContents(Request $request)
     {
-        $contents = CBSC::where('section_id', $request->attributes->get('chatBlockSection')->id)->orderBy('order', 'asc')->get();
+        $content = $this->loadContent($request->attributes->get('chatBlockSection')->id, true, $request);
+
+        return response()->json($content);
+    }
+
+    public function loadContentForValidation($sectionId)
+    {
+        $content = $this->loadContent($sectionId);
+
+        return $content['content'];
+    }
+
+    private function loadContent($sectionId, $includeSection=false,Request $request=null)
+    {
+        $contents = CBSC::where('section_id', $sectionId)->orderBy('order', 'asc')->get();
 
         $res = [];
+        $section = null;
 
-        $section = [
-            'id' => $request->attributes->get('chatBlockSection')->id,
-            'title' => $request->attributes->get('chatBlockSection')->title,
-            'lock' => is_null($request->attributes->get('chatBlock')) ? true : $request->attributes->get('chatBlock')->is_lock
-        ];
+        if($includeSection) {
+            $section = [
+                'id' => $request->attributes->get('chatBlockSection')->id,
+                'title' => $request->attributes->get('chatBlockSection')->title,
+                'lock' => is_null($request->attributes->get('chatBlock')) ? true : $request->attributes->get('chatBlock')->is_lock
+            ];
+        }
 
         foreach($contents as $content) {
             $parsed = [
@@ -38,7 +55,7 @@ class GetController extends Controller
                 'type' => (int) $content->type,
                 'section_id' => (int) $content->section->id,
                 'block_id' => (int) $content->section->block_id,
-                'project' => md5($request->attributes->get('project')->id),
+                'project' => $includeSection ? md5($request->attributes->get('project')->id) : '',
                 'content' => null
             ];
 
@@ -75,10 +92,10 @@ class GetController extends Controller
             $res[] = $parsed;
         }
 
-        return response()->json([
+        return [
             'section' => $section,
             'content' => $res
-        ]);
+        ];
     }
 
     public function parseText($content)

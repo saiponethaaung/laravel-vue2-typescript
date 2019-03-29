@@ -2,6 +2,8 @@ import { ChatBlockSection } from "../configuration/interface";
 
 export default class ChatBlockSectionModel {
     private blockSection: ChatBlockSection;
+    private isError: boolean = false;
+    private isOption: boolean = false;
 
     constructor(blockSection: ChatBlockSection) {
         this.blockSection = blockSection;
@@ -17,6 +19,22 @@ export default class ChatBlockSectionModel {
 
     set title(title: string) {
         this.blockSection.title = title;
+    }
+
+    get check(): boolean {
+        return this.isError;
+    }
+
+    set check(status: boolean) {
+        this.isError = status;
+    }
+
+    get option(): boolean {
+        return this.isOption;
+    }
+
+    set option(status: boolean) {
+        this.isOption = status;
     }
 
     get shortenTitle(): string {

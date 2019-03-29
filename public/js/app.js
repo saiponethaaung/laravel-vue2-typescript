@@ -29592,7 +29592,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -31701,7 +31701,7 @@ var content = __webpack_require__(76);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(78)("567c3d80", content, false, {});
+var update = __webpack_require__(78)("7c379b60", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -54515,6 +54515,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_ChatBlockModel__ = __webpack_require__(187);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -54533,6 +54534,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
+
 let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
     constructor() {
         super(...arguments);
@@ -54543,6 +54545,8 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
         this.blocks = [];
         this.selectedBlock = 0;
         this.cancelBlockOrder = __WEBPACK_IMPORTED_MODULE_3_axios___default.a.CancelToken.source();
+        this.blockId = 0;
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_4__utils_AjaxErrorHandler__["a" /* default */]();
     }
     mounted() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -54596,8 +54600,7 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                 if (this.blocks[i].id != this.$store.state.delBot.block)
                     continue;
                 for (let s in this.blocks[i].sections) {
-                    if (this.blocks[i].sections[s].id !=
-                        this.$store.state.delBot.section)
+                    if (this.blocks[i].sections[s].id != this.$store.state.delBot.section)
                         continue;
                     this.blocks[i].sections.splice(parseInt(s), 1);
                     this.selectedBlock = 0;
@@ -54617,8 +54620,7 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                 if (this.blocks[i].id != this.$store.state.updateBot.block)
                     continue;
                 for (let s in this.blocks[i].sections) {
-                    if (this.blocks[i].sections[s].id !=
-                        this.$store.state.updateBot.section)
+                    if (this.blocks[i].sections[s].id != this.$store.state.updateBot.section)
                         continue;
                     this.blocks[i].sections[s].title = this.$store.state.updateBot.title;
                     break;
@@ -54638,6 +54640,19 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                 .then((res) => {
                 for (let chatBlock of res.data.data) {
                     this.blocks.push(new __WEBPACK_IMPORTED_MODULE_2__models_ChatBlockModel__["a" /* default */](chatBlock.block, chatBlock.sections));
+                    for (let a in chatBlock.sections) {
+                        if (!chatBlock.sections[a].isValid) {
+                            for (let i in this.blocks) {
+                                if (this.blocks[i].id == chatBlock.block.id) {
+                                    for (let s in this.blocks[i].sections) {
+                                        if (this.blocks[i].sections[s].id == chatBlock.sections[a].id) {
+                                            this.blocks[i].sections[s].check = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             })
                 .catch((err) => { });
@@ -54699,6 +54714,35 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                     alert("Failed to order!");
                 }
             });
+        });
+    }
+    delSection($id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to delete this block with it's content?")) {
+                for (let i in this.blocks) {
+                    for (let s in this.blocks[i].sections) {
+                        if (this.blocks[i].sections[s].id == $id) {
+                            this.blockId = this.blocks[i].id;
+                        }
+                    }
+                }
+                yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.blockId}/section/${$id}`,
+                    method: "delete"
+                })
+                    .then(res => {
+                    this.$store.commit("deleteChatBot", {
+                        block: this.$store.state.chatBot.block,
+                        section: this.$store.state.chatBot.section
+                    });
+                })
+                    .catch(err => {
+                    if (err.response) {
+                        let mesg = this.ajaxHandler.globalHandler(err, "Failed to update block title!");
+                        alert(mesg);
+                    }
+                });
+            }
         });
     }
 };
@@ -54875,6 +54919,8 @@ class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler
 "use strict";
 class ChatBlockSectionModel {
     constructor(blockSection) {
+        this.isError = false;
+        this.isOption = false;
         this.blockSection = blockSection;
     }
     get id() {
@@ -54885,6 +54931,18 @@ class ChatBlockSectionModel {
     }
     set title(title) {
         this.blockSection.title = title;
+    }
+    get check() {
+        return this.isError;
+    }
+    set check(status) {
+        this.isError = status;
+    }
+    get option() {
+        return this.isOption;
+    }
+    set option(status) {
+        this.isOption = status;
     }
     get shortenTitle() {
         return this.blockSection.title.length > 20 ? this.blockSection.title.slice(0, 20) : this.blockSection.title;
@@ -54954,7 +55012,16 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_vm._v(_vm._s(section.title))]
+                                  [
+                                    _vm._v(
+                                      "\n                    " +
+                                        _vm._s(section.title) +
+                                        "\n                    "
+                                    ),
+                                    section.check
+                                      ? _c("div", { staticClass: "errorAlert" })
+                                      : _vm._e()
+                                  ]
                                 )
                               })
                             )
@@ -55044,7 +55111,52 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [_vm._v(_vm._s(section.shortenTitle))]
+                                    [
+                                      _vm._v(
+                                        "\n                        " +
+                                          _vm._s(section.shortenTitle) +
+                                          "\n                        "
+                                      ),
+                                      section.check
+                                        ? _c("div", {
+                                            staticClass: "errorAlert"
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass: "blockOption",
+                                          on: {
+                                            click: function($event) {
+                                              section.option = !section.option
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "i",
+                                            { staticClass: "material-icons" },
+                                            [_vm._v("more_horiz")]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      section.option
+                                        ? _c(
+                                            "span",
+                                            {
+                                              staticClass: "menuOption",
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.delSection(section.id)
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Delete")]
+                                          )
+                                        : _vm._e()
+                                    ]
                                   )
                                 }),
                                 _vm._v(" "),
@@ -55081,9 +55193,7 @@ var render = function() {
                                       [
                                         _c(
                                           "i",
-                                          {
-                                            staticClass: "material-icons spin"
-                                          },
+                                          { staticClass: "material-icons" },
                                           [_vm._v("autorenew")]
                                         )
                                       ]
@@ -55110,95 +55220,105 @@ var render = function() {
                           _c("i", { staticClass: "material-icons" }, [
                             _vm._v("add")
                           ]),
-                          _vm._v(" Add More\n                ")
+                          _vm._v(" Add More\n            ")
                         ]
                       )
+                    ],
+                _vm._v(" "),
+                _vm.showDelConfirm
+                  ? [
+                      _c("popup-component", { attrs: { type: 1 } }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "closePopConfirm",
+                            on: {
+                              click: function($event) {
+                                _vm.showDelConfirm = false
+                                _vm.delBlockIndex = -1
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("close")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "delPopContent" }, [
+                          _c("p", { staticClass: "delPopHeading" }, [
+                            _vm._v(
+                              "\n                            Are you sure you want to delete the\n                            "
+                            ),
+                            _c("b", [
+                              _vm._v(
+                                _vm._s(_vm.blocks[_vm.delBlockIndex].title)
+                              )
+                            ]),
+                            _vm._v("?\n                            "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "noticeList" }, [
+                              _vm._v(
+                                "It will effect the chatbot as following section are connected..."
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "ul",
+                            { staticClass: "listOfSection" },
+                            _vm._l(
+                              _vm.blocks[_vm.delBlockIndex].sections,
+                              function(sub, index) {
+                                return _c("li", { key: index }, [
+                                  _vm._v(_vm._s(sub.title))
+                                ])
+                              }
+                            )
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "delPopActionFooter" }, [
+                          _c("div", { staticClass: "delPopActionCon" }, [
+                            _c(
+                              "button",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    _vm.showDelConfirm = false
+                                    _vm.delBlockIndex = -1
+                                  }
+                                }
+                              },
+                              [_vm._v("Cancel")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    _vm.blocks[
+                                      _vm.delBlockIndex
+                                    ].allowDelete = true
+                                    _vm.showDelConfirm = false
+                                    _vm.deleteChatBlock()
+                                  }
+                                }
+                              },
+                              [_vm._v("Ok")]
+                            )
+                          ])
+                        ])
+                      ])
                     ]
+                  : _vm._e()
               ],
               2
             )
-          ],
-      _vm._v(" "),
-      _vm.showDelConfirm
-        ? [
-            _c("popup-component", { attrs: { type: 1 } }, [
-              _c(
-                "button",
-                {
-                  staticClass: "closePopConfirm",
-                  on: {
-                    click: function($event) {
-                      _vm.showDelConfirm = false
-                      _vm.delBlockIndex = -1
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "material-icons" }, [_vm._v("close")])]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "delPopContent" }, [
-                _c("p", { staticClass: "delPopHeading" }, [
-                  _vm._v(
-                    "\n                    Are you sure you want to delete the\n                    "
-                  ),
-                  _c("b", [
-                    _vm._v(_vm._s(_vm.blocks[_vm.delBlockIndex].title))
-                  ]),
-                  _vm._v("?\n                    "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "noticeList" }, [
-                    _vm._v(
-                      "It will effect the chatbot as following section are connected..."
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "ul",
-                  { staticClass: "listOfSection" },
-                  _vm._l(_vm.blocks[_vm.delBlockIndex].sections, function(
-                    sub,
-                    index
-                  ) {
-                    return _c("li", { key: index }, [_vm._v(_vm._s(sub.title))])
-                  })
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "delPopActionFooter" }, [
-                _c("div", { staticClass: "delPopActionCon" }, [
-                  _c(
-                    "button",
-                    {
-                      on: {
-                        click: function($event) {
-                          _vm.showDelConfirm = false
-                          _vm.delBlockIndex = -1
-                        }
-                      }
-                    },
-                    [_vm._v("Cancel")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      on: {
-                        click: function($event) {
-                          _vm.blocks[_vm.delBlockIndex].allowDelete = true
-                          _vm.showDelConfirm = false
-                          _vm.deleteChatBlock()
-                        }
-                      }
-                    },
-                    [_vm._v("Ok")]
-                  )
-                ])
-              ])
-            ])
           ]
-        : _vm._e()
     ],
     2
   )
@@ -64354,6 +64474,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
         sessionIdentifier: localStorage.getItem('session_identifier'),
         passwordVerify: false,
         haveLiveChat: false,
+        isError: false
     },
     mutations: {
         logout(state) {

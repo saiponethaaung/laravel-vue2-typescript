@@ -594,7 +594,7 @@ class ChatBotProjectController extends Controller
                 $res[] = $parsed;
                 if($break) break;
             } else {
-                $break = false;
+                break;
             }
         }
 
@@ -679,7 +679,7 @@ class ChatBotProjectController extends Controller
                 $status = false;
                 break;
             }
-            
+
             $qr[] = [
                 'content_type' => 'text',
                 'title' => $quickReply->title,

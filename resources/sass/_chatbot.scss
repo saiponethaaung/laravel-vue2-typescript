@@ -95,12 +95,17 @@
 .blockOption {
     position: absolute;
     margin-left: 60px;
-    margin-top: 5px;
-    background: #fff;
+    padding-top: 12px;
+    background: inherit;
+    height: 40px;
     z-index: 1;
-    color: #000000;
+    opacity: 0;
     &:hover {
-        // color: #fff;
+        color: #000;
+        opacity: 1;
+    }
+    &:focus {
+        color: #fff;
     }
     i {
         font-size: 18px;

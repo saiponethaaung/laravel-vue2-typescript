@@ -11324,10 +11324,20 @@ a:hover {
 .blockOption {
   position: absolute;
   margin-left: 60px;
-  margin-top: 5px;
-  background: #fff;
+  padding-top: 12px;
+  background: inherit;
+  height: 40px;
   z-index: 1;
-  color: #000000;
+  opacity: 0;
+}
+
+.blockOption:hover {
+  color: #000;
+  opacity: 1;
+}
+
+.blockOption:focus {
+  color: #fff;
 }
 
 .blockOption i {

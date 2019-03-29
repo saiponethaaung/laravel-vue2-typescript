@@ -16,7 +16,7 @@
                         :class="{'selectedBlock': selectedBlock==section.id}"
                     >
                         {{ section.title }}
-                        <!-- <div class="errorAlert"></div> -->
+                        <div class="errorAlert" v-if="section.check"></div>
                     </div>
                     </div>
                 </template>
@@ -49,11 +49,14 @@
                             :class="{'selectedBlock': selectedBlock==section.id}"
                         >
                             {{ section.shortenTitle }}
-                            <!-- <div class="errorAlert"></div> -->
-                            <!-- <span class="blockOption" @click="showOption=!showOption">
+                            <div class="errorAlert" v-if="section.check"></div>
+
+                            <span 
+                                class="blockOption" 
+                                @click="section.option=!section.option">
                                 <i class="material-icons">more_horiz</i>
                             </span>
-                            <span class="menuOption" v-if="showOption">Delete</span> -->
+                            <span class="menuOption" v-if="section.option" @click="delSection(section.id)">Delete</span>
                         </div>
                         <div
                             slot="footer"
@@ -116,6 +119,7 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import ChatBlockModel from "../../models/ChatBlockModel";
 import Axios, { CancelTokenSource } from "axios";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
 @Component
 export default class SidebarComponent extends Vue {
@@ -126,7 +130,8 @@ export default class SidebarComponent extends Vue {
   private blocks: Array<ChatBlockModel> = [];
   private selectedBlock: number = 0;
   private cancelBlockOrder: CancelTokenSource = Axios.CancelToken.source();
-  private showOption: boolean = false;
+  private blockId: number = 0;
+  private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
 
   async mounted() {
     await this.loadBlocks();
@@ -227,11 +232,27 @@ export default class SidebarComponent extends Vue {
     })
       .then((res: any) => {
         for (let chatBlock of res.data.data) {
-
+          
           this.blocks.push(
             new ChatBlockModel(chatBlock.block, chatBlock.sections)
           );
+
+          for (let a in chatBlock.sections) {
+            if(!chatBlock.sections[a].isValid) {
+              for(let i in this.blocks) {
+                if(this.blocks[i].id == chatBlock.block.id) {
+                  for(let s in this.blocks[i].sections) {
+                    if(this.blocks[i].sections[s].id == chatBlock.sections[a].id) {
+                      this.blocks[i].sections[s].check = true;
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
+
+        
       })
       .catch((err: any) => {});
 
@@ -307,8 +328,41 @@ export default class SidebarComponent extends Vue {
     });
   }
 
-  async delSection() {
-    
+  async delSection($id: number) {
+
+    if (
+            confirm(
+                "Are you sure you want to delete this block with it's content?"
+            )
+        ) {
+            for(let i in this.blocks) {
+              for(let s in this.blocks[i].sections) {
+                if(this.blocks[i].sections[s].id == $id) {
+                  this.blockId = this.blocks[i].id;
+                }
+              }
+            }
+            
+            await Axios({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.blockId}/section/${$id}`,
+                method: "delete"
+            })
+                .then(res => {
+                    this.$store.commit("deleteChatBot", {
+                        block: this.$store.state.chatBot.block,
+                        section: this.$store.state.chatBot.section
+                    });
+                })
+                .catch(err => {
+                    if (err.response) {
+                        let mesg = this.ajaxHandler.globalHandler(
+                            err,
+                            "Failed to update block title!"
+                        );
+                        alert(mesg);
+                    }
+                });
+        }
   }
 }
 </script>

@@ -140,15 +140,20 @@ class ChatBotController extends Controller
                     break;
 
                     case(5):
-                    foreach($content['content'] as $content) {
-                        
-                        $parsed['contents'] = $content;
+                    // $parsed['contents'] = $content['content']['content'];
+                    foreach($content['content']['content'] as $content) {
+                        if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
+                            $parsed['isValid'] = false;
+                            $break = true;
+                        }
                     }
+                    
                     break;
 
                     case(6):
+                    // $parsed['contents'] = $content['content'];
                     foreach($content['content'] as $content) {
-                        if(empty($content['title']) || (empty($content['sub']) || empty($content['url']))) {
+                        if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
                             $parsed['isValid'] = false;
                             $break = true;
                         }

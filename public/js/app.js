@@ -54053,6 +54053,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_ChatBlockModel__ = __webpack_require__(184);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -54071,6 +54072,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
+
 let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
     constructor() {
         super(...arguments);
@@ -54081,7 +54083,8 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
         this.blocks = [];
         this.selectedBlock = 0;
         this.cancelBlockOrder = __WEBPACK_IMPORTED_MODULE_3_axios___default.a.CancelToken.source();
-        this.showOption = false;
+        this.blockId = 0;
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_4__utils_AjaxErrorHandler__["a" /* default */]();
     }
     mounted() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -54175,6 +54178,19 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                 .then((res) => {
                 for (let chatBlock of res.data.data) {
                     this.blocks.push(new __WEBPACK_IMPORTED_MODULE_2__models_ChatBlockModel__["a" /* default */](chatBlock.block, chatBlock.sections));
+                    for (let a in chatBlock.sections) {
+                        if (!chatBlock.sections[a].isValid) {
+                            for (let i in this.blocks) {
+                                if (this.blocks[i].id == chatBlock.block.id) {
+                                    for (let s in this.blocks[i].sections) {
+                                        if (this.blocks[i].sections[s].id == chatBlock.sections[a].id) {
+                                            this.blocks[i].sections[s].check = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             })
                 .catch((err) => { });
@@ -54238,8 +54254,33 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
             });
         });
     }
-    delSection() {
+    delSection($id) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to delete this block with it's content?")) {
+                for (let i in this.blocks) {
+                    for (let s in this.blocks[i].sections) {
+                        if (this.blocks[i].sections[s].id == $id) {
+                            this.blockId = this.blocks[i].id;
+                        }
+                    }
+                }
+                yield __WEBPACK_IMPORTED_MODULE_3_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.blockId}/section/${$id}`,
+                    method: "delete"
+                })
+                    .then(res => {
+                    this.$store.commit("deleteChatBot", {
+                        block: this.$store.state.chatBot.block,
+                        section: this.$store.state.chatBot.section
+                    });
+                })
+                    .catch(err => {
+                    if (err.response) {
+                        let mesg = this.ajaxHandler.globalHandler(err, "Failed to update block title!");
+                        alert(mesg);
+                    }
+                });
+            }
         });
     }
 };
@@ -54416,6 +54457,8 @@ class ChatBlockModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler
 "use strict";
 class ChatBlockSectionModel {
     constructor(blockSection) {
+        this.isError = false;
+        this.isOption = false;
         this.blockSection = blockSection;
     }
     get id() {
@@ -54426,6 +54469,18 @@ class ChatBlockSectionModel {
     }
     set title(title) {
         this.blockSection.title = title;
+    }
+    get check() {
+        return this.isError;
+    }
+    set check(status) {
+        this.isError = status;
+    }
+    get option() {
+        return this.isOption;
+    }
+    set option(status) {
+        this.isOption = status;
     }
     get shortenTitle() {
         return this.blockSection.title.length > 20 ? this.blockSection.title.slice(0, 20) : this.blockSection.title;
@@ -54500,7 +54555,10 @@ var render = function() {
                                       "\n                    " +
                                         _vm._s(section.title) +
                                         "\n                    "
-                                    )
+                                    ),
+                                    section.check
+                                      ? _c("div", { staticClass: "errorAlert" })
+                                      : _vm._e()
                                   ]
                                 )
                               })
@@ -54596,7 +54654,46 @@ var render = function() {
                                         "\n                        " +
                                           _vm._s(section.shortenTitle) +
                                           "\n                        "
-                                      )
+                                      ),
+                                      section.check
+                                        ? _c("div", {
+                                            staticClass: "errorAlert"
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass: "blockOption",
+                                          on: {
+                                            click: function($event) {
+                                              section.option = !section.option
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "i",
+                                            { staticClass: "material-icons" },
+                                            [_vm._v("more_horiz")]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      section.option
+                                        ? _c(
+                                            "span",
+                                            {
+                                              staticClass: "menuOption",
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.delSection(section.id)
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Delete")]
+                                          )
+                                        : _vm._e()
                                     ]
                                   )
                                 }),

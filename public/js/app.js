@@ -33439,7 +33439,7 @@ var render = function() {
                           "div",
                           {
                             ref: "valueSuggestion",
-                            staticClass: "attrKeySuggestCon"
+                            staticClass: "attrKeySuggestCon valueSuggestion"
                           },
                           [
                             _c(
@@ -37502,6 +37502,8 @@ let UserInputItemComponent = class UserInputItemComponent extends __WEBPACK_IMPO
         let target = e.target;
         if (el !== target && !el.contains(target)) {
             this.keySuggestion = [];
+            this.keyLoading = false;
+            this.keyCancelToken.cancel();
             return null;
         }
     }
@@ -37729,6 +37731,14 @@ var render = function() {
                     ]
                   )
                 ]
+              : _vm.keyLoading
+              ? [
+                  _c(
+                    "div",
+                    { ref: "suggestion", staticClass: "attrKeySuggestCon" },
+                    [_vm._m(0)]
+                  )
+                ]
               : _vm._e()
           ],
           2
@@ -37764,7 +37774,14 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", [_c("li", [_vm._v("Loading...")])])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

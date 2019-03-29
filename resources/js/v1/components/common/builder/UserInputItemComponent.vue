@@ -48,6 +48,13 @@
                         </ul>
                     </div>
                 </template>
+                <template v-else-if="keyLoading">
+                    <div class="attrKeySuggestCon" ref="suggestion">
+                        <ul>
+                            <li>Loading...</li>
+                        </ul>
+                    </div>
+                </template>
             </div>
         </div>
         <div class="delIcon" @click="delItem(index)">
@@ -100,6 +107,8 @@ export default class UserInputItemComponent extends Vue {
 
         if (el !== target && !el.contains(target)) {
             this.keySuggestion = [];
+            this.keyLoading = false;
+            this.keyCancelToken.cancel();
             return null;
         }
     }

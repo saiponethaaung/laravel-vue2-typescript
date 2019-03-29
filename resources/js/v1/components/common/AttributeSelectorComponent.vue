@@ -118,7 +118,7 @@
                         @keyup="searchValueSuggestion"
                     >
                     <div
-                        class="attrKeySuggestCon"
+                        class="attrKeySuggestCon valueSuggestion"
                         ref="valueSuggestion"
                         v-if="attrValue!=='' && showValueSuggest"
                     >

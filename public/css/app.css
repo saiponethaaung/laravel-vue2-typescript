@@ -14432,12 +14432,23 @@ input.required::placeholder {
 .attrSelector {
   width: 200px;
   margin-right: 10px;
+  position: relative;
 }
 
 .attrSelector .optionSpinner {
   width: 200px;
   height: 40px;
   line-height: 40px;
+}
+
+.attrSelector .attrKeySuggestCon {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 1111;
+  display: inline-table;
+  background: #fff;
 }
 
 .attrSelectorOption {

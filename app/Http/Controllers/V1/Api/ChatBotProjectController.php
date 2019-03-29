@@ -727,6 +727,7 @@ class ChatBotProjectController extends Controller
     // parse list to messenger support format
     public function parseList($content)
     {
+        $status = true;
         $res = [];
 
         if(count($content->galleryList)>=2) {
@@ -738,7 +739,10 @@ class ChatBotProjectController extends Controller
                         (empty($list->image) || (!empty($list->image) && !Storage::disk('public')->exists('images/list/'.$list->image))) &&
                         empty($list->buttons)
                     )
-                )  continue;
+                )  {
+                    $status = false;
+                    continue;
+                }
     
                 $buttons = [];
     
@@ -803,7 +807,7 @@ class ChatBotProjectController extends Controller
             }
         }
 
-        if(empty($res)) {
+        if(!$status || empty($res)) {
             return [
                 'status' => false,
                 'mesg' => 'There is no list!',
@@ -823,6 +827,7 @@ class ChatBotProjectController extends Controller
     // parse gallery (generic template) to messenger support format
     public function parseGallery($content)
     {
+        $status = true;
         $res = [];
 
         foreach($content->galleryList as $list) {
@@ -833,7 +838,10 @@ class ChatBotProjectController extends Controller
                     (empty($list->image) || (!empty($list->image) && !Storage::disk('public')->exists('images/gallery/'.$list->image))) &&
                     count($list->buttons)===0
                 )
-            ) continue;
+            ) {
+                $status = false;
+                break;
+            };
 
             $buttons = [];
 
@@ -897,7 +905,7 @@ class ChatBotProjectController extends Controller
             }
         }
 
-        if(empty($res)) {
+        if(!$status || empty($res)) {
             return [
                 'status' => false,
                 'mesg' => 'There is no list!',

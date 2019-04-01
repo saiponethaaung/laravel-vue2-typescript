@@ -41,23 +41,35 @@
                     filter=".ignore-block"
                     @end="updateSectionOrder(index)"
                     >
-                        <div
-                            v-for="(section, sIndex) in block.sections"
+                        <template v-for="(section, sIndex) in block.sections">
+                          <section-component
                             :key="`${index}-${sIndex}`"
-                            class="chatBlockContent sortCBC"
-                            @click="selectBlock(index, sIndex)"
-                            :class="{'selectedBlock': selectedBlock==section.id}"
-                        >
-                            {{ section.shortenTitle }}
-                            <div class="errorAlert" v-if="section.check"></div>
+                            :index="index"
+                            :sIndex="sIndex"
+                            @selectBlock="selectBlock(index, sIndex)"
+                            @delSection="delSection(index, sIndex)"
+                            :class="{'selectedBlock': selectedBlock==section.id && !section.option}"
+                            :section="section">
+                          </section-component>
+                          <!-- <div
+                              :key="`${index}-${sIndex}`"
+                              class="chatBlockContent sortCBC"
+                              @click="selectBlock(index, sIndex)"
+                              :class="{'selectedBlock': selectedBlock==section.id && !section.option}"
+                          >
+                              {{ section.shortenTitle }}
+                              <div class="errorAlert" v-if="section.check"></div>
 
-                            <span 
-                                class="blockOption" 
-                                @click="section.option=!section.option">
-                                <i class="material-icons">more_horiz</i>
-                            </span>
-                            <span class="menuOption" v-if="section.option" @click="delSection(section.id)">Delete</span>
-                        </div>
+                              <span 
+                                  class="blockOption"
+                                  @click="section.option=!section.option"
+                                  :class="{'showOptions': section.option}">
+                                  
+                                  <i class="material-icons">more_horiz</i>
+                              </span>
+                              <span class="menuOption" v-if="section.option" @click="delSection(section.id)">Delete</span>
+                          </div> -->
+                        </template>
                         <div
                             slot="footer"
                             v-if="!block.isSecCreating"
@@ -116,13 +128,19 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+import { Prop, Component, Watch } from "vue-property-decorator";
 import ChatBlockModel from "../../models/ChatBlockModel";
 import Axios, { CancelTokenSource } from "axios";
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
+import SectionComponent from "./SectionComponent.vue";
 
-@Component
+@Component({
+    components: {
+        SectionComponent
+    }
+})
 export default class SidebarComponent extends Vue {
+
   private delBlockIndex: number = -1;
   private showDelConfirm: boolean = false;
   private creating: boolean = false;
@@ -131,6 +149,7 @@ export default class SidebarComponent extends Vue {
   private selectedBlock: number = 0;
   private cancelBlockOrder: CancelTokenSource = Axios.CancelToken.source();
   private blockId: number = 0;
+  private sectionId: number = 0;
   private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
 
   async mounted() {
@@ -223,6 +242,31 @@ export default class SidebarComponent extends Vue {
     }
   }
 
+  @Watch("$store.state.updateBotValid")
+  async updateSectionValid() {
+
+    console.log('console', this.$store.state.updateBotValid.block);
+    console.log('console', this.$store.state.updateBotValid.section);
+    console.log('console', this.$store.state.updateBotValid.valid);
+    if (
+      this.$store.state.updateBotValid.section == -1 &&
+      this.$store.state.updateBotValid.block == -1
+    )
+      return null;
+    for (let i in this.blocks) {
+      if (this.blocks[i].id != this.$store.state.updateBotValid.block) continue;
+      for (let s in this.blocks[i].sections) {
+        if (
+          this.blocks[i].sections[s].id != this.$store.state.updateBotValid.section
+        )
+          continue;
+        this.blocks[i].sections[s].check = this.$store.state.updateBotValid.valid;
+        break;
+      }
+      break;
+    }
+  }
+
   async loadBlocks() {
     if (undefined === this.$store.state.projectInfo.id) return;
     this.blockLoading = true;
@@ -236,14 +280,14 @@ export default class SidebarComponent extends Vue {
           this.blocks.push(
             new ChatBlockModel(chatBlock.block, chatBlock.sections)
           );
-
+          
           for (let a in chatBlock.sections) {
             if(!chatBlock.sections[a].isValid) {
               for(let i in this.blocks) {
                 if(this.blocks[i].id == chatBlock.block.id) {
                   for(let s in this.blocks[i].sections) {
                     if(this.blocks[i].sections[s].id == chatBlock.sections[a].id) {
-                      this.blocks[i].sections[s].check = true;
+                      this.blocks[i].sections[s].check = false;
                     }
                   }
                 }
@@ -328,23 +372,25 @@ export default class SidebarComponent extends Vue {
     });
   }
 
-  async delSection($id: number) {
+  async delSection(index: any, sIndex: any) {
 
     if (
             confirm(
                 "Are you sure you want to delete this block with it's content?"
             )
         ) {
-            for(let i in this.blocks) {
-              for(let s in this.blocks[i].sections) {
-                if(this.blocks[i].sections[s].id == $id) {
-                  this.blockId = this.blocks[i].id;
-                }
-              }
-            }
-            
+            // for(let i in this.blocks) {
+            //   for(let s in this.blocks[i].sections) {
+            //     if(this.blocks[i].sections[s].id == id) {
+            //       this.blockId = this.blocks[i].id;
+            //     }
+            //   }
+            // }
+            this.blockId = this.blocks[index].id;
+            this.sectionId = this.blocks[index].sections[sIndex].id;
+
             await Axios({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.blockId}/section/${$id}`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.blockId}/section/${this.sectionId}`,
                 method: "delete"
             })
                 .then(res => {
@@ -364,5 +410,6 @@ export default class SidebarComponent extends Vue {
                 });
         }
   }
+
 }
 </script>

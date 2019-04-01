@@ -88,6 +88,7 @@ Route::group(['middleware' => ['auth:api', 'verifyUserSession']], function() {
 
                     Route::group(['prefix' => 'section/{sectionId}', 'middleware' => 'verifyChatBlockSection'], function() {
                         Route::put('/', 'V1\\Api\\ChatBotController@updateSection')->name('chatbot.section.update');
+                        Route::get('/isValid', 'V1\\Api\\ChatBotController@sectionIsValid');
                         Route::delete('/', 'V1\\Api\\ChatBotController@deleteSection')->name('chatbot.section.delete');
                     });
 

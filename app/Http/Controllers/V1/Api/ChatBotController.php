@@ -151,7 +151,7 @@ class ChatBotController extends Controller
                     break;
 
                     case(6):
-                    // $parsed['contents'] = $content['content'];
+                    $parsed['contents'] = $content['content'];
                     foreach($content['content'] as $content) {
                         if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
                             $parsed['isValid'] = false;
@@ -193,6 +193,78 @@ class ChatBotController extends Controller
         }
 
         return $res;
+    }
+
+    public function sectionIsValid(Request $request) {
+
+        $contents = app('App\Http\Controllers\V1\Api\ChatContent\GetController')->loadContentForValidation($request->attributes->get('chatBlockSection')->id);
+        
+        $parsed = [
+            'id' => $request->attributes->get('chatBlockSection')->id,
+            'title' => $request->attributes->get('chatBlockSection')->title,
+            'isValid' => true,
+            'contents' => null
+        ];
+
+        foreach($contents as $content) {
+            $break = false;
+            $button = true;
+            switch($content['type']) {
+                case(1):
+                $button = $this->validateButton($content['content']['button']);
+                if(empty($content['content']['text']) || !$button) {
+                    $parsed['isValid'] = false;
+                    $break = true;
+                }
+                break;
+
+                case(3):
+                foreach($content['content'] as $content) {
+                    if(empty($content['title'])) {
+                        $parsed['isValid'] = false;
+                        $break = true;
+                    }
+                }
+                break;
+                
+                case(4):
+                foreach($content['content'] as $content) {
+                    if(empty($content['question']) || empty($content['attribute']['title'])) {
+                        $parsed['isValid'] = false;
+                        $break = true;
+                    }
+                }
+                break;
+
+                case(5):
+                // $parsed['contents'] = $content['content']['content'];
+                foreach($content['content']['content'] as $content) {
+                    if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
+                        $parsed['isValid'] = false;
+                        $break = true;
+                    }
+                }
+                
+                break;
+
+                case(6):
+                // $parsed['contents'] = $content['content'];
+                foreach($content['content'] as $content) {
+                    if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
+                        $parsed['isValid'] = false;
+                        $break = true;
+                    }
+                }
+                break;
+
+            }
+            
+            
+            
+            if($break) break;
+        }
+
+        return $parsed;
     }
 
     private function validateButton($buttons) {

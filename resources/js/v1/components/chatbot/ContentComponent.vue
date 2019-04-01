@@ -12,6 +12,7 @@
                 <builder-component
                     :isBroadcast="false"
                     :value="contents"
+                    v-on:contentChanged="reloadSection()"
                     :section="section"></builder-component>
             </template>
         </template>
@@ -33,6 +34,7 @@ import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 @Component
 export default class ContentComponent extends Vue {
     private loadingToken: any = Axios.CancelToken.source();
+    private reloadSectionToken: any = Axios.CancelToken.source();
     private isLoading: boolean = false;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private contents: any = [];
@@ -45,12 +47,30 @@ export default class ContentComponent extends Vue {
         }
     }
 
+    async reloadSection() {
+        this.reloadSectionToken.cancel();
+        this.reloadSectionToken = Axios.CancelToken.source();
+      
+        await Axios({
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/isValid`,
+            cancelToken: this.reloadSectionToken.token
+        })
+        .then((res: any) => {
+            this.$store.commit("updateChatBotValid", {
+                block: this.$store.state.chatBot.block,
+                section: this.$store.state.chatBot.section,
+                valid: res.data.isValid
+            });
+        })
+        .catch((err: any) => {});
+    }
+
     async loadContent() {
         this.loadingToken.cancel();
         this.loadingToken = Axios.CancelToken.source();
 
         this.isLoading = true;
-        this.contents = [];
+        this.contents = [];   
 
         await Axios({
             url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,

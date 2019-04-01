@@ -115,7 +115,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch, Prop, Vue } from "vue-property-decorator";
+import { Component, Watch, Prop, Vue, Emit } from "vue-property-decorator";
 import Axios, { CancelTokenSource } from "axios";
 import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
@@ -168,6 +168,16 @@ export default class BuilderComponent extends Vue {
     isBroadcast!: boolean;
 
     @Prop() section!: any;
+
+    @Watch('contents', { deep: true, immediate: true})
+    contentChange() {
+        this.checkContent();
+    }
+
+    @Emit('contentChanged')
+    checkContent() {
+        
+    }
 
     mounted() {
         this.urlPath = this.isBroadcast

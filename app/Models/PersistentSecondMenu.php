@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PersistentSecondMenu extends Model
 {
-    protected $table = 'project_persistent_second_menu';
+    protected $table = 'project_persistance_second_menu';
 
     protected $fillable = [
         'title',
@@ -20,5 +20,10 @@ class PersistentSecondMenu extends Model
     public function thirdRelation()
     {
         return $this->hasMany('App\Models\PersistentThirdMenu', 'parent_id', 'id');
+    }
+
+    public function blocks()
+    {
+        return $this->hasMany('App\Models\ChatBlockSection', 'id', 'block_id');
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PersistentThirdMenu extends Model
 {
-    protected $table = 'project_persistent_third_menu';
+    protected $table = 'project_persistance_third_menu';
 
     protected $fillable = [
         'title',
@@ -16,4 +16,9 @@ class PersistentThirdMenu extends Model
         'url',
         'order',
     ];
+
+    public function blocks()
+    {
+        return $this->hasMany('App\Models\ChatBlockSection', 'id', 'block_id');
+    }
 }

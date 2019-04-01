@@ -311,6 +311,14 @@ Route::group(['middleware' => ['auth:api', 'verifyUserSession']], function() {
                 Route::delete('/invite/{inviteId}', 'V1\\Api\\ProjectController@cancelInvite')->name('chatbot.project.member.invite.cancel');
                 Route::delete('/{projectUserId}', 'V1\\Api\\ProjectController@deleteMember')->name('chatbot.project.member.delete');
             });
+
+            Route::group(['prefix' => 'persistent-menu'], function() {
+                Route::get('/', 'V1\\Api\\PersistentMenuController@loadMenu');
+                Route::post('/', 'V1\\Api\\PersistentMenuController@createMenu');
+                Route::put('/{firstMenu}', 'V1\\Api\\PersistentMenuController@updateFirstMenu');
+                Route::put('/{firstMenu}/block', 'V1\\Api\\PersistentMenuController@updateFirstMenuBlock');
+                Route::delete('/{firstMenu}/block', 'V1\\Api\\PersistentMenuController@deleteFirstMenuBlock');
+            });
         });
     });
 });

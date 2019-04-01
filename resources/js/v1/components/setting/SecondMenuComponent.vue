@@ -13,19 +13,19 @@
                 </template>
             </div>
             <template v-if="menu.content.type===2">
-                <div class="pmnSubContent" @click="selectedFirst(index)">
+                <div class="pmnSubContent" @click="selectedSecond(index)">
                     <span>Edit Submenu</span>
                     <i class="material-icons">chevron_right</i>
                 </div>
             </template>
         </div>
-        <first-menu-option
+        <second-menu-option
             :menu="menu"
             v-if="showOption"
             v-on:closeContent="(status) => {
                 showOption = status;
             }"
-        ></first-menu-option>
+        ></second-menu-option>
         <div class="delIcon" @click="deleteMenu()">
             <i class="material-icons">delete</i>
         </div>
@@ -34,26 +34,26 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import PersistentMenu from '../../models/PersistentMenu';
+import PersistentSecondMenu from '../../models/PersistentSecondMenu';
 import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
 import { blockSuggestion } from '../../configuration/interface';
 import Axios,{ CancelTokenSource } from 'axios';
-import FirstMenuOption from './FirstMenuOption.vue';
+import SecondMenuOption from './SecondMenuOption.vue';
 
 @Component({
     components: {
-        FirstMenuOption
+        SecondMenuOption
     }
 })
-export default class FirstMenuComponent extends Vue {
-    @Prop() menu!: PersistentMenu;
+export default class SecondMenuComponent extends Vue {
+    @Prop() menu!: PersistentSecondMenu;
     @Prop() index!: any;
     private showOption: boolean = false;
 
     @Emit("selected")
-    private selectedFirst(index: any){}
+    private selectedSecond(index: any){}
 
-    @Emit('deleteFirst')
+    @Emit('deleteSecond')
     deleteMenu() {
         return this.index;
     }

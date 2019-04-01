@@ -31,6 +31,10 @@ use App\Models\KeywordFilterResponse;
 
 use App\Http\Controllers\V1\Api\FacebookController;
 
+use App\Models\PersistentFirstMenu;
+use App\Models\PersistentSecondMenu;
+use App\Models\PersistentThirdMenu;
+
 // @codeCoverageIgnoreStart
 
 class ChatBotProjectController extends Controller
@@ -135,25 +139,54 @@ class ChatBotProjectController extends Controller
             if($payload) {
                 $py = explode('-', $input['entry'][0]['messaging'][0]['postback']['payload']);
 
-                if(isset($py[1])) {
-                    $button = ChatButton::with('blocks')->find($py[1]);
+                if($py[0]!=='persistentMenu') {
+                    if(isset($py[1])) {
+                        $button = ChatButton::with('blocks')->find($py[1]);
 
-                    if(!empty($button)) {
+                        if(!empty($button)) {
 
-                        if(!empty($button->blocks) && isset($button->blocks[0]) && !is_null($button->blocks[0]->section_id)) {
+                            if(!empty($button->blocks) && isset($button->blocks[0]) && !is_null($button->blocks[0]->section_id)) {
 
-                            if(!is_null($button->blocks[0]->attribute_id) && $button->blocks[0]->value) {
-                                $this->setUserAttribute($button->blocks[0]->attribute_id, $this->user->id, $button->blocks[0]->value);
-                            }
+                                if(!is_null($button->blocks[0]->attribute_id) && $button->blocks[0]->value) {
+                                    $this->setUserAttribute($button->blocks[0]->attribute_id, $this->user->id, $button->blocks[0]->value);
+                                }
 
-                            $resContent = $this->getSection($button->blocks[0]->section_id);
+                                $resContent = $this->getSection($button->blocks[0]->section_id);
 
-                            if($resContent['status']) {
-                                $response = $resContent;
+                                if($resContent['status']) {
+                                    $response = $resContent;
+                                }
+
                             }
 
                         }
+                    }
+                } else if($py[0]=='persistentMenu') {
+                    $total = count($py);
 
+                    $resContent = [
+                        'status' => false
+                    ];
+
+                    switch($total) {
+                        case(4):
+                            $menu = PersistentThirdMenu::find($py[3]);
+                            $resContent = $this->getSection($menu->block_id);
+                            break;
+
+                        case(3):
+                            $menu = PersistentSecondMenu::find($py[2]);
+                            $resContent = $this->getSection($menu->block_id);
+                            break;
+
+                        case(2):
+                            $menu = PersistentFirstMenu::find($py[1]);
+                            $resContent = $this->getSection($menu->block_id);
+                            break;
+                    }
+
+                    if($resContent['status']) {
+                        $response = $resContent;
                     }
                 }
             } else if(isset($input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'])) {

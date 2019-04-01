@@ -17,6 +17,16 @@ class PersistentFirstMenu extends Model
         'order',
     ];
 
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($firstMenu) {
+            foreach($firstMenu->secondRelation as $second) {
+                $second->delete();
+            }
+        });
+    }
+
     public function secondRelation()
     {
         return $this->hasMany('App\Models\PersistentSecondMenu', 'parent_id', 'id');

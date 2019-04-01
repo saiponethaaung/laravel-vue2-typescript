@@ -387,7 +387,92 @@ class FacebookController extends Controller
                 'debug' => $res
             ];
         }
+        
+        return [
+            'status' => true,
+            'list' => $res
+        ];
+    }
 
+    public function deletePersistentMenu($pageid)
+    {
+        $res = [];
+
+        try {
+            $me = $this->fb->delete(
+                '/me/messenger_profile',
+                [
+                    'fields' => [
+                        'persistent_menu'
+                    ]
+                ]
+            )->getGraphNode()->asArray();
+            $res = $me;
+        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Graph returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Exception $e) {
+            return [
+                'status' => false,
+                'mesg' => $e->getMesesage()
+            ];
+        }
+
+        // if(!$res['success']) {
+        //     return [
+        //         'status' => false,
+        //         'mesg' => 'Failed to delete persistent menu!',
+        //         'debug' => $res
+        //     ];
+        // }
+        
+        return [
+            'status' => true,
+            'list' => $res
+        ];
+    }
+
+    public function addPersistentMenu($pageid, $menu)
+    {
+        $res = [];
+
+        try {
+            $me = $this->fb->post(
+                '/me/messenger_profile', $menu
+            )->getGraphNode()->asArray();
+            $res = $me;
+        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Graph returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Exception $e) {
+            return [
+                'status' => false,
+                'mesg' => $e->getMesesage()
+            ];
+        }
+
+        // if(!$res['success']) {
+        //     return [
+        //         'status' => false,
+        //         'mesg' => 'Failed to delete persistent menu!',
+        //         'debug' => $res
+        //     ];
+        // }
+        
         return [
             'status' => true,
             'list' => $res

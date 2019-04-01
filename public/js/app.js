@@ -25086,7 +25086,7 @@ module.exports = Component.exports
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AttributeModel__ = __webpack_require__(237);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AttributeModel__ = __webpack_require__(258);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -25264,9 +25264,9 @@ class UserListModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(238)
+var __vue_script__ = __webpack_require__(259)
 /* template */
-var __vue_template__ = __webpack_require__(239)
+var __vue_template__ = __webpack_require__(260)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -25312,7 +25312,7 @@ module.exports = Component.exports
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__SegmentModel__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__SegmentModel__ = __webpack_require__(264);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -25408,7 +25408,7 @@ class SegmentListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(43);
-module.exports = __webpack_require__(264);
+module.exports = __webpack_require__(285);
 
 
 /***/ }),
@@ -25448,7 +25448,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_common_TimeInputComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_common_TimeInputComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__configuration_bootstrap__ = __webpack_require__(138);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__configuration_route__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__configuration_store__ = __webpack_require__(262);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__configuration_store__ = __webpack_require__(283);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -29592,7 +29592,7 @@ var Reflect;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var usePolyfill = typeof process === "object" && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"})["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
         var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
         var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
         var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
@@ -31701,7 +31701,7 @@ var content = __webpack_require__(76);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(78)("7c379b60", content, false, {});
+var update = __webpack_require__(78)("567c3d80", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -45594,27 +45594,27 @@ Popper.Defaults = Defaults;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_setting_AdminComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_setting_AdminComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_setting_PersistentMenuComponent_vue__ = __webpack_require__(218);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_setting_PersistentMenuComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_setting_PersistentMenuComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_setting_ProfileComponent_vue__ = __webpack_require__(221);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_setting_ProfileComponent_vue__ = __webpack_require__(242);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_setting_ProfileComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_setting_ProfileComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_setting_ProjectConfigrationComponent_vue__ = __webpack_require__(224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_setting_ProjectConfigrationComponent_vue__ = __webpack_require__(245);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_setting_ProjectConfigrationComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_setting_ProjectConfigrationComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_setting_SettingSidebarComponent_vue__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_setting_SettingSidebarComponent_vue__ = __webpack_require__(252);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_setting_SettingSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__components_setting_SettingSidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_user_SegmentListComponent_vue__ = __webpack_require__(234);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_user_SegmentListComponent_vue__ = __webpack_require__(255);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_user_SegmentListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__components_user_SegmentListComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_user_SegmentListSidebarComponent_vue__ = __webpack_require__(241);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_user_SegmentListSidebarComponent_vue__ = __webpack_require__(262);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_user_SegmentListSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__components_user_SegmentListSidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_user_UserListComponent_vue__ = __webpack_require__(245);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_user_UserListComponent_vue__ = __webpack_require__(266);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_user_UserListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__components_user_UserListComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_user_UserListSidebarComponent_vue__ = __webpack_require__(248);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_user_UserListSidebarComponent_vue__ = __webpack_require__(269);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_user_UserListSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__components_user_UserListSidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__configuration_RouterViewComponent_vue__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__configuration_RouterViewComponent_vue__ = __webpack_require__(272);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__configuration_RouterViewComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__configuration_RouterViewComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__non_member_RegisterComponent_vue__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__non_member_RegisterComponent_vue__ = __webpack_require__(274);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__non_member_RegisterComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__non_member_RegisterComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__non_member_ResendOtpComponent_vue__ = __webpack_require__(256);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__non_member_ResendOtpComponent_vue__ = __webpack_require__(277);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__non_member_ResendOtpComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__non_member_ResendOtpComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__non_member_VerifyEmailComponent_vue__ = __webpack_require__(259);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__non_member_VerifyEmailComponent_vue__ = __webpack_require__(280);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__non_member_VerifyEmailComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__non_member_VerifyEmailComponent_vue__);
 
 
@@ -59444,7 +59444,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(219)
 /* template */
-var __vue_template__ = __webpack_require__(220)
+var __vue_template__ = __webpack_require__(241)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -59489,12 +59489,16 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_PersistentMenu__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_PersistentMenu__ = __webpack_require__(220);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__FirstMenuComponent_vue__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__FirstMenuComponent_vue__ = __webpack_require__(223);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__FirstMenuComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__FirstMenuComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SecondMenuComponent_vue__ = __webpack_require__(229);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SecondMenuComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__SecondMenuComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ThirdMenuComponent_vue__ = __webpack_require__(235);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ThirdMenuComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__ThirdMenuComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -59514,6 +59518,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
+
+
 let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
@@ -59521,6 +59527,8 @@ let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IM
         this.loading = true;
         this.adding = false;
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__["a" /* default */]();
+        this.selectedFirst = -1;
+        this.selectedSecond = -1;
     }
     mounted() {
         this.loadMenu();
@@ -59532,7 +59540,7 @@ let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IM
                 method: 'get'
             }).then(res => {
                 for (let i of res.data.data) {
-                    this.menu.push(new __WEBPACK_IMPORTED_MODULE_1__models_PersistentMenu__["a" /* default */](i));
+                    this.menu.push(new __WEBPACK_IMPORTED_MODULE_1__models_PersistentMenu__["a" /* default */](i, this.$store.state.projectInfo.id));
                 }
             }).catch(err => {
                 if (err.response) {
@@ -59550,7 +59558,7 @@ let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IM
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu`,
                 method: 'post'
             }).then(res => {
-                this.menu.push(new __WEBPACK_IMPORTED_MODULE_1__models_PersistentMenu__["a" /* default */](res.data.data));
+                this.menu.push(new __WEBPACK_IMPORTED_MODULE_1__models_PersistentMenu__["a" /* default */](res.data.data, this.$store.state.projectInfo.id));
             }).catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new persistent menu!');
@@ -59560,11 +59568,93 @@ let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IM
             this.adding = false;
         });
     }
+    createSecondMenu() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let createMenu = yield this.menu[this.selectedFirst].createSecondMenu();
+            if (!createMenu.status) {
+                alert(createMenu.mesg);
+            }
+        });
+    }
+    createThirdMenu() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let createMenu = yield this.menu[this.selectedFirst].item[this.selectedSecond].createThirdMenu();
+            if (!createMenu.status) {
+                alert(createMenu.mesg);
+            }
+        });
+    }
+    deleteFirst(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to delete this menu?")) {
+                yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu[index].content.id}`,
+                    method: 'delete'
+                }).then(res => {
+                    if (this.selectedFirst == index) {
+                        this.selectedFirst = -1;
+                        this.selectedSecond = -1;
+                    }
+                    else if (this.selectedFirst > index) {
+                        this.selectedFirst--;
+                    }
+                    this.menu.splice(index, 1);
+                }).catch(err => {
+                    if (err.response) {
+                        let mesg = this.ajaxHandler.globalHandler(err, 'Failed to remove persistent menu!');
+                        alert(mesg);
+                    }
+                });
+            }
+        });
+    }
+    deleteSecond(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to delete this menu?")) {
+                yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu[this.selectedFirst].content.id}/${this.menu[this.selectedFirst].item[index].content.id}`,
+                    method: 'delete'
+                }).then(res => {
+                    if (this.selectedSecond == index) {
+                        this.selectedSecond = -1;
+                    }
+                    else if (this.selectedSecond > index) {
+                        this.selectedSecond--;
+                    }
+                    this.menu[this.selectedFirst].item.splice(index, 1);
+                }).catch(err => {
+                    if (err.response) {
+                        let mesg = this.ajaxHandler.globalHandler(err, 'Failed to remove persistent menu!');
+                        alert(mesg);
+                    }
+                });
+            }
+        });
+    }
+    deleteThird(index) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to delete this menu?")) {
+                yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu[this.selectedFirst].content.id}/${this.menu[this.selectedFirst].item[this.selectedSecond].content.id}/${this.menu[this.selectedFirst].item[this.selectedSecond].item[index].content.id}`,
+                    method: 'delete'
+                }).then(res => {
+                    this.menu[this.selectedFirst].item[this.selectedSecond].item.splice(index, 1);
+                }).catch(err => {
+                    if (err.response) {
+                        let mesg = this.ajaxHandler.globalHandler(err, 'Failed to remove persistent menu!');
+                        alert(mesg);
+                    }
+                });
+            }
+        });
+    }
 };
 PersistentMenuComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
         components: {
-            FirstMenuComponent: __WEBPACK_IMPORTED_MODULE_4__FirstMenuComponent_vue___default.a
+            FirstMenuComponent: __WEBPACK_IMPORTED_MODULE_4__FirstMenuComponent_vue___default.a,
+            SecondMenuComponent: __WEBPACK_IMPORTED_MODULE_5__SecondMenuComponent_vue___default.a,
+            ThirdMenuComponent: __WEBPACK_IMPORTED_MODULE_6__ThirdMenuComponent_vue___default.a
         }
     })
 ], PersistentMenuComponent);
@@ -59573,6 +59663,2310 @@ PersistentMenuComponent = __decorate([
 
 /***/ }),
 /* 220 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PersistentSecondMenu__ = __webpack_require__(221);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+class PersistentMenu extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(content, projectId) {
+        super();
+        this.content = content;
+        this.projectId = projectId;
+        this.secondMenu = [];
+        this.creating = false;
+        for (let i of content.second_relation) {
+            this.secondMenu.push(new __WEBPACK_IMPORTED_MODULE_2__PersistentSecondMenu__["a" /* default */](i, content.id, projectId));
+        }
+    }
+    get item() {
+        return this.secondMenu;
+    }
+    set item(menu) {
+        this.secondMenu = menu;
+    }
+    createSecondMenu() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: ''
+            };
+            this.creating = true;
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+                url: `/api/v1/project/${this.projectId}/persistent-menu/${this.content.id}`,
+                method: 'post'
+            }).then(res => {
+                this.secondMenu.push(new __WEBPACK_IMPORTED_MODULE_2__PersistentSecondMenu__["a" /* default */](res.data.data, this.content.id, this.projectId));
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to create new persistent menu!');
+                }
+            });
+            this.creating = false;
+            return res;
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = PersistentMenu;
+
+
+
+/***/ }),
+/* 221 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PersistentThirdMenu__ = __webpack_require__(222);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+class PersistentSecondMenu extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(content, parent, projectId) {
+        super();
+        this.content = content;
+        this.parent = parent;
+        this.projectId = projectId;
+        this.thirdMenu = [];
+        this.creating = false;
+        for (let i of content.third_relation) {
+            this.thirdMenu.push(new __WEBPACK_IMPORTED_MODULE_2__PersistentThirdMenu__["a" /* default */](i, parent, content.id, projectId));
+        }
+    }
+    get item() {
+        return this.thirdMenu;
+    }
+    set item(menu) {
+        this.thirdMenu = menu;
+    }
+    createThirdMenu() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = {
+                status: true,
+                mesg: ''
+            };
+            this.creating = true;
+            yield __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+                url: `/api/v1/project/${this.projectId}/persistent-menu/${this.parent}/${this.content.id}`,
+                method: 'post'
+            }).then(res => {
+                this.thirdMenu.push(new __WEBPACK_IMPORTED_MODULE_2__PersistentThirdMenu__["a" /* default */](res.data.data, this.parent, this.content.id, this.projectId));
+            }).catch(err => {
+                if (err.response) {
+                    res.status = false;
+                    res.mesg = this.globalHandler(err, 'Failed to create new persistent menu!');
+                }
+            });
+            this.creating = false;
+            return res;
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = PersistentSecondMenu;
+
+
+
+/***/ }),
+/* 222 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+
+class PersistentThirdMenu extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
+    constructor(content, first, second, project) {
+        super();
+        this.content = content;
+        this.first = first;
+        this.second = second;
+        this.project = project;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = PersistentThirdMenu;
+
+
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(224)
+/* template */
+var __vue_template__ = __webpack_require__(228)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/setting/FirstMenuComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5302b350", Component.options)
+  } else {
+    hotAPI.reload("data-v-5302b350", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 224 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+let FirstMenuComponent = class FirstMenuComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.showOption = false;
+    }
+    selectedFirst(index) { }
+    deleteMenu() {
+        return this.index;
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], FirstMenuComponent.prototype, "menu", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], FirstMenuComponent.prototype, "index", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("selected")
+], FirstMenuComponent.prototype, "selectedFirst", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('deleteFirst')
+], FirstMenuComponent.prototype, "deleteMenu", null);
+FirstMenuComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
+        components: {
+            FirstMenuOption: __WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue___default.a
+        }
+    })
+], FirstMenuComponent);
+/* harmony default export */ __webpack_exports__["default"] = (FirstMenuComponent);
+
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(226)
+/* template */
+var __vue_template__ = __webpack_require__(227)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/setting/FirstMenuOption.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-00e3f032", Component.options)
+  } else {
+    hotAPI.reload("data-v-00e3f032", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 226 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__ = __webpack_require__(2);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+let FirstMenuOption = class FirstMenuOption extends __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.blockKeyword = '';
+        this.saveBlock = false;
+        this.deleteBlock = false;
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */]();
+        this.blockList = [];
+        this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.loading = false;
+    }
+    documentClick(e) {
+        let el = this.$refs.textBtn;
+        let target = e.target;
+        if (el !== target && !el.contains(target)) {
+            this.updateContent();
+            setTimeout(() => {
+                this.closeContent(false);
+            }, 500);
+            return null;
+        }
+    }
+    closeContent(status) {
+    }
+    loadSuggestion() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loading = true;
+            let suggestion = yield this.ajaxHandler.searchSections(this.blockKeyword, this.$store.state.projectInfo.id);
+            if (suggestion.type === "cancel")
+                return;
+            if (suggestion.status === false) {
+                alert(suggestion.mesg);
+                return;
+            }
+            this.blockList = suggestion.data;
+            this.loading = false;
+        });
+    }
+    addBlock(block, section) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.blockToken.cancel();
+            this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.saveBlock = true;
+            let data = new FormData();
+            data.append("section", this.blockList[block].contents[section].id.toString());
+            data.append("_method", "put");
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.content.id}/block`,
+                data: data,
+                method: "post",
+                cancelToken: this.blockToken.token
+            })
+                .then((res) => {
+                this.menu.content.blocks.push({
+                    id: this.blockList[block].contents[section].id,
+                    title: this.blockList[block].contents[section].title
+                });
+                this.blockList = [];
+            })
+                .catch((err) => {
+                if (err.response) {
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to connect a block!"));
+                }
+            });
+            this.saveBlock = false;
+        });
+    }
+    delBlock() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.deleteBlock = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.content.id}/block`,
+                method: "delete"
+            })
+                .then((res) => {
+                this.menu.content.blocks = [];
+            })
+                .catch((err) => {
+                if (err.response) {
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to delete a block!"));
+                }
+            });
+            this.deleteBlock = false;
+        });
+    }
+    cancelUpdate() {
+        this.updateToken.cancel();
+        this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+    }
+    updateContent(close = false) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.updateToken.cancel();
+            this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            let data = new FormData();
+            data.append("title", this.menu.content.title);
+            data.append("url", this.menu.content.url);
+            data.append("type", this.menu.content.type.toString());
+            data.append("_method", "put");
+            __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.content.id}`,
+                data: data,
+                method: "post",
+                cancelToken: this.updateToken.token
+            })
+                .then(res => {
+                if (this.menu.content.type === 0) {
+                    this.menu.content.url = "";
+                }
+                else if (this.menu.content.type === 1) {
+                    this.menu.content.block = [];
+                }
+                else if (this.menu.content.type === 2) {
+                    this.menu.content.block = [];
+                    this.menu.content.url = "";
+                }
+            })
+                .catch(err => {
+                if (err.response) {
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to update menu!"));
+                }
+            });
+            if (close) {
+                this.closeContent(true);
+            }
+        });
+    }
+    created() {
+        document.addEventListener("click", this.documentClick);
+    }
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener("click", this.documentClick);
+    }
+    get textLimit() {
+        return 20 - this.menu.content.title.length;
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["c" /* Prop */])()
+], FirstMenuOption.prototype, "menu", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["b" /* Emit */])('closeContent')
+], FirstMenuOption.prototype, "closeContent", null);
+FirstMenuOption = __decorate([
+    __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["a" /* Component */]
+], FirstMenuOption);
+/* harmony default export */ __webpack_exports__["default"] = (FirstMenuOption);
+
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { ref: "textBtn", staticClass: "btnComponentTypeOne" }, [
+    _c("div", { staticClass: "buttonPopContent" }, [
+      _c("div", { staticClass: "buttonPopHeading" }, [
+        _c("p", { staticClass: "buttonPopInfo" }, [_vm._v("Menu Name")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "actionInfo" }, [
+          _c("div", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.menu.content.title,
+                  expression: "menu.content.title"
+                }
+              ],
+              staticClass: "buttonNameInput",
+              attrs: { type: "text", maxlength: "20" },
+              domProps: { value: _vm.menu.content.title },
+              on: {
+                focus: function($event) {
+                  _vm.cancelUpdate()
+                },
+                blur: function($event) {
+                  _vm.updateContent()
+                },
+                keyup: function($event) {
+                  if (
+                    !("button" in $event) &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  _vm.updateContent(true)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.menu.content, "title", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "limitBtnTitle" }, [
+              _vm._v(_vm._s(_vm.textLimit))
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "buttonOptions" }, [
+        _c("div", { staticClass: "buttonActions" }, [
+          _c("ul", { staticClass: "buttonOptions" }, [
+            _c(
+              "li",
+              {
+                class: { activeOption: _vm.menu.content.type === 0 },
+                on: {
+                  click: function($event) {
+                    _vm.menu.content.type = 0
+                  }
+                }
+              },
+              [_c("span", { staticClass: "optionContent" }, [_vm._v("Blocks")])]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                class: { activeOption: _vm.menu.content.type === 1 },
+                on: {
+                  click: function($event) {
+                    _vm.menu.content.type = 1
+                  }
+                }
+              },
+              [_c("span", { staticClass: "optionContent" }, [_vm._v("Url")])]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                class: { activeOption: _vm.menu.content.type === 2 },
+                on: {
+                  click: function($event) {
+                    _vm.menu.content.type = 2
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "optionContent" }, [
+                  _vm._v("Sub Menu")
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "buttonValueCon" }, [
+            _vm.menu.content.type === 0
+              ? _c(
+                  "div",
+                  { staticClass: "optionValue" },
+                  [
+                    _vm._v("they receive the block\n                        "),
+                    _vm.menu.content.blocks.length > 0
+                      ? [
+                          _c("div", { staticClass: "selectedBlockCon" }, [
+                            _c("div", { staticClass: "selectedLinkedBlock" }, [
+                              _c("span", { staticClass: "slbText" }, [
+                                _vm._v(_vm._s(_vm.menu.content.blocks[0].title))
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "slbDel",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.delBlock()
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", { staticClass: "material-icons" }, [
+                                    _vm._v("delete")
+                                  ])
+                                ]
+                              )
+                            ])
+                          ])
+                        ]
+                      : [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.blockKeyword,
+                                expression: "blockKeyword"
+                              }
+                            ],
+                            attrs: { type: "text", placeholder: "Block name" },
+                            domProps: { value: _vm.blockKeyword },
+                            on: {
+                              keyup: function($event) {
+                                _vm.loadSuggestion()
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.blockKeyword = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.blockList.length > 0
+                            ? [
+                                _c(
+                                  "div",
+                                  { staticClass: "sugContainer" },
+                                  [
+                                    _vm.loading
+                                      ? _c("div", [_vm._v("Loading...")])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm._l(_vm.blockList, function(b, index) {
+                                      return _c(
+                                        "div",
+                                        { key: index, staticClass: "sugBlock" },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "sugBlockTitle" },
+                                            [_vm._v(_vm._s(b.title))]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "sugBlockSec" },
+                                            _vm._l(b.contents, function(
+                                              s,
+                                              sindex
+                                            ) {
+                                              return _c(
+                                                "div",
+                                                {
+                                                  key: sindex,
+                                                  staticClass:
+                                                    "sugBlockSecTitle",
+                                                  on: {
+                                                    click: function($event) {
+                                                      _vm.addBlock(
+                                                        index,
+                                                        sindex
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [_vm._v(_vm._s(s.title))]
+                                              )
+                                            })
+                                          )
+                                        ]
+                                      )
+                                    })
+                                  ],
+                                  2
+                                )
+                              ]
+                            : _vm._e()
+                        ]
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.menu.content.type === 1
+              ? _c("div", { staticClass: "optionValue" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.menu.content.url,
+                        expression: "menu.content.url"
+                      }
+                    ],
+                    attrs: { type: "text", placeholder: "Url" },
+                    domProps: { value: _vm.menu.content.url },
+                    on: {
+                      focus: function($event) {
+                        _vm.cancelUpdate()
+                      },
+                      blur: function($event) {
+                        _vm.updateContent()
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.menu.content, "url", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.menu.content.type === 2
+              ? _c("div", { staticClass: "optionValue" }, [
+                  _vm._v(
+                    "\n                        Create a submenu for this menu item\n                    "
+                  )
+                ])
+              : _vm._e()
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-00e3f032", module.exports)
+  }
+}
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "persistentMenuComponent" },
+    [
+      _c(
+        "div",
+        { staticClass: "persistentRootCon" },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "persistentMenuAction",
+              on: {
+                click: function($event) {
+                  _vm.showOption = true
+                }
+              }
+            },
+            [
+              _c("span", { staticClass: "persistentMenuName" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm.menu.content.title
+                      ? _vm.menu.content.title
+                      : "Enter menu name"
+                  )
+                )
+              ]),
+              _vm._v(" "),
+              _vm.menu.content.type !== 2
+                ? [
+                    _vm.menu.content.type == 0
+                      ? [
+                          _c("span", { staticClass: "pmnSubContent" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm.menu.content.blocks.length > 0
+                                  ? _vm.menu.content.blocks[0].title
+                                  : "-"
+                              )
+                            )
+                          ])
+                        ]
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.menu.content.type == 1
+                      ? [
+                          _c("span", { staticClass: "pmnSubContent" }, [
+                            _vm._v(_vm._s(_vm.menu.content.url))
+                          ])
+                        ]
+                      : _vm._e()
+                  ]
+                : _vm._e()
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _vm.menu.content.type === 2
+            ? [
+                _c(
+                  "div",
+                  {
+                    staticClass: "pmnSubContent",
+                    on: {
+                      click: function($event) {
+                        _vm.selectedFirst(_vm.index)
+                      }
+                    }
+                  },
+                  [
+                    _c("span", [_vm._v("Edit Submenu")]),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("chevron_right")
+                    ])
+                  ]
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm.showOption
+        ? _c("first-menu-option", {
+            attrs: { menu: _vm.menu },
+            on: {
+              closeContent: function(status) {
+                _vm.showOption = status
+              }
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "delIcon",
+          on: {
+            click: function($event) {
+              _vm.deleteMenu()
+            }
+          }
+        },
+        [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5302b350", module.exports)
+  }
+}
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(230)
+/* template */
+var __vue_template__ = __webpack_require__(234)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/setting/SecondMenuComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-069c5a10", Component.options)
+  } else {
+    hotAPI.reload("data-v-069c5a10", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 230 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SecondMenuOption_vue__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SecondMenuOption_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__SecondMenuOption_vue__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+let SecondMenuComponent = class SecondMenuComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.showOption = false;
+    }
+    selectedSecond(index) { }
+    deleteMenu() {
+        return this.index;
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], SecondMenuComponent.prototype, "menu", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], SecondMenuComponent.prototype, "index", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("selected")
+], SecondMenuComponent.prototype, "selectedSecond", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('deleteSecond')
+], SecondMenuComponent.prototype, "deleteMenu", null);
+SecondMenuComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
+        components: {
+            SecondMenuOption: __WEBPACK_IMPORTED_MODULE_1__SecondMenuOption_vue___default.a
+        }
+    })
+], SecondMenuComponent);
+/* harmony default export */ __webpack_exports__["default"] = (SecondMenuComponent);
+
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(232)
+/* template */
+var __vue_template__ = __webpack_require__(233)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/setting/SecondMenuOption.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6ec9318a", Component.options)
+  } else {
+    hotAPI.reload("data-v-6ec9318a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 232 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__ = __webpack_require__(2);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+let SecondMenuOption = class SecondMenuOption extends __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.blockKeyword = '';
+        this.saveBlock = false;
+        this.deleteBlock = false;
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */]();
+        this.blockList = [];
+        this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.loading = false;
+    }
+    documentClick(e) {
+        let el = this.$refs.textBtn;
+        let target = e.target;
+        if (el !== target && !el.contains(target)) {
+            this.updateContent();
+            setTimeout(() => {
+                this.closeContent(false);
+            }, 500);
+            return null;
+        }
+    }
+    closeContent(status) {
+    }
+    loadSuggestion() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loading = true;
+            let suggestion = yield this.ajaxHandler.searchSections(this.blockKeyword, this.$store.state.projectInfo.id);
+            if (suggestion.type === "cancel")
+                return;
+            if (suggestion.status === false) {
+                alert(suggestion.mesg);
+                return;
+            }
+            this.blockList = suggestion.data;
+            this.loading = false;
+        });
+    }
+    addBlock(block, section) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.blockToken.cancel();
+            this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.saveBlock = true;
+            let data = new FormData();
+            data.append("section", this.blockList[block].contents[section].id.toString());
+            data.append("_method", "put");
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.parent}/${this.menu.content.id}/block`,
+                data: data,
+                method: "post",
+                cancelToken: this.blockToken.token
+            })
+                .then((res) => {
+                this.menu.content.blocks.push({
+                    id: this.blockList[block].contents[section].id,
+                    title: this.blockList[block].contents[section].title
+                });
+                this.blockList = [];
+            })
+                .catch((err) => {
+                if (err.response) {
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to connect a block!"));
+                }
+            });
+            this.saveBlock = false;
+        });
+    }
+    delBlock() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.deleteBlock = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.parent}/${this.menu.content.id}/block`,
+                method: "delete"
+            })
+                .then((res) => {
+                this.menu.content.blocks = [];
+            })
+                .catch((err) => {
+                if (err.response) {
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to delete a block!"));
+                }
+            });
+            this.deleteBlock = false;
+        });
+    }
+    cancelUpdate() {
+        this.updateToken.cancel();
+        this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+    }
+    updateContent(close = false) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.updateToken.cancel();
+            this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            let data = new FormData();
+            data.append("title", this.menu.content.title);
+            data.append("url", this.menu.content.url);
+            data.append("type", this.menu.content.type.toString());
+            data.append("_method", "put");
+            __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.parent}/${this.menu.content.id}`,
+                data: data,
+                method: "post",
+                cancelToken: this.updateToken.token
+            })
+                .then(res => {
+                if (this.menu.content.type === 0) {
+                    this.menu.content.url = "";
+                }
+                else if (this.menu.content.type === 1) {
+                    this.menu.content.block = [];
+                }
+                else if (this.menu.content.type === 2) {
+                    this.menu.content.block = [];
+                    this.menu.content.url = "";
+                }
+            })
+                .catch(err => {
+                if (err.response) {
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to update menu!"));
+                }
+            });
+            if (close) {
+                this.closeContent(true);
+            }
+        });
+    }
+    created() {
+        document.addEventListener("click", this.documentClick);
+    }
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener("click", this.documentClick);
+    }
+    get textLimit() {
+        return 20 - this.menu.content.title.length;
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["c" /* Prop */])()
+], SecondMenuOption.prototype, "menu", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["b" /* Emit */])('closeContent')
+], SecondMenuOption.prototype, "closeContent", null);
+SecondMenuOption = __decorate([
+    __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["a" /* Component */]
+], SecondMenuOption);
+/* harmony default export */ __webpack_exports__["default"] = (SecondMenuOption);
+
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { ref: "textBtn", staticClass: "btnComponentTypeOne" }, [
+    _c("div", { staticClass: "buttonPopContent" }, [
+      _c("div", { staticClass: "buttonPopHeading" }, [
+        _c("p", { staticClass: "buttonPopInfo" }, [_vm._v("Menu Name")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "actionInfo" }, [
+          _c("div", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.menu.content.title,
+                  expression: "menu.content.title"
+                }
+              ],
+              staticClass: "buttonNameInput",
+              attrs: { type: "text", maxlength: "20" },
+              domProps: { value: _vm.menu.content.title },
+              on: {
+                focus: function($event) {
+                  _vm.cancelUpdate()
+                },
+                blur: function($event) {
+                  _vm.updateContent()
+                },
+                keyup: function($event) {
+                  if (
+                    !("button" in $event) &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  _vm.updateContent(true)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.menu.content, "title", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "limitBtnTitle" }, [
+              _vm._v(_vm._s(_vm.textLimit))
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "buttonOptions" }, [
+        _c("div", { staticClass: "buttonActions" }, [
+          _c("ul", { staticClass: "buttonOptions" }, [
+            _c(
+              "li",
+              {
+                class: { activeOption: _vm.menu.content.type === 0 },
+                on: {
+                  click: function($event) {
+                    _vm.menu.content.type = 0
+                  }
+                }
+              },
+              [_c("span", { staticClass: "optionContent" }, [_vm._v("Blocks")])]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                class: { activeOption: _vm.menu.content.type === 1 },
+                on: {
+                  click: function($event) {
+                    _vm.menu.content.type = 1
+                  }
+                }
+              },
+              [_c("span", { staticClass: "optionContent" }, [_vm._v("Url")])]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                class: { activeOption: _vm.menu.content.type === 2 },
+                on: {
+                  click: function($event) {
+                    _vm.menu.content.type = 2
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "optionContent" }, [
+                  _vm._v("Sub Menu")
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "buttonValueCon" }, [
+            _vm.menu.content.type === 0
+              ? _c(
+                  "div",
+                  { staticClass: "optionValue" },
+                  [
+                    _vm._v("they receive the block\n                        "),
+                    _vm.menu.content.blocks.length > 0
+                      ? [
+                          _c("div", { staticClass: "selectedBlockCon" }, [
+                            _c("div", { staticClass: "selectedLinkedBlock" }, [
+                              _c("span", { staticClass: "slbText" }, [
+                                _vm._v(_vm._s(_vm.menu.content.blocks[0].title))
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "slbDel",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.delBlock()
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", { staticClass: "material-icons" }, [
+                                    _vm._v("delete")
+                                  ])
+                                ]
+                              )
+                            ])
+                          ])
+                        ]
+                      : [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.blockKeyword,
+                                expression: "blockKeyword"
+                              }
+                            ],
+                            attrs: { type: "text", placeholder: "Block name" },
+                            domProps: { value: _vm.blockKeyword },
+                            on: {
+                              keyup: function($event) {
+                                _vm.loadSuggestion()
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.blockKeyword = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.blockList.length > 0
+                            ? [
+                                _c(
+                                  "div",
+                                  { staticClass: "sugContainer" },
+                                  [
+                                    _vm.loading
+                                      ? _c("div", [_vm._v("Loading...")])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm._l(_vm.blockList, function(b, index) {
+                                      return _c(
+                                        "div",
+                                        { key: index, staticClass: "sugBlock" },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "sugBlockTitle" },
+                                            [_vm._v(_vm._s(b.title))]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "sugBlockSec" },
+                                            _vm._l(b.contents, function(
+                                              s,
+                                              sindex
+                                            ) {
+                                              return _c(
+                                                "div",
+                                                {
+                                                  key: sindex,
+                                                  staticClass:
+                                                    "sugBlockSecTitle",
+                                                  on: {
+                                                    click: function($event) {
+                                                      _vm.addBlock(
+                                                        index,
+                                                        sindex
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [_vm._v(_vm._s(s.title))]
+                                              )
+                                            })
+                                          )
+                                        ]
+                                      )
+                                    })
+                                  ],
+                                  2
+                                )
+                              ]
+                            : _vm._e()
+                        ]
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.menu.content.type === 1
+              ? _c("div", { staticClass: "optionValue" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.menu.content.url,
+                        expression: "menu.content.url"
+                      }
+                    ],
+                    attrs: { type: "text", placeholder: "Url" },
+                    domProps: { value: _vm.menu.content.url },
+                    on: {
+                      focus: function($event) {
+                        _vm.cancelUpdate()
+                      },
+                      blur: function($event) {
+                        _vm.updateContent()
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.menu.content, "url", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.menu.content.type === 2
+              ? _c("div", { staticClass: "optionValue" }, [
+                  _vm._v(
+                    "\n                        Create a submenu for this menu item\n                    "
+                  )
+                ])
+              : _vm._e()
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6ec9318a", module.exports)
+  }
+}
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "persistentMenuComponent" },
+    [
+      _c(
+        "div",
+        { staticClass: "persistentRootCon" },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "persistentMenuAction",
+              on: {
+                click: function($event) {
+                  _vm.showOption = true
+                }
+              }
+            },
+            [
+              _c("span", { staticClass: "persistentMenuName" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm.menu.content.title
+                      ? _vm.menu.content.title
+                      : "Enter menu name"
+                  )
+                )
+              ]),
+              _vm._v(" "),
+              _vm.menu.content.type !== 2
+                ? [
+                    _vm.menu.content.type == 0
+                      ? [
+                          _c("span", { staticClass: "pmnSubContent" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm.menu.content.blocks.length > 0
+                                  ? _vm.menu.content.blocks[0].title
+                                  : "-"
+                              )
+                            )
+                          ])
+                        ]
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.menu.content.type == 1
+                      ? [
+                          _c("span", { staticClass: "pmnSubContent" }, [
+                            _vm._v(_vm._s(_vm.menu.content.url))
+                          ])
+                        ]
+                      : _vm._e()
+                  ]
+                : _vm._e()
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _vm.menu.content.type === 2
+            ? [
+                _c(
+                  "div",
+                  {
+                    staticClass: "pmnSubContent",
+                    on: {
+                      click: function($event) {
+                        _vm.selectedSecond(_vm.index)
+                      }
+                    }
+                  },
+                  [
+                    _c("span", [_vm._v("Edit Submenu")]),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("chevron_right")
+                    ])
+                  ]
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm.showOption
+        ? _c("second-menu-option", {
+            attrs: { menu: _vm.menu },
+            on: {
+              closeContent: function(status) {
+                _vm.showOption = status
+              }
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "delIcon",
+          on: {
+            click: function($event) {
+              _vm.deleteMenu()
+            }
+          }
+        },
+        [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-069c5a10", module.exports)
+  }
+}
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(236)
+/* template */
+var __vue_template__ = __webpack_require__(240)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/setting/ThirdMenuComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6640e579", Component.options)
+  } else {
+    hotAPI.reload("data-v-6640e579", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 236 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ThirdMenuOption_vue__ = __webpack_require__(237);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ThirdMenuOption_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ThirdMenuOption_vue__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+let ThirdMenuComponent = class ThirdMenuComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.showOption = false;
+    }
+    selectedSecond(index) { }
+    deleteMenu() {
+        return this.index;
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], ThirdMenuComponent.prototype, "menu", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], ThirdMenuComponent.prototype, "index", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("selected")
+], ThirdMenuComponent.prototype, "selectedSecond", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('deleteThird')
+], ThirdMenuComponent.prototype, "deleteMenu", null);
+ThirdMenuComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
+        components: {
+            ThirdMenuOption: __WEBPACK_IMPORTED_MODULE_1__ThirdMenuOption_vue___default.a
+        }
+    })
+], ThirdMenuComponent);
+/* harmony default export */ __webpack_exports__["default"] = (ThirdMenuComponent);
+
+
+/***/ }),
+/* 237 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(238)
+/* template */
+var __vue_template__ = __webpack_require__(239)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/setting/ThirdMenuOption.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-266216a9", Component.options)
+  } else {
+    hotAPI.reload("data-v-266216a9", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 238 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__ = __webpack_require__(2);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+let ThirdMenuOption = class ThirdMenuOption extends __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.blockKeyword = '';
+        this.saveBlock = false;
+        this.deleteBlock = false;
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */]();
+        this.blockList = [];
+        this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+        this.loading = false;
+    }
+    documentClick(e) {
+        let el = this.$refs.textBtn;
+        let target = e.target;
+        if (el !== target && !el.contains(target)) {
+            this.updateContent();
+            setTimeout(() => {
+                this.closeContent(false);
+            }, 500);
+            return null;
+        }
+    }
+    closeContent(status) {
+    }
+    loadSuggestion() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loading = true;
+            let suggestion = yield this.ajaxHandler.searchSections(this.blockKeyword, this.$store.state.projectInfo.id);
+            if (suggestion.type === "cancel")
+                return;
+            if (suggestion.status === false) {
+                alert(suggestion.mesg);
+                return;
+            }
+            this.blockList = suggestion.data;
+            this.loading = false;
+        });
+    }
+    addBlock(block, section) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.blockToken.cancel();
+            this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            this.saveBlock = true;
+            let data = new FormData();
+            data.append("section", this.blockList[block].contents[section].id.toString());
+            data.append("_method", "put");
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.first}/${this.menu.second}/${this.menu.content.id}/block`,
+                data: data,
+                method: "post",
+                cancelToken: this.blockToken.token
+            })
+                .then((res) => {
+                this.menu.content.blocks.push({
+                    id: this.blockList[block].contents[section].id,
+                    title: this.blockList[block].contents[section].title
+                });
+                this.blockList = [];
+            })
+                .catch((err) => {
+                if (err.response) {
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to connect a block!"));
+                }
+            });
+            this.saveBlock = false;
+        });
+    }
+    delBlock() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.deleteBlock = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.first}/${this.menu.second}/${this.menu.content.id}/block`,
+                method: "delete"
+            })
+                .then((res) => {
+                this.menu.content.blocks = [];
+            })
+                .catch((err) => {
+                if (err.response) {
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to delete a block!"));
+                }
+            });
+            this.deleteBlock = false;
+        });
+    }
+    cancelUpdate() {
+        this.updateToken.cancel();
+        this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+    }
+    updateContent(close = false) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.updateToken.cancel();
+            this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
+            let data = new FormData();
+            data.append("title", this.menu.content.title);
+            data.append("url", this.menu.content.url);
+            data.append("type", this.menu.content.type.toString());
+            data.append("_method", "put");
+            __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.first}/${this.menu.second}/${this.menu.content.id}`,
+                data: data,
+                method: "post",
+                cancelToken: this.updateToken.token
+            })
+                .then(res => {
+                if (this.menu.content.type === 0) {
+                    this.menu.content.url = "";
+                }
+                else if (this.menu.content.type === 1) {
+                    this.menu.content.block = [];
+                }
+                else if (this.menu.content.type === 2) {
+                    this.menu.content.block = [];
+                    this.menu.content.url = "";
+                }
+            })
+                .catch(err => {
+                if (err.response) {
+                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to update menu!"));
+                }
+            });
+            if (close) {
+                this.closeContent(true);
+            }
+        });
+    }
+    created() {
+        document.addEventListener("click", this.documentClick);
+    }
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener("click", this.documentClick);
+    }
+    get textLimit() {
+        return 20 - this.menu.content.title.length;
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["c" /* Prop */])()
+], ThirdMenuOption.prototype, "menu", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["b" /* Emit */])('closeContent')
+], ThirdMenuOption.prototype, "closeContent", null);
+ThirdMenuOption = __decorate([
+    __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["a" /* Component */]
+], ThirdMenuOption);
+/* harmony default export */ __webpack_exports__["default"] = (ThirdMenuOption);
+
+
+/***/ }),
+/* 239 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { ref: "textBtn", staticClass: "btnComponentTypeOne" }, [
+    _c("div", { staticClass: "buttonPopContent" }, [
+      _c("div", { staticClass: "buttonPopHeading" }, [
+        _c("p", { staticClass: "buttonPopInfo" }, [_vm._v("Menu Name")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "actionInfo" }, [
+          _c("div", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.menu.content.title,
+                  expression: "menu.content.title"
+                }
+              ],
+              staticClass: "buttonNameInput",
+              attrs: { type: "text", maxlength: "20" },
+              domProps: { value: _vm.menu.content.title },
+              on: {
+                focus: function($event) {
+                  _vm.cancelUpdate()
+                },
+                blur: function($event) {
+                  _vm.updateContent()
+                },
+                keyup: function($event) {
+                  if (
+                    !("button" in $event) &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  _vm.updateContent(true)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.menu.content, "title", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "limitBtnTitle" }, [
+              _vm._v(_vm._s(_vm.textLimit))
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "buttonOptions" }, [
+        _c("div", { staticClass: "buttonActions" }, [
+          _c("ul", { staticClass: "buttonOptions" }, [
+            _c(
+              "li",
+              {
+                class: { activeOption: _vm.menu.content.type === 0 },
+                on: {
+                  click: function($event) {
+                    _vm.menu.content.type = 0
+                  }
+                }
+              },
+              [_c("span", { staticClass: "optionContent" }, [_vm._v("Blocks")])]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                class: { activeOption: _vm.menu.content.type === 1 },
+                on: {
+                  click: function($event) {
+                    _vm.menu.content.type = 1
+                  }
+                }
+              },
+              [_c("span", { staticClass: "optionContent" }, [_vm._v("Url")])]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "buttonValueCon" }, [
+            _vm.menu.content.type === 0
+              ? _c(
+                  "div",
+                  { staticClass: "optionValue" },
+                  [
+                    _vm._v("they receive the block\n                        "),
+                    _vm.menu.content.blocks.length > 0
+                      ? [
+                          _c("div", { staticClass: "selectedBlockCon" }, [
+                            _c("div", { staticClass: "selectedLinkedBlock" }, [
+                              _c("span", { staticClass: "slbText" }, [
+                                _vm._v(_vm._s(_vm.menu.content.blocks[0].title))
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "slbDel",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.delBlock()
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", { staticClass: "material-icons" }, [
+                                    _vm._v("delete")
+                                  ])
+                                ]
+                              )
+                            ])
+                          ])
+                        ]
+                      : [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.blockKeyword,
+                                expression: "blockKeyword"
+                              }
+                            ],
+                            attrs: { type: "text", placeholder: "Block name" },
+                            domProps: { value: _vm.blockKeyword },
+                            on: {
+                              keyup: function($event) {
+                                _vm.loadSuggestion()
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.blockKeyword = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.blockList.length > 0
+                            ? [
+                                _c(
+                                  "div",
+                                  { staticClass: "sugContainer" },
+                                  [
+                                    _vm.loading
+                                      ? _c("div", [_vm._v("Loading...")])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm._l(_vm.blockList, function(b, index) {
+                                      return _c(
+                                        "div",
+                                        { key: index, staticClass: "sugBlock" },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "sugBlockTitle" },
+                                            [_vm._v(_vm._s(b.title))]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "sugBlockSec" },
+                                            _vm._l(b.contents, function(
+                                              s,
+                                              sindex
+                                            ) {
+                                              return _c(
+                                                "div",
+                                                {
+                                                  key: sindex,
+                                                  staticClass:
+                                                    "sugBlockSecTitle",
+                                                  on: {
+                                                    click: function($event) {
+                                                      _vm.addBlock(
+                                                        index,
+                                                        sindex
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [_vm._v(_vm._s(s.title))]
+                                              )
+                                            })
+                                          )
+                                        ]
+                                      )
+                                    })
+                                  ],
+                                  2
+                                )
+                              ]
+                            : _vm._e()
+                        ]
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.menu.content.type === 1
+              ? _c("div", { staticClass: "optionValue" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.menu.content.url,
+                        expression: "menu.content.url"
+                      }
+                    ],
+                    attrs: { type: "text", placeholder: "Url" },
+                    domProps: { value: _vm.menu.content.url },
+                    on: {
+                      focus: function($event) {
+                        _vm.cancelUpdate()
+                      },
+                      blur: function($event) {
+                        _vm.updateContent()
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.menu.content, "url", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              : _vm._e()
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-266216a9", module.exports)
+  }
+}
+
+/***/ }),
+/* 240 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "persistentMenuComponent" },
+    [
+      _c(
+        "div",
+        { staticClass: "persistentRootCon" },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "persistentMenuAction",
+              on: {
+                click: function($event) {
+                  _vm.showOption = true
+                }
+              }
+            },
+            [
+              _c("span", { staticClass: "persistentMenuName" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm.menu.content.title
+                      ? _vm.menu.content.title
+                      : "Enter menu name"
+                  )
+                )
+              ]),
+              _vm._v(" "),
+              _vm.menu.content.type !== 2
+                ? [
+                    _vm.menu.content.type == 0
+                      ? [
+                          _c("span", { staticClass: "pmnSubContent" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm.menu.content.blocks.length > 0
+                                  ? _vm.menu.content.blocks[0].title
+                                  : "-"
+                              )
+                            )
+                          ])
+                        ]
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.menu.content.type == 1
+                      ? [
+                          _c("span", { staticClass: "pmnSubContent" }, [
+                            _vm._v(_vm._s(_vm.menu.content.url))
+                          ])
+                        ]
+                      : _vm._e()
+                  ]
+                : _vm._e()
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _vm.menu.content.type === 2
+            ? [
+                _c(
+                  "div",
+                  {
+                    on: {
+                      click: function($event) {
+                        _vm.selectedSecond(_vm.index)
+                      }
+                    }
+                  },
+                  [_vm._v("\n                Edit Submenu >\n            ")]
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm.showOption
+        ? _c("third-menu-option", {
+            attrs: { menu: _vm.menu },
+            on: {
+              closeContent: function(status) {
+                _vm.showOption = status
+              }
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "delIcon",
+          on: {
+            click: function($event) {
+              _vm.deleteMenu()
+            }
+          }
+        },
+        [_c("i", { staticClass: "material-icons" }, [_vm._v("delete")])]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6640e579", module.exports)
+  }
+}
+
+/***/ }),
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -59588,67 +61982,296 @@ var render = function() {
       _vm.loading
         ? [_vm._v("\n        Loading...\n    ")]
         : [
-            _c("div", [
-              _c(
-                "div",
-                [
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _vm._l(_vm.menu, function(firstMenu, index) {
-                    return [
-                      _c("first-menu-component", {
-                        key: index,
-                        attrs: { menu: firstMenu }
-                      })
-                    ]
-                  }),
-                  _vm._v(" "),
-                  _vm.menu.length < 3
-                    ? [
-                        _vm.adding
+            _c(
+              "div",
+              { staticClass: "persistentMenuRoot" },
+              [
+                _vm.selectedSecond == -1
+                  ? _c(
+                      "div",
+                      { staticClass: "persistentMenuCon" },
+                      [
+                        _vm._l(_vm.menu, function(firstMenu, index) {
+                          return [
+                            _c("first-menu-component", {
+                              key: index,
+                              attrs: { index: index, menu: firstMenu },
+                              on: {
+                                selected: function(index) {
+                                  _vm.selectedFirst = index
+                                  _vm.selectedSecond = -1
+                                },
+                                deleteFirst: function($event) {
+                                  _vm.deleteFirst(index)
+                                }
+                              }
+                            })
+                          ]
+                        }),
+                        _vm._v(" "),
+                        _vm.menu.length < 3
                           ? [
-                              _vm._v(
-                                "\n                        Loading...\n                    "
-                              )
+                              _vm.adding
+                                ? [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "persistentMenuComponent"
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                            Loading...\n                        "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                : [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "addPersistentMenuBtn",
+                                        on: {
+                                          click: function($event) {
+                                            _vm.createMenu()
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "i",
+                                          { staticClass: "material-icons" },
+                                          [_vm._v("add")]
+                                        ),
+                                        _c("span", [_vm._v("Add Menu Item")])
+                                      ]
+                                    )
+                                  ]
                             ]
-                          : [
-                              _c(
-                                "button",
-                                {
+                          : _vm._e()
+                      ],
+                      2
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.selectedFirst !== -1 &&
+                _vm.menu[_vm.selectedFirst].content.type == 2
+                  ? [
+                      _c(
+                        "div",
+                        { staticClass: "persistentMenuCon" },
+                        [
+                          _c("div", { staticClass: "menuSubHeading" }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "backNavigate",
+                                on: {
+                                  click: function($event) {
+                                    _vm.selectedFirst = -1
+                                    _vm.selectedSecond = -1
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("chevron_left")
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("h5", { staticClass: "parentName" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.menu[_vm.selectedFirst].content.title
+                                    ? _vm.menu[_vm.selectedFirst].content.title
+                                    : "-"
+                                )
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.menu[_vm.selectedFirst].item, function(
+                            secondMenu,
+                            index
+                          ) {
+                            return [
+                              _c("second-menu-component", {
+                                key: index,
+                                attrs: { index: index, menu: secondMenu },
+                                on: {
+                                  selected: function(index) {
+                                    _vm.selectedSecond = index
+                                  },
+                                  deleteSecond: function($event) {
+                                    _vm.deleteSecond(index)
+                                  }
+                                }
+                              })
+                            ]
+                          }),
+                          _vm._v(" "),
+                          _vm.menu[_vm.selectedFirst].item.length < 5
+                            ? [
+                                _vm.menu[_vm.selectedFirst].creating
+                                  ? [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "persistentMenuComponent"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                Loading...\n                            "
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  : [
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass: "addPersistentMenuBtn",
+                                          on: {
+                                            click: function($event) {
+                                              _vm.createSecondMenu()
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "i",
+                                            { staticClass: "material-icons" },
+                                            [_vm._v("add")]
+                                          ),
+                                          _c("span", [_vm._v("Add Menu Item")])
+                                        ]
+                                      )
+                                    ]
+                              ]
+                            : _vm._e()
+                        ],
+                        2
+                      )
+                    ]
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.selectedFirst !== -1 &&
+                _vm.menu[_vm.selectedFirst].content.type == 2 &&
+                _vm.selectedSecond !== -1 &&
+                _vm.menu[_vm.selectedFirst].item[_vm.selectedSecond].content
+                  .type === 2
+                  ? [
+                      _c(
+                        "div",
+                        { staticClass: "persistentMenuCon" },
+                        [
+                          _c("div", { staticClass: "menuSubHeading" }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "backNavigate",
+                                on: {
+                                  click: function($event) {
+                                    _vm.selectedSecond = -1
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("chevron_left")
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("h5", { staticClass: "parentName" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.menu[_vm.selectedFirst].item[
+                                    _vm.selectedSecond
+                                  ].content.title
+                                    ? _vm.menu[_vm.selectedFirst].item[
+                                        _vm.selectedSecond
+                                      ].content.title
+                                    : "-"
+                                )
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(
+                            _vm.menu[_vm.selectedFirst].item[_vm.selectedSecond]
+                              .item,
+                            function(thirdMenu, index) {
+                              return [
+                                _c("third-menu-component", {
+                                  key: index,
+                                  attrs: { index: index, menu: thirdMenu },
                                   on: {
-                                    click: function($event) {
-                                      _vm.createMenu()
+                                    deleteThird: function($event) {
+                                      _vm.deleteThird(index)
                                     }
                                   }
-                                },
-                                [_vm._v("Add Menu Item")]
-                              )
-                            ]
-                      ]
-                    : _vm._e()
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c("div", [_vm._v("Second Menu")]),
-              _vm._v(" "),
-              _c("div", [_vm._v("Third Menu")])
-            ])
+                                })
+                              ]
+                            }
+                          ),
+                          _vm._v(" "),
+                          _vm.menu[_vm.selectedFirst].item[_vm.selectedSecond]
+                            .item.length < 5
+                            ? [
+                                _vm.menu[_vm.selectedFirst].item[
+                                  _vm.selectedSecond
+                                ].creating
+                                  ? [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "persistentMenuComponent"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                Loading...\n                            "
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  : [
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass: "addPersistentMenuBtn",
+                                          on: {
+                                            click: function($event) {
+                                              _vm.createThirdMenu()
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "i",
+                                            { staticClass: "material-icons" },
+                                            [_vm._v("add")]
+                                          ),
+                                          _c("span", [_vm._v("Add Menu Item")])
+                                        ]
+                                      )
+                                    ]
+                              ]
+                            : _vm._e()
+                        ],
+                        2
+                      )
+                    ]
+                  : _vm._e()
+              ],
+              2
+            )
           ]
     ],
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "menuHeading" }, [
-      _c("h5", [_vm._v("Send a message...")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -59659,15 +62282,15 @@ if (false) {
 }
 
 /***/ }),
-/* 221 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(222)
+var __vue_script__ = __webpack_require__(243)
 /* template */
-var __vue_template__ = __webpack_require__(223)
+var __vue_template__ = __webpack_require__(244)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -59706,7 +62329,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 222 */
+/* 243 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59728,7 +62351,7 @@ ProfileComponent = __decorate([
 
 
 /***/ }),
-/* 223 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -59748,15 +62371,15 @@ if (false) {
 }
 
 /***/ }),
-/* 224 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(225)
+var __vue_script__ = __webpack_require__(246)
 /* template */
-var __vue_template__ = __webpack_require__(230)
+var __vue_template__ = __webpack_require__(251)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -59795,7 +62418,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 225 */
+/* 246 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59803,9 +62426,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_ProjectPage__ = __webpack_require__(226);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_ProjectPage__ = __webpack_require__(247);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue__ = __webpack_require__(227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue__ = __webpack_require__(248);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -59936,7 +62559,7 @@ ProjectConfigrationComponent = __decorate([
 
 
 /***/ }),
-/* 226 */
+/* 247 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59977,15 +62600,15 @@ class ProjectPage extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__[
 
 
 /***/ }),
-/* 227 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(228)
+var __vue_script__ = __webpack_require__(249)
 /* template */
-var __vue_template__ = __webpack_require__(229)
+var __vue_template__ = __webpack_require__(250)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -60024,7 +62647,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 228 */
+/* 249 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60086,7 +62709,7 @@ PageList = __decorate([
 
 
 /***/ }),
-/* 229 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -60199,7 +62822,7 @@ if (false) {
 }
 
 /***/ }),
-/* 230 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -60279,15 +62902,15 @@ if (false) {
 }
 
 /***/ }),
-/* 231 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(232)
+var __vue_script__ = __webpack_require__(253)
 /* template */
-var __vue_template__ = __webpack_require__(233)
+var __vue_template__ = __webpack_require__(254)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -60326,7 +62949,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 232 */
+/* 253 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60348,7 +62971,7 @@ SettingSidebarComponent = __decorate([
 
 
 /***/ }),
-/* 233 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -60485,15 +63108,15 @@ if (false) {
 }
 
 /***/ }),
-/* 234 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(235)
+var __vue_script__ = __webpack_require__(256)
 /* template */
-var __vue_template__ = __webpack_require__(240)
+var __vue_template__ = __webpack_require__(261)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -60532,13 +63155,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 235 */
+/* 256 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_AttributeFilterListModel__ = __webpack_require__(236);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_AttributeFilterListModel__ = __webpack_require__(257);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_users_UserListModel__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__UserTableComponent_vue__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__UserTableComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__UserTableComponent_vue__);
@@ -60666,7 +63289,7 @@ UserSegmentListComponent = __decorate([
 
 
 /***/ }),
-/* 236 */
+/* 257 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60771,7 +63394,7 @@ class AttributeFilterListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxEr
 
 
 /***/ }),
-/* 237 */
+/* 258 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60870,7 +63493,7 @@ class AttributeModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler
 
 
 /***/ }),
-/* 238 */
+/* 259 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60986,7 +63609,7 @@ UserTableComponent = __decorate([
 
 
 /***/ }),
-/* 239 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -61616,7 +64239,7 @@ if (false) {
 }
 
 /***/ }),
-/* 240 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -61903,15 +64526,15 @@ if (false) {
 }
 
 /***/ }),
-/* 241 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(242)
+var __vue_script__ = __webpack_require__(263)
 /* template */
-var __vue_template__ = __webpack_require__(244)
+var __vue_template__ = __webpack_require__(265)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -61950,7 +64573,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 242 */
+/* 263 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62063,7 +64686,7 @@ SegmentListSidebarComponent = __decorate([
 
 
 /***/ }),
-/* 243 */
+/* 264 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62263,7 +64886,7 @@ class SegmentModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__
 
 
 /***/ }),
-/* 244 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -62707,15 +65330,15 @@ if (false) {
 }
 
 /***/ }),
-/* 245 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(246)
+var __vue_script__ = __webpack_require__(267)
 /* template */
-var __vue_template__ = __webpack_require__(247)
+var __vue_template__ = __webpack_require__(268)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -62754,7 +65377,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 246 */
+/* 267 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62988,7 +65611,7 @@ UserListComponent = __decorate([
 
 
 /***/ }),
-/* 247 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -63250,15 +65873,15 @@ if (false) {
 }
 
 /***/ }),
-/* 248 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(249)
+var __vue_script__ = __webpack_require__(270)
 /* template */
-var __vue_template__ = __webpack_require__(250)
+var __vue_template__ = __webpack_require__(271)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -63297,7 +65920,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 249 */
+/* 270 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63421,7 +66044,7 @@ UserListSidebarComponent = __decorate([
 
 
 /***/ }),
-/* 250 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -63640,7 +66263,7 @@ if (false) {
 }
 
 /***/ }),
-/* 251 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -63648,7 +66271,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(252)
+var __vue_template__ = __webpack_require__(273)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -63687,7 +66310,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 252 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -63707,15 +66330,15 @@ if (false) {
 }
 
 /***/ }),
-/* 253 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(254)
+var __vue_script__ = __webpack_require__(275)
 /* template */
-var __vue_template__ = __webpack_require__(255)
+var __vue_template__ = __webpack_require__(276)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -63754,7 +66377,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 254 */
+/* 275 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63824,7 +66447,7 @@ RegisterComponent = __decorate([
 
 
 /***/ }),
-/* 255 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -64018,15 +66641,15 @@ if (false) {
 }
 
 /***/ }),
-/* 256 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(257)
+var __vue_script__ = __webpack_require__(278)
 /* template */
-var __vue_template__ = __webpack_require__(258)
+var __vue_template__ = __webpack_require__(279)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -64065,7 +66688,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 257 */
+/* 278 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64132,7 +66755,7 @@ ResendOtpComponent = __decorate([
 
 
 /***/ }),
-/* 258 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -64264,15 +66887,15 @@ if (false) {
 }
 
 /***/ }),
-/* 259 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(260)
+var __vue_script__ = __webpack_require__(281)
 /* template */
-var __vue_template__ = __webpack_require__(261)
+var __vue_template__ = __webpack_require__(282)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -64311,7 +66934,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 260 */
+/* 281 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64379,7 +67002,7 @@ VerifyEmailComponent = __decorate([
 
 
 /***/ }),
-/* 261 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -64544,12 +67167,12 @@ if (false) {
 }
 
 /***/ }),
-/* 262 */
+/* 283 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(263);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(284);
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
@@ -64684,7 +67307,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
 
 
 /***/ }),
-/* 263 */
+/* 284 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -65629,694 +68252,10 @@ var index_esm = {
 
 
 /***/ }),
-/* 264 */
+/* 285 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 265 */,
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */,
-/* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
-
-class PersistentMenu extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */] {
-    constructor(content) {
-        super();
-        this.content = content;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = PersistentMenu;
-
-
-
-/***/ }),
-/* 276 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(277)
-/* template */
-var __vue_template__ = __webpack_require__(278)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/v1/components/setting/FirstMenuComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5302b350", Component.options)
-  } else {
-    hotAPI.reload("data-v-5302b350", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 277 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue__ = __webpack_require__(279);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-let FirstMenuComponent = class FirstMenuComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
-    constructor() {
-        super(...arguments);
-        this.showOption = false;
-    }
-};
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
-], FirstMenuComponent.prototype, "menu", void 0);
-FirstMenuComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
-        components: {
-            FirstMenuOption: __WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue___default.a
-        }
-    })
-], FirstMenuComponent);
-/* harmony default export */ __webpack_exports__["default"] = (FirstMenuComponent);
-
-
-/***/ }),
-/* 278 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticStyle: { position: "relative" } },
-    [
-      _c(
-        "div",
-        [
-          _c(
-            "div",
-            {
-              on: {
-                click: function($event) {
-                  _vm.showOption = true
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(
-                  _vm.menu.content.title
-                    ? _vm.menu.content.title
-                    : "Enter menu name"
-                )
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _vm.menu.content.type === 2
-            ? [
-                _c("div", [
-                  _vm._v("\n                Edit Submenu >\n            ")
-                ])
-              ]
-            : _vm._e()
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _vm.showOption
-        ? _c("first-menu-option", {
-            attrs: { menu: _vm.menu },
-            on: {
-              closeContent: function(status) {
-                _vm.showOption = status
-              }
-            }
-          })
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-5302b350", module.exports)
-  }
-}
-
-/***/ }),
-/* 279 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(280)
-/* template */
-var __vue_template__ = __webpack_require__(281)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/v1/components/setting/FirstMenuOption.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-00e3f032", Component.options)
-  } else {
-    hotAPI.reload("data-v-00e3f032", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 280 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__ = __webpack_require__(2);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-
-
-
-let FirstMenuOption = class FirstMenuOption extends __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["d" /* Vue */] {
-    constructor() {
-        super(...arguments);
-        this.blockKeyword = '';
-        this.saveBlock = false;
-        this.deleteBlock = false;
-        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */]();
-        this.blockList = [];
-        this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-        this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-        this.loading = false;
-    }
-    documentClick(e) {
-        let el = this.$refs.textBtn;
-        let target = e.target;
-        if (el !== target && !el.contains(target)) {
-            this.updateContent();
-            setTimeout(() => {
-                this.closeContent(false);
-            }, 500);
-            return null;
-        }
-    }
-    closeContent(status) {
-    }
-    loadSuggestion() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.loading = true;
-            let suggestion = yield this.ajaxHandler.searchSections(this.blockKeyword, this.$store.state.projectInfo.id);
-            if (suggestion.type === "cancel")
-                return;
-            if (suggestion.status === false) {
-                alert(suggestion.mesg);
-                return;
-            }
-            this.blockList = suggestion.data;
-            this.loading = false;
-        });
-    }
-    addBlock(block, section) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.blockToken.cancel();
-            this.blockToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-            this.saveBlock = true;
-            let data = new FormData();
-            data.append("section", this.blockList[block].contents[section].id.toString());
-            data.append("_method", "put");
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.content.id}/block`,
-                data: data,
-                method: "post",
-                cancelToken: this.blockToken.token
-            })
-                .then((res) => {
-                this.menu.content.blocks.push({
-                    id: this.blockList[block].contents[section].id,
-                    title: this.blockList[block].contents[section].title
-                });
-                this.blockList = [];
-            })
-                .catch((err) => {
-                if (err.response) {
-                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to connect a block!"));
-                }
-            });
-            this.saveBlock = false;
-        });
-    }
-    delBlock() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.deleteBlock = true;
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.content.id}/block`,
-                method: "delete"
-            })
-                .then((res) => {
-                this.menu.content.blocks = [];
-            })
-                .catch((err) => {
-                if (err.response) {
-                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to delete a block!"));
-                }
-            });
-            this.deleteBlock = false;
-        });
-    }
-    cancelUpdate() {
-        this.updateToken.cancel();
-        this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-    }
-    updateContent(close = false) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.updateToken.cancel();
-            this.updateToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
-            let data = new FormData();
-            data.append("title", this.menu.content.title);
-            data.append("url", this.menu.content.url);
-            data.append("type", this.menu.content.type.toString());
-            data.append("_method", "put");
-            __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu.content.id}`,
-                data: data,
-                method: "post",
-                cancelToken: this.updateToken.token
-            })
-                .then(res => {
-                if (this.menu.content.type === 0) {
-                    this.menu.content.url = "";
-                }
-                else if (this.menu.content.type === 1) {
-                    this.menu.content.block = [];
-                }
-                else if (this.menu.content.type === 2) {
-                    this.menu.content.block = [];
-                    this.menu.content.url = "";
-                }
-            })
-                .catch(err => {
-                if (err.response) {
-                    this.$store.state.errorMesg.push(this.ajaxHandler.globalHandler(err, "Failed to update menu!"));
-                }
-            });
-            if (close) {
-                this.closeContent(true);
-            }
-        });
-    }
-    created() {
-        document.addEventListener("click", this.documentClick);
-    }
-    destroyed() {
-        // important to clean up!!
-        document.removeEventListener("click", this.documentClick);
-    }
-    get textLimit() {
-        return 20 - this.menu.content.title.length;
-    }
-};
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["c" /* Prop */])()
-], FirstMenuOption.prototype, "menu", void 0);
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["b" /* Emit */])('closeContent')
-], FirstMenuOption.prototype, "closeContent", null);
-FirstMenuOption = __decorate([
-    __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["a" /* Component */]
-], FirstMenuOption);
-/* harmony default export */ __webpack_exports__["default"] = (FirstMenuOption);
-
-
-/***/ }),
-/* 281 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { ref: "textBtn", staticClass: "btnComponentTypeOne" }, [
-    _c("div", { staticClass: "buttonPopContent" }, [
-      _c("div", { staticClass: "buttonPopHeading" }, [
-        _c("p", { staticClass: "buttonPopInfo" }, [_vm._v("Menu Name")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "actionInfo" }, [
-          _c("div", [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.menu.content.title,
-                  expression: "menu.content.title"
-                }
-              ],
-              staticClass: "buttonNameInput",
-              attrs: { type: "text", maxlength: "20" },
-              domProps: { value: _vm.menu.content.title },
-              on: {
-                focus: function($event) {
-                  _vm.cancelUpdate()
-                },
-                blur: function($event) {
-                  _vm.updateContent()
-                },
-                keyup: function($event) {
-                  if (
-                    !("button" in $event) &&
-                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                  ) {
-                    return null
-                  }
-                  _vm.updateContent(true)
-                },
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.menu.content, "title", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("span", { staticClass: "limitBtnTitle" }, [
-              _vm._v(_vm._s(_vm.textLimit))
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "buttonOptions" }, [
-        _c("div", { staticClass: "buttonActions" }, [
-          _c("ul", { staticClass: "buttonOptions" }, [
-            _c(
-              "li",
-              {
-                class: { activeOption: _vm.menu.content.type === 0 },
-                on: {
-                  click: function($event) {
-                    _vm.menu.content.type = 0
-                  }
-                }
-              },
-              [_c("span", { staticClass: "optionContent" }, [_vm._v("Blocks")])]
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                class: { activeOption: _vm.menu.content.type === 1 },
-                on: {
-                  click: function($event) {
-                    _vm.menu.content.type = 1
-                  }
-                }
-              },
-              [_c("span", { staticClass: "optionContent" }, [_vm._v("Url")])]
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                class: { activeOption: _vm.menu.content.type === 2 },
-                on: {
-                  click: function($event) {
-                    _vm.menu.content.type = 2
-                  }
-                }
-              },
-              [
-                _c("span", { staticClass: "optionContent" }, [
-                  _vm._v("Sub Menu")
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "buttonValueCon" }, [
-            _vm.menu.content.type === 0
-              ? _c(
-                  "div",
-                  { staticClass: "optionValue" },
-                  [
-                    _vm._v("they receive the block\n                        "),
-                    _vm.menu.content.blocks.length > 0
-                      ? [
-                          _c("div", { staticClass: "selectedBlockCon" }, [
-                            _c("div", { staticClass: "selectedLinkedBlock" }, [
-                              _c("span", { staticClass: "slbText" }, [
-                                _vm._v(_vm._s(_vm.menu.content.blocks[0].title))
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "slbDel",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.delBlock()
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", { staticClass: "material-icons" }, [
-                                    _vm._v("delete")
-                                  ])
-                                ]
-                              )
-                            ])
-                          ])
-                        ]
-                      : [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.blockKeyword,
-                                expression: "blockKeyword"
-                              }
-                            ],
-                            attrs: { type: "text", placeholder: "Block name" },
-                            domProps: { value: _vm.blockKeyword },
-                            on: {
-                              keyup: function($event) {
-                                _vm.loadSuggestion()
-                              },
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.blockKeyword = $event.target.value
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.blockList.length > 0
-                            ? [
-                                _c(
-                                  "div",
-                                  { staticClass: "sugContainer" },
-                                  [
-                                    _vm.loading
-                                      ? _c("div", [_vm._v("Loading...")])
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    _vm._l(_vm.blockList, function(b, index) {
-                                      return _c(
-                                        "div",
-                                        { key: index, staticClass: "sugBlock" },
-                                        [
-                                          _c(
-                                            "div",
-                                            { staticClass: "sugBlockTitle" },
-                                            [_vm._v(_vm._s(b.title))]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            { staticClass: "sugBlockSec" },
-                                            _vm._l(b.contents, function(
-                                              s,
-                                              sindex
-                                            ) {
-                                              return _c(
-                                                "div",
-                                                {
-                                                  key: sindex,
-                                                  staticClass:
-                                                    "sugBlockSecTitle",
-                                                  on: {
-                                                    click: function($event) {
-                                                      _vm.addBlock(
-                                                        index,
-                                                        sindex
-                                                      )
-                                                    }
-                                                  }
-                                                },
-                                                [_vm._v(_vm._s(s.title))]
-                                              )
-                                            })
-                                          )
-                                        ]
-                                      )
-                                    })
-                                  ],
-                                  2
-                                )
-                              ]
-                            : _vm._e()
-                        ]
-                  ],
-                  2
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.menu.content.type === 1
-              ? _c("div", { staticClass: "optionValue" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.menu.content.url,
-                        expression: "menu.content.url"
-                      }
-                    ],
-                    attrs: { type: "text", placeholder: "Url" },
-                    domProps: { value: _vm.menu.content.url },
-                    on: {
-                      focus: function($event) {
-                        _vm.cancelUpdate()
-                      },
-                      blur: function($event) {
-                        _vm.updateContent()
-                      },
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.menu.content, "url", $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.menu.content.type === 2
-              ? _c("div", { staticClass: "optionValue" }, [
-                  _vm._v(
-                    "\n                        Create a submenu for this menu item\n                    "
-                  )
-                ])
-              : _vm._e()
-          ])
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-00e3f032", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

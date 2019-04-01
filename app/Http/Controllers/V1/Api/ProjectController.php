@@ -22,6 +22,10 @@ use App\Models\ChatBlock;
 use App\Models\ChatAttribute;
 use App\Models\ChatBlockSection;
 
+use App\Models\PersistentFirstMenu;
+use App\Models\PersistentSecondMenu;
+use App\Models\PersistentThirdMenu;
+
 use App\Mail\MemberInviteWithProject;
 use App\Mail\ProjectInviteCancelNonMember;
 use App\Notifications\ProjectInvite;
@@ -300,6 +304,8 @@ class ProjectController extends Controller
                     $cv->save();
                 }
             }
+
+            $this->updatePersistentMenu($request->attributes->get('project')->id);
         } catch (\Exception $e) {
             // Rollback and send error
             DB::rollback();
@@ -464,6 +470,10 @@ class ProjectController extends Controller
         }
 
         if($checkIsSub['isSubscribe']) {
+            $deletePersistentMenu = $fbc->deletePersistentMenu($projectPage['page_id']);
+            if(!$deletePersistentMenu['status']) {
+                return response()->json($deletePersistentMenu, $deletePersistentMenu['code']);
+            }
             // Subscribe facebook page to bot
             $unsubscribe = $fbc->unsubscribeApp($projectPage['page_id']);
 
@@ -534,6 +544,13 @@ class ProjectController extends Controller
         try {
             $projectPage->publish = $projectPage->publish==1 ? 0 : 1;
             $projectPage->save();
+
+            if($projectPage->publish===1) {
+                $this->updatePersistentMenu($request->attributes->get('project')->id);
+            } else {
+                $fbc = new FacebookController($projectPage['token']);
+                $deletePersistentMenu = $fbc->deletePersistentMenu($projectPage['page_id']);
+            }
         }
         // @codeCoverageIgnoreStart
         catch(\Exception $e) {
@@ -822,5 +839,225 @@ class ProjectController extends Controller
             'code' => 200,
             'mesg' => 'success'
         ]);
+    }
+
+    public function updatePersistentMenu($projectId)
+    {
+        $projectPage = ProjectPage::where('project_id', $projectId)->first()->toArray();
+
+        // Check if the page have a project linked or not
+        if(empty($projectPage)) {
+            return [
+                'status' => true,
+                'code' => 200,
+                'mesg' => 'This page didn\'t have a project!',
+            ];
+        }
+
+        // Check if the page exists and token valid or not
+        $fbc = new FacebookController($projectPage['token']);
+        $pageInfo = $fbc->expire();
+        
+        // Response error if page check response error
+        if($pageInfo['status']===false) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => $pageInfo['mesg']
+            ];
+        } else {
+            // Response error if page id and provided id from post are not matched
+            if($pageInfo['data']['id']!=$projectPage['page_id']) {
+                return [
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => 'Invalid page id!'
+                ];
+            }
+        }
+
+        $deletePersistentMenu = $fbc->deletePersistentMenu($projectPage['page_id']);
+
+        if($deletePersistentMenu['status']===false) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => $deletePersistentMenu['mesg']
+            ];
+        }
+
+        $menu = PersistentFirstMenu::with(
+            'secondRelation',
+            'secondRelation.thirdRelation'
+        )->where('project_id', $projectId)->get();
+
+        $menuRes = [];
+
+        // Loop first persistent menu
+        foreach($menu as $m) {
+            // ignore if title is empty
+            if(empty($m->title)) continue;
+            $res = [];
+            //check menu type
+            switch($m->type) {
+                // if menu is payload type
+                case(0):
+                    // check block is is null and ignore if it's
+                    if(!is_null($m->block_id)) {
+                        $res = [
+                            'title' => $m->title,
+                            'type' => 'postback',
+                            'payload' => 'persistentMenu-'.$m->id
+                        ];
+                    }
+                    break;
+                
+                // if menu is url
+                case(1):
+                    // check url empty and ignore if it's
+                    if(!is_null($m->url)) {
+                        $res = [
+                            'title' => $m->title,
+                            'type' => 'web_url',
+                            'url' => $m->url
+                        ];
+                    }
+                    break;
+                
+                // if menu is nested
+                case(2):
+                    $secondRes = [];
+                    // loop second persistent menu
+                    foreach($m->secondRelation as $s) {
+                        // ignore if title is empty
+                        if(empty($s->title)) continue;
+                        $sRes = [];
+                        //check menu type
+                        switch($s->type) {
+                            // if menu is payload type
+                            case(0):
+                                // check block is is null and ignore if it's
+                                if(!is_null($s->block_id)) {
+                                    $sRes = [
+                                        'title' => $s->title,
+                                        'type' => 'postback',
+                                        'payload' => 'persistentMenu-'.$m->id.'-'.$s->id
+                                    ];
+                                }
+                                break;
+                            
+                            // if menu is url
+                            case(1):
+                                // check url empty and ignore if it's
+                                if(!is_null($s->url)) {
+                                    $sRes = [
+                                        'title' => $s->title,
+                                        'type' => 'web_url',
+                                        'url' => $s->url
+                                    ];
+                                }
+                                break;
+
+                            // if menu is nested
+                            case(2):
+                                $thirdRes = [];
+                                // loop third persistent menu
+                                foreach($s->thirdRelation as $t) {
+                                    // ignore if title is empty
+                                    if(empty($t->title)) continue;
+                                    $tRes = [];
+                                    //check menu type
+                                    switch($t->type) {
+                                        // if menu is payload type
+                                        case(0):
+                                            // check block is is null and ignore if it's
+                                            if(!is_null($t->block_id)) {
+                                                $tRes = [
+                                                    'title' => $t->title,
+                                                    'type' => 'postback',
+                                                    'payload' => 'persistentMenu-'.$m->id.'-'.$s->id.'-'.$t->id
+                                                ];
+                                            }
+                                            break;
+                                        
+                                        // if menu is url
+                                        case(1):
+                                            // check url empty and ignore if it's
+                                            if(!is_null($t->url)) {
+                                                $tRes = [
+                                                    'title' => $t->title,
+                                                    'type' => 'web_url',
+                                                    'url' => $t->url
+                                                ];
+                                            }
+                                            break;
+                                    }
+
+                                    if(!empty($tRes)) {
+                                        $thirdRes[] = $tRes;
+                                    }
+                                }
+            
+                                if(!empty($thirdRes)) {
+                                    $sRes = [
+                                        'title' => $s->title,
+                                        'type' => 'nested',
+                                        'call_to_actions' => $thirdRes
+                                    ];
+                                }
+                                break;
+                        }
+
+                        if(!empty($sRes)) {
+                            $secondRes[] = $sRes;
+                        }
+                    }
+
+                    if(!empty($secondRes)) {
+                        $res = [
+                            'title' => $m->title,
+                            'type' => 'nested',
+                            'call_to_actions' => $secondRes
+                        ];
+                    }
+                    break;
+            }
+
+            if(!empty($res)) {
+                $menuRes[] = $res;
+            }
+        }
+
+        $addPersistentMenu = null;
+
+        if(!empty($menuRes)) {
+            $persistentMenu = [
+                'persistent_menu' => [
+                    [
+                        'locale' => 'default',
+                        'composer_input_disabled' => false,
+                        'call_to_actions' => $menuRes
+                    ]
+                ]
+            ];
+
+            $addPersistentMenu = $fbc->addPersistentMenu($projectPage['page_id'], $persistentMenu);
+
+            if($addPersistentMenu['status']===false) {
+                return [
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => $addPersistentMenu['mesg']
+                ];
+            }
+        }
+
+        return [
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Success',
+            'del' => $deletePersistentMenu,
+            'add' => $addPersistentMenu
+        ];
     }
 }

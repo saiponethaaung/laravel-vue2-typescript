@@ -17,6 +17,16 @@ class PersistentSecondMenu extends Model
         'order',
     ];
 
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($secondMenu) {
+            foreach($secondMenu->thirdRelation as $third) {
+                $third->delete();
+            }
+        });
+    }
+
     public function thirdRelation()
     {
         return $this->hasMany('App\Models\PersistentThirdMenu', 'parent_id', 'id');

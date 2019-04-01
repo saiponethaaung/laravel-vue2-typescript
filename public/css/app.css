@@ -11335,15 +11335,15 @@ a:hover {
   height: 40px;
   z-index: 1;
   opacity: 0;
+  color: #aaaaaa;
 }
 
 .blockOption:hover {
-  color: #000;
   opacity: 1;
 }
 
-.blockOption:focus {
-  color: #fff;
+.blockOption.showOptions {
+  opacity: 1;
 }
 
 .blockOption i {
@@ -11361,6 +11361,10 @@ a:hover {
   background: #fff;
   border: 1px solid #aaaaaa;
   border-radius: 5px;
+}
+
+.menuOption:hover {
+  background: #e7e7e780;
 }
 
 .errorAlert {

@@ -2,7 +2,7 @@ import { ChatBlockSection } from "../configuration/interface";
 
 export default class ChatBlockSectionModel {
     private blockSection: ChatBlockSection;
-    private isError: boolean = false;
+    private isError: boolean = true;
     private isOption: boolean = false;
 
     constructor(blockSection: ChatBlockSection) {

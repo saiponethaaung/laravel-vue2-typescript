@@ -22,6 +22,11 @@ export default new Vuex.Store({
             section: -1,
             title: ''
         },
+        updateBotValid: {
+            block: -1,
+            section: -1,
+            valid: true
+        },
         token: localStorage.getItem('access_token'),
         validatingProject: false,
         projectInfo: {},
@@ -100,6 +105,13 @@ export default new Vuex.Store({
                 section: section,
                 block: block,
                 title: title
+            };
+        },
+        updateChatBotValid(state, { section, block, valid }) {
+            state.updateBotValid = {
+                section: section,
+                block: block,
+                valid: valid
             };
         },
         setProjectStatus(state, { status }) {

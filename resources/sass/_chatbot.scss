@@ -100,12 +100,12 @@
     height: 40px;
     z-index: 1;
     opacity: 0;
+    color: #aaaaaa;
     &:hover {
-        color: #000;
         opacity: 1;
     }
-    &:focus {
-        color: #fff;
+    &.showOptions {
+        opacity: 1;
     }
     i {
         font-size: 18px;
@@ -132,6 +132,9 @@
     background: #fff;
     border: 1px solid #aaaaaa;
     border-radius: 5px;
+    &:hover {
+        background: #e7e7e780;
+    }
 }
 
 .errorAlert {

@@ -54707,6 +54707,7 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                                     for (let s in this.blocks[i].sections) {
                                         if (this.blocks[i].sections[s].id == chatBlock.sections[a].id) {
                                             this.blocks[i].sections[s].check = false;
+                                            console.log(this.blocks[i].sections[s].check);
                                         }
                                     }
                                 }
@@ -55256,7 +55257,7 @@ var render = function() {
                                         _vm._s(section.title) +
                                         "\n                    "
                                     ),
-                                    section.check
+                                    !section.check
                                       ? _c("div", { staticClass: "errorAlert" })
                                       : _vm._e()
                                   ]

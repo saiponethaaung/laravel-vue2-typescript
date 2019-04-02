@@ -140,7 +140,6 @@ class ChatBotController extends Controller
                     break;
 
                     case(5):
-                    // $parsed['contents'] = $content['content']['content'];
                     foreach($content['content']['content'] as $content) {
                         if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
                             $parsed['isValid'] = false;
@@ -151,43 +150,32 @@ class ChatBotController extends Controller
                     break;
 
                     case(6):
-                    $parsed['contents'] = $content['content'];
+                    $numOfGallery = 0;
                     foreach($content['content'] as $content) {
                         if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
+                            $parsed['isValid'] = false;
+                            $break = true;
+                        }
+                        $numOfGallery++;
+                    }
+                    if($numOfGallery < 2) {
+                        $parsed['isValid'] = false;
+                    }
+                    break;
+
+                    case(7):
+                    foreach($content['content'] as $content) {
+                        if(empty($content['image'])) {
                             $parsed['isValid'] = false;
                             $break = true;
                         }
                     }
                     break;
 
-                    // if(empty($content['content']['question'])) {
-                    //     $parsed['isValid'] = false;
-                    //     $break = true;
-                    // }
-                    // // $parsed['contents'] = $content['content']->$parsed['content']['question'];
-                    //     break;
-                       
-                        // if($btn = false) {
-                        //     $parsed['isValid'] = false;
-                        //     $break = true;
-                        // }
-                        // break;
-        
-                        // $parsed['isValid'] = $this->validateButton($content['content']['button']);
-        
-                        // if($parsed['isValid'] = false) break;
-
                 }
-                
-                
-                
+                         
                 if($break) break;
             }
-            
-            
-            // if($section->contents[0]->type == 1 && $section->contents[0]->) {
-            //     $parsed['isValid'] = false;
-            // }
 
             $res[] = $parsed;
         }
@@ -237,7 +225,6 @@ class ChatBotController extends Controller
                 break;
 
                 case(5):
-                // $parsed['contents'] = $content['content']['content'];
                 foreach($content['content']['content'] as $content) {
                     if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
                         $parsed['isValid'] = false;
@@ -248,9 +235,22 @@ class ChatBotController extends Controller
                 break;
 
                 case(6):
-                // $parsed['contents'] = $content['content'];
+                $numOfGallery = 0;
                 foreach($content['content'] as $content) {
                     if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
+                        $parsed['isValid'] = false;
+                        $break = true;
+                    }
+                    $numOfGallery++;
+                }
+                if($numOfGallery < 2) {
+                    $parsed['isValid'] = false;
+                }
+                break;
+
+                case(7):
+                foreach($content['content'] as $content) {
+                    if(empty($content['image'])) {
                         $parsed['isValid'] = false;
                         $break = true;
                     }
@@ -258,9 +258,7 @@ class ChatBotController extends Controller
                 break;
 
             }
-            
-            
-            
+   
             if($break) break;
         }
 

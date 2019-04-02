@@ -16,7 +16,7 @@
                         :class="{'selectedBlock': selectedBlock==section.id}"
                     >
                         {{ section.title }}
-                        <div class="errorAlert" v-if="section.check"></div>
+                        <div class="errorAlert" v-if="!section.check"></div>
                     </div>
                     </div>
                 </template>
@@ -280,6 +280,7 @@ export default class SidebarComponent extends Vue {
           this.blocks.push(
             new ChatBlockModel(chatBlock.block, chatBlock.sections)
           );
+
           
           for (let a in chatBlock.sections) {
             if(!chatBlock.sections[a].isValid) {
@@ -288,6 +289,7 @@ export default class SidebarComponent extends Vue {
                   for(let s in this.blocks[i].sections) {
                     if(this.blocks[i].sections[s].id == chatBlock.sections[a].id) {
                       this.blocks[i].sections[s].check = false;
+                      console.log(this.blocks[i].sections[s].check);
                     }
                   }
                 }

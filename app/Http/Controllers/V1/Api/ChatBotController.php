@@ -164,11 +164,10 @@ class ChatBotController extends Controller
                     break;
 
                     case(7):
-                    foreach($content['content'] as $content) {
-                        if(empty($content['image'])) {
-                            $parsed['isValid'] = false;
-                            $break = true;
-                        }
+                    $parsed['content'] = $content['content']['image'];
+                    if(empty($content['content']['image'])) {
+                        $parsed['isValid'] = false;
+                        $break = true;
                     }
                     break;
 
@@ -249,11 +248,10 @@ class ChatBotController extends Controller
                 break;
 
                 case(7):
-                foreach($content['content'] as $content) {
-                    if(empty($content['image'])) {
-                        $parsed['isValid'] = false;
-                        $break = true;
-                    }
+                $parsed['content'] = $content['content']['image'];
+                if(empty($content['content']['image'])) {
+                    $parsed['isValid'] = false;
+                    $break = true;
                 }
                 break;
 

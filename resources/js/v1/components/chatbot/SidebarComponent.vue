@@ -245,9 +245,6 @@ export default class SidebarComponent extends Vue {
   @Watch("$store.state.updateBotValid")
   async updateSectionValid() {
 
-    console.log('console', this.$store.state.updateBotValid.block);
-    console.log('console', this.$store.state.updateBotValid.section);
-    console.log('console', this.$store.state.updateBotValid.valid);
     if (
       this.$store.state.updateBotValid.section == -1 &&
       this.$store.state.updateBotValid.block == -1
@@ -289,7 +286,6 @@ export default class SidebarComponent extends Vue {
                   for(let s in this.blocks[i].sections) {
                     if(this.blocks[i].sections[s].id == chatBlock.sections[a].id) {
                       this.blocks[i].sections[s].check = false;
-                      console.log(this.blocks[i].sections[s].check);
                     }
                   }
                 }
@@ -381,13 +377,9 @@ export default class SidebarComponent extends Vue {
                 "Are you sure you want to delete this block with it's content?"
             )
         ) {
-            // for(let i in this.blocks) {
-            //   for(let s in this.blocks[i].sections) {
-            //     if(this.blocks[i].sections[s].id == id) {
-            //       this.blockId = this.blocks[i].id;
-            //     }
-            //   }
-            // }
+
+            this.selectBlock(index, sIndex);
+
             this.blockId = this.blocks[index].id;
             this.sectionId = this.blocks[index].sections[sIndex].id;
 

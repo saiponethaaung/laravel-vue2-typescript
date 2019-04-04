@@ -61,36 +61,18 @@ export default class GalleryContentModel extends ChatBlockContentModel {
             return true;
         }
 
+        let invalid = 0;
+
         for(let i in this.item) {
             if(!this.item[i].isValid) {
-                let position: any = parseInt(i)+1;
-                switch(parseInt(i)) {
-                    case 0:
-                        position = position+'st';
-                        break;
-                        
-                    case 1:
-                        position = position+'nd';
-                        break;
-                        
-                    case 2:
-                        position = position+'rd';
-                        break;
-                        
-                    default:
-                        position = position+'th';
-                        break;
-                }
-
-                this.warningText = `Chat process on messenger will stop here because ${position} gallery is incomplete!`;
-                return true;
+                invalid++;
             }
                 
         }
 
         console.log('closing');
 
-        return false
+        return invalid>0;
     }
 
     async createGallery() {

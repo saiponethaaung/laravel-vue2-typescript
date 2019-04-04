@@ -94,26 +94,26 @@ export default class ListContentModel extends ChatBlockContentModel {
 
         for(let i in this.item) {
             if(!this.item[i].isValid) {
-                let position: any = parseInt(i)+1;
-                switch(parseInt(i)) {
-                    case 0:
-                        position = position+'st';
-                        break;
+                // let position: any = parseInt(i)+1;
+                // switch(parseInt(i)) {
+                //     case 0:
+                //         position = position+'st';
+                //         break;
                         
-                    case 1:
-                        position = position+'nd';
-                        break;
+                //     case 1:
+                //         position = position+'nd';
+                //         break;
                         
-                    case 2:
-                        position = position+'rd';
-                        break;
+                //     case 2:
+                //         position = position+'rd';
+                //         break;
                         
-                    default:
-                        position = position+'th';
-                        break;
-                }
+                //     default:
+                //         position = position+'th';
+                //         break;
+                // }
 
-                this.warningText = `Chat process on messenger will stop here because ${position} list is incomplete!`;
+                // this.warningText = `Chat process on messenger will stop here because ${position} list is incomplete!`;
                 return true;
             }
                 

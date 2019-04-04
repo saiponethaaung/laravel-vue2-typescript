@@ -12341,22 +12341,22 @@ class ListContentModel extends __WEBPACK_IMPORTED_MODULE_2__ChatBlockContentMode
         }
         for (let i in this.item) {
             if (!this.item[i].isValid) {
-                let position = parseInt(i) + 1;
-                switch (parseInt(i)) {
-                    case 0:
-                        position = position + 'st';
-                        break;
-                    case 1:
-                        position = position + 'nd';
-                        break;
-                    case 2:
-                        position = position + 'rd';
-                        break;
-                    default:
-                        position = position + 'th';
-                        break;
-                }
-                this.warningText = `Chat process on messenger will stop here because ${position} list is incomplete!`;
+                // let position: any = parseInt(i)+1;
+                // switch(parseInt(i)) {
+                //     case 0:
+                //         position = position+'st';
+                //         break;
+                //     case 1:
+                //         position = position+'nd';
+                //         break;
+                //     case 2:
+                //         position = position+'rd';
+                //         break;
+                //     default:
+                //         position = position+'th';
+                //         break;
+                // }
+                // this.warningText = `Chat process on messenger will stop here because ${position} list is incomplete!`;
                 return true;
             }
         }
@@ -12500,29 +12500,14 @@ class GalleryContentModel extends __WEBPACK_IMPORTED_MODULE_1__ChatBlockContentM
         if (this.item.length == 0) {
             return true;
         }
+        let invalid = 0;
         for (let i in this.item) {
             if (!this.item[i].isValid) {
-                let position = parseInt(i) + 1;
-                switch (parseInt(i)) {
-                    case 0:
-                        position = position + 'st';
-                        break;
-                    case 1:
-                        position = position + 'nd';
-                        break;
-                    case 2:
-                        position = position + 'rd';
-                        break;
-                    default:
-                        position = position + 'th';
-                        break;
-                }
-                this.warningText = `Chat process on messenger will stop here because ${position} gallery is incomplete!`;
-                return true;
+                invalid++;
             }
         }
         console.log('closing');
-        return false;
+        return invalid > 0;
     }
     createGallery() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -13836,13 +13821,17 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
         return this.content.title;
     }
     set title(title) {
-        this.content.title = title;
+        if (this.content.title != title) {
+            this.content.title = title;
+        }
     }
     get sub() {
         return this.content.sub;
     }
     set sub(sub) {
-        this.content.sub = sub;
+        if (this.content.sub != sub) {
+            this.content.sub = sub;
+        }
     }
     get url() {
         return this.content.url;
@@ -13911,7 +13900,7 @@ class ListItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
         this.buttonEdit = status;
     }
     get isValid() {
-        if (this.title === '' || (this.sub === '' && this.image === '' && this.button == null)) {
+        if (this.content.title === '' || (this.content.sub === '' && this.content.image === '' && this.content.button == null)) {
             return false;
         }
         return true;
@@ -14094,13 +14083,17 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
         return this.content.title;
     }
     set title(title) {
-        this.content.title = title;
+        if (this.content.title != title) {
+            this.content.title = title;
+        }
     }
     get sub() {
         return this.content.sub;
     }
     set sub(sub) {
-        this.content.sub = sub;
+        if (this.content.sub != sub) {
+            this.content.sub = sub;
+        }
     }
     get url() {
         return this.content.url;
@@ -14133,7 +14126,7 @@ class GalleryItemModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandl
         this.uploading = status;
     }
     get isValid() {
-        if (this.title === '' || (this.sub === '' && this.image === '' && this.buttons.length == 0)) {
+        if (this.title === '' || (this.sub === '' && this.content.image === '' && this.content.button.length == 0)) {
             return false;
         }
         return true;
@@ -36183,14 +36176,6 @@ var render = function() {
                 }
               }
             }),
-            _vm._v(" "),
-            _vm.listItem.canShowError &&
-            _vm.listItem.title !== "" &&
-            (_vm.listItem.sub === "" &&
-              _vm.listItem.image === "" &&
-              _vm.listItem.buttons.length == 0)
-              ? _c("div", { staticClass: "reddot" })
-              : _vm._e(),
             _vm._v(" "),
             _c("span", { staticClass: "limitGalleryTitle limitSub" }, [
               _vm._v(_vm._s(_vm.listItem.textLimitTitle))

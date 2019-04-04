@@ -32,7 +32,9 @@ export default class GalleryItemModel extends AjaxErrorHandler {
     }
 
     set title(title: string) {
-        this.content.title = title;
+        if(this.content.title!=title) {
+            this.content.title = title;
+        }
     }
 
     get sub(): string {
@@ -40,7 +42,9 @@ export default class GalleryItemModel extends AjaxErrorHandler {
     }
 
     set sub(sub: string) {
-        this.content.sub = sub;
+        if(this.content.sub!=sub) {
+            this.content.sub = sub;
+        }
     }
 
     get url(): string {
@@ -84,7 +88,7 @@ export default class GalleryItemModel extends AjaxErrorHandler {
     }
 
     get isValid() {
-        if(this.title==='' || (this.sub==='' && this.image==='' && this.buttons.length==0)) {
+        if(this.title==='' || (this.sub==='' && this.content.image==='' && this.content.button.length==0)) {
             return false;
         }
 

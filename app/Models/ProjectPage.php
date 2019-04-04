@@ -15,4 +15,9 @@ class ProjectPage extends Model
         'publish',
         'token'
     ];
+
+    public function projectRelation()
+    {
+        return $this->hasOne('App\Models\Project', 'id', 'project_id');
+    }
 }

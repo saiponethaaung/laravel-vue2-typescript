@@ -312,6 +312,28 @@ Route::group(['middleware' => ['auth:api', 'verifyUserSession']], function() {
                 Route::delete('/invite/{inviteId}', 'V1\\Api\\ProjectController@cancelInvite')->name('chatbot.project.member.invite.cancel');
                 Route::delete('/{projectUserId}', 'V1\\Api\\ProjectController@deleteMember')->name('chatbot.project.member.delete');
             });
+
+            Route::group(['prefix' => 'persistent-menu'], function() {
+                Route::get('/', 'V1\\Api\\PersistentMenuController@loadMenu');
+                Route::post('/', 'V1\\Api\\PersistentMenuController@createMenu');
+                
+                Route::put('/{firstMenu}', 'V1\\Api\\PersistentMenuController@updateFirstMenu');
+                Route::delete('/{firstMenu}', 'V1\\Api\\PersistentMenuController@deleteFirstMenu');
+                Route::post('/{firstMenu}', 'V1\\Api\\PersistentMenuController@createSecondMenu');
+                Route::put('/{firstMenu}/block', 'V1\\Api\\PersistentMenuController@updateFirstMenuBlock');
+                Route::delete('/{firstMenu}/block', 'V1\\Api\\PersistentMenuController@deleteFirstMenuBlock');
+
+                Route::put('/{firstMenu}/{secondMenu}', 'V1\\Api\\PersistentMenuController@updateSecondMenu');
+                Route::delete('/{firstMenu}/{secondMenu}', 'V1\\Api\\PersistentMenuController@deleteSecondMenu');
+                Route::post('/{firstMenu}/{secondMenu}', 'V1\\Api\\PersistentMenuController@createThirdMenu');
+                Route::put('/{firstMenu}/{secondMenu}/block', 'V1\\Api\\PersistentMenuController@updateSecondMenuBlock');
+                Route::delete('/{firstMenu}/{secondMenu}/block', 'V1\\Api\\PersistentMenuController@deleteSecondMenuBlock');
+
+                Route::put('/{firstMenu}/{secondMenu}/{thirdMenu}', 'V1\\Api\\PersistentMenuController@updateThirdMenu');
+                Route::delete('/{firstMenu}/{secondMenu}/{thirdMenu}', 'V1\\Api\\PersistentMenuController@deleteThirdMenu');
+                Route::put('/{firstMenu}/{secondMenu}/{thirdMenu}/block', 'V1\\Api\\PersistentMenuController@updateThirdMenuBlock');
+                Route::delete('/{firstMenu}/{secondMenu}/{thirdMenu}/block', 'V1\\Api\\PersistentMenuController@deleteThirdMenuBlock');
+            });
         });
     });
 });

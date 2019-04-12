@@ -48,7 +48,7 @@ class VerifyUserSession
         }
 
         if(
-            $session->ip !== $_SERVER['REMOTE_ADDR'] ||
+            // $session->ip !== $_SERVER['REMOTE_ADDR'] ||
             $session->browser !== Agent::browser() ||
             $session->os !== Agent::platform()
         ) {

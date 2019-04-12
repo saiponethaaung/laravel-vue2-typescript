@@ -11159,7 +11159,7 @@ a:hover {
   background: #ff0000;
   border-radius: 50%;
   position: absolute;
-  margin-left: 50px;
+  right: 5px;
 }
 
 .addProject {

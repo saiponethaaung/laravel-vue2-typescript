@@ -58456,7 +58456,24 @@ var render = function() {
       _c("div", { staticClass: "navUser" }, [
         _c("span", { staticClass: "userIcon" }),
         _vm._v(" "),
-        _c("span", [_vm._v(_vm._s(_vm.$store.state.user.name))])
+        _c("span", [_vm._v(_vm._s(_vm.$store.state.user.name))]),
+        _vm._v(" "),
+        _c("ul", [
+          _c("li", [
+            _c(
+              "a",
+              {
+                attrs: { href: "javascript:void(0);" },
+                on: {
+                  click: function($event) {
+                    _vm.$store.commit("logout")
+                  }
+                }
+              },
+              [_vm._v("\n                        Logout\n                    ")]
+            )
+          ])
+        ])
       ])
     ]),
     _vm._v(" "),

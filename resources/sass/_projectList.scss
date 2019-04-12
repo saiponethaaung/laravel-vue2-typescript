@@ -18,6 +18,33 @@
 .navUser {
     float: right;
     cursor: pointer;
+    position: relative;
+    ul {
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        top: 100%;
+        margin: 0;
+        padding: 0;
+        background: #fff;
+        border-radius: 5px;
+        padding: 5px 18px;
+        list-style: none;
+        border: 1px solid #e2e2e2;
+        margin-top: 6px;
+        width: 100%;
+        li {
+            a {
+                color: #aaa;
+            }
+        }
+    }
+    &:hover {
+        ul {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
 }
 
 .userIcon {

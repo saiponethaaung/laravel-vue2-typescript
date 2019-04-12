@@ -20,6 +20,13 @@
             <div class="navUser">
                 <span class="userIcon"></span>
                 <span>{{ $store.state.user.name }}</span>
+                <ul>
+                    <li>
+                        <a href="javascript:void(0);" @click="$store.commit('logout')">
+                            Logout
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="bodyList float-left">

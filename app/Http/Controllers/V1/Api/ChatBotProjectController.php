@@ -138,8 +138,10 @@ class ChatBotProjectController extends Controller
             // if it's button payload
             if($payload) {
                 $py = explode('-', $input['entry'][0]['messaging'][0]['postback']['payload']);
-
-                if($py[0]!=='persistentMenu') {
+                
+                if($py[0]=='get_started') {
+                    $response = $this->getWelcome();
+                } else if($py[0]!=='persistentMenu') {
                     if(isset($py[1])) {
                         $button = ChatButton::with('blocks')->find($py[1]);
 

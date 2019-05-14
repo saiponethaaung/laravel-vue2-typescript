@@ -278,6 +278,10 @@ class ProjectController extends Controller
         //Begin transaction
         DB::beginTransaction();
         try {
+            $addGetStarted = $fbc->addGetStarted();
+            if(!$addGetStarted['status']) {
+                throw(new \Exception("Failed to add get started!"));
+            }
             // Create new project page if project page didn't exists
             if(empty($projectPage)) {
                 // Create new project page
@@ -874,6 +878,15 @@ class ProjectController extends Controller
                     'mesg' => 'Invalid page id!'
                 ];
             }
+        }
+
+        $addGetStarted = $fbc->addGetStarted();
+        if(!$addGetStarted['status']) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => $addGetStarted['mesg']
+            ];
         }
 
         $deletePersistentMenu = $fbc->deletePersistentMenu($projectPage['page_id']);

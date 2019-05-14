@@ -479,6 +479,50 @@ class FacebookController extends Controller
         ];
     }
 
+    public function addGetStarted()
+    {
+        $res = [];
+
+        try {
+            $me = $this->fb->post(
+                '/me/messenger_profile', [
+                    "get_started" => [
+                        "payload" => "get_started"
+                    ]
+                ]
+            )->getGraphNode()->asArray();
+            $res = $me;
+        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Graph returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            return [
+                'status' => false,
+                'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Exception $e) {
+            return [
+                'status' => false,
+                'mesg' => $e->getMesesage()
+            ];
+        }
+
+        // if(!$res['success']) {
+        //     return [
+        //         'status' => false,
+        //         'mesg' => 'Failed to delete persistent menu!',
+        //         'debug' => $res
+        //     ];
+        // }
+        
+        return [
+            'status' => true,
+            'mesg' => 'Success'
+        ];
+    }
+
     public function getMessengerProfile($psid)
     {
         $graphObject = null;

@@ -18,7 +18,9 @@
                 <img src="images/icons/Pixybots_Logo.png" class="navIcon"/>
             </figure>
             <div class="navUser">
-                <span class="userIcon"></span>
+                <span class="userIcon">
+                    <img :src="$store.state.user.image ? $store.state.user.image : '/images/icons/default-user.jpg'"/>
+                </span>
                 <span>{{ $store.state.user.name }}</span>
                 <ul>
                     <li>

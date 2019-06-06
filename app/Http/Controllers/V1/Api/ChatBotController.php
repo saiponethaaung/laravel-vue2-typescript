@@ -158,7 +158,7 @@ class ChatBotController extends Controller
                         }
                         $numOfGallery++;
                     }
-                    if($numOfGallery < 2) {
+                    if($numOfGallery < 1) {
                         $parsed['isValid'] = false;
                     }
                     break;
@@ -198,62 +198,62 @@ class ChatBotController extends Controller
             $button = true;
             switch($content['type']) {
                 case(1):
-                $button = $this->validateButton($content['content']['button']);
-                if(empty($content['content']['text']) || !$button) {
-                    $parsed['isValid'] = false;
-                    $break = true;
-                }
-                break;
+                    $button = $this->validateButton($content['content']['button']);
+                    if(empty($content['content']['text']) || !$button) {
+                        $parsed['isValid'] = false;
+                        $break = true;
+                    }
+                    break;
 
                 case(3):
-                foreach($content['content'] as $content) {
-                    if(empty($content['title'])) {
-                        $parsed['isValid'] = false;
-                        $break = true;
+                    foreach($content['content'] as $content) {
+                        if(empty($content['title'])) {
+                            $parsed['isValid'] = false;
+                            $break = true;
+                        }
                     }
-                }
-                break;
+                    break;
                 
                 case(4):
-                foreach($content['content'] as $content) {
-                    if(empty($content['question']) || empty($content['attribute']['title'])) {
-                        $parsed['isValid'] = false;
-                        $break = true;
+                    foreach($content['content'] as $content) {
+                        if(empty($content['question']) || empty($content['attribute']['title'])) {
+                            $parsed['isValid'] = false;
+                            $break = true;
+                        }
                     }
-                }
-                break;
+                    break;
 
                 case(5):
-                foreach($content['content']['content'] as $content) {
-                    if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
-                        $parsed['isValid'] = false;
-                        $break = true;
+                    foreach($content['content']['content'] as $content) {
+                        if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
+                            $parsed['isValid'] = false;
+                            $break = true;
+                        }
                     }
-                }
-                
+                    
                 break;
 
                 case(6):
-                $numOfGallery = 0;
-                foreach($content['content'] as $content) {
-                    if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
+                    $numOfGallery = 0;
+                    foreach($content['content'] as $content) {
+                        if(empty($content['title']) || (empty($content['sub']) && empty($content['image']) && empty($content['button']))) {
+                            $parsed['isValid'] = false;
+                            $break = true;
+                        }
+                        $numOfGallery++;
+                    }
+                    if($numOfGallery < 1) {
+                        $parsed['isValid'] = false;
+                    }
+                    break;
+
+                case(7):
+                    $parsed['content'] = $content['content']['image'];
+                    if(empty($content['content']['image'])) {
                         $parsed['isValid'] = false;
                         $break = true;
                     }
-                    $numOfGallery++;
-                }
-                if($numOfGallery < 2) {
-                    $parsed['isValid'] = false;
-                }
-                break;
-
-                case(7):
-                $parsed['content'] = $content['content']['image'];
-                if(empty($content['content']['image'])) {
-                    $parsed['isValid'] = false;
-                    $break = true;
-                }
-                break;
+                    break;
 
             }
    

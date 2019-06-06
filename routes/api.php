@@ -34,6 +34,11 @@ Route::group(['middleware' => ['auth:api', 'verifyUserSession']], function() {
     Route::group(['prefix' => 'v1'], function() {
         Route::group(['prefix' => 'user'], function() {
             Route::get('/', 'V1\\Api\\UserController@getProfile');
+            Route::post('/', 'V1\\Api\\UserController@updateProfile');
+            Route::post('validate-otp', 'V1\\Api\\UserController@validateOtp');
+            Route::post('update-password', 'V1\\Api\\UserController@updatePassword');
+            Route::post('upload-image', 'V1\\Api\\UserController@uploadImage');
+            Route::post('get-qrcode', 'V1\\Api\\UserController@getQrCode');
             Route::post('facebook-linked', 'V1\\Api\\UserController@connectFacebook');
         });
 

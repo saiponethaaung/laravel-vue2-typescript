@@ -30,6 +30,7 @@
 .aiKeywordBlock,
 .aiC-group-confirmDelCon .aiC-group-delHeadingCon .aiC-group-delClose,
 .responseDelete,
+.profileImageCon label,
 .builderSectionInfo,
 .adminHeadingCon,
 .delPopActionFooter .delPopActionCon,
@@ -95,7 +96,8 @@
 .aiC-groupCon .aiC-groupCon-child .aiC-groupCon-optionButton,
 .aiKeywordBlock,
 .aiC-group-confirmDelCon .aiC-group-delHeadingCon .aiC-group-delClose,
-.responseDelete {
+.responseDelete,
+.profileImageCon label {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -137,7 +139,8 @@
 .popContainer form label select,
 .popContainer form label input,
 .adminInviteForm,
-.dayPicker ul {
+.dayPicker ul,
+.profileInput input {
   border: 1px solid #ebebeb;
   border-radius: 5px;
 }
@@ -15952,6 +15955,12 @@ input.required::placeholder {
   background-size: cover;
   background-position: center center;
   cursor: pointer;
+  overflow: hidden;
+}
+
+.userIcon img {
+  width: 100%;
+  height: 100%;
 }
 
 .bodyList {
@@ -16635,6 +16644,83 @@ input.required::placeholder {
 
 .nonMemberFormNote {
   font-size: 12px;
+}
+
+.profileImageCon {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border: 1px solid #ebebeb;
+  border-radius: 100%;
+}
+
+.profileImageCon img {
+  width: 100%;
+  height: 100%;
+}
+
+.profileImageCon label {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  visibility: hidden;
+  cursor: pointer;
+}
+
+.profileImageCon label input {
+  display: none;
+}
+
+.profileImageCon label .material-icons {
+  font-size: 30px;
+  color: #fff;
+}
+
+.profileImageCon:hover label {
+  visibility: visible;
+}
+
+.profileInput input {
+  height: 36px;
+  padding: 10px;
+  font-size: 13px;
+  width: 300px;
+}
+
+.profileInputCon {
+  margin-bottom: 15px;
+}
+
+.btnTypeOne {
+  height: 36px;
+  display: inline-block;
+  background: #72bb53;
+  color: #fff;
+  border: 1px solid #72bb53;
+  border-radius: 5px;
+  line-height: 36px;
+  cursor: pointer;
+  padding: 0 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btnTypeTwo {
+  height: 36px;
+  background: transparent;
+  color: #72bb53;
+  border: 1px solid #72bb53;
+  border-radius: 5px;
+  line-height: 36px;
+  cursor: pointer;
+  padding: 0 30px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
 }
 
 @font-face {

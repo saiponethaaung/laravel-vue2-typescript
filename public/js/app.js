@@ -58454,7 +58454,15 @@ var render = function() {
       _vm._m(0),
       _vm._v(" "),
       _c("div", { staticClass: "navUser" }, [
-        _c("span", { staticClass: "userIcon" }),
+        _c("span", { staticClass: "userIcon" }, [
+          _c("img", {
+            attrs: {
+              src: _vm.$store.state.user.image
+                ? _vm.$store.state.user.image
+                : "/images/icons/default-user.jpg"
+            }
+          })
+        ]),
         _vm._v(" "),
         _c("span", [_vm._v(_vm._s(_vm.$store.state.user.name))]),
         _vm._v(" "),
@@ -62548,9 +62556,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
+        this.edit = false;
         this.profile = null;
         this.staticProfile = null;
+        this.qrpassword = '';
+        this.otpCode = '';
+        this.newpassword = '';
+        this.showQrCode = false;
         this.loading = true;
+        this.changePassword = false;
+        this.validatingPassword = false;
+        this.validatingOTP = false;
+        this.qrpassvalid = false;
+        this.otppassvalid = false;
+        this.updatingPassword = false;
+        this.updating = false;
+        this.qrCodeImage = '';
+        this.uploading = false;
     }
     loadProfile() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -62559,8 +62581,8 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
                 url: '/api/v1/user',
                 method: 'get'
             }).then(res => {
-                this.profile = res.data.data;
-                this.staticProfile = JSON.parse(JSON.stringify(res.data.data));
+                this.profile = res.data.data.profile;
+                this.staticProfile = JSON.parse(JSON.stringify(res.data.data.profile));
             }).catch(err => {
                 if (err.response) {
                     alert(err.response.data.mesg || "Failed to load user profile!");
@@ -62568,6 +62590,122 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
             });
             this.loading = false;
         });
+    }
+    updateProfile() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.updating = true;
+            let data = new FormData();
+            data.append('name', this.profile.name);
+            data.append('email', this.profile.email);
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: '/api/v1/user',
+                data: data,
+                method: 'post'
+            }).then(res => {
+                this.staticProfile = JSON.parse(JSON.stringify(this.profile));
+                this.edit = false;
+                this.changePassword = false;
+            }).catch(err => {
+                if (err.response) {
+                    alert(err.response.data.mesg || "Failed to update user profile!");
+                }
+            });
+            this.updating = false;
+        });
+    }
+    validatePassword() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.qrpassword == '') {
+                alert("Password is required!");
+                return;
+            }
+            this.validatingPassword = true;
+            let data = new FormData();
+            data.append('password', this.qrpassword);
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: '/api/v1/user/get-qrcode',
+                data: data,
+                method: 'post'
+            }).then(res => {
+                this.qrpassvalid = true;
+                this.qrCodeImage = res.data.data.url;
+            }).catch(err => {
+                if (err.response) {
+                    alert(err.response.data.mesg || 'Failed to validate password!');
+                }
+            });
+            this.validatingPassword = false;
+        });
+    }
+    validateOtp() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.otpCode == '') {
+                alert("OTP is required!");
+                return;
+            }
+            this.validatingOTP = true;
+            let data = new FormData();
+            data.append('otp', this.otpCode);
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: '/api/v1/user/validate-otp',
+                data: data,
+                method: 'post'
+            }).then(res => {
+                this.otppassvalid = true;
+            }).catch(err => {
+                if (err.response) {
+                    alert(err.response.data.mesg || 'Failed to validate otp!');
+                }
+            });
+            this.validatingOTP = false;
+        });
+    }
+    updatePassword() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.newpassword == '') {
+                alert("Password is required!");
+                return;
+            }
+            this.updatingPassword = true;
+            let data = new FormData();
+            data.append('password', this.newpassword);
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: '/api/v1/user/update-password',
+                data: data,
+                method: 'post'
+            }).then(res => {
+                this.changePassword = false;
+                this.updatingPassword = false;
+                this.otppassvalid = false;
+            }).catch(err => {
+                if (err.response) {
+                    alert(err.response.data.mesg || 'Failed to update otp!');
+                }
+            });
+            this.updatingPassword = false;
+        });
+    }
+    uploadProfileImage(e) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let data = new FormData();
+            data.append('image', e.target.files[0]);
+            __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: '/api/v1/user/upload-image',
+                data: data,
+                method: 'post'
+            }).then(res => {
+                this.profile.image = res.data.data.image;
+                this.staticProfile.image = res.data.data.image;
+            }).catch(err => {
+                if (err.response) {
+                    alert(err.response.data.mesg || 'Failed to upload user profile image!');
+                }
+            });
+        });
+    }
+    resetData() {
+        this.profile = JSON.parse(JSON.stringify(this.staticProfile));
+        this.edit = false;
     }
     mounted() {
         this.loadProfile();
@@ -62598,19 +62736,43 @@ var render = function() {
         : [
             _c("div", [
               _c("div", [
-                _c("figure", [
-                  _c("img", {
-                    attrs: { src: "/images/icons/default-user.jpg" }
-                  })
-                ])
+                _c(
+                  "figure",
+                  { staticClass: "profileImageCon" },
+                  [
+                    _c("img", {
+                      attrs: {
+                        src: _vm.profile.image
+                          ? _vm.profile.image
+                          : "/images/icons/default-user.jpg"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.edit && !_vm.updating && !_vm.uploading
+                      ? [
+                          _c("label", [
+                            _c("i", { staticClass: "material-icons" }, [
+                              _vm._v("camera_alt")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              attrs: { type: "file" },
+                              on: { change: _vm.uploadProfileImage }
+                            })
+                          ])
+                        ]
+                      : _vm._e()
+                  ],
+                  2
+                )
               ]),
               _vm._v(" "),
-              _c("div", [
+              _c("div", { staticClass: "profileInputCon" }, [
                 _c("label", [
                   _vm._v("\n                    Name:\n                ")
                 ]),
                 _vm._v(" "),
-                _c("div", [
+                _c("div", { staticClass: "profileInput" }, [
                   _c("input", {
                     directives: [
                       {
@@ -62620,7 +62782,10 @@ var render = function() {
                         expression: "profile.name"
                       }
                     ],
-                    attrs: { type: "text" },
+                    attrs: {
+                      type: "text",
+                      disabled: !_vm.edit || _vm.updating
+                    },
                     domProps: { value: _vm.profile.name },
                     on: {
                       input: function($event) {
@@ -62634,12 +62799,12 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", [
+              _c("div", { staticClass: "profileInputCon" }, [
                 _c("label", [
                   _vm._v("\n                    Email:\n                ")
                 ]),
                 _vm._v(" "),
-                _c("div", [
+                _c("div", { staticClass: "profileInput" }, [
                   _c("input", {
                     directives: [
                       {
@@ -62649,7 +62814,10 @@ var render = function() {
                         expression: "profile.email"
                       }
                     ],
-                    attrs: { type: "text" },
+                    attrs: {
+                      type: "text",
+                      disabled: !_vm.edit || _vm.updating
+                    },
                     domProps: { value: _vm.profile.email },
                     on: {
                       input: function($event) {
@@ -62663,37 +62831,363 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(0),
+              _c(
+                "div",
+                [
+                  _vm.edit
+                    ? [
+                        _vm.updating
+                          ? [_c("div", [_vm._v("Updating...")])]
+                          : [
+                              _c("div", { staticClass: "profileInputCon" }, [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btnTypeTwo",
+                                    attrs: { type: "button" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.resetData()
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                Cancel\n                            "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btnTypeOne",
+                                    attrs: { type: "button" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.updateProfile()
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                Update\n                            "
+                                    )
+                                  ]
+                                )
+                              ])
+                            ]
+                      ]
+                    : [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btnTypeOne",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.edit = true
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                        Edit Profile\n                    "
+                            )
+                          ]
+                        )
+                      ]
+                ],
+                2
+              ),
               _vm._v(" "),
-              _vm._m(1)
+              _vm.edit && !_vm.updating
+                ? _c(
+                    "div",
+                    [
+                      _vm.changePassword
+                        ? [
+                            _vm.otppassvalid
+                              ? [
+                                  _c(
+                                    "div",
+                                    { staticClass: "profileInputCon" },
+                                    [
+                                      _c("label", [
+                                        _vm._v(
+                                          "\n                                Enter new password:\n                            "
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _vm.updatingPassword
+                                        ? [
+                                            _c("div", [
+                                              _vm._v("Updating password...")
+                                            ])
+                                          ]
+                                        : [
+                                            _c(
+                                              "div",
+                                              { staticClass: "profileInput" },
+                                              [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value: _vm.newpassword,
+                                                      expression: "newpassword"
+                                                    }
+                                                  ],
+                                                  attrs: {
+                                                    type: "password",
+                                                    placeholder: "New Password"
+                                                  },
+                                                  domProps: {
+                                                    value: _vm.newpassword
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.newpassword =
+                                                        $event.target.value
+                                                    }
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          ]
+                                    ],
+                                    2
+                                  ),
+                                  _vm._v(" "),
+                                  !_vm.updatingPassword
+                                    ? [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass: "btnTypeOne",
+                                            attrs: { type: "button" },
+                                            on: { click: _vm.updatePassword }
+                                          },
+                                          [_vm._v("Update Password")]
+                                        )
+                                      ]
+                                    : _vm._e()
+                                ]
+                              : [
+                                  _c(
+                                    "div",
+                                    { staticClass: "profileInputCon" },
+                                    [
+                                      _c("label", [
+                                        _vm._v(
+                                          "\n                                Enter otp code:\n                            "
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _vm.validatingOTP
+                                        ? [
+                                            _c("div", [
+                                              _vm._v("Validating otp...")
+                                            ])
+                                          ]
+                                        : [
+                                            _c(
+                                              "div",
+                                              { staticClass: "profileInput" },
+                                              [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value: _vm.otpCode,
+                                                      expression: "otpCode"
+                                                    }
+                                                  ],
+                                                  attrs: {
+                                                    type: "password",
+                                                    placeholder: "OTP Code"
+                                                  },
+                                                  domProps: {
+                                                    value: _vm.otpCode
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.otpCode =
+                                                        $event.target.value
+                                                    }
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          ]
+                                    ],
+                                    2
+                                  ),
+                                  _vm._v(" "),
+                                  !_vm.validatingOTP
+                                    ? [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass: "btnTypeOne",
+                                            attrs: { type: "button" },
+                                            on: { click: _vm.validateOtp }
+                                          },
+                                          [_vm._v("Submit")]
+                                        )
+                                      ]
+                                    : _vm._e()
+                                ]
+                          ]
+                        : [
+                            _c("div", { staticClass: "profileInputCon" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btnTypeOne",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.changePassword = true
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            Change Password\n                        "
+                                  )
+                                ]
+                              )
+                            ])
+                          ]
+                    ],
+                    2
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c(
+                "div",
+                [
+                  _vm.qrpassvalid
+                    ? [_c("img", { attrs: { src: _vm.qrCodeImage } })]
+                    : [
+                        _vm.showQrCode
+                          ? [
+                              _c(
+                                "div",
+                                { staticClass: "profileInputCon" },
+                                [
+                                  _c("label", [
+                                    _vm._v(
+                                      "\n                                Enter password to see qr code:\n                            "
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm.validatingPassword
+                                    ? [
+                                        _c("div", [
+                                          _vm._v("Validating password...")
+                                        ])
+                                      ]
+                                    : [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "profileInput profileInputCon"
+                                          },
+                                          [
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.qrpassword,
+                                                  expression: "qrpassword"
+                                                }
+                                              ],
+                                              attrs: {
+                                                type: "password",
+                                                placeholder: "Password..."
+                                              },
+                                              domProps: {
+                                                value: _vm.qrpassword
+                                              },
+                                              on: {
+                                                input: function($event) {
+                                                  if ($event.target.composing) {
+                                                    return
+                                                  }
+                                                  _vm.qrpassword =
+                                                    $event.target.value
+                                                }
+                                              }
+                                            })
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass: "btnTypeOne",
+                                            attrs: { type: "button" },
+                                            on: {
+                                              click: function($event) {
+                                                _vm.validatePassword()
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("Submit")]
+                                        )
+                                      ]
+                                ],
+                                2
+                              )
+                            ]
+                          : [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btnTypeOne",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.showQrCode = true
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            Show QR Code\n                        "
+                                  )
+                                ]
+                              )
+                            ]
+                      ]
+                ],
+                2
+              )
             ])
           ]
     ],
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("button", [
-        _vm._v("\n                    Show QR Code\n                ")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("button", [
-        _vm._v("\n                    Change Password\n                ")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

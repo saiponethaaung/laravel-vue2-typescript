@@ -7,7 +7,7 @@
                     <div class="chatInfoPanel">
                         <div class="chatHisCon" v-on:scroll="scrollCallback()">
                             <div class="chatHisRoot" ref="chatBox">
-                                <template>Loading...</template>
+                                <template v-if="prevLoading">Loading...</template>
                                 <template v-for="(mesg, index) in mesgList">
                                     <div v-if="mesg.contentType!==2 && mesg.contentType!==3"
                                             :key="index">
@@ -25,7 +25,7 @@
                                                 v-if="!mesg.isSend || (mesg.isLive && mesg.isSend)"
                                             >
                                                 <img
-                                                    :src="mesg.isSend ? '/images/sample/logo.png' : $store.state.inboxList[$store.state.selectedInbox].profile_pic"
+                                                    :src="mesg.isSend ? mesg.image ? mesg.image : '/images/sample/logo.png' : $store.state.inboxList[$store.state.selectedInbox].profile_pic"
                                                 >
                                             </figure>
                                             <div class="chatContent">

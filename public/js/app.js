@@ -56782,7 +56782,9 @@ var render = function() {
                                 "div",
                                 { ref: "chatBox", staticClass: "chatHisRoot" },
                                 [
-                                  [_vm._v("Loading...")],
+                                  _vm.prevLoading
+                                    ? [_vm._v("Loading...")]
+                                    : _vm._e(),
                                   _vm._v(" "),
                                   _vm._l(_vm.mesgList, function(mesg, index) {
                                     return [
@@ -56831,7 +56833,9 @@ var render = function() {
                                                           _c("img", {
                                                             attrs: {
                                                               src: mesg.isSend
-                                                                ? "/images/sample/logo.png"
+                                                                ? mesg.image
+                                                                  ? mesg.image
+                                                                  : "/images/sample/logo.png"
                                                                 : _vm.$store
                                                                     .state
                                                                     .inboxList[

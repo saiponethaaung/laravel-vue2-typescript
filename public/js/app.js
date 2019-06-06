@@ -62527,14 +62527,51 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
 
 let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.profile = null;
+        this.staticProfile = null;
+        this.loading = true;
+    }
+    loadProfile() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.loading = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: '/api/v1/user',
+                method: 'get'
+            }).then(res => {
+                this.profile = res.data.data;
+                this.staticProfile = JSON.parse(JSON.stringify(res.data.data));
+            }).catch(err => {
+                if (err.response) {
+                    alert(err.response.data.mesg || "Failed to load user profile!");
+                }
+            });
+            this.loading = false;
+        });
+    }
+    mounted() {
+        this.loadProfile();
+    }
 };
 ProfileComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -62550,9 +62587,113 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    Profile Component\n")])
+  return _c(
+    "div",
+    { staticClass: "inheritHFW ovAuto pageListRootCon" },
+    [
+      _c("h5", [_vm._v("Profile")]),
+      _vm._v(" "),
+      _vm.loading
+        ? [_vm._v("\n        Loading...\n    ")]
+        : [
+            _c("div", [
+              _c("div", [
+                _c("figure", [
+                  _c("img", {
+                    attrs: { src: "/images/icons/default-user.jpg" }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("label", [
+                  _vm._v("\n                    Name:\n                ")
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.profile.name,
+                        expression: "profile.name"
+                      }
+                    ],
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.profile.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.profile, "name", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("label", [
+                  _vm._v("\n                    Email:\n                ")
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.profile.email,
+                        expression: "profile.email"
+                      }
+                    ],
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.profile.email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.profile, "email", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ]
+    ],
+    2
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("button", [
+        _vm._v("\n                    Show QR Code\n                ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("button", [
+        _vm._v("\n                    Change Password\n                ")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

@@ -308,8 +308,6 @@ class ProjectController extends Controller
                     $cv->save();
                 }
             }
-
-            $this->updatePersistentMenu($request->attributes->get('project')->id);
         } catch (\Exception $e) {
             // Rollback and send error
             DB::rollback();
@@ -342,6 +340,7 @@ class ProjectController extends Controller
             $projectPage->page_icon = $pageInfo['data']['picture']['url'];
             $projectPage->publish = 0;
             $projectPage->save();
+            $this->updatePersistentMenu($request->attributes->get('project')->id);
         } catch(\Exception $e) {
             // Rollback and send error on failed
             DB::rollback();

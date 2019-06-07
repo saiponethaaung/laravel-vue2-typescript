@@ -62580,6 +62580,7 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
                             method: 'post',
                         }).then(res => {
                             this.$store.state.user.facebook_connected = false;
+                            window.location.reaload();
                         });
                     }));
                 }, 30);
@@ -62596,7 +62597,9 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
             }).then(res => {
                 this.profile = res.data.data.profile;
                 this.staticProfile = JSON.parse(JSON.stringify(res.data.data.profile));
-                window.location.reload();
+                setTimeout(() => {
+                    FB.XFBML.parse();
+                }, 30);
             }).catch(err => {
                 if (err.response) {
                     alert(err.response.data.mesg || "Failed to load user profile!");

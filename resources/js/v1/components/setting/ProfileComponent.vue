@@ -190,6 +190,7 @@ export default class ProfileComponent extends Vue {
                         method: 'post',
                     }).then(res => {
                         this.$store.state.user.facebook_connected = false;
+                        window.location.reaload();
                     });
                 });
             }, 30);
@@ -206,7 +207,9 @@ export default class ProfileComponent extends Vue {
         }).then(res => {
             this.profile = res.data.data.profile;
             this.staticProfile = JSON.parse(JSON.stringify(res.data.data.profile));
-            window.location.reload();
+            setTimeout(() => {
+                FB.XFBML.parse();
+            }, 30);
         }).catch(err => {
             if(err.response) {
                 alert(err.response.data.mesg || "Failed to load user profile!");

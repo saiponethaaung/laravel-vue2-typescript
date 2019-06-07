@@ -133,36 +133,36 @@ class ProjectController extends Controller
 
         if(is_null($project->project->page)==false) {
             // @codeCoverageIgnoreStart
-            // $fbc = new FacebookController($project->project->page->token);
-            // $pageInfo = $fbc->expire();
+            $fbc = new FacebookController($project->project->page->token);
+            $pageInfo = $fbc->expire();
         
-            // // Response error if page check response error
-            // if($pageInfo['status']===false && $pageInfo['fbCode']!==190) {
-            //     return response()->json([
-            //         'status' => false,
-            //         'code' => 422,
-            //         'mesg' => $pageInfo['mesg'],
-            //         'reAuthenticate' => false
-            //     ], 422);
-            // }
+            // Response error if page check response error
+            if($pageInfo['status']===false && $pageInfo['fbCode']!==190) {
+                return response()->json([
+                    'status' => false,
+                    'code' => 422,
+                    'mesg' => $pageInfo['mesg'],
+                    'reAuthenticate' => false
+                ], 422);
+            }
             
-            // if(!isset($pageInfo['fbCode']) || $pageInfo['fbCode']!==190) {
-            //     $res['pageId'] = $project->project->page->page_id;
-            //     $res['pageConnected'] = true;
-            //     $res['publish'] = $project->project->page->publish===1 ? true : false;
-            //     $res['image'] = $pageInfo['data']['picture']['url'];
-            //     ProjectPage::where('id', $project->project->page->id)->update([
-            //         'page_icon' => $pageInfo['data']['picture']['url']
-            //     ]);
-            //     $liveChat = ProjectPageUser::where('project_page_id', $project->project->page->id)->where('live_chat', 1)->count();
-            //     if($liveChat > 0) {
-            //         $res['haveLiveChat'] = true;
-            //     } else {
-            //         $res['haveLiveChat'] = false;
-            //     }
-            // } else {
-            //     $reAuth = true;
-            // }
+            if(!isset($pageInfo['fbCode']) || $pageInfo['fbCode']!==190) {
+                $res['pageId'] = $project->project->page->page_id;
+                $res['pageConnected'] = true;
+                $res['publish'] = $project->project->page->publish===1 ? true : false;
+                $res['image'] = $pageInfo['data']['picture']['url'];
+                ProjectPage::where('id', $project->project->page->id)->update([
+                    'page_icon' => $pageInfo['data']['picture']['url']
+                ]);
+                $liveChat = ProjectPageUser::where('project_page_id', $project->project->page->id)->where('live_chat', 1)->count();
+                if($liveChat > 0) {
+                    $res['haveLiveChat'] = true;
+                } else {
+                    $res['haveLiveChat'] = false;
+                }
+            } else {
+                $reAuth = true;
+            }
             // @codeCoverageIgnoreEnd
         }
             

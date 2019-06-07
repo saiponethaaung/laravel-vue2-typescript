@@ -30870,13 +30870,11 @@ let DefaultLayout = class DefaultLayout extends __WEBPACK_IMPORTED_MODULE_0_vue_
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/pages/change-publish-status`,
                 method: "post"
-            })
-                .then(res => {
+            }).then(res => {
                 this.$store.commit("setProjectPublishStatus", {
                     status: res.data.publishStatus
                 });
-            })
-                .catch(err => {
+            }).catch(err => {
                 if (err.response) {
                     let mesg = this.ajaxHandler.globalHandler(err, "Failed to change project publish status!");
                     alert(mesg);
@@ -30934,6 +30932,7 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("testNow")
 ], DefaultLayout.prototype, "testNowChange", null);
 __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.user.facebook_connected", { immediate: true, deep: true }),
     Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.fbSdk", { immediate: true, deep: true })
 ], DefaultLayout.prototype, "initSendToMessenger", null);
 __decorate([
@@ -62565,7 +62564,7 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
             return;
         setTimeout(() => {
             FB.XFBML.parse();
-        }, 30);
+        }, 300);
     }
     logoutFB() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -62732,6 +62731,7 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
     }
 };
 __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.user.facebook_connected", { immediate: true, deep: true }),
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.fbSdk", { immediate: true, deep: true })
 ], ProfileComponent.prototype, "initSendToMessenger", null);
 ProfileComponent = __decorate([

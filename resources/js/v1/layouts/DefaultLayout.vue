@@ -331,6 +331,7 @@ export default class DefaultLayout extends Vue {
         }, 500);
     }
 
+    @Watch("$store.state.user.facebook_connected", { immediate: true, deep: true })
     @Watch("$store.state.fbSdk", { immediate: true, deep: true })
     initSendToMessenger() {
         if (!this.$store.state.fbSdk) return;
@@ -429,21 +430,19 @@ export default class DefaultLayout extends Vue {
                 this.$route.params.projectid
             }/pages/change-publish-status`,
             method: "post"
-        })
-            .then(res => {
-                this.$store.commit("setProjectPublishStatus", {
-                    status: res.data.publishStatus
-                });
-            })
-            .catch(err => {
-                if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(
-                        err,
-                        "Failed to change project publish status!"
-                    );
-                    alert(mesg);
-                }
+        }).then(res => {
+            this.$store.commit("setProjectPublishStatus", {
+                status: res.data.publishStatus
             });
+        }).catch(err => {
+            if (err.response) {
+                let mesg = this.ajaxHandler.globalHandler(
+                    err,
+                    "Failed to change project publish status!"
+                );
+                alert(mesg);
+            }
+        });
         this.updatingStatus = false;
     }
 

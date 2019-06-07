@@ -168,14 +168,15 @@ export default class ProfileComponent extends Vue {
     private qrCodeImage: string = '';
     private uploading: boolean = false;
 
+    @Watch("$store.state.user.facebook_connected", { immediate: true, deep: true })
     @Watch("$store.state.fbSdk", { immediate: true, deep: true })
     initSendToMessenger() {
         if (!this.$store.state.fbSdk) return;
         setTimeout(() => {
             FB.XFBML.parse();
-        }, 30);
+        }, 300);
     }
-
+    
     async logoutFB() {
         FB.getLoginStatus(async (response: any) => {
             console.log('res', response);

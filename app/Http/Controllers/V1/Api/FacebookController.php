@@ -234,7 +234,7 @@ class FacebookController extends Controller
             return [
                 'status' => false,
                 'code' => 422,
-                'mesg' => $e->getMesesage()
+                'mesg' => $e->getMessage()
             ];
         }
 

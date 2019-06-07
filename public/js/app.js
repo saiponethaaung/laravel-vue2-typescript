@@ -63640,7 +63640,7 @@ var render = function() {
                       }
                     },
                     [
-                      _c("span", [_vm._v("Connected")]),
+                      _c("span", [_vm._v("Facebook page connected")]),
                       _vm._v(" "),
                       _c("i", { staticClass: "material-icons" }, [
                         _vm._v(
@@ -63694,7 +63694,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("Connect")]
+                  [_vm._v("Connect to facebook page")]
                 )
               ]
             : _vm._e()

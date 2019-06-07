@@ -8,7 +8,7 @@
             <template v-if="page.currentProject">
                 <div class="pageAction connectedBtn">
                     <div class="pageActionInfoCon" @click="openDropDown=true">
-                        <span>Connected</span>
+                        <span>Facebook page connected</span>
                         <i class="material-icons">{{ openDropDown ? 'arrow_drop_up' : 'arrow_drop_down' }}</i>
                     </div>
                     <ul class="pageInfoActions" ref="selectAction" v-if="openDropDown">
@@ -20,7 +20,7 @@
                 <div class="pageAction">Connected on other bot</div>
             </template>
             <template v-else-if="currentPage==-1">
-                <div class="pageAction headerButtonTypeOne connectBtn" @click="connectPage()">Connect</div>
+                <div class="pageAction headerButtonTypeOne connectBtn" @click="connectPage()">Connect to facebook page</div>
             </template>
         </div>
     </div>

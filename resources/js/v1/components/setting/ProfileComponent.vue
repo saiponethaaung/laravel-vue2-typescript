@@ -131,13 +131,21 @@
                         </template>
                     </template>
                 </div>
+                <template v-if="$store.state.user.facebook_connected">
+                    <hr/>
+                    <div id="fb-root" @click="logoutFB">
+                        <div class="noclicking">
+                            <div class="fb-login-button" data-width="" data-size="medium" data-auto-logout-link="true" data-use-continue-as="false"></div>
+                        </div>
+                    </div>
+                </template>
             </div>
         </template>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import Axios from 'axios';
 
 @Component
@@ -160,6 +168,33 @@ export default class ProfileComponent extends Vue {
     private qrCodeImage: string = '';
     private uploading: boolean = false;
 
+    @Watch("$store.state.fbSdk", { immediate: true, deep: true })
+    initSendToMessenger() {
+        if (!this.$store.state.fbSdk) return;
+        setTimeout(() => {
+            FB.XFBML.parse();
+        }, 30);
+    }
+
+    async logoutFB() {
+        FB.getLoginStatus(async (response: any) => {
+            console.log('res', response);
+            setTimeout(() => {
+                console.log('logout');
+                FB.logout(async (response: any) => {
+                    console.log("Am i log out");
+                    await Axios({
+                        url: '/api/v1/user/remove-facebook',
+                        method: 'post',
+                    }).then(res => {
+                        this.$store.state.user.facebook_connected = false;
+                    });
+                });
+            }, 30);
+            console.log("end");
+        });
+    }
+
     async loadProfile() {
         this.loading = true;
 
@@ -169,6 +204,9 @@ export default class ProfileComponent extends Vue {
         }).then(res => {
             this.profile = res.data.data.profile;
             this.staticProfile = JSON.parse(JSON.stringify(res.data.data.profile));
+            setTimeout(() => {
+                FB.XFBML.parse();
+            }, 30);
         }).catch(err => {
             if(err.response) {
                 alert(err.response.data.mesg || "Failed to load user profile!");
@@ -176,6 +214,10 @@ export default class ProfileComponent extends Vue {
         });
 
         this.loading = false;
+    }
+
+    async logout() {
+
     }
 
     async updateProfile() {

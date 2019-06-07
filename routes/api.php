@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth:api', 'verifyUserSession']], function() {
             Route::post('upload-image', 'V1\\Api\\UserController@uploadImage');
             Route::post('get-qrcode', 'V1\\Api\\UserController@getQrCode');
             Route::post('facebook-linked', 'V1\\Api\\UserController@connectFacebook');
+            Route::post('remove-facebook', 'V1\\Api\\UserController@disconnectFacebook');
         });
 
         Route::group(['prefix' => 'project'], function(){

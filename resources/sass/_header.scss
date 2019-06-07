@@ -62,3 +62,24 @@
         text-decoration: none;
     }
 }
+
+.loginWithFacebookWrapper {
+    display: inline-flex;
+    height: $standardHeight;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 5px;
+    #fb-root {
+        height: inherit;
+        display: flex;
+        .fb-login-button > span {
+            vertical-align: sub!important;
+        }
+    }
+}
+
+.noclicking {
+    pointer-events: none;
+    cursor: pointer;
+}

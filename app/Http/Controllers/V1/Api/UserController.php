@@ -50,7 +50,6 @@ class UserController extends Controller
         }
 
         $user['image'] = !empty($user['image']) && Storage::disk('public')->exists('images/users/'.$user['image']) ? Storage::disk('public')->url('images/users/'.$user['image']) : '';
-
         // unset($user['facebook']);
         unset($user['facebook_token']);
 
@@ -121,9 +120,39 @@ class UserController extends Controller
 
         return response()->json([
             'status' => true,
-            'code' => 422,
+            'code' => 200,
             'mesg' => 'success',
             'user' => $user
+        ]);
+    }
+
+    public function disconnectFacebook(Request $request)
+    {
+        $user = User::find(Auth::guard('api')->user()->id);
+        
+
+        DB::beginTransaction();
+
+        try {
+            $user->facebook = NULL;
+            $user->facebook_token = NULL;
+            $user->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to remove facebook token!',
+                'debugMesg' => $e->getMessage()
+            ], 422);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success'
         ]);
     }
 

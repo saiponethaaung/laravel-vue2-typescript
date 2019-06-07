@@ -189,12 +189,20 @@
                         </template>
                     </template>
                     <template v-else>
-                        <button
+                        <div class="loginWithFacebookWrapper">
+                            <div id="fb-root" @click="fbLogin">
+                                <div class="noclicking">
+                                    <div class="fb-login-button" data-width="" data-size="medium" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <fb:login-button scope="public_profile,email" :onlogin="checkLoginState()"></fb:login-button> -->
+                        <!-- <button
                             v-if="$store.state.fbSdk"
                             @click="fbLogin"
                             type="button"
                             class="headerButtonTypeOne"
-                        >{{ $store.state.user.facebookReconnect ? 'Reauthenticate your facebook account' : 'Connect facebook account' }}</button>
+                        >{{ $store.state.user.facebookReconnect ? 'Reauthenticate your facebook account' : 'Connect facebook account' }}</button> -->
                     </template>
                     <template v-if="undefined!==$store.state.projectInfo.id">
                         <div
@@ -265,31 +273,6 @@ export default class DefaultLayout extends Vue {
         "pages_messaging_subscriptions",
         "manage_pages",
         "pages_show_list",
-        "publish_pages",
-        "read_page_mailboxes"
-        // 'groups_access_member_info',
-        // 'publish_to_groups',
-        // 'user_age_range',
-        // 'user_birthday',
-        // 'user_events',
-        // 'user_friends',
-        // 'user_gender',
-        // 'user_hometown',
-        // 'user_likes',
-        // 'user_link',
-        // 'user_location',
-        // 'user_photos',
-        // 'user_posts',
-        // 'user_tagged_places',
-        // 'user_videos',
-        // 'ads_management',
-        // 'ads_read',
-        // 'business_management',
-        // 'leads_retrieval',
-        // 'pages_manage_cta',
-        // 'pages_manage_instant_articles',
-        // 'read_audience_network_insights',
-        // 'read_insights'
     ];
 
     private projectOptions: boolean = false;

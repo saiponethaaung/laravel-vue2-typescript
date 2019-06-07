@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use Facebook\Facebook;
 use App\Models\ProjectPage;
+use App\Models\FacebookRequestCounter;
 
 // @codeCoverageIgnoreStart
 
@@ -37,6 +38,13 @@ class FacebookController extends Controller
     {
         $graphObject = null;
         try {
+            FacebookRequestCounter::create([
+                'section' => 'check_expire',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => '/me?fields=id,name,picture{url}'
+                ])
+            ]);
             $graphObject = $this->fb->get('/me?fields=id,name,picture{url}')->getGraphObject();
         }catch(\Facebook\Exceptions\FacebookResponseException $e) {
             return [
@@ -87,6 +95,13 @@ class FacebookController extends Controller
         $token = "";
         // Exchanges a short-lived access token for a long-lived one
         try {
+            FacebookRequestCounter::create([
+                'section' => 'make_long_live_token',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => ''
+                ])
+            ]);
             $lt = $oAuth2Client->getLongLivedAccessToken($accessToken);
             $token = $lt->getValue();
         } catch (\Facebook\Exceptions\FacebookSDKException $e) {
@@ -166,36 +181,20 @@ class FacebookController extends Controller
             'pages_messaging_subscriptions' => 'Pages messaging subscriptions (pages_messaging_subscriptions) permission is need to be granted in order to send message from page on your behalf!',
             'manage_pages' => 'Manage pages (manage_pages) permission is need to be granted in order to link chat bot to your page and retrive message history in our applicatin to perform live chat!',
             'pages_show_list' => 'Pages show list (pages_show_list) permission is need to be granted in order to show list of available to link with chatbot!',
-            'publish_pages' => 'Publish pages(publish_pages) permission is need to be granted in order to send private message to a comment!',
+            // 'publish_pages' => 'Publish pages(publish_pages) permission is need to be granted in order to send private message to a comment!',
             'read_page_mailboxes' => 'Read page mailboxes (read_page_mailboxes) permission is need to be granted in order to link chat bot to your page and retrive message history in our applicatin to perform live chat!',
-            // 'groups_access_member_info' => 'coming soon',
-            // 'publish_to_groups' => 'coming soon',
-            // 'user_age_range' => 'coming soon',
-            // 'user_birthday' => 'coming soon',
-            // 'user_events' => 'coming soon',
-            // 'user_friends' => 'coming soon',
-            // 'user_gender' => 'coming soon',
-            // 'user_hometown' => 'coming soon',
-            // 'user_likes' => 'coming soon',
-            // 'user_link' => 'coming soon',
-            // 'user_location' => 'coming soon',
-            // 'user_photos' => 'coming soon',
-            // 'user_posts' => 'coming soon',
-            // 'user_tagged_places' => 'coming soon',
-            // 'user_videos' => 'coming soon',
-            // 'ads_management' => 'coming soon',
-            // 'ads_read' => 'coming soon',
-            // 'business_management' => 'coming soon',
-            // 'leads_retrieval' => 'coming soon',
-            // 'pages_manage_cta' => 'coming soon',
-            // 'pages_manage_instant_articles' => 'coming soon',
-            // 'read_audience_network_insights' => 'coming soon',
-            // 'read_insights' => 'coming soon',
         ];
 
         foreach ($permissions as $key => $value) {
 
             try {
+                FacebookRequestCounter::create([
+                    'section' => 'check_permission',
+                    'request' => json_encode([
+                        'token' => $this->token,
+                        'data' => '/me/permissions/'.$key
+                    ])
+                ]);
                 $status = $this->fb->get('/me/permissions/'.$key)->getGraphEdge()->asArray();
                 if($status[0]['status']!=='granted') {
                     return [
@@ -238,6 +237,13 @@ class FacebookController extends Controller
         $res = [];
 
         try {
+            FacebookRequestCounter::create([
+                'section' => 'get_page_list',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => '/me/accounts?fields=id,access_token,name,picture.width(500)&limit(100)'
+                ])
+            ]);
             $me = $this->fb->get('/me/accounts?fields=id,access_token,name,picture.width(500)&limit(100)')->getGraphEdge()->asArray();
             $res = $me;
         } catch(\Facebook\Exceptions\FacebookResponseException $e) {
@@ -268,6 +274,13 @@ class FacebookController extends Controller
         $res = [];
 
         try {
+            FacebookRequestCounter::create([
+                'section' => 'app_subscribe',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => '/'.$pageid.'/subscribed_apps',
+                ])
+            ]);
             $me = $this->fb->post(
                 '/'.$pageid.'/subscribed_apps',
                 [
@@ -325,6 +338,13 @@ class FacebookController extends Controller
         $res = [];
 
         try {
+            FacebookRequestCounter::create([
+                'section' => 'check_is_subscribe',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => '/'.$pageid.'/subscribed_apps',
+                ])
+            ]);
             $me = $this->fb->get(
                 '/'.$pageid.'/subscribed_apps',
                 $this->token
@@ -359,6 +379,13 @@ class FacebookController extends Controller
         $res = [];
 
         try {
+            FacebookRequestCounter::create([
+                'section' => 'unsubscribe_app',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => '/'.$pageid.'/subscribed_apps'
+                ])
+            ]);
             $me = $this->fb->delete(
                 '/'.$pageid.'/subscribed_apps'
             )->getGraphNode()->asArray();
@@ -399,6 +426,13 @@ class FacebookController extends Controller
         $res = [];
 
         try {
+            FacebookRequestCounter::create([
+                'section' => 'delete_persistent_menu',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => ''
+                ])
+            ]);
             $me = $this->fb->delete(
                 '/me/messenger_profile',
                 [
@@ -444,6 +478,13 @@ class FacebookController extends Controller
         $res = [];
 
         try {
+            FacebookRequestCounter::create([
+                'section' => 'add_persistent_menu',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => ''
+                ])
+            ]);
             $me = $this->fb->post(
                 '/me/messenger_profile', $menu
             )->getGraphNode()->asArray();
@@ -484,6 +525,13 @@ class FacebookController extends Controller
         $res = [];
 
         try {
+            FacebookRequestCounter::create([
+                'section' => 'add_get_started',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => ''
+                ])
+            ]);
             $me = $this->fb->post(
                 '/me/messenger_profile', [
                     "get_started" => [
@@ -527,6 +575,13 @@ class FacebookController extends Controller
     {
         $graphObject = null;
         try {
+            FacebookRequestCounter::create([
+                'section' => 'get_messenger_user_profile',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => '/'.$psid.'?fields=first_name,last_name,profile_pic,locale,timezone,gender'
+                ])
+            ]);
             $graphObject = $this->fb->get('/'.$psid.'?fields=first_name,last_name,profile_pic,locale,timezone,gender')->getGraphObject();
         }catch(\Facebook\Exceptions\FacebookResponseException $e) {
             return [
@@ -556,6 +611,13 @@ class FacebookController extends Controller
     {
         $graphObject = null;
         try {
+            FacebookRequestCounter::create([
+                'section' => 'send_mesage',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => ''
+                ])
+            ]);
             $graphObject = $this->fb->post('/me/messages', $mesg)->getGraphObject();
         }catch(\Facebook\Exceptions\FacebookResponseException $e) {
             return [

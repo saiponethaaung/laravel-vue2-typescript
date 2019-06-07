@@ -15,6 +15,8 @@ class CreateFacebookRequestCounterTable extends Migration
     {
         Schema::create('facebook_request_counter', function (Blueprint $table) {
             $table->increments('id');
+            $table->text('section');
+            $table->longText('request');
             $table->timestamps();
         });
     }

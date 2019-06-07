@@ -206,9 +206,7 @@ export default class ProfileComponent extends Vue {
         }).then(res => {
             this.profile = res.data.data.profile;
             this.staticProfile = JSON.parse(JSON.stringify(res.data.data.profile));
-            setTimeout(() => {
-                FB.XFBML.parse();
-            }, 30);
+            window.location.reaload();
         }).catch(err => {
             if(err.response) {
                 alert(err.response.data.mesg || "Failed to load user profile!");

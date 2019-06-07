@@ -178,6 +178,7 @@ export default class ProfileComponent extends Vue {
     }
     
     async logoutFB() {
+        console.log("logout called");
         FB.getLoginStatus(async (response: any) => {
             console.log('res', response);
             setTimeout(() => {

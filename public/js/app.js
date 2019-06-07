@@ -62568,6 +62568,7 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
     }
     logoutFB() {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("logout called");
             FB.getLoginStatus((response) => __awaiter(this, void 0, void 0, function* () {
                 console.log('res', response);
                 setTimeout(() => {

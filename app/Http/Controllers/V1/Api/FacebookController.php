@@ -191,10 +191,10 @@ class FacebookController extends Controller
                 'section' => 'check_permission',
                 'request' => json_encode([
                     'token' => $this->token,
-                    'data' => '/me/permissions/'.$key
+                    'data' => '/me/permissions'
                 ])
             ]);
-            $status = $this->fb->get('/me/permissions/'.$key)->getGraphEdge()->asArray();
+            $status = $this->fb->get('/me/permissions')->getGraphEdge()->asArray();
             foreach ($permissions as $key => $value) {
                 $found = false;
                 foreach($status as $permission) {

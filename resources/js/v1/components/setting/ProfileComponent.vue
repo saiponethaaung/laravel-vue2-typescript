@@ -206,7 +206,7 @@ export default class ProfileComponent extends Vue {
         }).then(res => {
             this.profile = res.data.data.profile;
             this.staticProfile = JSON.parse(JSON.stringify(res.data.data.profile));
-            window.location.reaload();
+            window.location.reload();
         }).catch(err => {
             if(err.response) {
                 alert(err.response.data.mesg || "Failed to load user profile!");

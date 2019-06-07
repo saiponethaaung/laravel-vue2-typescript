@@ -196,6 +196,7 @@ class FacebookController extends Controller
             ]);
             $status = $this->fb->get('/me/permissions/'.$key)->getGraphEdge()->asArray();
             foreach ($permissions as $key => $value) {
+                $found = false;
                 foreach($status as $permission) {
                     if($permission['permission']!=$key) continue;
                     if($permission['status']!=='granted') {
@@ -205,8 +206,16 @@ class FacebookController extends Controller
                             'mesg' => $value
                         ];
                     } else {
+                        $found = true;
                         break;
                     }
+                }
+                if(!$found) {
+                    return [
+                        'status' => false,
+                        'code' => 422,
+                        'mesg' => $value
+                    ];
                 }
             }
         } catch(\Facebook\Exceptions\FacebookResponseException $e) {

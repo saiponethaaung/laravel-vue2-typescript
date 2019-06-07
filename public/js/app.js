@@ -62580,7 +62580,7 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
                             method: 'post',
                         }).then(res => {
                             this.$store.state.user.facebook_connected = false;
-                            window.location.reaload();
+                            window.location.reload();
                         });
                     }));
                 }, 30);

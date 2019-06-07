@@ -190,7 +190,7 @@ export default class ProfileComponent extends Vue {
                         method: 'post',
                     }).then(res => {
                         this.$store.state.user.facebook_connected = false;
-                        window.location.reaload();
+                        window.location.reload();
                     });
                 });
             }, 30);

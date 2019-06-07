@@ -182,47 +182,51 @@ class FacebookController extends Controller
             'manage_pages' => 'Manage pages (manage_pages) permission is need to be granted in order to link chat bot to your page and retrive message history in our applicatin to perform live chat!',
             'pages_show_list' => 'Pages show list (pages_show_list) permission is need to be granted in order to show list of available to link with chatbot!',
             // 'publish_pages' => 'Publish pages(publish_pages) permission is need to be granted in order to send private message to a comment!',
-            'read_page_mailboxes' => 'Read page mailboxes (read_page_mailboxes) permission is need to be granted in order to link chat bot to your page and retrive message history in our applicatin to perform live chat!',
+            // 'read_page_mailboxes' => 'Read page mailboxes (read_page_mailboxes) permission is need to be granted in order to link chat bot to your page and retrive message history in our applicatin to perform live chat!',
         ];
 
-        foreach ($permissions as $key => $value) {
-
-            try {
-                FacebookRequestCounter::create([
-                    'section' => 'check_permission',
-                    'request' => json_encode([
-                        'token' => $this->token,
-                        'data' => '/me/permissions/'.$key
-                    ])
-                ]);
-                $status = $this->fb->get('/me/permissions/'.$key)->getGraphEdge()->asArray();
-                if($status[0]['status']!=='granted') {
-                    return [
-                        'status' => false,
-                        'code' => 422,
-                        'mesg' => $value
-                    ];
-                } 
-            } catch(\Facebook\Exceptions\FacebookResponseException $e) {
-                return [
-                    'status' => false,
-                    'code' => 422,
-                    'mesg' => 'Graph returned an error: ' . $e->getMessage()
-                ];
-            } catch(\Facebook\Exceptions\FacebookSDKException $e) {
-                return [
-                    'status' => false,
-                    'code' => 422,
-                    'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
-                ];
-            } catch(\Exception $e) {
-                return [
-                    'status' => false,
-                    'code' => 422,
-                    'mesg' => $e->getMesesage()
-                ];
+        
+        try {
+            FacebookRequestCounter::create([
+                'section' => 'check_permission',
+                'request' => json_encode([
+                    'token' => $this->token,
+                    'data' => '/me/permissions/'.$key
+                ])
+            ]);
+            $status = $this->fb->get('/me/permissions/'.$key)->getGraphEdge()->asArray();
+            foreach ($permissions as $key => $value) {
+                foreach($status as $permission) {
+                    if($permission['permission']!=$key) continue;
+                    if($permission['status']!=='granted') {
+                        return [
+                            'status' => false,
+                            'code' => 422,
+                            'mesg' => $value
+                        ];
+                    } else {
+                        break;
+                    }
+                }
             }
-
+        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Graph returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
+            ];
+        } catch(\Exception $e) {
+            return [
+                'status' => false,
+                'code' => 422,
+                'mesg' => $e->getMesesage()
+            ];
         }
 
         return [

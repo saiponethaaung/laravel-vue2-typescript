@@ -17,7 +17,7 @@
                             placeholder="Email"
                         >
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="otp">OTP</label>
                         <input
                             type="password"
@@ -27,7 +27,7 @@
                             :disabled="loading"
                             placeholder="otp"
                         >
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <p class="nonMemberFormNote">Not a member? Register
                             <router-link :to="{name: 'register'}">here</router-link>.<br/>

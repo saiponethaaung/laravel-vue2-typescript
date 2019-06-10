@@ -38,7 +38,7 @@ class UserAuthController extends Controller
 
         $validator = Validator::make($input, [
             'email' => 'required|email',
-            'otp' => 'required'
+            // 'otp' => 'required'
         ]);
 
         if($validator->fails()) {
@@ -89,16 +89,16 @@ class UserAuthController extends Controller
         }
 
         // initialize Google 2 factor authentication lib
-        $google2Fa = new Google2FA();
+        // $google2Fa = new Google2FA();
         
-        // Verify otp code
-        if(!$google2Fa->verifyKey($user->auth_code, $input['otp'])) {
-            return response()->json([
-                'status' => false,
-                'code' => 422,
-                'mesg' => 'Invalid otp code!'
-            ], 422);
-        }
+        // // Verify otp code
+        // if(!$google2Fa->verifyKey($user->auth_code, $input['otp'])) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'code' => 422,
+        //         'mesg' => 'Invalid otp code!'
+        //     ], 422);
+        // }
 
         $identifier = "";
 

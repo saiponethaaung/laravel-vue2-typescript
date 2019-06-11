@@ -13,7 +13,7 @@
         </div>
         <div class="btnClick configSidebarLink" v-if="$store.state.projectInfo.isOwner">
             <router-link :to="{name: 'project.configuration'}" :class="{'activeSetting': $route.meta.sidebarSection==='connected-page'}">
-                Connected Page
+                Facebook Pages
             </router-link>
         </div>
         <div class="btnClick configSidebarLink">

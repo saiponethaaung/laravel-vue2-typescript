@@ -29175,6 +29175,14 @@ let App = class App extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
         this.loading = true;
         this.loadToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__["a" /* default */]();
+        this.permissions = [
+            "public_profile",
+            "email",
+            "pages_messaging",
+            "pages_messaging_subscriptions",
+            "manage_pages",
+            "pages_show_list",
+        ];
     }
     mounted() {
         this.loadProject();
@@ -29219,6 +29227,61 @@ let App = class App extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
             }
         });
     }
+    initSendToMessenger() {
+        if (!this.$store.state.fbSdk)
+            return;
+        setTimeout(() => {
+            setTimeout(() => {
+                FB.XFBML.parse();
+            }, 30);
+        }, 30);
+    }
+    fbLogin() {
+        FB.login((res) => {
+            console.log("fb response", res);
+            if (res.status === "connected") {
+                let valid = true;
+                for (var i in this.permissions) {
+                    FB.api(`/me/permissions/${this.permissions[i]}`, (pres) => {
+                        if (pres.data[0].status !== "granted") {
+                            valid = false;
+                            let mesg = `Login with facebook and allow ${this.permissions[i]} permissions`;
+                            alert(mesg);
+                        }
+                    });
+                }
+                if (valid) {
+                    this.updateFBToken(res.authResponse);
+                }
+            }
+        }, {
+            auth_type: "rerequest",
+            scope: this.permissions.join(","),
+            returnScope: true
+        });
+    }
+    updateFBToken(res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let data = new FormData();
+            data.append("access_token", res.accessToken);
+            data.append("userID", res.userID);
+            yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
+                url: "/api/v1/user/facebook-linked",
+                data: data,
+                method: "POST"
+            })
+                .then((res) => {
+                this.$store.state.user.facebookReconnect = false;
+                this.$store.commit("updateUserInfo", {
+                    user: res.data.user
+                });
+            })
+                .catch((err) => {
+                let mesg = this.ajaxHandler.globalHandler(err, "Failed to access facebook!");
+                alert(mesg);
+            });
+        });
+    }
     beforeDestory() {
         this.loadToken.cancel();
     }
@@ -29229,6 +29292,10 @@ __decorate([
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.isLogin")
 ], App.prototype, "loadProject", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.user.facebook_connected", { immediate: true, deep: true }),
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.fbSdk", { immediate: true, deep: true })
+], App.prototype, "initSendToMessenger", null);
 App = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */])({
         components: {
@@ -32436,9 +32503,19 @@ var render = function() {
     [
       _vm.$store.state.isLogin && _vm.$store.state.passwordVerify
         ? [
-            _vm.$route.name !== "home"
-              ? [_c("default-layout")]
-              : [_c("router-view", { attrs: { loading: _vm.loading } })]
+            _vm.$store.state.user.facebook_connected
+              ? [
+                  _vm.$route.name !== "home"
+                    ? [_c("default-layout")]
+                    : [_c("router-view", { attrs: { loading: _vm.loading } })]
+                ]
+              : [
+                  _c(
+                    "div",
+                    { attrs: { id: "fb-root" }, on: { click: _vm.fbLogin } },
+                    [_vm._m(0)]
+                  )
+                ]
           ]
         : [
             !_vm.$store.state.autheticating
@@ -32476,7 +32553,24 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "noclicking" }, [
+      _c("div", {
+        staticClass: "fb-login-button",
+        attrs: {
+          "data-width": "",
+          "data-size": "medium",
+          "data-auto-logout-link": "false",
+          "data-use-continue-as": "false"
+        }
+      })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

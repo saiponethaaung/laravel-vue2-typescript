@@ -69423,7 +69423,7 @@ var staticRenderFns = [
         attrs: {
           "data-width": "",
           "data-button-type": "continue_with",
-          "data-size": "medium",
+          "data-size": "large",
           "data-auto-logout-link": "false",
           "data-use-continue-as": "false"
         }

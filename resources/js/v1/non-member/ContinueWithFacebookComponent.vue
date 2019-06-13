@@ -12,7 +12,7 @@
                     <template v-else>
                         <div id="fb-root" class="text-center" @click="fbLogin">
                             <div class="noclicking">
-                                <div class="fb-login-button" data-width="" data-size="medium" data-auto-logout-link="false" data-use-continue-as="true"></div>
+                                <div class="fb-login-button" data-width="" data-button-type="continue_with" data-size="medium" data-auto-logout-link="false" data-use-continue-as="false"></div>
                             </div>
                         </div>
                     </template>

@@ -69422,9 +69422,10 @@ var staticRenderFns = [
         staticClass: "fb-login-button",
         attrs: {
           "data-width": "",
+          "data-button-type": "continue_with",
           "data-size": "medium",
           "data-auto-logout-link": "false",
-          "data-use-continue-as": "true"
+          "data-use-continue-as": "false"
         }
       })
     ])

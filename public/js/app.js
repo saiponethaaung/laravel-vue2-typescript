@@ -29146,9 +29146,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_DefaultLayout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__layouts_DefaultLayout_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__non_member_LoginComponent_vue__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__non_member_LoginComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__non_member_LoginComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__non_member_ContinueWithFacebookComponent_vue__ = __webpack_require__(299);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__non_member_ContinueWithFacebookComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__non_member_ContinueWithFacebookComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -29169,20 +29171,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 
 
+
 let App = class App extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
     constructor() {
         super(...arguments);
         this.loading = true;
-        this.loadToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
-        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_5__utils_AjaxErrorHandler__["a" /* default */]();
-        this.permissions = [
-            "public_profile",
-            "email",
-            "pages_messaging",
-            "pages_messaging_subscriptions",
-            "manage_pages",
-            "pages_show_list",
-        ];
+        this.loadToken = __WEBPACK_IMPORTED_MODULE_5_axios___default.a.CancelToken.source();
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_6__utils_AjaxErrorHandler__["a" /* default */]();
     }
     mounted() {
         this.loadProject();
@@ -29207,8 +29202,8 @@ let App = class App extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
             if (this.$store.state.isLogin) {
                 this.loading = true;
                 this.loadToken.cancel();
-                this.loadToken = __WEBPACK_IMPORTED_MODULE_4_axios___default.a.CancelToken.source();
-                yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
+                this.loadToken = __WEBPACK_IMPORTED_MODULE_5_axios___default.a.CancelToken.source();
+                yield __WEBPACK_IMPORTED_MODULE_5_axios___default()({
                     url: `/api/v1/project/list`,
                     method: "get"
                 })
@@ -29227,61 +29222,6 @@ let App = class App extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
             }
         });
     }
-    initSendToMessenger() {
-        if (!this.$store.state.fbSdk)
-            return;
-        setTimeout(() => {
-            setTimeout(() => {
-                FB.XFBML.parse();
-            }, 30);
-        }, 30);
-    }
-    fbLogin() {
-        FB.login((res) => {
-            console.log("fb response", res);
-            if (res.status === "connected") {
-                let valid = true;
-                for (var i in this.permissions) {
-                    FB.api(`/me/permissions/${this.permissions[i]}`, (pres) => {
-                        if (pres.data[0].status !== "granted") {
-                            valid = false;
-                            let mesg = `Login with facebook and allow ${this.permissions[i]} permissions`;
-                            alert(mesg);
-                        }
-                    });
-                }
-                if (valid) {
-                    this.updateFBToken(res.authResponse);
-                }
-            }
-        }, {
-            auth_type: "rerequest",
-            scope: this.permissions.join(","),
-            returnScope: true
-        });
-    }
-    updateFBToken(res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let data = new FormData();
-            data.append("access_token", res.accessToken);
-            data.append("userID", res.userID);
-            yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
-                url: "/api/v1/user/facebook-linked",
-                data: data,
-                method: "POST"
-            })
-                .then((res) => {
-                this.$store.state.user.facebookReconnect = false;
-                this.$store.commit("updateUserInfo", {
-                    user: res.data.user
-                });
-            })
-                .catch((err) => {
-                let mesg = this.ajaxHandler.globalHandler(err, "Failed to access facebook!");
-                alert(mesg);
-            });
-        });
-    }
     beforeDestory() {
         this.loadToken.cancel();
     }
@@ -29292,15 +29232,12 @@ __decorate([
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.isLogin")
 ], App.prototype, "loadProject", null);
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.user.facebook_connected", { immediate: true, deep: true }),
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.fbSdk", { immediate: true, deep: true })
-], App.prototype, "initSendToMessenger", null);
 App = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */])({
         components: {
             DefaultLayout: __WEBPACK_IMPORTED_MODULE_2__layouts_DefaultLayout_vue___default.a,
-            LoginComponent: __WEBPACK_IMPORTED_MODULE_3__non_member_LoginComponent_vue___default.a
+            LoginComponent: __WEBPACK_IMPORTED_MODULE_3__non_member_LoginComponent_vue___default.a,
+            ContinueWithFacebookComponent: __WEBPACK_IMPORTED_MODULE_4__non_member_ContinueWithFacebookComponent_vue___default.a
         }
     })
 ], App);
@@ -32509,13 +32446,7 @@ var render = function() {
                     ? [_c("default-layout")]
                     : [_c("router-view", { attrs: { loading: _vm.loading } })]
                 ]
-              : [
-                  _c(
-                    "div",
-                    { attrs: { id: "fb-root" }, on: { click: _vm.fbLogin } },
-                    [_vm._m(0)]
-                  )
-                ]
+              : [_c("continue-with-facebook-component")]
           ]
         : [
             !_vm.$store.state.autheticating
@@ -32553,24 +32484,7 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "noclicking" }, [
-      _c("div", {
-        staticClass: "fb-login-button",
-        attrs: {
-          "data-width": "",
-          "data-size": "medium",
-          "data-auto-logout-link": "false",
-          "data-use-continue-as": "false"
-        }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -69225,6 +69139,295 @@ var index_esm = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(300)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(302)
+/* template */
+var __vue_template__ = __webpack_require__(303)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/non-member/ContinueWithFacebookComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-31980c0a", Component.options)
+  } else {
+    hotAPI.reload("data-v-31980c0a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 300 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(301);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(78)("bc36eafe", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-31980c0a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ContinueWithFacebookComponent.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-31980c0a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ContinueWithFacebookComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 301 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(77)(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 302 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+let ContinueWithFacebookComponent = class ContinueWithFacebookComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.loading = false;
+        this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__["a" /* default */]();
+        this.permissions = [
+            "public_profile",
+            "email",
+            "pages_messaging",
+            "pages_messaging_subscriptions",
+            "manage_pages",
+            "pages_show_list",
+        ];
+    }
+    initSendToMessenger() {
+        if (!this.$store.state.fbSdk)
+            return;
+        setTimeout(() => {
+            setTimeout(() => {
+                FB.XFBML.parse();
+            }, 30);
+        }, 30);
+    }
+    fbLogin() {
+        FB.login((res) => {
+            console.log("fb response", res);
+            if (res.status === "connected") {
+                let valid = true;
+                for (var i in this.permissions) {
+                    FB.api(`/me/permissions/${this.permissions[i]}`, (pres) => {
+                        if (pres.data[0].status !== "granted") {
+                            valid = false;
+                            let mesg = `Login with facebook and allow ${this.permissions[i]} permissions`;
+                            alert(mesg);
+                        }
+                    });
+                }
+                if (valid) {
+                    this.updateFBToken(res.authResponse);
+                }
+            }
+        }, {
+            auth_type: "rerequest",
+            scope: this.permissions.join(","),
+            returnScope: true
+        });
+    }
+    updateFBToken(res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let data = new FormData();
+            data.append("access_token", res.accessToken);
+            data.append("userID", res.userID);
+            this.loading = true;
+            yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
+                url: "/api/v1/user/facebook-linked",
+                data: data,
+                method: "POST"
+            }).then((res) => {
+                window.location.reload();
+            }).catch((err) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to access facebook!");
+                    alert(mesg);
+                    this.loading = false;
+                    setTimeout(() => {
+                        FB.XFBML.parse();
+                    }, 30);
+                }
+            });
+        });
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.user.facebook_connected", { immediate: true, deep: true }),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.fbSdk", { immediate: true, deep: true })
+], ContinueWithFacebookComponent.prototype, "initSendToMessenger", null);
+ContinueWithFacebookComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], ContinueWithFacebookComponent);
+/* harmony default export */ __webpack_exports__["default"] = (ContinueWithFacebookComponent);
+
+
+/***/ }),
+/* 303 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "nonMemberComponent" }, [
+    _c("div", { staticClass: "nonMemberFormRoot" }, [
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+            }
+          }
+        },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _vm.loading
+            ? [
+                _c("div", { staticClass: "form-group text-center" }, [
+                  _vm._v("\n                    Loading...\n                ")
+                ])
+              ]
+            : [
+                _c(
+                  "div",
+                  { attrs: { id: "fb-root" }, on: { click: _vm.fbLogin } },
+                  [_vm._m(1)]
+                )
+              ]
+        ],
+        2
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("figure", [
+      _c("img", {
+        staticClass: "navIcon",
+        attrs: { src: "/images/icons/logo.png" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "noclicking" }, [
+      _c("div", {
+        staticClass: "fb-login-button",
+        attrs: {
+          "data-width": "",
+          "data-size": "medium",
+          "data-auto-logout-link": "false",
+          "data-use-continue-as": "false"
+        }
+      })
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-31980c0a", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

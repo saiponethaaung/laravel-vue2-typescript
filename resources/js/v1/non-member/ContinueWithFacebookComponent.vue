@@ -5,18 +5,18 @@
                 <figure>
                     <img src="/images/icons/logo.png" class="navIcon">
                 </figure>
-                <template v-if="loading">
-                    <div class="form-group text-center">
-                        Loading...
-                    </div>
-                </template>
-                <template v-else>
-                    <div id="fb-root" @click="fbLogin">
-                        <div class="noclicking">
-                            <div class="fb-login-button" data-width="" data-size="medium" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                <div class="form-group text-center">
+                    <template v-if="loading">
+                            Loading...
+                    </template>
+                    <template v-else>
+                        <div id="fb-root" class="text-center" @click="fbLogin">
+                            <div class="noclicking">
+                                <div class="fb-login-button" data-width="" data-size="medium" data-auto-logout-link="false" data-use-continue-as="true"></div>
+                            </div>
                         </div>
-                    </div>
-                </template>
+                    </template>
+                </div>
             </form>
         </div>
     </div>

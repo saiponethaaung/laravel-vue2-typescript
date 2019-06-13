@@ -69372,21 +69372,31 @@ var render = function() {
         [
           _vm._m(0),
           _vm._v(" "),
-          _vm.loading
-            ? [
-                _c("div", { staticClass: "form-group text-center" }, [
-                  _vm._v("\n                    Loading...\n                ")
-                ])
-              ]
-            : [
-                _c(
-                  "div",
-                  { attrs: { id: "fb-root" }, on: { click: _vm.fbLogin } },
-                  [_vm._m(1)]
-                )
-              ]
-        ],
-        2
+          _c(
+            "div",
+            { staticClass: "form-group text-center" },
+            [
+              _vm.loading
+                ? [
+                    _vm._v(
+                      "\n                        Loading...\n                "
+                    )
+                  ]
+                : [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "text-center",
+                        attrs: { id: "fb-root" },
+                        on: { click: _vm.fbLogin }
+                      },
+                      [_vm._m(1)]
+                    )
+                  ]
+            ],
+            2
+          )
+        ]
       )
     ])
   ])
@@ -69414,7 +69424,7 @@ var staticRenderFns = [
           "data-width": "",
           "data-size": "medium",
           "data-auto-logout-link": "false",
-          "data-use-continue-as": "false"
+          "data-use-continue-as": "true"
         }
       })
     ])

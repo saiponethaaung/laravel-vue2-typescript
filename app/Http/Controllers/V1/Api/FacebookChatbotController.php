@@ -385,7 +385,7 @@ class FacebookChatbotController extends Controller
                                             ]
                                         ];
                                     } else {
-                                        continue;
+                                        $skip = true;
                                     }
                                     break;
                                 
@@ -393,6 +393,10 @@ class FacebookChatbotController extends Controller
                                 default:
                                     $isValid = false;
                                     break;
+                            }
+
+                            if($skip) {
+                                continue;
                             }
 
                             if($isValid) {

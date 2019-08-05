@@ -13,6 +13,7 @@ import InboxPageSidebarComponent from '../components/inbox/InboxPageSidebarCompo
 import ProjectListComponent from '../components/ProjectListComponent.vue';
 import ProjectRootComponent from '../components/ProjectRootComponent.vue';
 import AdminComponent from '../components/setting/AdminComponent.vue';
+import MessengerUserInputComponent from '../components/setting/MessengerUserInputComponent.vue';
 import PersistentMenuComponent from '../components/setting/PersistentMenuComponent.vue';
 import ProfileComponent from '../components/setting/ProfileComponent.vue';
 import ProjectConfigrationComponent from '../components/setting/ProjectConfigrationComponent.vue';
@@ -182,6 +183,16 @@ export default new VueRouter({
                                 sidebarSection: 'persistent-menu'
                             },
                             component: PersistentMenuComponent
+                        },
+                        {
+                            path: 'messenger-user-input',
+                            name: 'project.configuration.messenger-user-input',
+                            meta: {
+                                sidebar: SettingSidebarComponent,
+                                section: 'setting',
+                                sidebarSection: 'messenger-user-input'
+                            },
+                            component: MessengerUserInputComponent
                         },
                         {
                             path: 'admins',

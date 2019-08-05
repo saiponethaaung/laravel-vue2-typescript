@@ -92,10 +92,10 @@
                         <i class="material-icons">textsms</i>
                         <span class="contentActionName">User Input</span>
                     </li>
-                    <li class="contentActionList" @click="addList">
+                    <!-- <li class="contentActionList" @click="addList">
                         <i class="material-icons">list</i>
                         <span class="contentActionName">List</span>
-                    </li>
+                    </li> -->
                     <li class="contentActionList" @click="addGallery">
                         <i class="material-icons">add_to_photos</i>
                         <span class="contentActionName">Gallery</span>

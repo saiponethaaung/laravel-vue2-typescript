@@ -21,6 +21,11 @@
                 Persistent Menu
             </router-link>
         </div>
+        <div class="btnClick configSidebarLink">
+            <router-link :to="{name: 'project.configuration.messenger-user-input'}" :class="{'activeSetting': $route.meta.sidebarSection==='messenger-user-input'}">
+                Messenger user input
+            </router-link>
+        </div>
         <div class="btnClick configSidebarLink" v-if="$store.state.projectInfo.role<2">
             <router-link :to="{name: 'project.configuration.admins'}" :class="{'activeSetting': $route.meta.sidebarSection==='admins'}">
                 Admins
@@ -50,4 +55,3 @@ export default class SettingSidebarComponent extends Vue {
 
 }
 </script>
-

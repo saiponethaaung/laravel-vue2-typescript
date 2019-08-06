@@ -120,6 +120,7 @@ class ProjectController extends Controller
             'image' => '',
             'isOwner' => $project->user_type==0 ? true : false,
             'role' => $project->user_type,
+            'inputDisabled' => $project->project->is_input_disabled==1,
             'pageId' => config('facebook.defaultPageId'),
             'testingPageId' => config('facebook.defaultPageId'),
             'pageConnected' => false,
@@ -340,7 +341,7 @@ class ProjectController extends Controller
             $projectPage->page_icon = $pageInfo['data']['picture']['url'];
             $projectPage->publish = 0;
             $projectPage->save();
-            $this->updatePersistentMenu($request->attributes->get('project')->id);
+            $this->updatePersistentMenu($request->attributes->get('project')->id, $request->attributes->get('project')->is_input_disabled);
         } catch(\Exception $e) {
             // Rollback and send error on failed
             DB::rollback();
@@ -549,7 +550,7 @@ class ProjectController extends Controller
             $projectPage->save();
 
             if($projectPage->publish===1) {
-                $this->updatePersistentMenu($request->attributes->get('project')->id);
+                $this->updatePersistentMenu($request->attributes->get('project')->id, $request->attributes->get('project')->is_input_disabled);
             } else {
                 $fbc = new FacebookController($projectPage['token']);
                 $deletePersistentMenu = $fbc->deletePersistentMenu($projectPage['page_id']);
@@ -844,7 +845,45 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function updatePersistentMenu($projectId)
+    public function updateUserInput(Request $request) {
+        $projectPage = ProjectPage::where('project_id', $request->attributes->get('project')->id)->first();
+        
+        DB::beginTransaction();
+
+        try {
+            $request->attributes->get('project')->is_input_disabled = $request->attributes->get('project')->is_input_disabled==1 ? 0 : 1;
+            $request->attributes->get('project')->save();
+            if(!empty($projectPage)) {
+                $this->updatePersistentMenu($request->attributes->get('project')->id, $request->attributes->get('project')->is_input_disabled);
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            $response = [
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to update messenger user input!',
+                'data' => []
+            ];
+
+            if(env('APP_DEBUG')) {
+                $response['debugMesg'] = $e->getMessage();
+                $response['trace'] = $e->getTrace();
+            }
+
+            return response()->json($response, $response['code']);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'Composer status updated!',
+            'data' => []
+        ], 200);
+    }
+
+    public function updatePersistentMenu($projectId, $input=false)
     {
         $projectPage = ProjectPage::where('project_id', $projectId)->first()->toArray();
 
@@ -1047,7 +1086,7 @@ class ProjectController extends Controller
                 'persistent_menu' => [
                     [
                         'locale' => 'default',
-                        'composer_input_disabled' => false,
+                        'composer_input_disabled' => $input,
                         'call_to_actions' => $menuRes
                     ]
                 ]

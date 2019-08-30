@@ -18,14 +18,14 @@ class FacebookController extends Controller
     private $fb;
     private $token = null;
 
-    public function __construct($token=false)
+    public function __construct($token = false)
     {
         $this->reconstruct($token);
     }
-    
-    public function reconstruct($token=false)
+
+    public function reconstruct($token = false)
     {
-        $this->token = $token ? $token : config('facebook.appId').'|'.config('facebook.appSecret');
+        $this->token = $token ? $token : config('facebook.appId') . '|' . config('facebook.appSecret');
         $this->fb = new Facebook([
             'app_id' => config('facebook.appId'),
             'app_secret' => config('facebook.appSecret'),
@@ -46,7 +46,7 @@ class FacebookController extends Controller
                 ])
             ]);
             $graphObject = $this->fb->get('/me?fields=id,name,picture{url}')->getGraphObject();
-        }catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,
                 'code' => 422,
@@ -56,7 +56,7 @@ class FacebookController extends Controller
                 'mesg' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ];
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return [
                 'status' => false,
                 'code' => 422,
@@ -76,9 +76,9 @@ class FacebookController extends Controller
         ];
     }
 
-    public function auth($accessToken=false)
+    public function auth($accessToken = false)
     {
-        if($accessToken===false) {
+        if ($accessToken === false) {
             return [
                 'status' => false,
                 'code' => 422,
@@ -89,9 +89,9 @@ class FacebookController extends Controller
         $helper = $this->fb->getRedirectLoginHelper();
         $oAuth2Client = $this->fb->getOAuth2Client();
         $tokenMetadata = $oAuth2Client->debugToken($accessToken);
-        $tokenMetadata->validateAppId(config('facebook.appId')); 
+        $tokenMetadata->validateAppId(config('facebook.appId'));
         $tokenMetadata->validateExpiration();
-        
+
         $token = "";
         // Exchanges a short-lived access token for a long-lived one
         try {
@@ -108,7 +108,7 @@ class FacebookController extends Controller
             return [
                 "status" => false,
                 "code" => 422,
-                "mesg" => "Error getting long-lived access token:". $helper->getMessage(),
+                "mesg" => "Error getting long-lived access token:" . $helper->getMessage(),
                 "raw" => [
                     "exception" => $e->getMessage(),
                     "helper" => $helper->getError()
@@ -119,8 +119,8 @@ class FacebookController extends Controller
         $this->reconstruct($token);
 
         $permission = $this->getPermissions($token);
-        
-        if($permission['status']===false) {
+
+        if ($permission['status'] === false) {
             return [
                 'status' => false,
                 'code' => 422,
@@ -130,7 +130,7 @@ class FacebookController extends Controller
 
         $pages = $this->getPageList();
 
-        if(!$pages['status']) {
+        if (!$pages['status']) {
             return [
                 'status' => false,
                 'code' => 422,
@@ -138,13 +138,13 @@ class FacebookController extends Controller
             ];
         }
 
-        if(!empty($pages['list'])) {
+        if (!empty($pages['list'])) {
             DB::beginTransaction();
 
             try {
-                foreach($pages['list'] as $page) {
+                foreach ($pages['list'] as $page) {
                     $projectPage = ProjectPage::where('page_id', $page['id'])->first();
-                    if(!empty($projectPage)) {
+                    if (!empty($projectPage)) {
                         $projectPage->token = $page['access_token'];
                         $projectPage->save();
                     }
@@ -161,7 +161,7 @@ class FacebookController extends Controller
 
             DB::commit();
         }
-        
+
         return [
             'status' => true,
             'code' => 200,
@@ -185,7 +185,7 @@ class FacebookController extends Controller
             // 'read_page_mailboxes' => 'Read page mailboxes (read_page_mailboxes) permission is need to be granted in order to link chat bot to your page and retrive message history in our applicatin to perform live chat!',
         ];
 
-        
+
         try {
             FacebookRequestCounter::create([
                 'section' => 'check_permission',
@@ -197,9 +197,9 @@ class FacebookController extends Controller
             $status = $this->fb->get('/me/permissions')->getGraphEdge()->asArray();
             foreach ($permissions as $key => $value) {
                 $found = false;
-                foreach($status as $permission) {
-                    if($permission['permission']!=$key) continue;
-                    if($permission['status']!=='granted') {
+                foreach ($status as $permission) {
+                    if ($permission['permission'] != $key) continue;
+                    if ($permission['status'] !== 'granted') {
                         return [
                             'status' => false,
                             'code' => 422,
@@ -210,7 +210,7 @@ class FacebookController extends Controller
                         break;
                     }
                 }
-                if(!$found) {
+                if (!$found) {
                     return [
                         'status' => false,
                         'code' => 422,
@@ -218,19 +218,19 @@ class FacebookController extends Controller
                     ];
                 }
             }
-        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,
                 'code' => 422,
                 'mesg' => 'Graph returned an error: ' . $e->getMessage()
             ];
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return [
                 'status' => false,
                 'code' => 422,
                 'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
             ];
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return [
                 'status' => false,
                 'code' => 422,
@@ -254,22 +254,22 @@ class FacebookController extends Controller
                 'section' => 'get_page_list',
                 'request' => json_encode([
                     'token' => $this->token,
-                    'data' => '/me/accounts?fields=id,access_token,name,picture.width(500)&limit=100'
+                    'data' => '/me/accounts?fields=id,access_token,name,picture.width(500)&limit=200'
                 ])
             ]);
-            $me = $this->fb->get('/me/accounts?fields=id,access_token,name,picture.width(500)&limit=100')->getGraphEdge()->asArray();
+            $me = $this->fb->get('/me/accounts?fields=id,access_token,name,picture.width(500)&limit=200')->getGraphEdge()->asArray();
             $res = $me;
-        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Graph returned an error: ' . $e->getMessage()
             ];
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
             ];
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return [
                 'status' => false,
                 'mesg' => $e->getMesesage()
@@ -291,11 +291,11 @@ class FacebookController extends Controller
                 'section' => 'app_subscribe',
                 'request' => json_encode([
                     'token' => $this->token,
-                    'data' => '/'.$pageid.'/subscribed_apps',
+                    'data' => '/' . $pageid . '/subscribed_apps',
                 ])
             ]);
             $me = $this->fb->post(
-                '/'.$pageid.'/subscribed_apps',
+                '/' . $pageid . '/subscribed_apps',
                 [
                     'subscribed_fields' => [
                         'messages',
@@ -315,24 +315,24 @@ class FacebookController extends Controller
                 ]
             )->getGraphObject()->asArray();
             $res = $me;
-        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Graph returned an error: ' . $e->getMessage()
             ];
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
             ];
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return [
                 'status' => false,
                 'mesg' => $e->getMesesage()
             ];
         }
 
-        if(!$res['success']) {
+        if (!$res['success']) {
             return [
                 'status' => false,
                 'mesg' => 'Failed to subscribe an app!',
@@ -355,25 +355,25 @@ class FacebookController extends Controller
                 'section' => 'check_is_subscribe',
                 'request' => json_encode([
                     'token' => $this->token,
-                    'data' => '/'.$pageid.'/subscribed_apps',
+                    'data' => '/' . $pageid . '/subscribed_apps',
                 ])
             ]);
             $me = $this->fb->get(
-                '/'.$pageid.'/subscribed_apps',
+                '/' . $pageid . '/subscribed_apps',
                 $this->token
             )->getGraphEdge()->asArray();
             $res = $me;
-        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Graph returned an error: ' . $e->getMessage()
             ];
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
             ];
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return [
                 'status' => false,
                 'mesg' => $e->getMesesage()
@@ -396,38 +396,38 @@ class FacebookController extends Controller
                 'section' => 'unsubscribe_app',
                 'request' => json_encode([
                     'token' => $this->token,
-                    'data' => '/'.$pageid.'/subscribed_apps'
+                    'data' => '/' . $pageid . '/subscribed_apps'
                 ])
             ]);
             $me = $this->fb->delete(
-                '/'.$pageid.'/subscribed_apps'
+                '/' . $pageid . '/subscribed_apps'
             )->getGraphNode()->asArray();
             $res = $me;
-        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Graph returned an error: ' . $e->getMessage()
             ];
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
             ];
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return [
                 'status' => false,
                 'mesg' => $e->getMesesage()
             ];
         }
 
-        if(!$res['success']) {
+        if (!$res['success']) {
             return [
                 'status' => false,
                 'mesg' => 'Failed to unsubscribe an app!',
                 'debug' => $res
             ];
         }
-        
+
         return [
             'status' => true,
             'list' => $res
@@ -455,17 +455,17 @@ class FacebookController extends Controller
                 ]
             )->getGraphNode()->asArray();
             $res = $me;
-        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Graph returned an error: ' . $e->getMessage()
             ];
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
             ];
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return [
                 'status' => false,
                 'mesg' => $e->getMesesage()
@@ -479,7 +479,7 @@ class FacebookController extends Controller
         //         'debug' => $res
         //     ];
         // }
-        
+
         return [
             'status' => true,
             'list' => $res
@@ -499,20 +499,21 @@ class FacebookController extends Controller
                 ])
             ]);
             $me = $this->fb->post(
-                '/me/messenger_profile', $menu
+                '/me/messenger_profile',
+                $menu
             )->getGraphNode()->asArray();
             $res = $me;
-        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Graph returned an error: ' . $e->getMessage()
             ];
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
             ];
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return [
                 'status' => false,
                 'mesg' => $e->getMesesage()
@@ -526,7 +527,7 @@ class FacebookController extends Controller
         //         'debug' => $res
         //     ];
         // }
-        
+
         return [
             'status' => true,
             'list' => $res
@@ -546,24 +547,25 @@ class FacebookController extends Controller
                 ])
             ]);
             $me = $this->fb->post(
-                '/me/messenger_profile', [
+                '/me/messenger_profile',
+                [
                     "get_started" => [
                         "payload" => "get_started"
                     ]
                 ]
             )->getGraphNode()->asArray();
             $res = $me;
-        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Graph returned an error: ' . $e->getMessage()
             ];
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return [
                 'status' => false,
                 'mesg' => 'Facebook SDK returned an error: ' . $e->getMessage()
             ];
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return [
                 'status' => false,
                 'mesg' => $e->getMesesage()
@@ -577,7 +579,7 @@ class FacebookController extends Controller
         //         'debug' => $res
         //     ];
         // }
-        
+
         return [
             'status' => true,
             'mesg' => 'Success'
@@ -592,18 +594,18 @@ class FacebookController extends Controller
                 'section' => 'get_messenger_user_profile',
                 'request' => json_encode([
                     'token' => $this->token,
-                    'data' => '/'.$psid.'?fields=first_name,last_name,profile_pic,locale,timezone,gender'
+                    'data' => '/' . $psid . '?fields=first_name,last_name,profile_pic,locale,timezone,gender'
                 ])
             ]);
-            $graphObject = $this->fb->get('/'.$psid.'?fields=first_name,last_name,profile_pic,locale,timezone,gender')->getGraphObject();
-        }catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            $graphObject = $this->fb->get('/' . $psid . '?fields=first_name,last_name,profile_pic,locale,timezone,gender')->getGraphObject();
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,
                 'code' => 422,
                 'type' => 'expire',
                 'mesg' => $e->getMessage()
             ];
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return [
                 'status' => false,
                 'code' => 422,
@@ -632,14 +634,14 @@ class FacebookController extends Controller
                 ])
             ]);
             $graphObject = $this->fb->post('/me/messages', $mesg)->getGraphObject();
-        }catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             return [
                 'status' => false,
                 'code' => 422,
                 'type' => 'expire',
                 'mesg' => $e->getMessage()
             ];
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return [
                 'status' => false,
                 'code' => 422,

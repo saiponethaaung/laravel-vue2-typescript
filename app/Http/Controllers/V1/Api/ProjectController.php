@@ -1213,7 +1213,7 @@ class ProjectController extends Controller
             ->where('project_id', $request->attributes->get('project')->id)
             ->first();
 
-        if ($project->status == 1) {
+        if ($project->project->status == 1) {
             return response()->json([
                 'status' => false,
                 'mesg' => 'Deactivate a project before deleting.',
@@ -1221,5 +1221,41 @@ class ProjectController extends Controller
                 'code' => 422
             ], 422);
         }
+
+        DB::beginTransaction();
+
+        try {
+            if ($project->project->page) {
+                $fbc = new FacebookController($project->project->page->token);
+                $deletePersistentMenu = $fbc->deletePersistentMenu($project->project->page->page_id);
+            }
+
+            $project->project->delete();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $response = [
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to delete project!',
+                'data' => []
+            ];
+
+            if (env('APP_DEBUG')) {
+                $response['debugMesg'] = $e->getMessage();
+                $response['trace'] = $e->getTrace();
+            }
+
+            return response()->json($response, $response['code']);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success',
+            'data' => []
+        ], 200);
     }
 }

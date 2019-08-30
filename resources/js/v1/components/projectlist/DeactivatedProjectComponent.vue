@@ -34,7 +34,7 @@
                     <template v-else>
                         <li @click="deactivateProject">Deactivate</li>
                     </template>
-                    <li>Delete</li>
+                    <li @click="deleteProject">Delete</li>
                 </ul>
             </template>
         </div>
@@ -90,6 +90,27 @@ export default class DeactivatedProjectComponent extends Vue {
                 }
             });
         this.processing = false;
+    }
+
+    async deleteProject() {
+        if(confirm("Are you sure you want to delete this project?")) {
+            this.processing = true;
+            await Axios({
+                url: `/api/v1/project/${this.$store.state.projectList[this.index].id}`,
+                method: "delete"
+            })
+                .then(res => {
+                    this.$store.state.projectList.splice(this.index, 1);
+                })
+                .catch((err: any) => {
+                    if (err.response) {
+                        this.$store.state.errorMesg.push(
+                            err.response.data.mesg || "Failed to delete project!"
+                        );
+                    }
+                });
+            this.processing = false;
+        }
     }
 
     documentClick(e: any) {

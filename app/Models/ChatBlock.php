@@ -15,11 +15,12 @@ class ChatBlock extends Model
         'type'
     ];
 
-    public static function boot() {
+    public static function boot()
+    {
         parent::boot();
 
-        static::deleting(function($block) {
-            foreach($block->sections as $section) {
+        static::deleting(function ($block) {
+            foreach ($block->sections as $section) {
                 $section->delete();
             }
         });

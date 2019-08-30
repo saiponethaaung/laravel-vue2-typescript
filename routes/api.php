@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth:api', 'verifyUserSession']], function () {
 
         Route::group(['prefix' => 'project/{projectId}', 'middleware' => ['verifyProject', 'verifyProjectMember']], function () {
             Route::get('/', 'V1\\Api\\ProjectController@projectInfo')->name('chatbot.project.info');
+            Route::delete('/', 'V1\\Api\\ProjectController@deleteProject')->name('chatbot.project.delete');
             Route::post('/activate', 'V1\\Api\\ProjectController@activateProject')->name('chatbot.project.activate');
             Route::post('/deactivate', 'V1\\Api\\ProjectController@deactivateProject')->name('chatbot.project.deactivate');
             Route::post('/user-input', 'V1\\Api\\ProjectController@updateUserInput')->name('chatbot.project.userinput');

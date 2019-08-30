@@ -69834,6 +69834,26 @@ let DeactivatedProjectComponent = class DeactivatedProjectComponent extends __WE
             this.processing = false;
         });
     }
+    deleteProject() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to delete this project?")) {
+                this.processing = true;
+                yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectList[this.index].id}`,
+                    method: "delete"
+                })
+                    .then(res => {
+                    this.$store.state.projectList.splice(this.index, 1);
+                })
+                    .catch((err) => {
+                    if (err.response) {
+                        this.$store.state.errorMesg.push(err.response.data.mesg || "Failed to delete project!");
+                    }
+                });
+                this.processing = false;
+            }
+        });
+    }
     documentClick(e) {
         let el = this.$refs.projectOption;
         let target = e.target;
@@ -69959,7 +69979,9 @@ var render = function() {
                           ])
                         ],
                     _vm._v(" "),
-                    _c("li", [_vm._v("Delete")])
+                    _c("li", { on: { click: _vm.deleteProject } }, [
+                      _vm._v("Delete")
+                    ])
                   ],
                   2
                 )

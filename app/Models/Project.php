@@ -14,10 +14,11 @@ class Project extends Model
         'user_id'
     ];
 
-    public static function boot() {
+    public static function boot()
+    {
         parent::boot();
 
-        static::created(function($project) {
+        static::created(function ($project) {
             $user = ProjectUser::create([
                 'project_id' => $project->id,
                 'user_id' => $project->user_id,
@@ -55,8 +56,14 @@ class Project extends Model
             ]);
         });
 
-        static::deleting(function($project) {
-
+        static::deleting(function ($project) {
+            $project->page->delete();
+            foreach ($project->users as $user) {
+                $user->delete();
+            }
+            foreach ($project->chatAttributes as $chatAttribute) {
+                $chatAttribute->delete();
+            }
         });
     }
 
@@ -68,6 +75,11 @@ class Project extends Model
     public function users()
     {
         return $this->hasMany('App\Models\ProjectUser', 'project_id', 'id');
+    }
+
+    public function chatAttributes()
+    {
+        return $this->hasMany('App\Models\ChatAttribute', 'project_id', 'id');
     }
 
     public function page()

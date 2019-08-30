@@ -1131,9 +1131,9 @@ class ProjectController extends Controller
             $project->project->status = 0;
             $project->project->save();
 
-            if ($project->page) {
-                $project->page->publish = 0;
-                $project->page->save();
+            if ($project->project->page) {
+                $project->project->page->publish = 0;
+                $project->project->page->save();
 
                 $fbc = new FacebookController($project->page->token);
                 $deletePersistentMenu = $fbc->deletePersistentMenu($project->page->page_id);
@@ -1157,6 +1157,13 @@ class ProjectController extends Controller
         }
 
         DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success',
+            'data' => []
+        ], 200);
     }
 
     public function activateProject(Request $request)
@@ -1190,6 +1197,13 @@ class ProjectController extends Controller
         }
 
         DB::commit();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'mesg' => 'success',
+            'data' => []
+        ], 200);
     }
 
     public function deleteProject(Request $request)

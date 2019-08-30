@@ -1135,8 +1135,8 @@ class ProjectController extends Controller
                 $project->project->page->publish = 0;
                 $project->project->page->save();
 
-                $fbc = new FacebookController($project->page->token);
-                $deletePersistentMenu = $fbc->deletePersistentMenu($project->page->page_id);
+                $fbc = new FacebookController($project->project->page->token);
+                $deletePersistentMenu = $fbc->deletePersistentMenu($project->project->page->page_id);
             }
         } catch (\Exception $e) {
             DB::rollback();

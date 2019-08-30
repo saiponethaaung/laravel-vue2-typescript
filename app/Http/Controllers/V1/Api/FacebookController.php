@@ -254,10 +254,10 @@ class FacebookController extends Controller
                 'section' => 'get_page_list',
                 'request' => json_encode([
                     'token' => $this->token,
-                    'data' => '/me/accounts?fields=id,access_token,name,picture.width(500)&limit(100)'
+                    'data' => '/me/accounts?fields=id,access_token,name,picture.width(500)&limit=100'
                 ])
             ]);
-            $me = $this->fb->get('/me/accounts?fields=id,access_token,name,picture.width(500)&limit(100)')->getGraphEdge()->asArray();
+            $me = $this->fb->get('/me/accounts?fields=id,access_token,name,picture.width(500)&limit=100')->getGraphEdge()->asArray();
             $res = $me;
         } catch(\Facebook\Exceptions\FacebookResponseException $e) {
             return [

@@ -37,7 +37,7 @@ window.fbSdkLoaded = false;
 function logoutResponseHandler(error: any) {
     // if has response show the error
     if (error.response.status === 401) {
-        store.state.commit('logout');
+        store.commit('logout');
         return;
     } else {
         return Promise.reject(error);
@@ -66,6 +66,7 @@ router.beforeEach(async (to, from, next) => {
             url: '/api/v1/user',
             cancelToken: userLoadingToken.token
         }).then((res) => {
+            console.log('before')
             if (to.name === 'login' || to.name === 'register' || to.name === 'verify') {
                 proceedNext = false;
                 router.push({ name: 'home' });
@@ -74,7 +75,7 @@ router.beforeEach(async (to, from, next) => {
                 store.state.user = res.data.data.profile;
                 store.state.passwordVerify = res.data.data.passwordVerify;
             }
-        }).catch(err => {
+        }).catch((err: any) => {
             if (err.response) {
                 let mesg = ajaxHandler.globalHandler(err, 'Failed to authenticate!');
                 alert(mesg);

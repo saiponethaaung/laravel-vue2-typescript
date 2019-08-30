@@ -97,19 +97,72 @@
     flex-wrap: wrap;
     width: 100%;
     float: left;
+    padding: 0 20px;
+    & > div {
+        flex: 0 0 calc(100% / 6);
+        position: relative;
+        .projectName {
+            width: 100%;
+            display: block;
+        }
+    }
+}
+
+.projectProcessing {
+    background: rgba(0, 0, 0, 0.4);
+    left: 20px;
+    width: calc(100% - 40px);
+    top: 0;
+    position: absolute;
+    height: 300px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 13;
+}
+
+.projectOption {
+    position: absolute;
+    top: 5px;
+    right: 25px;
+    text-align: right;
+    button {
+        background: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        &:hover,
+        &:focus {
+            outline: none;
+        }
+    }
+    ul {
+        display: block;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #e2e2e2;
+        background: #fff;
+        border-radius: 5px;
+        li {
+            padding: 5px 15px;
+        }
+    }
 }
 
 .cardList {
     display: block;
-    width: 40px;
+    width: calc(100% - 40px);
     height: 300px;
     border-radius: 8px;
-    min-width: 200px;
-    max-width: 280px;
     position: relative;
-    margin-left: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
     background: #ffffff;
     margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
     .addIcon {
         height: 140px;
         display: flex;
@@ -125,7 +178,7 @@
             height: 40px;
         }
     }
-    
+
     .btnProject {
         height: 130px;
         display: flex;
@@ -139,6 +192,18 @@
         &:hover {
             color: #c238eb;
         }
+    }
+
+    .projectDeactiveLabel {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        text-align: center;
+        display: block;
+        width: 100%;
+        line-height: 30px;
+        background: rgba(0, 0, 0, 0.4);
+        color: #fff;
     }
 }
 

@@ -37,7 +37,7 @@ class ProjectController extends Controller
     {
         $input = $request->only('name');
 
-        if(empty($input['name'])) {
+        if (empty($input['name'])) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -48,7 +48,7 @@ class ProjectController extends Controller
         $project = null;
 
         DB::beginTransaction();
- 
+
         try {
             $project = Project::create([
                 'name' => $input['name'],
@@ -87,12 +87,17 @@ class ProjectController extends Controller
 
         $res = [];
 
-        foreach($projects as $project) {
+        foreach ($projects as $project) {
+            if ($project->user_type !== 0 && $project->project->status == 0) {
+                continue;
+            }
+
             $parsed = [
                 'id' => md5($project->project_id),
                 'name' => $project->project->name,
+                'status' => $project->project->status,
                 'image' => $project->project->page && $project->project->page->page_icon ? $project->project->page->page_icon : '',
-                'isOwner' => $project->user_type!==0 ? false : true,
+                'isOwner' => $project->user_type !== 0 ? false : true,
                 'role' => $project->user_type,
                 'pageConnected' => false
             ];
@@ -110,17 +115,17 @@ class ProjectController extends Controller
     public function projectInfo(Request $request)
     {
         $project = ProjectUser::with(['project', 'project.page'])
-                    ->where('user_id', Auth::guard('api')->user()->id)
-                    ->where('project_id', $request->attributes->get('project')->id)
-                    ->first();
+            ->where('user_id', Auth::guard('api')->user()->id)
+            ->where('project_id', $request->attributes->get('project')->id)
+            ->first();
 
         $res = [
             'id' => md5($project->project_id),
             'name' => $project->project->name,
             'image' => '',
-            'isOwner' => $project->user_type==0 ? true : false,
+            'isOwner' => $project->user_type == 0 ? true : false,
             'role' => $project->user_type,
-            'inputDisabled' => $project->project->is_input_disabled==1,
+            'inputDisabled' => $project->project->is_input_disabled == 1,
             'pageId' => config('facebook.defaultPageId'),
             'testingPageId' => config('facebook.defaultPageId'),
             'pageConnected' => false,
@@ -132,13 +137,13 @@ class ProjectController extends Controller
         $pageInfo = null;
         $liveChat = 0;
 
-        if(is_null($project->project->page)==false) {
+        if (is_null($project->project->page) == false) {
             // @codeCoverageIgnoreStart
             $fbc = new FacebookController($project->project->page->token);
             $pageInfo = $fbc->expire();
-        
+
             // Response error if page check response error
-            if($pageInfo['status']===false && $pageInfo['fbCode']!==190) {
+            if ($pageInfo['status'] === false && $pageInfo['fbCode'] !== 190) {
                 return response()->json([
                     'status' => false,
                     'code' => 422,
@@ -146,17 +151,17 @@ class ProjectController extends Controller
                     'reAuthenticate' => false
                 ], 422);
             }
-            
-            if(!isset($pageInfo['fbCode']) || $pageInfo['fbCode']!==190) {
+
+            if (!isset($pageInfo['fbCode']) || $pageInfo['fbCode'] !== 190) {
                 $res['pageId'] = $project->project->page->page_id;
                 $res['pageConnected'] = true;
-                $res['publish'] = $project->project->page->publish===1 ? true : false;
+                $res['publish'] = $project->project->page->publish === 1 ? true : false;
                 $res['image'] = $pageInfo['data']['picture']['url'];
                 ProjectPage::where('id', $project->project->page->id)->update([
                     'page_icon' => $pageInfo['data']['picture']['url']
                 ]);
                 $liveChat = ProjectPageUser::where('project_page_id', $project->project->page->id)->where('live_chat', 1)->count();
-                if($liveChat > 0) {
+                if ($liveChat > 0) {
                     $res['haveLiveChat'] = true;
                 } else {
                     $res['haveLiveChat'] = false;
@@ -166,7 +171,7 @@ class ProjectController extends Controller
             }
             // @codeCoverageIgnoreEnd
         }
-            
+
         return response()->json([
             'status' => true,
             'code' => 200,
@@ -175,14 +180,14 @@ class ProjectController extends Controller
             'raw' => $pageInfo,
         ]);
     }
-    
+
     // @codeCoverageIgnoreStart
     public function getPage(Request $request)
     {
         $fbc = new FacebookController(Auth::guard('api')->user()->facebook_token);
         $pageList = $fbc->getPageList();
 
-        if($pageList['status']===false) {
+        if ($pageList['status'] === false) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -192,7 +197,7 @@ class ProjectController extends Controller
 
         $res = [];
 
-        foreach($pageList['list'] as $list) {
+        foreach ($pageList['list'] as $list) {
             $parsed = [
                 'id' => $list['id'],
                 'access_token' => $list['access_token'],
@@ -204,15 +209,15 @@ class ProjectController extends Controller
 
             $project = ProjectPage::whereNotNull('project_id')->where('page_id', $parsed['id'])->first();
 
-            if(!empty($project)) {
+            if (!empty($project)) {
                 $parsed['connected'] = true;
-                $parsed['currentProject'] = $project->project_id===$request->attributes->get('project')->id;
+                $parsed['currentProject'] = $project->project_id === $request->attributes->get('project')->id;
             }
 
             $res[] = $parsed;
         }
 
-        usort($res, function($a, $b) {
+        usort($res, function ($a, $b) {
             return $a['currentProject'] < $b['currentProject'];
         });
 
@@ -233,9 +238,9 @@ class ProjectController extends Controller
             'id' => 'required',
             'access_token' => 'required'
         ]);
-        
+
         // Response error if validation failed
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -246,9 +251,9 @@ class ProjectController extends Controller
         // Check if the page exists and token valid or not
         $fbc = new FacebookController($input['access_token']);
         $pageInfo = $fbc->expire();
-        
+
         // Response error if page check response error
-        if($pageInfo['status']===false) {
+        if ($pageInfo['status'] === false) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -256,7 +261,7 @@ class ProjectController extends Controller
             ], 422);
         } else {
             // Response error if page id and provided id from post are not matched
-            if($pageInfo['data']['id']!=$input['id']) {
+            if ($pageInfo['data']['id'] != $input['id']) {
                 return response()->json([
                     'status' => false,
                     'code' => 422,
@@ -268,7 +273,7 @@ class ProjectController extends Controller
         // Check project page
         $projectPage = ProjectPage::where('page_id', $input['id'])->first();
 
-        if(!empty($projectPage) && is_null($projectPage->project_id)===false) {
+        if (!empty($projectPage) && is_null($projectPage->project_id) === false) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -280,11 +285,11 @@ class ProjectController extends Controller
         DB::beginTransaction();
         try {
             $addGetStarted = $fbc->addGetStarted();
-            if(!$addGetStarted['status']) {
-                throw(new \Exception("Failed to add get started!"));
+            if (!$addGetStarted['status']) {
+                throw (new \Exception("Failed to add get started!"));
             }
             // Create new project page if project page didn't exists
-            if(empty($projectPage)) {
+            if (empty($projectPage)) {
                 // Create new project page
                 $projectPage = ProjectPage::create([
                     'project_id' => null,
@@ -296,14 +301,14 @@ class ProjectController extends Controller
             $attributes = ChatAttribute::with([
                 'chatValue',
                 'chatValue.user'
-            ])->whereHas('chatValue', function($query) use ($projectPage) {
-                $query->whereHas('user', function($query) use ($projectPage) {
+            ])->whereHas('chatValue', function ($query) use ($projectPage) {
+                $query->whereHas('user', function ($query) use ($projectPage) {
                     $query->where('project_page_id', $projectPage->id);
                 });
             })->get();
 
-            foreach($attributes as $attribute) {
-                foreach($attribute->chatValue as $cv) {
+            foreach ($attributes as $attribute) {
+                foreach ($attribute->chatValue as $cv) {
                     $validate = $this->chatAttributeHandler($attribute, $request->attributes->get('project')->id);
                     $cv->attribute_id = $validate;
                     $cv->save();
@@ -326,7 +331,7 @@ class ProjectController extends Controller
         $subscribe = $fbc->subscribeApp($input['id']);
 
         // Response error if subscribe failed
-        if($subscribe['status']===false) {
+        if ($subscribe['status'] === false) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -342,7 +347,7 @@ class ProjectController extends Controller
             $projectPage->publish = 0;
             $projectPage->save();
             $this->updatePersistentMenu($request->attributes->get('project')->id, $request->attributes->get('project')->is_input_disabled);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             // Rollback and send error on failed
             DB::rollback();
             return repsonse()->json([
@@ -354,7 +359,7 @@ class ProjectController extends Controller
 
         // commit changes
         DB::commit();
-        
+
         return response()->json([
             'status' => true,
             'code' => 200,
@@ -377,19 +382,19 @@ class ProjectController extends Controller
     {
         $attributeId = $attribute->id;
         // check project id is null on chat attribute
-        if(is_null($attribute->project_id)) {
+        if (is_null($attribute->project_id)) {
             // set target project id
             $attribute->project_id = $targetProject;
             $attribute->save();
         } else {
             // check target project id and attribute project id are matched
-            if($attribute->project_id!==$targetProject) {
+            if ($attribute->project_id !== $targetProject) {
                 // if it is not match check chat attribute with target project id already exists
-                $attr = ChatAttribute::where(DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $attribute->attribute.'%')
+                $attr = ChatAttribute::where(DB::raw('attribute COLLATE utf8mb4_bin'), 'LIKE', $attribute->attribute . '%')
                     ->where('project_id', $targetProject)
                     ->first();
                 // create new attribute if it's not yet exists
-                if(empty($attr)) {
+                if (empty($attr)) {
                     $attr = ChatAttribute::create([
                         'attribute' => $attribute->attribute,
                         'type' => $attribute->type,
@@ -412,9 +417,9 @@ class ProjectController extends Controller
         $validator = Validator::make($input, [
             'page_id' => 'required|exists:project_page,page_id'
         ]);
-        
+
         // Response error if validation failed
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -425,7 +430,7 @@ class ProjectController extends Controller
         $projectPage = ProjectPage::where('page_id', $input['page_id'])->first();
 
         // Check if the page have a project linked or not
-        if(is_null($projectPage->project_id)) {
+        if (is_null($projectPage->project_id)) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -433,7 +438,7 @@ class ProjectController extends Controller
             ], 422);
         }
 
-        if($projectPage->project_id!==$request->attributes->get('project')->id) {
+        if ($projectPage->project_id !== $request->attributes->get('project')->id) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -444,9 +449,9 @@ class ProjectController extends Controller
         // Check if the page exists and token valid or not
         $fbc = new FacebookController($projectPage['token']);
         $pageInfo = $fbc->expire();
-        
+
         // Response error if page check response error
-        if($pageInfo['status']===false) {
+        if ($pageInfo['status'] === false) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -454,7 +459,7 @@ class ProjectController extends Controller
             ], 422);
         } else {
             // Response error if page id and provided id from post are not matched
-            if($pageInfo['data']['id']!=$projectPage['page_id']) {
+            if ($pageInfo['data']['id'] != $projectPage['page_id']) {
                 return response()->json([
                     'status' => false,
                     'code' => 422,
@@ -465,7 +470,7 @@ class ProjectController extends Controller
 
         $checkIsSub = $fbc->issubscribeApp($projectPage['page_id']);
 
-        if($checkIsSub['status']===false) {
+        if ($checkIsSub['status'] === false) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -473,16 +478,16 @@ class ProjectController extends Controller
             ], 422);
         }
 
-        if($checkIsSub['isSubscribe']) {
+        if ($checkIsSub['isSubscribe']) {
             $deletePersistentMenu = $fbc->deletePersistentMenu($projectPage['page_id']);
-            if(!$deletePersistentMenu['status']) {
+            if (!$deletePersistentMenu['status']) {
                 return response()->json($deletePersistentMenu, $deletePersistentMenu['code']);
             }
             // Subscribe facebook page to bot
             $unsubscribe = $fbc->unsubscribeApp($projectPage['page_id']);
 
             // Response error if subscribe failed
-            if($unsubscribe['status']===false) {
+            if ($unsubscribe['status'] === false) {
                 return response()->json([
                     'status' => false,
                     'code' => 422,
@@ -497,7 +502,7 @@ class ProjectController extends Controller
             $projectPage->project_id = null;
             $projectPage->publish = 0;
             $projectPage->save();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             // Rollback and send error on failed
             DB::rollback();
             return response()->json([
@@ -535,7 +540,7 @@ class ProjectController extends Controller
         $projectPage = ProjectPage::where('project_id', $request->attributes->get('project')->id)->first();
 
         // Check if the project have a page linked or not
-        if(empty($projectPage)) {
+        if (empty($projectPage)) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -546,10 +551,10 @@ class ProjectController extends Controller
         // Change project page status
         DB::beginTransaction();
         try {
-            $projectPage->publish = $projectPage->publish==1 ? 0 : 1;
+            $projectPage->publish = $projectPage->publish == 1 ? 0 : 1;
             $projectPage->save();
 
-            if($projectPage->publish===1) {
+            if ($projectPage->publish === 1) {
                 $this->updatePersistentMenu($request->attributes->get('project')->id, $request->attributes->get('project')->is_input_disabled);
             } else {
                 $fbc = new FacebookController($projectPage['token']);
@@ -557,7 +562,7 @@ class ProjectController extends Controller
             }
         }
         // @codeCoverageIgnoreStart
-        catch(\Exception $e) {
+        catch (\Exception $e) {
             // Rollback and send error on failed
             DB::rollback();
             return response()->json([
@@ -576,7 +581,7 @@ class ProjectController extends Controller
             'status' => true,
             'code' => 200,
             'mesg' => 'Success',
-            'publishStatus' => $projectPage->publish===1
+            'publishStatus' => $projectPage->publish === 1
         ]);
     }
 
@@ -589,7 +594,7 @@ class ProjectController extends Controller
             'role' => 'required|in:1,2'
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -601,27 +606,27 @@ class ProjectController extends Controller
         $inviteType = 0;
         $userInfo = '';
 
-        if(empty($user)) {
+        if (empty($user)) {
             $isInvited = ProjectInviteModel::where('email', $input['email'])
                 ->where('project_id', $request->attributes->get('project')->id)
                 ->first();
 
-            if(!empty($isInvited)) {
+            if (!empty($isInvited)) {
                 return response()->json([
                     'status' => false,
                     'code' => 422,
-                    'mesg' => $input['email'].' is already invited!'
+                    'mesg' => $input['email'] . ' is already invited!'
                 ], 422);
             }
         } else {
             $isInvited = ProjectUser::where('user_id', $user->id)
                 ->where('project_id', $request->attributes->get('project')->id)
                 ->first();
-            if(!empty($isInvited)) {
+            if (!empty($isInvited)) {
                 return response()->json([
                     'status' => false,
                     'code' => 422,
-                    'mesg' => $input['email'].' is already a member!'
+                    'mesg' => $input['email'] . ' is already a member!'
                 ], 422);
             }
         }
@@ -647,7 +652,7 @@ class ProjectController extends Controller
                 'project_user_id' => $request->attributes->get('project_user')->id
             ]);
 
-            if(empty($user)) {
+            if (empty($user)) {
                 Mail::to($input['email'])->send(new MemberInviteWithProject($input['email'], $request->attributes->get('project')->name));
                 $info = [
                     'id' => $projectInvite->id,
@@ -661,7 +666,7 @@ class ProjectController extends Controller
                     'user_id' => $user->id,
                     'user_type' => $input['role']
                 ]);
-                
+
                 $user->notify(new ProjectInvite($user, $request->attributes->get('project')->name));
                 $projectInviteStatus = 0;
                 $info = [
@@ -676,7 +681,7 @@ class ProjectController extends Controller
 
             $projectInvite->status = $projectInviteStatus;
             $projectInvite->save();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -707,7 +712,7 @@ class ProjectController extends Controller
 
         $res = [];
 
-        foreach($projectUsers as $projectUser) {
+        foreach ($projectUsers as $projectUser) {
             $res[] = [
                 'id' => $projectUser->id,
                 'name' => $projectUser->user->name,
@@ -733,7 +738,7 @@ class ProjectController extends Controller
 
         $res = [];
 
-        foreach($projectInvites as $projectInvite) {
+        foreach ($projectInvites as $projectInvite) {
             $res[] = [
                 'id' => $projectInvite->id,
                 'email' => $projectInvite->email,
@@ -753,8 +758,8 @@ class ProjectController extends Controller
     public function cancelInvite(Request $request)
     {
         $inviteId = $request->inviteId;
-        
-        if(is_null($inviteId)) {
+
+        if (is_null($inviteId)) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -764,7 +769,7 @@ class ProjectController extends Controller
 
         $invite = ProjectInviteModel::where('status', 1)->find($inviteId);
 
-        if(empty($invite)) {
+        if (empty($invite)) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -778,7 +783,7 @@ class ProjectController extends Controller
             $email = $invite->email;
             $invite->delete();
             Mail::to($email)->send(new ProjectInviteCancelNonMember($email, $request->attributes->get('project')->name));
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -789,7 +794,7 @@ class ProjectController extends Controller
         }
 
         DB::commit();
-        
+
         return response()->json([
             'status' => true,
             'code' => 200,
@@ -800,8 +805,8 @@ class ProjectController extends Controller
     public function deleteMember(Request $request)
     {
         $projectuserid = $request->projectUserId;
-        
-        if(is_null($projectuserid)) {
+
+        if (is_null($projectuserid)) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -811,7 +816,7 @@ class ProjectController extends Controller
 
         $projectUser = ProjectUser::where('user_type', '!=', 0)->find($projectuserid);
 
-        if(empty($projectUser)) {
+        if (empty($projectUser)) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
@@ -826,7 +831,7 @@ class ProjectController extends Controller
         try {
             $projectUser->delete();
             $user->notify(new ProjectInviteCancel($user, $request->attributes->get('project')->name));
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => false,
@@ -837,7 +842,7 @@ class ProjectController extends Controller
         }
 
         DB::commit();
-        
+
         return response()->json([
             'status' => true,
             'code' => 200,
@@ -845,15 +850,16 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function updateUserInput(Request $request) {
+    public function updateUserInput(Request $request)
+    {
         $projectPage = ProjectPage::where('project_id', $request->attributes->get('project')->id)->first();
-        
+
         DB::beginTransaction();
 
         try {
-            $request->attributes->get('project')->is_input_disabled = $request->attributes->get('project')->is_input_disabled==1 ? 0 : 1;
+            $request->attributes->get('project')->is_input_disabled = $request->attributes->get('project')->is_input_disabled == 1 ? 0 : 1;
             $request->attributes->get('project')->save();
-            if(!empty($projectPage)) {
+            if (!empty($projectPage)) {
                 $this->updatePersistentMenu($request->attributes->get('project')->id, $request->attributes->get('project')->is_input_disabled);
             }
         } catch (\Exception $e) {
@@ -865,7 +871,7 @@ class ProjectController extends Controller
                 'data' => []
             ];
 
-            if(env('APP_DEBUG')) {
+            if (env('APP_DEBUG')) {
                 $response['debugMesg'] = $e->getMessage();
                 $response['trace'] = $e->getTrace();
             }
@@ -883,12 +889,12 @@ class ProjectController extends Controller
         ], 200);
     }
 
-    public function updatePersistentMenu($projectId, $input=false)
+    public function updatePersistentMenu($projectId, $input = false)
     {
         $projectPage = ProjectPage::where('project_id', $projectId)->first()->toArray();
 
         // Check if the page have a project linked or not
-        if(empty($projectPage)) {
+        if (empty($projectPage)) {
             return [
                 'status' => true,
                 'code' => 200,
@@ -899,9 +905,9 @@ class ProjectController extends Controller
         // Check if the page exists and token valid or not
         $fbc = new FacebookController($projectPage['token']);
         $pageInfo = $fbc->expire();
-        
+
         // Response error if page check response error
-        if($pageInfo['status']===false) {
+        if ($pageInfo['status'] === false) {
             return [
                 'status' => false,
                 'code' => 422,
@@ -909,7 +915,7 @@ class ProjectController extends Controller
             ];
         } else {
             // Response error if page id and provided id from post are not matched
-            if($pageInfo['data']['id']!=$projectPage['page_id']) {
+            if ($pageInfo['data']['id'] != $projectPage['page_id']) {
                 return [
                     'status' => false,
                     'code' => 422,
@@ -919,7 +925,7 @@ class ProjectController extends Controller
         }
 
         $addGetStarted = $fbc->addGetStarted();
-        if(!$addGetStarted['status']) {
+        if (!$addGetStarted['status']) {
             return [
                 'status' => false,
                 'code' => 422,
@@ -929,7 +935,7 @@ class ProjectController extends Controller
 
         $deletePersistentMenu = $fbc->deletePersistentMenu($projectPage['page_id']);
 
-        if($deletePersistentMenu['status']===false) {
+        if ($deletePersistentMenu['status'] === false) {
             return [
                 'status' => false,
                 'code' => 422,
@@ -945,28 +951,28 @@ class ProjectController extends Controller
         $menuRes = [];
 
         // Loop first persistent menu
-        foreach($menu as $m) {
+        foreach ($menu as $m) {
             // ignore if title is empty
-            if(empty($m->title)) continue;
+            if (empty($m->title)) continue;
             $res = [];
             //check menu type
-            switch($m->type) {
-                // if menu is payload type
-                case(0):
+            switch ($m->type) {
+                    // if menu is payload type
+                case (0):
                     // check block is is null and ignore if it's
-                    if(!is_null($m->block_id)) {
+                    if (!is_null($m->block_id)) {
                         $res = [
                             'title' => $m->title,
                             'type' => 'postback',
-                            'payload' => 'persistentMenu-'.$m->id
+                            'payload' => 'persistentMenu-' . $m->id
                         ];
                     }
                     break;
-                
-                // if menu is url
-                case(1):
+
+                    // if menu is url
+                case (1):
                     // check url empty and ignore if it's
-                    if(!is_null($m->url)) {
+                    if (!is_null($m->url)) {
                         $res = [
                             'title' => $m->title,
                             'type' => 'web_url',
@@ -974,33 +980,33 @@ class ProjectController extends Controller
                         ];
                     }
                     break;
-                
-                // if menu is nested
-                case(2):
+
+                    // if menu is nested
+                case (2):
                     $secondRes = [];
                     // loop second persistent menu
-                    foreach($m->secondRelation as $s) {
+                    foreach ($m->secondRelation as $s) {
                         // ignore if title is empty
-                        if(empty($s->title)) continue;
+                        if (empty($s->title)) continue;
                         $sRes = [];
                         //check menu type
-                        switch($s->type) {
-                            // if menu is payload type
-                            case(0):
+                        switch ($s->type) {
+                                // if menu is payload type
+                            case (0):
                                 // check block is is null and ignore if it's
-                                if(!is_null($s->block_id)) {
+                                if (!is_null($s->block_id)) {
                                     $sRes = [
                                         'title' => $s->title,
                                         'type' => 'postback',
-                                        'payload' => 'persistentMenu-'.$m->id.'-'.$s->id
+                                        'payload' => 'persistentMenu-' . $m->id . '-' . $s->id
                                     ];
                                 }
                                 break;
-                            
-                            // if menu is url
-                            case(1):
+
+                                // if menu is url
+                            case (1):
                                 // check url empty and ignore if it's
-                                if(!is_null($s->url)) {
+                                if (!is_null($s->url)) {
                                     $sRes = [
                                         'title' => $s->title,
                                         'type' => 'web_url',
@@ -1009,32 +1015,32 @@ class ProjectController extends Controller
                                 }
                                 break;
 
-                            // if menu is nested
-                            case(2):
+                                // if menu is nested
+                            case (2):
                                 $thirdRes = [];
                                 // loop third persistent menu
-                                foreach($s->thirdRelation as $t) {
+                                foreach ($s->thirdRelation as $t) {
                                     // ignore if title is empty
-                                    if(empty($t->title)) continue;
+                                    if (empty($t->title)) continue;
                                     $tRes = [];
                                     //check menu type
-                                    switch($t->type) {
-                                        // if menu is payload type
-                                        case(0):
+                                    switch ($t->type) {
+                                            // if menu is payload type
+                                        case (0):
                                             // check block is is null and ignore if it's
-                                            if(!is_null($t->block_id)) {
+                                            if (!is_null($t->block_id)) {
                                                 $tRes = [
                                                     'title' => $t->title,
                                                     'type' => 'postback',
-                                                    'payload' => 'persistentMenu-'.$m->id.'-'.$s->id.'-'.$t->id
+                                                    'payload' => 'persistentMenu-' . $m->id . '-' . $s->id . '-' . $t->id
                                                 ];
                                             }
                                             break;
-                                        
-                                        // if menu is url
-                                        case(1):
+
+                                            // if menu is url
+                                        case (1):
                                             // check url empty and ignore if it's
-                                            if(!is_null($t->url)) {
+                                            if (!is_null($t->url)) {
                                                 $tRes = [
                                                     'title' => $t->title,
                                                     'type' => 'web_url',
@@ -1044,12 +1050,12 @@ class ProjectController extends Controller
                                             break;
                                     }
 
-                                    if(!empty($tRes)) {
+                                    if (!empty($tRes)) {
                                         $thirdRes[] = $tRes;
                                     }
                                 }
-            
-                                if(!empty($thirdRes)) {
+
+                                if (!empty($thirdRes)) {
                                     $sRes = [
                                         'title' => $s->title,
                                         'type' => 'nested',
@@ -1059,12 +1065,12 @@ class ProjectController extends Controller
                                 break;
                         }
 
-                        if(!empty($sRes)) {
+                        if (!empty($sRes)) {
                             $secondRes[] = $sRes;
                         }
                     }
 
-                    if(!empty($secondRes)) {
+                    if (!empty($secondRes)) {
                         $res = [
                             'title' => $m->title,
                             'type' => 'nested',
@@ -1074,14 +1080,14 @@ class ProjectController extends Controller
                     break;
             }
 
-            if(!empty($res)) {
+            if (!empty($res)) {
                 $menuRes[] = $res;
             }
         }
 
         $addPersistentMenu = null;
 
-        if(!empty($menuRes)) {
+        if (!empty($menuRes)) {
             $persistentMenu = [
                 'persistent_menu' => [
                     [
@@ -1094,7 +1100,7 @@ class ProjectController extends Controller
 
             $addPersistentMenu = $fbc->addPersistentMenu($projectPage['page_id'], $persistentMenu);
 
-            if($addPersistentMenu['status']===false) {
+            if ($addPersistentMenu['status'] === false) {
                 return [
                     'status' => false,
                     'code' => 422,
@@ -1110,5 +1116,96 @@ class ProjectController extends Controller
             'del' => $deletePersistentMenu,
             'add' => $addPersistentMenu
         ];
+    }
+
+    public function deactivateProject(Request $request)
+    {
+        $project = ProjectUser::with(['project', 'project.page'])
+            ->where('user_id', Auth::guard('api')->user()->id)
+            ->where('project_id', $request->attributes->get('project')->id)
+            ->first();
+
+        DB::beginTransaction();
+
+        try {
+            $project->project->status = 0;
+            $project->project->save();
+
+            if ($project->page) {
+                $project->page->publish = 0;
+                $project->page->save();
+
+                $fbc = new FacebookController($project->page->token);
+                $deletePersistentMenu = $fbc->deletePersistentMenu($project->page->page_id);
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $response = [
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to deactivate project!',
+                'data' => []
+            ];
+
+            if (env('APP_DEBUG')) {
+                $response['debugMesg'] = $e->getMessage();
+                $response['trace'] = $e->getTrace();
+            }
+
+            return response()->json($response, $response['code']);
+        }
+
+        DB::commit();
+    }
+
+    public function activateProject(Request $request)
+    {
+        $project = ProjectUser::with(['project', 'project.page'])
+            ->where('user_id', Auth::guard('api')->user()->id)
+            ->where('project_id', $request->attributes->get('project')->id)
+            ->first();
+
+        DB::beginTransaction();
+
+        try {
+            $project->project->status = 1;
+            $project->project->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $response = [
+                'status' => false,
+                'code' => 422,
+                'mesg' => 'Failed to activate project!',
+                'data' => []
+            ];
+
+            if (env('APP_DEBUG')) {
+                $response['debugMesg'] = $e->getMessage();
+                $response['trace'] = $e->getTrace();
+            }
+
+            return response()->json($response, $response['code']);
+        }
+
+        DB::commit();
+    }
+
+    public function deleteProject(Request $request)
+    {
+        $project = ProjectUser::with(['project', 'project.page'])
+            ->where('user_id', Auth::guard('api')->user()->id)
+            ->where('project_id', $request->attributes->get('project')->id)
+            ->first();
+
+        if ($project->status == 1) {
+            return response()->json([
+                'status' => false,
+                'mesg' => 'Deactivate a project before deleting.',
+                'data' => [],
+                'code' => 422
+            ], 422);
+        }
     }
 }

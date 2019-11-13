@@ -7,7 +7,7 @@
                     v-model="ui.question"
                     v-on:blur="canShowError=true;ui.saveContent()"
                     placeholder="What do you want to ask"
-                >
+                />
             </div>
             <div class="userInputValidation">
                 <div class="userInputValidationCon">
@@ -35,7 +35,7 @@
                     placeholder="Required"
                     :class="{'required': canShowError && ui.attribute===''}"
                     @keyup="searchKeySuggestion($event)"
-                >
+                />
                 <template v-if="keySuggestion.length>0">
                     <div class="attrKeySuggestCon" ref="suggestion">
                         <ul>
@@ -89,11 +89,11 @@ export default class UserInputItemComponent extends Vue {
     private showSuggest: boolean = false;
     private keySuggestion: any[] = [];
     private keyCancelToken: CancelTokenSource = Axios.CancelToken.source();
-    
+
     mounted() {
         console.log("rerender");
     }
-    
+
     @Emit("closeOtherSection")
     closeOtherSection(index: any) {}
 
@@ -145,9 +145,7 @@ export default class UserInputItemComponent extends Vue {
             data.append("keyword", this.ui.attribute);
 
             await Axios({
-                url: `/api/v1/project/${
-                    this.$store.state.projectInfo.id
-                }/attributes/serach/attribute`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/attributes/serach/attribute`,
                 data: data,
                 method: "post",
                 cancelToken: this.keyCancelToken.token

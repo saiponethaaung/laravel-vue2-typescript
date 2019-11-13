@@ -13,7 +13,7 @@
                             v-on:focus="cancelUpdate()"
                             v-on:blur="updateContent()"
                             v-on:keyup.enter="updateContent(true)"
-                        >
+                        />
                         <span class="limitBtnTitle">{{ textLimit }}</span>
                     </div>
                 </div>
@@ -21,15 +21,22 @@
             <div class="buttonOptions">
                 <div class="buttonActions">
                     <ul class="buttonOptions">
-                        <li @click="menu.content.type=0" :class="{'activeOption': menu.content.type===0}">
+                        <li
+                            @click="menu.content.type=0"
+                            :class="{'activeOption': menu.content.type===0}"
+                        >
                             <span class="optionContent">Blocks</span>
                         </li>
-                        <li @click="menu.content.type=1" :class="{'activeOption': menu.content.type===1}">
+                        <li
+                            @click="menu.content.type=1"
+                            :class="{'activeOption': menu.content.type===1}"
+                        >
                             <span class="optionContent">Url</span>
                         </li>
                     </ul>
                     <div class="buttonValueCon">
-                        <div class="optionValue" v-if="menu.content.type===0">they receive the block
+                        <div class="optionValue" v-if="menu.content.type===0">
+                            they receive the block
                             <template v-if="menu.content.blocks.length>0">
                                 <div class="selectedBlockCon">
                                     <div class="selectedLinkedBlock">
@@ -46,7 +53,7 @@
                                     v-model="blockKeyword"
                                     placeholder="Block name"
                                     @keyup="loadSuggestion()"
-                                >
+                                />
                                 <template v-if="blockList.length>0">
                                     <div class="sugContainer">
                                         <div v-if="loading">Loading...</div>
@@ -76,7 +83,7 @@
                                 placeholder="Url"
                                 v-on:focus="cancelUpdate()"
                                 v-on:blur="updateContent()"
-                            >
+                            />
                         </div>
                     </div>
                 </div>
@@ -86,16 +93,16 @@
 </template>
 
 <script lang="ts">
-import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
-import { blockSuggestion } from '../../configuration/interface';
-import Axios,{ CancelTokenSource } from 'axios';
-import { Vue, Emit, Prop, Component } from 'vue-property-decorator';
-import PersistentThirdMenu from '../../models/PersistentThirdMenu';
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
+import { blockSuggestion } from "../../configuration/interface";
+import Axios, { CancelTokenSource } from "axios";
+import { Vue, Emit, Prop, Component } from "vue-property-decorator";
+import PersistentThirdMenu from "../../models/PersistentThirdMenu";
 
 @Component
 export default class ThirdMenuOption extends Vue {
     @Prop() menu!: PersistentThirdMenu;
-    private blockKeyword: string = '';
+    private blockKeyword: string = "";
 
     private saveBlock: boolean = false;
     private deleteBlock: boolean = false;
@@ -105,7 +112,7 @@ export default class ThirdMenuOption extends Vue {
     private updateToken: CancelTokenSource = Axios.CancelToken.source();
 
     private loading: boolean = false;
-    
+
     documentClick(e: any) {
         let el: any = this.$refs.textBtn;
         let target = e.target;
@@ -118,9 +125,8 @@ export default class ThirdMenuOption extends Vue {
         }
     }
 
-    @Emit('closeContent')
-    closeContent(status: boolean) {
-    }
+    @Emit("closeContent")
+    closeContent(status: boolean) {}
 
     async loadSuggestion() {
         this.loading = true;

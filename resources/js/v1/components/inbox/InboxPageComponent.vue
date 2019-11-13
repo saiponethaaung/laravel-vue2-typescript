@@ -9,8 +9,10 @@
                             <div class="chatHisRoot" ref="chatBox">
                                 <template v-if="prevLoading">Loading...</template>
                                 <template v-for="(mesg, index) in mesgList">
-                                    <div v-if="mesg.contentType!==2 && mesg.contentType!==3"
-                                            :key="index">
+                                    <div
+                                        v-if="mesg.contentType!==2 && mesg.contentType!==3"
+                                        :key="index"
+                                    >
                                         <template
                                             v-if="index==0 || mesgList[index-1].createdAt.date!==mesg.createdAt.date"
                                         >
@@ -26,7 +28,7 @@
                                             >
                                                 <img
                                                     :src="mesg.isSend ? mesg.image ? mesg.image : '/images/sample/logo.png' : $store.state.inboxList[$store.state.selectedInbox].profile_pic"
-                                                >
+                                                />
                                             </figure>
                                             <div class="chatContent">
                                                 <template v-if="mesg.contentType===1">
@@ -62,7 +64,7 @@
                                     type="button"
                                     v-if="!$store.state.inboxList[$store.state.selectedInbox].live_chat"
                                 >
-                                    <img src="/images/icons/chat/chat_icon.png">
+                                    <img src="/images/icons/chat/chat_icon.png" />
                                     <span>Start a live chat</span>
                                 </button>
                                 <button
@@ -71,7 +73,7 @@
                                     type="button"
                                     v-else
                                 >
-                                    <img src="/images/icons/chat/chat_stop.png">
+                                    <img src="/images/icons/chat/chat_stop.png" />
                                     <span>Finish live chat</span>
                                 </button>
                             </div>
@@ -86,7 +88,7 @@
                                             type="text"
                                             v-model="mesg"
                                             placeholder="Send message..."
-                                        >
+                                        />
                                     </form>
                                     <div class="chatInputEmoji">
                                         <i class="material-icons">sentiment_satisfied</i>
@@ -128,7 +130,7 @@
                                             placeholder="Search saved replies"
                                             @keyup="replyList.getReply(replyList.search)"
                                             v-model="replyList.search"
-                                        >
+                                        />
                                     </div>
                                     <div class="savedList">
                                         <template v-if="replyList.listLoading">Loading...</template>
@@ -166,7 +168,7 @@
                                             class="inputText"
                                             placeholder="Enter reply title"
                                             v-model="replyList.reply"
-                                        >
+                                        />
                                     </div>
                                     <div class="replyMessages">
                                         <textarea
@@ -288,7 +290,7 @@
                                             type="text"
                                             placeholder="Type a note"
                                             v-model="noteList.note"
-                                        >
+                                        />
                                     </form>
                                 </div>
                             </div>
@@ -450,9 +452,7 @@ export default class InboxPageComponent extends Vue {
         )
             return;
         await Axios({
-            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${
-                this.$store.state.inboxList[this.$store.state.selectedInbox].id
-            }/load-new?last_id=${this.mesgList[this.mesgList.length - 1].id}`,
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/load-new?last_id=${this.mesgList[this.mesgList.length - 1].id}`,
             method: "get"
         })
             .then(res => {
@@ -479,9 +479,7 @@ export default class InboxPageComponent extends Vue {
         data.append("mesg", this.mesg);
 
         await Axios({
-            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${
-                this.$store.state.inboxList[this.$store.state.selectedInbox].id
-            }/reply`,
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/reply`,
             data: data,
             method: "post"
         })
@@ -540,9 +538,7 @@ export default class InboxPageComponent extends Vue {
         data.append("status", "true");
 
         await Axios({
-            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${
-                this.$store.state.inboxList[this.$store.state.selectedInbox].id
-            }/live-chat`,
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/live-chat`,
             data: data,
             method: "post"
         })
@@ -562,9 +558,7 @@ export default class InboxPageComponent extends Vue {
         data.append("status", "false");
 
         await Axios({
-            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${
-                this.$store.state.inboxList[this.$store.state.selectedInbox].id
-            }/live-chat`,
+            url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[this.$store.state.selectedInbox].id}/live-chat`,
             data: data,
             method: "post"
         })

@@ -13,7 +13,7 @@
                             v-on:focus="cancelUpdate()"
                             v-on:blur="updateContent()"
                             v-on:keyup.enter="updateContent(true)"
-                        >
+                        />
                         <span class="limitBtnTitle">{{ textLimit }}</span>
                     </div>
                 </div>
@@ -32,7 +32,8 @@
                         </li>
                     </ul>
                     <div class="buttonValueCon">
-                        <div class="optionValue" v-if="button.type===0">they receive the block
+                        <div class="optionValue" v-if="button.type===0">
+                            they receive the block
                             <template v-if="button.block.length>0">
                                 <div class="selectedBlockCon">
                                     <div class="selectedLinkedBlock">
@@ -49,7 +50,7 @@
                                     v-model="blockKeyword"
                                     placeholder="Block name"
                                     @keyup="loadSuggestion()"
-                                >
+                                />
                                 <template v-if="blockList.length>0">
                                     <div class="sugContainer">
                                         <div v-if="loading">Loading...</div>
@@ -80,7 +81,7 @@
                                     v-model="button.attribute.title"
                                     @keyup="searchKeySuggestion"
                                     :class="{'hasKeywordSuggest': keySuggestion.length>0}"
-                                >
+                                />
                                 <template v-if="keySuggestion.length>0">
                                     <div class="attrKeySuggestCon" ref="suggestion">
                                         <ul>
@@ -99,7 +100,7 @@
                                     class="noMgb"
                                     placeholder="<Set value>"
                                     v-model="button.attribute.value"
-                                >
+                                />
                             </div>
                         </div>
                         <div class="optionValue" v-if="button.type===1">
@@ -109,7 +110,7 @@
                                 placeholder="Url"
                                 v-on:focus="cancelUpdate()"
                                 v-on:blur="updateContent()"
-                            >
+                            />
                         </div>
                         <div class="optionValue" v-if="button.type===2">
                             <input
@@ -118,7 +119,7 @@
                                 placeholder="Phone number"
                                 v-on:focus="cancelUpdate()"
                                 v-on:blur="updateContent()"
-                            >
+                            />
                         </div>
                     </div>
                 </div>
@@ -275,9 +276,12 @@ export default class ButtonComponent extends Vue {
         this.updateToken.cancel();
         this.updateToken = Axios.CancelToken.source();
 
-        console.log('check restricted', this.ajaxHandler.restrictAttribute.indexOf(
+        console.log(
+            "check restricted",
+            this.ajaxHandler.restrictAttribute.indexOf(
                 this.button.attribute.title.toLowerCase()
-            ));
+            )
+        );
 
         if (
             this.ajaxHandler.restrictAttribute.indexOf(
@@ -285,9 +289,7 @@ export default class ButtonComponent extends Vue {
             ) > -1
         ) {
             this.$store.state.errorMesg.push(
-                `Cannot overwrite system attribute '${
-                    this.button.attribute.title
-                }'!`
+                `Cannot overwrite system attribute '${this.button.attribute.title}'!`
             );
             return;
         }
@@ -370,9 +372,7 @@ export default class ButtonComponent extends Vue {
             data.append("keyword", this.button.attribute.title);
 
             await Axios({
-                url: `/api/v1/project/${
-                    this.$store.state.projectInfo.id
-                }/attributes/serach/attribute`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/attributes/serach/attribute`,
                 data: data,
                 method: "post",
                 cancelToken: this.keyCancelToken.token

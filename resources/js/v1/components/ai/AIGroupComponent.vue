@@ -1,6 +1,5 @@
 <template>
     <li class="aiC-groupCon-child">
-        
         <input
             v-if="group.edit"
             v-model="group.name"
@@ -8,17 +7,19 @@
             class="aiC-groupCon-input"
             @blur="saveRename()"
             ref="editGroupName"
-            required/>
+            required
+        />
         <span class="aiC-groupCon-placeHolder" @click="activeGroup()">{{ group.name }}</span>
-        
+
         <span
             v-if="!confirmDelete && !group.edit"
             class="aiC-groupCon-optionButton"
             :class="{'showOptions': group.option}"
-            @click="group.option=!group.option">
+            @click="group.option=!group.option"
+        >
             <i class="material-icons">more_horiz</i>
         </span>
-        
+
         <ul class="aiC-groupCon-options" ref="optionSelector" v-if="group.option">
             <li @click="renameGroup()">Rename</li>
             <li @click="confirmDelete=true;group.option=false">Delete</li>
@@ -33,9 +34,20 @@
                             <i class="material-icons">close</i>
                         </button>
                     </div>
-                    <p class="aiC-group-delMesg">Please enter ‘delete’ to delete this group of AI rules. This is needed to help you avoid accidental purging of the whole group of AI rules</p>
-                    <input type="text" class="aiC-group-delInput" v-model="confirmText" placeholder="delete"/>
-                    <button class="aiC-group-delAction" @click="deleteGroup()" :disabled="'delete'!==confirmText">Delete</button>
+                    <p
+                        class="aiC-group-delMesg"
+                    >Please enter ‘delete’ to delete this group of AI rules. This is needed to help you avoid accidental purging of the whole group of AI rules</p>
+                    <input
+                        type="text"
+                        class="aiC-group-delInput"
+                        v-model="confirmText"
+                        placeholder="delete"
+                    />
+                    <button
+                        class="aiC-group-delAction"
+                        @click="deleteGroup()"
+                        :disabled="'delete'!==confirmText"
+                    >Delete</button>
                 </div>
             </popup-component>
         </template>
@@ -47,8 +59,8 @@
 </template>
 
 <script lang="ts">
-import { Prop, Vue, Component, Emit } from 'vue-property-decorator';
-import AIGroupModel from '../../models/ai/AIGroupModel';
+import { Prop, Vue, Component, Emit } from "vue-property-decorator";
+import AIGroupModel from "../../models/ai/AIGroupModel";
 
 @Component
 export default class AIGroupComponent extends Vue {
@@ -56,7 +68,7 @@ export default class AIGroupComponent extends Vue {
     @Prop() index!: number;
 
     private confirmDelete: boolean = false;
-    private confirmText: string = '';
+    private confirmText: string = "";
     private errorAIGroup: string = "";
 
     renameGroup() {
@@ -67,27 +79,27 @@ export default class AIGroupComponent extends Vue {
         }, 10);
     }
 
-    @Emit('deleteGroup')
+    @Emit("deleteGroup")
     deleteGroup() {
-        this.confirmText = '';
+        this.confirmText = "";
         this.confirmDelete = false;
         return this.index;
     }
 
-    @Emit('activeGroup')
+    @Emit("activeGroup")
     activeGroup() {
         return this.index;
     }
 
     async saveRename() {
-        if(this.group.name==='') {
+        if (this.group.name === "") {
             this.errorAIGroup = "Group name cannot be empty!";
             return false;
         }
 
         let update = await this.group.updateGroupName();
-        
-        if(!update.status) {
+
+        if (!update.status) {
             this.errorAIGroup = update.mesg;
             this.focusName();
         }
@@ -99,23 +111,23 @@ export default class AIGroupComponent extends Vue {
         el.setSelectionRange(0, this.group.name.length);
     }
 
-    documentClick(e: any){
-        if(this.group.option && !this.group.edit) {
+    documentClick(e: any) {
+        if (this.group.option && !this.group.edit) {
             let el: any = this.$refs.optionSelector;
             let target = e.target;
-            if (undefined!==el && ( el !== target) && !el.contains(target)) {
+            if (undefined !== el && el !== target && !el.contains(target)) {
                 this.group.option = false;
             }
         }
     }
 
     created() {
-        document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
 
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 }
 </script>

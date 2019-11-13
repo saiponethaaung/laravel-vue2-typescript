@@ -3,7 +3,7 @@
         <div class="typingRoot">
             <div class="typingInfo">
                 <figure>
-                    <img src="/images/icons/chatbot/typing.png"/>
+                    <img src="/images/icons/chatbot/typing.png" />
                 </figure>
                 <span>Show "Typing.." for at least</span>
             </div>
@@ -19,7 +19,12 @@
                 </div>
                 <div v-show="showOption" class="dropDownSec">
                     <ul>
-                        <li v-for="i in 20" :key="i" :class="{'selected': i===content.duration}" @click="content.duration===i ? showOption=false :content.duration=i">{{ i }} sec</li>
+                        <li
+                            v-for="i in 20"
+                            :key="i"
+                            :class="{'selected': i===content.duration}"
+                            @click="content.duration===i ? showOption=false :content.duration=i"
+                        >{{ i }} sec</li>
                     </ul>
                 </div>
             </div>
@@ -28,38 +33,39 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch, Prop, Vue } from 'vue-property-decorator';
-import TypingContentModel from '../../../models/bots/TypingContentModel';
+import { Component, Watch, Prop, Vue } from "vue-property-decorator";
+import TypingContentModel from "../../../models/bots/TypingContentModel";
 
 @Component
 export default class TypingComponent extends Vue {
     @Prop({
-        type: TypingContentModel,
-    }) content!: TypingContentModel;
+        type: TypingContentModel
+    })
+    content!: TypingContentModel;
 
     private showOption: boolean = false;
 
-    @Watch('content.duration')
+    @Watch("content.duration")
     async durationChange() {
         this.showOption = false;
         await this.content.saveDuration();
     }
 
-    documentClick(e: any){
+    documentClick(e: any) {
         let el: any = this.$refs.dropdownMenu;
         let target = e.target;
-        if (( el !== target) && !el.contains(target)) {
+        if (el !== target && !el.contains(target)) {
             this.showOption = false;
         }
     }
 
     created() {
-      document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
 
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 }
 </script>

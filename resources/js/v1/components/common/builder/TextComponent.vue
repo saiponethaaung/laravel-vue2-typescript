@@ -22,9 +22,15 @@
                     </template>
                 </div>
                 <div class="textBtn">
-                    <div class="addBtn btnCon" v-for="(button, index) in content.buttons" :key="index">
+                    <div
+                        class="addBtn btnCon"
+                        v-for="(button, index) in content.buttons"
+                        :key="index"
+                    >
                         <div class="buttonActionGroup" @click="content.btnEditIndex=index">
-                            <div class="buttonName">{{ button.title ? button.title : 'Button Name' }}</div>
+                            <div
+                                class="buttonName"
+                            >{{ button.title ? button.title : 'Button Name' }}</div>
                             <div
                                 class="buttonActionName"
                                 v-if="button.type===0 && button.block.length>0"
@@ -62,7 +68,7 @@
                 </div>
                 <div v-if="content.isUpdating" class="loadingConV1">
                     <div class="loadingInnerConV1">
-                        <loading-component/>
+                        <loading-component />
                     </div>
                 </div>
             </div>

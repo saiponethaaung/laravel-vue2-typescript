@@ -21,7 +21,7 @@
                 </button>
                 <button class="uloButton" @click="exportCSV" v-if="userList.length>0">
                     <figure>
-                        <img src="/images/icons/user/export.png">
+                        <img src="/images/icons/user/export.png" />
                     </figure>
                     <span>export</span>
                 </button>
@@ -49,7 +49,7 @@
                             type="text"
                             placeholder="Segment name"
                             v-model="filterSegment.name"
-                        >
+                        />
                     </div>
                     <div class="attributeSelectorList alignAttribute">
                         <template v-for="(attribute, index) in filterSegment.attributes">
@@ -136,9 +136,7 @@ export default class UserSegmentListComponent extends Vue {
         this.userLoading = true;
 
         await Axios({
-            url: `/api/v1/project/${
-                this.$store.state.projectInfo.id
-            }/users/segments/${this.$store.state.selectedSegment}/users`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/users/segments/${this.$store.state.selectedSegment}/users`,
             method: "get",
             cancelToken: this.loadUserToken.token
         })

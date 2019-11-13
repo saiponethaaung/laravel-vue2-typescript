@@ -1,8 +1,6 @@
 <template>
     <div class="inheritHFW broadcastRoot">
-        <template v-if="loading">
-            Loading...
-        </template>
+        <template v-if="loading">Loading...</template>
         <template v-else>
             <div class="broadcastFilterCon">
                 <div class="outerDisplay" v-if="$store.state.messageTags.length>0">
@@ -37,29 +35,40 @@
                                 :segmentValue="filterList.segments"
                                 :segment="attribute.segment"
                             ></attribute-selector-component>
-                            
-                            <button v-if="filterList.attributes.length>1" class="deleteAttribute" @click="filterList.deleteFilter(index);">
+
+                            <button
+                                v-if="filterList.attributes.length>1"
+                                class="deleteAttribute"
+                                @click="filterList.deleteFilter(index);"
+                            >
                                 <i class="material-icons">delete</i>
                             </button>
-                            <div v-if="(filterList.attributes.length-1)==index" @click="addNewFitler()" class="addMoreFilterButton">
+                            <div
+                                v-if="(filterList.attributes.length-1)==index"
+                                @click="addNewFitler()"
+                                class="addMoreFilterButton"
+                            >
                                 <i class="material-icons">add</i>Add More
                             </div>
                         </div>
                     </template>
                 </div>
 
-                <div class="reachableUser">You have <b>4</b> users based on your filters.</div>
+                <div class="reachableUser">
+                    You have
+                    <b>4</b> users based on your filters.
+                </div>
 
                 <div class="btnAction broadcastActionBtn">
                     <a href="javascript:void(0);" @click="deleteBroadcast()">
                         <figure>
-                            <img src="/images/icons/broadcast/delete.png"/>
+                            <img src="/images/icons/broadcast/delete.png" />
                         </figure>
                     </a>
                     <a href="javascript:void(0);" @click="broadcastSend()">
                         <figure class="btnSend">
-                            <img src="/images/icons/broadcast/send.png"/>
-                        </figure>   
+                            <img src="/images/icons/broadcast/send.png" />
+                        </figure>
                     </a>
                 </div>
             </div>
@@ -68,20 +77,21 @@
                 <builder-component
                     :isBroadcast="true"
                     :value="contents"
-                    :section="broadcast.section"></builder-component>
+                    :section="broadcast.section"
+                ></builder-component>
             </div>
         </template>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue, Watch } from 'vue-property-decorator';
-import BuilderComponentMock from '../common/BuilderComponentMock.vue';
-import BroadcastAttributeFilterListModel from '../../models/BroadcastAttributeFilterListModel';
-import AttributeFilterModel from '../../models/AttributeFilterModel';
-import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
-import Axios,{ CancelTokenSource } from 'axios';
-import BroadcastModel from '../../models/broadcast/BroadcastModel';
+import { Component, Emit, Vue, Watch } from "vue-property-decorator";
+import BuilderComponentMock from "../common/BuilderComponentMock.vue";
+import BroadcastAttributeFilterListModel from "../../models/BroadcastAttributeFilterListModel";
+import AttributeFilterModel from "../../models/AttributeFilterModel";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
+import Axios, { CancelTokenSource } from "axios";
+import BroadcastModel from "../../models/broadcast/BroadcastModel";
 
 @Component({
     components: {
@@ -89,7 +99,6 @@ import BroadcastModel from '../../models/broadcast/BroadcastModel';
     }
 })
 export default class BroadcastSendNowComponent extends Vue {
-
     private showTags: boolean = false;
     private broadcast: BroadcastModel = new BroadcastModel();
     private loading: boolean = false;
@@ -98,9 +107,11 @@ export default class BroadcastSendNowComponent extends Vue {
     private loadingContentToken: CancelTokenSource = Axios.CancelToken.source();
     private loadingContent: boolean = true;
     private contents: any = [];
-    private filterList: BroadcastAttributeFilterListModel = new BroadcastAttributeFilterListModel(this.$store.state.projectInfo.id);
+    private filterList: BroadcastAttributeFilterListModel = new BroadcastAttributeFilterListModel(
+        this.$store.state.projectInfo.id
+    );
 
-    @Emit('input')
+    @Emit("input")
     selectNewOption(key: number) {
         return key;
     }
@@ -110,12 +121,12 @@ export default class BroadcastSendNowComponent extends Vue {
     }
 
     get selectedTag() {
-        if(undefined === this.broadcast) return 0;
+        if (undefined === this.broadcast) return 0;
 
         let index: any = 0;
 
-        for(let i=0; this.$store.state.messageTags.length>i; i++ ) {
-            if(this.$store.state.messageTags[i].id===this.broadcast.tag) {
+        for (let i = 0; this.$store.state.messageTags.length > i; i++) {
+            if (this.$store.state.messageTags[i].id === this.broadcast.tag) {
                 index = i;
                 break;
             }
@@ -132,22 +143,29 @@ export default class BroadcastSendNowComponent extends Vue {
 
         await Axios({
             url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/sendnow`,
-            method: 'get',
+            method: "get",
             cancelToken: this.loadingToken.token
-        }).then(res => {
-            this.broadcast.broadcastInit(res.data.data);
-            this.filterList = new BroadcastAttributeFilterListModel(this.$store.state.projectInfo.id);
-            this.filterList.id = this.broadcast.id;
-            this.filterList.loadAttributes();
-            this.loadBroadcastContent();
-            this.loading = false;
-        }).catch(err => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load broadcast info!');
-                alert(mesg);
+        })
+            .then(res => {
+                this.broadcast.broadcastInit(res.data.data);
+                this.filterList = new BroadcastAttributeFilterListModel(
+                    this.$store.state.projectInfo.id
+                );
+                this.filterList.id = this.broadcast.id;
+                this.filterList.loadAttributes();
+                this.loadBroadcastContent();
                 this.loading = false;
-            }
-        });
+            })
+            .catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to load broadcast info!"
+                    );
+                    alert(mesg);
+                    this.loading = false;
+                }
+            });
     }
 
     async loadBroadcastContent() {
@@ -160,16 +178,21 @@ export default class BroadcastSendNowComponent extends Vue {
         await Axios({
             url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.broadcast.id}/section/${this.broadcast.section.id}/content`,
             cancelToken: this.loadingContentToken.token
-        }).then((res: any) => {
-            this.contents = res.data.content;
-        }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
-                alert(mesg);
-            } else {
-                this.loadingContentToken.cancel();
-            }
-        });
+        })
+            .then((res: any) => {
+                this.contents = res.data.content;
+            })
+            .catch((err: any) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to load content!"
+                    );
+                    alert(mesg);
+                } else {
+                    this.loadingContentToken.cancel();
+                }
+            });
 
         this.loadingContent = false;
     }
@@ -178,32 +201,32 @@ export default class BroadcastSendNowComponent extends Vue {
         this.filterList.createNewAttribute();
     }
 
-    @Watch('broadcast.tag')
+    @Watch("broadcast.tag")
     private async updateTag() {
-        if(this.loadingContent) return;
+        if (this.loadingContent) return;
         await this.broadcast.updateTag();
     }
-    
+
     private async deleteBroadcast() {
-        if(confirm("Are you sure you want to delete this broadcast?")) {
+        if (confirm("Are you sure you want to delete this broadcast?")) {
             let del = await this.broadcast.deleteBroadcast();
-            if(!del.status) {
+            if (!del.status) {
                 alert(del.mesg);
             } else {
                 this.$store.state.deleteTrigger = this.broadcast.id;
-                this.$router.push({name: 'project.broadcast'});
+                this.$router.push({ name: "project.broadcast" });
             }
         }
     }
-    
+
     private async broadcastSend() {
-        if(confirm("Are you sure you want to publish this broadcast?")) {
+        if (confirm("Are you sure you want to publish this broadcast?")) {
             let publish = await this.broadcast.broadcastSend();
-            if(!publish.status) {
+            if (!publish.status) {
                 alert(publish.mesg);
             } else {
                 this.$store.state.deleteTrigger = this.broadcast.id;
-                this.$router.push({name: 'project.broadcast'});
+                this.$router.push({ name: "project.broadcast" });
             }
         }
     }

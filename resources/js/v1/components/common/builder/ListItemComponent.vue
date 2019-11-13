@@ -16,7 +16,7 @@
                             class="chatListTitle"
                             :class="{'required': listItem.title=='' && listItem.canShowError}"
                             v-on:blur="listItem.saveContent()"
-                        >
+                        />
                         <span class="limitListTitle">{{ listItem.textLimitTitle }}</span>
                     </div>
                     <div class="inputConLimitWrapper">
@@ -27,7 +27,7 @@
                             v-model="listItem.sub"
                             class="chatListSub"
                             v-on:blur="listItem.saveContent()"
-                        >
+                        />
                         <span class="limitListTitle limitSub">{{ listItem.textLimitSub }}</span>
                     </div>
                     <div>
@@ -37,14 +37,14 @@
                             v-model="listItem.url"
                             class="chatListUrl"
                             v-on:blur="listItem.saveContent()"
-                        >
+                        />
                     </div>
                 </div>
                 <div class="chatListImage">
                     <figure>
                         <template v-if="listItem.image">
                             <div class="listItemImageCon">
-                                <img :src="listItem.image">
+                                <img :src="listItem.image" />
                             </div>
                             <template v-if="listItem.deletingImage">
                                 <div class="deletingImage">
@@ -69,7 +69,7 @@
                                 </template>
                                 <template v-else>
                                     <i class="material-icons">photo_camera</i>
-                                    <input type="file" @change="listItem.imageUpload($event)">
+                                    <input type="file" @change="listItem.imageUpload($event)" />
                                 </template>
                             </label>
                         </template>

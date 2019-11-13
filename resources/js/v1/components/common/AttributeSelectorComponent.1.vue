@@ -21,7 +21,11 @@
                     </div>
                 </template>
                 <template v-else-if="attribute.option === 2">
-                    <input placeholder="Attribute name" v-model="attribute.name" class="attrSelInput"/>
+                    <input
+                        placeholder="Attribute name"
+                        v-model="attribute.name"
+                        class="attrSelInput"
+                    />
                 </template>
                 <template v-else-if="attribute.option === 3">
                     <div class="optionSpinner">
@@ -53,7 +57,11 @@
                     </div>
                 </template>
                 <template v-else-if="attribute.option === 2">
-                    <input placeholder="Attribute value" v-model="attribute.value" class="attrSelInput"/>
+                    <input
+                        placeholder="Attribute value"
+                        v-model="attribute.value"
+                        class="attrSelInput"
+                    />
                 </template>
                 <template v-else-if="attribute.option === 3">
                     <div class="optionSpinner">
@@ -65,7 +73,7 @@
                     </div>
                 </template>
             </div>
-        </div>    
+        </div>
         <div v-if="canCondition" class="attributeSelectorCondi">
             <spinner-drop-down-component
                 :options="condiOptions"
@@ -73,13 +81,13 @@
                 v-model="attribute.condi"
             ></spinner-drop-down-component>
         </div>
-    </div>    
+    </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import SpinnerDropDownComponent from './SpinnerDropDownComponent.vue';
-import AttributeFilterModel from '../../models/AttributeFilterModel';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import SpinnerDropDownComponent from "./SpinnerDropDownComponent.vue";
+import AttributeFilterModel from "../../models/AttributeFilterModel";
 
 @Component({
     components: {
@@ -89,96 +97,97 @@ import AttributeFilterModel from '../../models/AttributeFilterModel';
 export default class AttributeSelectorComponent extends Vue {
     @Prop({
         default: false
-    }) canCondition!: boolean;
+    })
+    canCondition!: boolean;
     @Prop() attribute!: AttributeFilterModel;
 
     private condiOptions: any = [
         {
             key: 1,
-            value: 'and'
+            value: "and"
         },
         {
             key: 2,
-            value: 'or'
+            value: "or"
         }
     ];
 
     private attributeOptions: any = [
         {
             key: 1,
-            value: 'User Attribute'
+            value: "User Attribute"
         },
         {
             key: 2,
-            value: 'Attribute',
+            value: "Attribute"
         },
         {
             key: 3,
-            value: 'System Attribute'
+            value: "System Attribute"
         }
     ];
 
     private systemAttribute: any = [
         {
             key: 1,
-            value: "Signed up",
+            value: "Signed up"
         },
         {
             key: 2,
-            value: "Last Seen",
+            value: "Last Seen"
         },
         {
             key: 3,
-            value: "Last Engaged",
+            value: "Last Engaged"
         }
     ];
 
     private userAttribute: any = [
         {
             key: 1,
-            value: "Gender",
-        },
+            value: "Gender"
+        }
     ];
 
     private systemAttributeValue: any = [
         {
             key: 1,
-            value: "24 hrs ago",
+            value: "24 hrs ago"
         },
         {
             key: 2,
-            value: "1 week ago",
+            value: "1 week ago"
         },
         {
             key: 3,
-            value: "1 month ago",
+            value: "1 month ago"
         },
         {
             key: 4,
-            value: "3 months ago",
-        },
+            value: "3 months ago"
+        }
     ];
 
     private userAttributeValue: any = [
         {
             key: 1,
-            value: "Male",
+            value: "Male"
         },
         {
             key: 2,
-            value: "Female",
+            value: "Female"
         }
     ];
 
-    get filterType() : Array<any> {
+    get filterType(): Array<any> {
         let res = [
             {
                 key: 1,
-                value: 'is not'
+                value: "is not"
             },
             {
                 key: 2,
-                value: 'is'
+                value: "is"
             }
         ];
 

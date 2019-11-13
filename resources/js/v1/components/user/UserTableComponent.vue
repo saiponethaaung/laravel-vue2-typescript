@@ -5,23 +5,20 @@
                 <tr>
                     <th class="utlCheckColumn">
                         <div class="ultWrapper ultChecker" :class="{'ultChecked': allChecked}">
-                            <i class="material-icons" @click="toggleAll()">{{ allChecked ? 'check_box' : 'check_box_outline_blank' }}</i>
+                            <i
+                                class="material-icons"
+                                @click="toggleAll()"
+                            >{{ allChecked ? 'check_box' : 'check_box_outline_blank' }}</i>
                         </div>
                     </th>
                     <th>
-                        <div class="ultWrapper">
-                            Name
-                        </div>
+                        <div class="ultWrapper">Name</div>
                     </th>
                     <th class="utlGenderColumn">
-                        <div class="ultWrapper">
-                            Gender
-                        </div>
+                        <div class="ultWrapper">Gender</div>
                     </th>
                     <th>
-                        <div class="ultWrapper">
-                            Age
-                        </div>
+                        <div class="ultWrapper">Age</div>
                     </th>
                     <th class="ultDateColumn">
                         <div class="ultWrapper">
@@ -59,53 +56,55 @@
                 <template v-else>
                     <tr v-for="(user, index) in userList" :key="index">
                         <td class="utlCheckColumn">
-                            <div class="ultWrapper ultChecker" :class="{'ultChecked': user.checked}">
-                                <i class="material-icons" @click="user.checked=!user.checked">{{ user.checked ? 'check_box' : 'check_box_outline_blank' }}</i>
+                            <div
+                                class="ultWrapper ultChecker"
+                                :class="{'ultChecked': user.checked}"
+                            >
+                                <i
+                                    class="material-icons"
+                                    @click="user.checked=!user.checked"
+                                >{{ user.checked ? 'check_box' : 'check_box_outline_blank' }}</i>
                             </div>
                         </td>
                         <td>
-                            <div class="ultWrapper hoverCursor" @click="openAttributePop(index)">
-                                {{ user.name }}
-                            </div>
+                            <div
+                                class="ultWrapper hoverCursor"
+                                @click="openAttributePop(index)"
+                            >{{ user.name }}</div>
                         </td>
                         <td class="utlGenderColumn">
-                            <div class="ultWrapper">
-                                {{ user.gender }}
-                            </div>
+                            <div class="ultWrapper">{{ user.gender }}</div>
                         </td>
                         <td>
-                            <div class="ultWrapper">
-                                {{ user.age>0 ? user.age : "-" }}
-                            </div>
+                            <div class="ultWrapper">{{ user.age>0 ? user.age : "-" }}</div>
                         </td>
                         <td class="ultDateColumn">
-                            <div class="ultWrapper">
-                                {{ user.lastEngaged }}
-                            </div>
+                            <div class="ultWrapper">{{ user.lastEngaged }}</div>
                         </td>
                         <td class="ultDateColumn">
-                            <div class="ultWrapper">
-                                {{ user.lastSeen }}
-                            </div>
+                            <div class="ultWrapper">{{ user.lastSeen }}</div>
                         </td>
                         <td class="ultDateColumn">
-                            <div class="ultWrapper">
-                                {{ user.signup }}
-                            </div>
+                            <div class="ultWrapper">{{ user.signup }}</div>
                         </td>
                         <td class="utlSessinColumn">
-                            <div class="ultWrapper">
-                                Session
+                            <div class="ultWrapper">Session</div>
+                        </td>
+                        <td class="utlIconColumn">
+                            <div class="ultWrapper iconCenter">
+                                <i
+                                    class="material-icons ultEditIcon"
+                                    @click="openAttributePop(index)"
+                                >create</i>
                             </div>
                         </td>
                         <td class="utlIconColumn">
                             <div class="ultWrapper iconCenter">
-                                <i class="material-icons ultEditIcon" @click="openAttributePop(index)">create</i>
-                            </div>
-                        </td>
-                        <td class="utlIconColumn">
-                            <div class="ultWrapper iconCenter">
-                                <img src="/images/icons/common/messenger.png" @click="enableLiveChat(user)" class="messengerIcon"/>
+                                <img
+                                    src="/images/icons/common/messenger.png"
+                                    @click="enableLiveChat(user)"
+                                    class="messengerIcon"
+                                />
                             </div>
                         </td>
                     </tr>
@@ -127,14 +126,31 @@
                             <tbody>
                                 <template v-if="userList[editIndex].isAttrLoad">
                                     <template v-if="userList[editIndex].attributes.length>0">
-                                        <tr v-for="(attribute, index) in userList[editIndex].attributes" :key="index" class="attrRow">
+                                        <tr
+                                            v-for="(attribute, index) in userList[editIndex].attributes"
+                                            :key="index"
+                                            class="attrRow"
+                                        >
                                             <!-- <td class="attrTitle">{{ attribute.name }}</td> -->
                                             <td class="attrTitle">
-                                                <input type="text" :class="{'newAttribute': attribute.name===''}" v-model="attribute.name" v-on:blur="updateAttributeName(editIndex, index)"/>
+                                                <input
+                                                    type="text"
+                                                    :class="{'newAttribute': attribute.name===''}"
+                                                    v-model="attribute.name"
+                                                    v-on:blur="updateAttributeName(editIndex, index)"
+                                                />
                                             </td>
                                             <td class="attrValue">
-                                                <input type="text" :class="{'newAttribute': attribute.value===''}" v-model="attribute.value"  v-on:blur="updateAttributeValue(editIndex, index)"/>
-                                                <button @click="deleteAttribute(editIndex, index)" class="attrDel">
+                                                <input
+                                                    type="text"
+                                                    :class="{'newAttribute': attribute.value===''}"
+                                                    v-model="attribute.value"
+                                                    v-on:blur="updateAttributeValue(editIndex, index)"
+                                                />
+                                                <button
+                                                    @click="deleteAttribute(editIndex, index)"
+                                                    class="attrDel"
+                                                >
                                                     <i class="material-icons">delete</i>
                                                 </button>
                                             </td>
@@ -203,26 +219,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import UserListModel from '../../models/users/UserListModel';
+import { Component, Vue, Prop } from "vue-property-decorator";
+import UserListModel from "../../models/users/UserListModel";
 
 @Component
-export default class UserTableComponent extends Vue{
-    @Prop({default: []}) userList!: Array<UserListModel>;
-    @Prop({default: false}) userLoading!: boolean;
+export default class UserTableComponent extends Vue {
+    @Prop({ default: [] }) userList!: Array<UserListModel>;
+    @Prop({ default: false }) userLoading!: boolean;
 
     private editIndex: number = -1;
     private errorAttribute: string = "";
 
-    get allChecked() : boolean{
+    get allChecked(): boolean {
         let status = false;
-        if(this.userList.length>0) {
+        if (this.userList.length > 0) {
             let checked = 0;
-            for(let i of this.userList) {
-                if(i.checked) checked++;
+            for (let i of this.userList) {
+                if (i.checked) checked++;
             }
 
-            status = this.userList.length===checked;
+            status = this.userList.length === checked;
         }
         return status;
     }
@@ -230,54 +246,58 @@ export default class UserTableComponent extends Vue{
     private toggleAll() {
         let status = !this.allChecked;
 
-        for(let i in this.userList) {
+        for (let i in this.userList) {
             this.userList[i].checked = status;
         }
     }
-    
+
     private async openAttributePop(index: number) {
         this.editIndex = index;
 
         // Load user attribute if it's not yet loaded
-        if(!this.userList[index].isAttrLoad) {
+        if (!this.userList[index].isAttrLoad) {
             let loadAttribute = await this.userList[index].loadAttribute();
             // alert an error if the process failed
-            if(!loadAttribute.status) {
+            if (!loadAttribute.status) {
                 this.errorAttribute = loadAttribute.mesg;
             }
         }
     }
 
     private async updateAttributeName(user: number, attribute: number) {
-        let update = await this.userList[user].attributes[attribute].updateAttributeName();
-        
-        if(!update['status']) {
-            this.errorAttribute = update['mesg']; 
+        let update = await this.userList[user].attributes[
+            attribute
+        ].updateAttributeName();
+
+        if (!update["status"]) {
+            this.errorAttribute = update["mesg"];
         }
     }
 
     private async updateAttributeValue(user: number, attribute: number) {
-        let update = await this.userList[user].attributes[attribute].updateAttributeValue();
-        
-        if(!update['status']) {
-            this.errorAttribute = update['mesg']; 
+        let update = await this.userList[user].attributes[
+            attribute
+        ].updateAttributeValue();
+
+        if (!update["status"]) {
+            this.errorAttribute = update["mesg"];
         }
     }
 
     private async createNewAttribute(user: number) {
         let create = await this.userList[user].createAttribute();
 
-        if(!create['status']) {
-            this.errorAttribute = create['mesg'];
+        if (!create["status"]) {
+            this.errorAttribute = create["mesg"];
         }
     }
 
     private async deleteAttribute(user: number, attribute: number) {
-        if(confirm("Are you sure you want to delete this attribute?")) {
+        if (confirm("Are you sure you want to delete this attribute?")) {
             let create = await this.userList[user].deleteAttribute(attribute);
 
-            if(!create['status']) {
-                this.errorAttribute = create['mesg'];
+            if (!create["status"]) {
+                this.errorAttribute = create["mesg"];
             }
         }
     }
@@ -285,12 +305,12 @@ export default class UserTableComponent extends Vue{
     private async enableLiveChat(user: UserListModel) {
         let liveChat = await user.enabledLiveChat();
 
-        if(!liveChat['status']) {
-            this.errorAttribute = liveChat['mesg'];
+        if (!liveChat["status"]) {
+            this.errorAttribute = liveChat["mesg"];
             return;
         }
 
-        this.$router.push({name: 'project.inbox'});
+        this.$router.push({ name: "project.inbox" });
     }
 }
 </script>

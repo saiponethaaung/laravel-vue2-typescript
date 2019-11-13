@@ -11,28 +11,28 @@
         </div>
         <div>
             <ul class="sectionList">
-                <li @click="showSection=1" :class="{'activeMSection': showSection===1}">Members ({{ adminList.length }})</li>
+                <li
+                    @click="showSection=1"
+                    :class="{'activeMSection': showSection===1}"
+                >Members ({{ adminList.length }})</li>
                 <li class="sectionSeparator">|</li>
-                <li @click="showSection=2" :class="{'activeMSection': showSection===2}">Pending invite ({{ inviteList.length }})</li>
+                <li
+                    @click="showSection=2"
+                    :class="{'activeMSection': showSection===2}"
+                >Pending invite ({{ inviteList.length }})</li>
             </ul>
             <div class="memberListCon" v-if="showSection==1">
                 <table class="userListTable">
                     <thead>
                         <tr>
                             <th>
-                                <div class="ultWrapper">
-                                    Name
-                                </div>
+                                <div class="ultWrapper">Name</div>
                             </th>
                             <th class="utlGenderColumn">
-                                <div class="ultWrapper">
-                                    Email
-                                </div>
+                                <div class="ultWrapper">Email</div>
                             </th>
                             <th>
-                                <div class="ultWrapper">
-                                    Role
-                                </div>
+                                <div class="ultWrapper">Role</div>
                             </th>
                             <th class="ultDateColumn">
                                 <div class="ultWrapper">
@@ -55,34 +55,31 @@
                                     <td>
                                         <div class="ultWrapper">
                                             <figure>
-                                                <img src="/images/sample/logo.png"/>
+                                                <img src="/images/sample/logo.png" />
                                             </figure>
                                             {{ admin.name }}
                                         </div>
                                     </td>
                                     <td class="utlGenderColumn">
-                                        <div class="ultWrapper">
-                                            {{ admin.email }}
-                                        </div>
+                                        <div class="ultWrapper">{{ admin.email }}</div>
                                     </td>
                                     <td>
-                                        <div class="ultWrapper">
-                                            {{ getRole(admin.role) }}
-                                        </div>
+                                        <div class="ultWrapper">{{ getRole(admin.role) }}</div>
                                     </td>
                                     <td class="ultDateColumn">
-                                        <div class="ultWrapper">
-                                            {{ admin.invited_on }}
-                                        </div>
+                                        <div class="ultWrapper">{{ admin.invited_on }}</div>
                                     </td>
                                     <!-- <td class="utlIconColumn">
                                         <div class="ultWrapper iconCenter">
                                             <i class="material-icons ultEditIcon">create</i>
                                         </div>
-                                    </td> -->
+                                    </td>-->
                                     <td class="utlIconColumn">
                                         <div class="ultWrapper iconCenter">
-                                            <i class="material-icons ultEditIcon" @click="deleteMember(index)">delete_forever</i>
+                                            <i
+                                                class="material-icons ultEditIcon"
+                                                @click="deleteMember(index)"
+                                            >delete_forever</i>
                                         </div>
                                     </td>
                                 </tr>
@@ -101,14 +98,10 @@
                     <thead>
                         <tr>
                             <th class="utlGenderColumn">
-                                <div class="ultWrapper">
-                                    Email
-                                </div>
+                                <div class="ultWrapper">Email</div>
                             </th>
                             <th>
-                                <div class="ultWrapper">
-                                    Role
-                                </div>
+                                <div class="ultWrapper">Role</div>
                             </th>
                             <th class="ultDateColumn">
                                 <div class="ultWrapper">
@@ -129,23 +122,20 @@
                             <template v-if="inviteList.length>0">
                                 <tr v-for="(invite, index) in inviteList" :key="index">
                                     <td class="utlGenderColumn">
-                                        <div class="ultWrapper">
-                                            {{ invite.email }}
-                                        </div>
+                                        <div class="ultWrapper">{{ invite.email }}</div>
                                     </td>
                                     <td>
-                                        <div class="ultWrapper">
-                                            {{ getRole(invite.role) }}
-                                        </div>
+                                        <div class="ultWrapper">{{ getRole(invite.role) }}</div>
                                     </td>
                                     <td class="ultDateColumn">
-                                        <div class="ultWrapper">
-                                            {{ invite.invited_on }}
-                                        </div>
+                                        <div class="ultWrapper">{{ invite.invited_on }}</div>
                                     </td>
                                     <td class="utlIconColumn">
                                         <div class="ultWrapper iconCenter">
-                                            <i class="material-icons ultEditIcon" @click="cancelInvite(index)">delete_forever</i>
+                                            <i
+                                                class="material-icons ultEditIcon"
+                                                @click="cancelInvite(index)"
+                                            >delete_forever</i>
                                         </div>
                                     </td>
                                 </tr>
@@ -169,13 +159,18 @@
                             <i class="material-icons">close</i>
                         </button>
                     </div>
-                    <div class="">
+                    <div class>
                         <label>
                             <span>Email</span>
-                            <input type="email" v-model="memberInfo.email" placeholder="Enter an email address" required/>
+                            <input
+                                type="email"
+                                v-model="memberInfo.email"
+                                placeholder="Enter an email address"
+                                required
+                            />
                         </label>
                     </div>
-                    <div class="">
+                    <div class>
                         <label>
                             <span>Role</span>
                             <select v-model="memberInfo.role" required>
@@ -187,7 +182,11 @@
                     </div>
                     <div>
                         <button type="submit">Invite</button>
-                        <button type="button" @click="openAdminInvite=false" :disabled="inviting">Cancel</button>
+                        <button
+                            type="button"
+                            @click="openAdminInvite=false"
+                            :disabled="inviting"
+                        >Cancel</button>
                     </div>
                 </form>
                 <template v-if="errorAdmin!==''">
@@ -200,9 +199,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import Axios from 'axios';
-import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
+import { Vue, Component } from "vue-property-decorator";
+import Axios from "axios";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
 @Component
 export default class AdminComponent extends Vue {
@@ -226,17 +225,17 @@ export default class AdminComponent extends Vue {
     }
 
     private async sendAnInvite() {
-        if(this.memberInfo.email==="") {
+        if (this.memberInfo.email === "") {
             this.errorAdmin = "Email is required!";
             return;
         }
 
-        if(this.memberInfo.email===this.$store.state.user.email) {
+        if (this.memberInfo.email === this.$store.state.user.email) {
             this.errorAdmin = "You cannot invite yourself!";
             return;
         }
 
-        if(this.memberInfo.role===0) {
+        if (this.memberInfo.role === 0) {
             this.errorAdmin = "Role is required!";
             return;
         }
@@ -244,42 +243,47 @@ export default class AdminComponent extends Vue {
         this.inviting = true;
 
         let data = new FormData();
-        data.append('email', this.memberInfo.email);
-        data.append('role', this.memberInfo.role);
+        data.append("email", this.memberInfo.email);
+        data.append("role", this.memberInfo.role);
 
         await Axios({
             url: `/api/v1/project/${this.$route.params.projectid}/member`,
             data: data,
-            method: 'post'
-        }).then(res => {
-            if(res.data.data.type==1) {
-                this.inviteList.push(res.data.data.info);
-            } else {
-                this.adminList.push(res.data.data.info);
-            }
-            this.openAdminInvite = false;
-            this.memberInfo.email = '';
-            this.memberInfo.role = 0;
-        }).catch(err => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
-                this.errorAdmin = mesg;
-            }
-        });
+            method: "post"
+        })
+            .then(res => {
+                if (res.data.data.type == 1) {
+                    this.inviteList.push(res.data.data.info);
+                } else {
+                    this.adminList.push(res.data.data.info);
+                }
+                this.openAdminInvite = false;
+                this.memberInfo.email = "";
+                this.memberInfo.role = 0;
+            })
+            .catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to invite new member!"
+                    );
+                    this.errorAdmin = mesg;
+                }
+            });
 
         this.inviting = false;
     }
 
     private getRole(role: number) {
-        let roleName = '';
-        
+        let roleName = "";
+
         switch (role) {
             case 1:
-                roleName = 'Admin';
+                roleName = "Admin";
                 break;
-        
+
             default:
-                roleName = 'Manager';
+                roleName = "Manager";
                 break;
         }
 
@@ -291,15 +295,20 @@ export default class AdminComponent extends Vue {
 
         await Axios({
             url: `/api/v1/project/${this.$route.params.projectid}/member`,
-            method: 'get'
-        }).then(res => {
-            this.adminList = res.data.data;
-        }).catch(err => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
-                this.errorAdmin = mesg;
-            }
-        });
+            method: "get"
+        })
+            .then(res => {
+                this.adminList = res.data.data;
+            })
+            .catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to invite new member!"
+                    );
+                    this.errorAdmin = mesg;
+                }
+            });
 
         this.memberLoading = false;
     }
@@ -309,48 +318,63 @@ export default class AdminComponent extends Vue {
 
         await Axios({
             url: `/api/v1/project/${this.$route.params.projectid}/member/invite`,
-            method: 'get'
-        }).then(res => {
-            this.inviteList = res.data.data;
-        }).catch(err => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
-                this.errorAdmin = mesg;
-            }
-        });
+            method: "get"
+        })
+            .then(res => {
+                this.inviteList = res.data.data;
+            })
+            .catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to invite new member!"
+                    );
+                    this.errorAdmin = mesg;
+                }
+            });
 
         this.inviteLoading = false;
     }
 
     private async cancelInvite(index: any) {
-        if(confirm("Are you sure you want to cancel this invitation?")) {
+        if (confirm("Are you sure you want to cancel this invitation?")) {
             await Axios({
                 url: `/api/v1/project/${this.$route.params.projectid}/member/invite/${this.inviteList[index].id}`,
-                method: 'delete'
-            }).then(res => {
-                this.inviteList.splice(index, 1);
-            }).catch(err => {
-                if(err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to cancel an invitation!');
-                    this.errorAdmin = mesg;
-                }
-            });
+                method: "delete"
+            })
+                .then(res => {
+                    this.inviteList.splice(index, 1);
+                })
+                .catch(err => {
+                    if (err.response) {
+                        let mesg = this.ajaxHandler.globalHandler(
+                            err,
+                            "Failed to cancel an invitation!"
+                        );
+                        this.errorAdmin = mesg;
+                    }
+                });
         }
     }
 
     private async deleteMember(index: any) {
-        if(confirm("Are you sure you want to delete this member?")) {
+        if (confirm("Are you sure you want to delete this member?")) {
             await Axios({
                 url: `/api/v1/project/${this.$route.params.projectid}/member/${this.adminList[index].id}`,
-                method: 'delete'
-            }).then(res => {
-                this.adminList.splice(index, 1);
-            }).catch(err => {
-                if(err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to delete a member!');
-                    this.errorAdmin = mesg;
-                }
-            });
+                method: "delete"
+            })
+                .then(res => {
+                    this.adminList.splice(index, 1);
+                })
+                .catch(err => {
+                    if (err.response) {
+                        let mesg = this.ajaxHandler.globalHandler(
+                            err,
+                            "Failed to delete a member!"
+                        );
+                        this.errorAdmin = mesg;
+                    }
+                });
         }
     }
 }

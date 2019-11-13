@@ -37,7 +37,7 @@
                         <i class="material-icons">
                             error_outline
                         </i>
-                    </div> -->
+                    </div>-->
                 </li>
                 <template v-for="(broadcast, index) in 3">
                     <li class="broadcastHistory" :key="index">
@@ -48,12 +48,12 @@
                                 </template>
                                 <template v-if="broadcast===2">
                                     <figure>
-                                        <img src="/images/icons/broadcast/trigger.png"/>
+                                        <img src="/images/icons/broadcast/trigger.png" />
                                     </figure>
                                 </template>
                                 <template v-if="broadcast===3">
                                     <figure>
-                                        <img src="/images/icons/broadcast/schedule.png"/>
+                                        <img src="/images/icons/broadcast/schedule.png" />
                                     </figure>
                                 </template>
                             </div>
@@ -100,12 +100,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class BroadcastComponent extends Vue {
-    mounted() {
-
-    }
+    mounted() {}
 }
 </script>

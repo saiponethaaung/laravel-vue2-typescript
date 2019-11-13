@@ -21,7 +21,8 @@
             </div>
         </div>
         <div class="aiC-ruleCon-content-response">
-            <h5>bot replies
+            <h5>
+                bot replies
                 <template v-if="rule.response.length>1">
                     &nbsp;
                     <b>randomly</b>
@@ -131,7 +132,7 @@ export default class AIRuleComponent extends Vue {
         if (this.textbox.childNodes.length === 0) {
             // Create empty keyword container if section is empty
             let range = document.createRange();
-            let sel = window.getSelection();
+            let sel: any = window.getSelection();
             let span = document.createElement("SPAN");
             span.innerHTML = "&nbsp;";
             span.className = "aiKeywordBlock emptyBlock";
@@ -173,9 +174,9 @@ export default class AIRuleComponent extends Vue {
             let endFocus = false;
             let textbox: any = this.$refs.keywordsCon;
             let range = document.createRange();
-            let sel = window.getSelection();
-            let anchor = window.getSelection().anchorOffset;
-            let offset = window.getSelection().focusOffset;
+            let sel: any = window.getSelection();
+            let anchor: any = window.getSelection().anchorOffset;
+            let offset: any = window.getSelection().focusOffset;
             let isOne = false;
             if (anchor > offset) {
                 let offsetPlaceholder = offset;

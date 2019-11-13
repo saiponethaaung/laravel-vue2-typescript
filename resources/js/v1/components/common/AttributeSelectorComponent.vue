@@ -28,7 +28,7 @@
                         ref="input"
                         :class="{'hideBottomRadius': showSuggest, 'required': !showSuggest && canShowErr && attribute.name===''}"
                         @keyup="searchKeySuggestion"
-                    >
+                    />
                     <div
                         class="attrKeySuggestCon"
                         ref="suggestion"
@@ -116,7 +116,7 @@
                         :class="{'hideBottomRadius': showValueSuggest, 'required': !showValueSuggest && canShowValueErr && attribute.value===''}"
                         :disabled="attribute.name==''"
                         @keyup="searchValueSuggestion"
-                    >
+                    />
                     <div
                         class="attrKeySuggestCon valueSuggestion"
                         ref="valueSuggestion"
@@ -386,9 +386,7 @@ export default class AttributeSelectorComponent extends Vue {
             data.append("keyword", this.attrName);
 
             await Axios({
-                url: `/api/v1/project/${
-                    this.$store.state.projectInfo.id
-                }/attributes/serach/attribute`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/attributes/serach/attribute`,
                 data: data,
                 method: "post",
                 cancelToken: this.keyCancelToken.token
@@ -444,9 +442,7 @@ export default class AttributeSelectorComponent extends Vue {
             data.append("keyword", this.attrValue);
 
             await Axios({
-                url: `/api/v1/project/${
-                    this.$store.state.projectInfo.id
-                }/attributes/serach/value`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/attributes/serach/value`,
                 data: data,
                 method: "post",
                 cancelToken: this.valueCancelToken.token

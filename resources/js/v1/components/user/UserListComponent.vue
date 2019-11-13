@@ -41,7 +41,7 @@
                 </button>
                 <button class="uloButton" @click="exportCSV" v-if="userList.length>0">
                     <figure>
-                        <img src="/images/icons/user/export.png">
+                        <img src="/images/icons/user/export.png" />
                     </figure>
                     <span>export</span>
                 </button>
@@ -61,7 +61,7 @@
                             type="text"
                             placeholder="Segment name"
                             v-model="segmentName"
-                        >
+                        />
                     </div>
                 </div>
                 <div class="uaFooterCon">
@@ -183,9 +183,7 @@ export default class UserListComponent extends Vue {
         this.userLoading = true;
 
         await Axios({
-            url: `/api/v1/project/${
-                this.$store.state.projectInfo.id
-            }/users?${filter}`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/users?${filter}`,
             method: "get"
         })
             .then((res: any) => {
@@ -250,9 +248,7 @@ export default class UserListComponent extends Vue {
         }
 
         await Axios({
-            url: `/api/v1/project/${
-                this.$store.state.projectInfo.id
-            }/users/segments/user-filter`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/users/segments/user-filter`,
             data: data,
             method: "post"
         })

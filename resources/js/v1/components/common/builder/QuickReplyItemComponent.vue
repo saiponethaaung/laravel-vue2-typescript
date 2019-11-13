@@ -18,7 +18,7 @@
                         maxlength="20"
                         v-model="qr.title"
                         v-on:blur="qr.saveContent()"
-                    >
+                    />
                     <span class="limitReplyTitle limitReply">{{ qr.textLimitTitle }}</span>
                 </div>
                 <div>
@@ -41,7 +41,7 @@
                                 v-model="qr.blockKey"
                                 @keyup="qr.loadSuggestion()"
                                 placeholder="Enter block name"
-                            >
+                            />
                             <template v-if="qr.blockList.length>0">
                                 <div class="sugContainer">
                                     <div
@@ -79,7 +79,7 @@
                             v-on:blur="qr.saveContent()"
                             @keyup="searchKeySuggestion"
                             :class="{'hasKeywordSuggest': keySuggestion.length>0}"
-                        >
+                        />
                         <template v-if="keySuggestion.length>0">
                             <div class="attrKeySuggestCon" ref="suggestion">
                                 <ul>
@@ -99,7 +99,7 @@
                             placeholder="<Set value>"
                             v-model="qr.value"
                             v-on:blur="qr.saveContent()"
-                        >
+                        />
                     </div>
                 </div>
             </div>
@@ -182,9 +182,7 @@ export default class QuickReplyItemComponent extends Vue {
             data.append("keyword", this.qr.attribute);
 
             await Axios({
-                url: `/api/v1/project/${
-                    this.$store.state.projectInfo.id
-                }/attributes/serach/attribute`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/attributes/serach/attribute`,
                 data: data,
                 method: "post",
                 cancelToken: this.keyCancelToken.token

@@ -11,8 +11,10 @@
                         v-model="section.title"
                         v-on:keyup.enter="updateSection"
                         v-on:blur="updateSection"
-                    >
-                    <div class="blockSectionTitleConBackgroundWidth">{{ section.title ? section.title : "Enter a title" }}</div>
+                    />
+                    <div
+                        class="blockSectionTitleConBackgroundWidth"
+                    >{{ section.title ? section.title : "Enter a title" }}</div>
                 </div>
                 <div class="deleteAction" @click="delSection()">
                     <i class="material-icons">delete</i>
@@ -80,7 +82,7 @@
                     <li class="contentActionList" @click="addTyping">
                         <!-- <i class="material-icons">speaker_notes</i> -->
                         <figure>
-                            <img src="/images/icons/chatbot/typing_black.png"/>
+                            <img src="/images/icons/chatbot/typing_black.png" />
                         </figure>
                         <span class="contentActionName">Typing</span>
                     </li>
@@ -95,7 +97,7 @@
                     <!-- <li class="contentActionList" @click="addList">
                         <i class="material-icons">list</i>
                         <span class="contentActionName">List</span>
-                    </li> -->
+                    </li>-->
                     <li class="contentActionList" @click="addGallery">
                         <i class="material-icons">add_to_photos</i>
                         <span class="contentActionName">Gallery</span>
@@ -169,15 +171,13 @@ export default class BuilderComponent extends Vue {
 
     @Prop() section!: any;
 
-    @Watch('contents', { deep: true, immediate: true})
+    @Watch("contents", { deep: true, immediate: true })
     contentChange() {
         this.checkContent();
     }
 
-    @Emit('contentChanged')
-    checkContent() {
-        
-    }
+    @Emit("contentChanged")
+    checkContent() {}
 
     mounted() {
         this.urlPath = this.isBroadcast
@@ -244,9 +244,7 @@ export default class BuilderComponent extends Vue {
 
         this.creating++;
         await Axios({
-            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${
-                this.urlPath
-            }/section/${this.section.id}/content`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}/content`,
             data: data,
             method: "post"
         })
@@ -360,11 +358,7 @@ export default class BuilderComponent extends Vue {
         if (confirm("Are you sure you want to delete?")) {
             this.contents[index].isDeleting = true;
             await Axios({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${
-                    this.urlPath
-                }/section/${this.section.id}/content/${
-                    this.contents[index].contentId
-                }`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}/content/${this.contents[index].contentId}`,
                 method: "delete"
             })
                 .then(res => {
@@ -392,9 +386,7 @@ export default class BuilderComponent extends Vue {
         data.append("_method", "put");
 
         await Axios({
-            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${
-                this.urlPath
-            }/section/${this.section.id}`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}`,
             data: data,
             method: "post",
             cancelToken: this.sectionToken.token
@@ -431,9 +423,7 @@ export default class BuilderComponent extends Vue {
         }
 
         await Axios({
-            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${
-                this.urlPath
-            }/section/${this.section.id}/content/order`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}/content/order`,
             data: data,
             method: "post",
             cancelToken: this.orderToken.token
@@ -455,9 +445,7 @@ export default class BuilderComponent extends Vue {
             )
         ) {
             await Axios({
-                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${
-                    this.urlPath
-                }/section/${this.section.id}`,
+                url: `/api/v1/project/${this.$store.state.projectInfo.id}/${this.urlPath}/section/${this.section.id}`,
                 method: "delete"
             })
                 .then(res => {

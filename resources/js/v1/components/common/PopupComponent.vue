@@ -7,22 +7,23 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component, Prop } from 'vue-property-decorator';
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class PopupComponent extends Vue{
+export default class PopupComponent extends Vue {
     @Prop({
         default: 1,
         type: Number
-    }) type !: number;
+    })
+    type!: number;
 
-    get myClassName() : string{
-        let className = '';
+    get myClassName(): string {
+        let className = "";
 
-        switch(this.type) {
-            default: 
-                className = 'defPopCon';
+        switch (this.type) {
+            default:
+                className = "defPopCon";
                 break;
         }
 

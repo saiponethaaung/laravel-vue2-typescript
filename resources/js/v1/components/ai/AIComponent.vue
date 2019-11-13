@@ -4,14 +4,16 @@
             <div class="aiC-headingCon">
                 <div class="aiC-desc">
                     <h4 class="aiC-desc-heading">Set up how bot replies to text messages</h4>
-                    <p class="aiC-desc-description">Your bot will understand user phrases similar to those you write on the left and reply with some text or a block.</p>
+                    <p
+                        class="aiC-desc-description"
+                    >Your bot will understand user phrases similar to those you write on the left and reply with some text or a block.</p>
                 </div>
                 <div class="aiC-Search">
                     <form class="aiC-form">
                         <div class="aiC-form-con">
                             <label class="aiC-form-label">
                                 <i class="material-icons">search</i>
-                                <input type="text" placeholder="Search keyword or block"/>
+                                <input type="text" placeholder="Search keyword or block" />
                             </label>
                         </div>
                     </form>
@@ -26,12 +28,14 @@
                             :index="index"
                             @deleteGroup="deleteGroup(index)"
                             @activeGroup="activeGroup(index)"
-                            :group="group"></ai-group-component>
+                            :group="group"
+                        ></ai-group-component>
                     </template>
-                    <li class="aiC-groupCon-child addmore creating" v-if="groupList.creating">
-                        creating...
-                    </li>
-                    <li class="aiC-groupCon-child addmore"  @click="createNewGroup()" v-else>
+                    <li
+                        class="aiC-groupCon-child addmore creating"
+                        v-if="groupList.creating"
+                    >creating...</li>
+                    <li class="aiC-groupCon-child addmore" @click="createNewGroup()" v-else>
                         <button type="button">
                             <i class="material-icons">add</i>
                         </button>
@@ -41,13 +45,11 @@
                 <div class="aiC-ruleCon">
                     <template v-if="groupList.groups.length>0">
                         <template v-for="(rule, index) in groupList.groups[groupList.active].rules">
-                            <ai-rule-component
-                                :rule="rule"
-                                :key="index"></ai-rule-component>
+                            <ai-rule-component :rule="rule" :key="index"></ai-rule-component>
                         </template>
-                        <template v-if="groupList.groups[groupList.active].creating || groupList.groups[groupList.active].loading">
-                            Loading...
-                        </template>
+                        <template
+                            v-if="groupList.groups[groupList.active].creating || groupList.groups[groupList.active].loading"
+                        >Loading...</template>
                         <template v-else>
                             <button class="addMoreRule" @click="createNewRule()" type="button">
                                 <i class="material-icons">add</i>
@@ -57,18 +59,16 @@
                     </template>
                 </div>
             </template>
-            <template v-else>
-                Loading...
-            </template>
+            <template v-else>Loading...</template>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import AIGroupListModel from '../../models/ai/AIGroupListModel';
-import AiGroupComponent from './AIGroupComponent.vue';
-import AiRuleComponent from './AIRuleComponent.vue';
+import { Vue, Component } from "vue-property-decorator";
+import AIGroupListModel from "../../models/ai/AIGroupListModel";
+import AiGroupComponent from "./AIGroupComponent.vue";
+import AiRuleComponent from "./AIRuleComponent.vue";
 
 @Component({
     components: {
@@ -77,18 +77,17 @@ import AiRuleComponent from './AIRuleComponent.vue';
     }
 })
 export default class AIComponent extends Vue {
+    private groupList: AIGroupListModel = new AIGroupListModel("");
 
-    private groupList: AIGroupListModel = new AIGroupListModel('');
-    
     async mounted() {
-        this.groupList = new AIGroupListModel(this.$route.params.projectid)
+        this.groupList = new AIGroupListModel(this.$route.params.projectid);
         await this.groupList.loadContent();
     }
 
     async createNewGroup() {
         let create = await this.groupList.createContent();
 
-        if(!create.status) {
+        if (!create.status) {
             alert(create.mesg);
         }
     }
@@ -96,22 +95,27 @@ export default class AIComponent extends Vue {
     async deleteGroup(index: any) {
         let deleteContent = await this.groupList.deleteContent(index);
 
-        if(!deleteContent.status) {
+        if (!deleteContent.status) {
             alert(deleteContent.mesg);
         }
     }
 
     activeGroup(index: number) {
         this.groupList.active = index;
-        if(!this.groupList.groups[index].loaded && !this.groupList.groups[index].loading) {
+        if (
+            !this.groupList.groups[index].loaded &&
+            !this.groupList.groups[index].loading
+        ) {
             this.groupList.groups[index].loadRule();
         }
     }
 
     async createNewRule() {
-        let createRule = await this.groupList.groups[this.groupList.active].createRule();
+        let createRule = await this.groupList.groups[
+            this.groupList.active
+        ].createRule();
 
-        if(!createRule.status) {
+        if (!createRule.status) {
             alert(createRule.mesg);
         }
     }

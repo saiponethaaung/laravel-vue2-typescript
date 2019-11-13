@@ -137,9 +137,7 @@ export default class UserListSidebarComponent extends Vue {
         if (undefined === this.$store.state.projectInfo.id) return;
 
         await Axios({
-            url: `/api/v1/project/${
-                this.$store.state.projectInfo.id
-            }/users/attributes`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/users/attributes`,
             method: "get"
         })
             .then(res => {

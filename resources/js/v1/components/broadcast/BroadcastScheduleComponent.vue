@@ -1,8 +1,6 @@
 <template>
     <div class="inheritHFW broadcastRoot">
-        <template v-if="loading && undefined!==schedule">
-            Loading...
-        </template>
+        <template v-if="loading && undefined!==schedule">Loading...</template>
         <template v-else>
             <div class="broadcastFilterCon">
                 <div class="outerDisplay" v-if="$store.state.messageTags.length>0">
@@ -26,7 +24,7 @@
                     </div>
                     <div class="label" v-html="$store.state.messageTags[selectedTag].mesg">
                         <!-- <span>Non-promo message under the News, Productivity, and Personal Trackers categories described in the Messenger Platform's subscription messaging policy.</span>
-                        <span class="link">subscription messaging policy.</span> -->
+                        <span class="link">subscription messaging policy.</span>-->
                     </div>
                 </div>
 
@@ -40,39 +38,42 @@
                                 :segmentValue="filterList.segments"
                                 :segment="attribute.segment"
                             ></attribute-selector-component>
-                            
-                            <button v-if="filterList.attributes.length>1" class="deleteAttribute" @click="filterList.deleteFilter(index);">
+
+                            <button
+                                v-if="filterList.attributes.length>1"
+                                class="deleteAttribute"
+                                @click="filterList.deleteFilter(index);"
+                            >
                                 <i class="material-icons">delete</i>
                             </button>
-                            <div v-if="(filterList.attributes.length-1)==index" @click="addNewFitler()" class="addMoreFilterButton">
+                            <div
+                                v-if="(filterList.attributes.length-1)==index"
+                                @click="addNewFitler()"
+                                class="addMoreFilterButton"
+                            >
                                 <i class="material-icons">add</i>Add More
                             </div>
                         </div>
                     </template>
                 </div>
-                
-                <div class="reachableUser">You have <b>4</b> users based on your filters.</div>
+
+                <div class="reachableUser">
+                    You have
+                    <b>4</b> users based on your filters.
+                </div>
 
                 <div class="broadcastCondition">
-                    <h5 class="bccHeading float-left">
-                        Schedule:
-                    </h5>
+                    <h5 class="bccHeading float-left">Schedule:</h5>
                     <div class="bccCalender float-left">
                         <span>{{ showDate }}</span>
                         <i class="material-icons">date_range</i>
                         <div class="calendarPlugin">
-                            <v-date-picker
-                                v-model="schedule.date"
-                                :min-date="new Date()"
-                            ></v-date-picker>
+                            <v-date-picker v-model="schedule.date" :min-date="new Date()"></v-date-picker>
                         </div>
                     </div>
                     <div class="bccTime float-left">
                         <div class="timeOptionCon">
-                            <time-input-component
-                                :value="schedule.time"
-                                v-model="schedule.time"
-                            ></time-input-component>
+                            <time-input-component :value="schedule.time" v-model="schedule.time"></time-input-component>
                         </div>
                         <dropdown-keybase-component
                             :options="periodOption"
@@ -96,7 +97,8 @@
                                 <li
                                     :class="{ 'selectedDay': day.check }"
                                     :key="index"
-                                    @click="day.check=!day.check">{{ day.name }}</li>
+                                    @click="day.check=!day.check"
+                                >{{ day.name }}</li>
                             </template>
                         </ul>
                     </div>
@@ -104,13 +106,22 @@
                 <div class="btnAction broadcastActionBtn">
                     <a href="javascript:void(0);" @click="deleteBroadcast()">
                         <figure>
-                            <img src="/images/icons/broadcast/delete.png"/>
+                            <img src="/images/icons/broadcast/delete.png" />
                         </figure>
                     </a>
-                    <a href="javascript:void(0);" @click="schedule.updateStatus()" :to="{name: 'project.broadcast'}">
-                        <figure class="btnSend statusBtn" :class="{'deactiveStatus': !schedule.status}">
-                            <img :src="'/images/icons/broadcast/'+(schedule.status ? 'broadcast_status_enable': 'broadcast_status')+'.png'"/>
-                        </figure>   
+                    <a
+                        href="javascript:void(0);"
+                        @click="schedule.updateStatus()"
+                        :to="{name: 'project.broadcast'}"
+                    >
+                        <figure
+                            class="btnSend statusBtn"
+                            :class="{'deactiveStatus': !schedule.status}"
+                        >
+                            <img
+                                :src="'/images/icons/broadcast/'+(schedule.status ? 'broadcast_status_enable': 'broadcast_status')+'.png'"
+                            />
+                        </figure>
                     </a>
                 </div>
             </div>
@@ -118,36 +129,37 @@
                 <builder-component
                     :isBroadcast="true"
                     :value="contents"
-                    :section="schedule.section"></builder-component>
+                    :section="schedule.section"
+                ></builder-component>
             </div>
-            <div v-else>
-                Loading...
-            </div>
+            <div v-else>Loading...</div>
         </template>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch} from 'vue-property-decorator';
-import BuilderComponentMock from '../common/BuilderComponentMock.vue';
-import ScheduleModel from '../../models/broadcast/ScheduleModel';
-import BroadcastAttributeFilterListModel from '../../models/BroadcastAttributeFilterListModel';
-import Axios,{ CancelTokenSource } from 'axios';
-import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import BuilderComponentMock from "../common/BuilderComponentMock.vue";
+import ScheduleModel from "../../models/broadcast/ScheduleModel";
+import BroadcastAttributeFilterListModel from "../../models/BroadcastAttributeFilterListModel";
+import Axios, { CancelTokenSource } from "axios";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
 @Component({
     components: {
         BuilderComponentMock
     }
 })
-export default class BroadcastScheduleComponent extends Vue{
+export default class BroadcastScheduleComponent extends Vue {
     private loading: boolean = false;
     private ajaxHandler: AjaxErrorHandler = new AjaxErrorHandler();
     private loadingToken: CancelTokenSource = Axios.CancelToken.source();
     private loadingContentToken: CancelTokenSource = Axios.CancelToken.source();
     private loadingContent: boolean = true;
     private contents: any = [];
-    private filterList: BroadcastAttributeFilterListModel = new BroadcastAttributeFilterListModel(this.$store.state.projectInfo.id);
+    private filterList: BroadcastAttributeFilterListModel = new BroadcastAttributeFilterListModel(
+        this.$store.state.projectInfo.id
+    );
 
     private periodOption: any = [
         {
@@ -157,38 +169,38 @@ export default class BroadcastScheduleComponent extends Vue{
         {
             key: 2,
             value: "pm"
-        },
+        }
     ];
 
     private repeatOption: any = [
         {
             key: 1,
-            value: 'None'
+            value: "None"
         },
         {
             key: 2,
-            value: 'Daily'
+            value: "Daily"
         },
         {
             key: 3,
-            value: 'Weekend'
+            value: "Weekend"
         },
         {
             key: 4,
-            value: 'Every Month'
+            value: "Every Month"
         },
         {
             key: 5,
-            value: 'Workdays'
+            value: "Workdays"
         },
         {
             key: 6,
-            value: 'Yearly'
+            value: "Yearly"
         },
         {
             key: 7,
-            value: 'Custom'
-        },
+            value: "Custom"
+        }
     ];
 
     private showTags: boolean = false;
@@ -196,20 +208,22 @@ export default class BroadcastScheduleComponent extends Vue{
     private schedule: ScheduleModel = new ScheduleModel();
 
     get showDate() {
-        if(undefined === this.schedule) return '';
+        if (undefined === this.schedule) return "";
 
-        let date = '';
-        let month = this.schedule.date.getMonth()+1;
-        return `${this.$store.state.months[month]} ${this.schedule.date.getDate()}, ${this.schedule.date.getFullYear()}`;
+        let date = "";
+        let month = this.schedule.date.getMonth() + 1;
+        return `${
+            this.$store.state.months[month]
+        } ${this.schedule.date.getDate()}, ${this.schedule.date.getFullYear()}`;
     }
 
     get selectedTag() {
-        if(undefined === this.schedule) return 0;
+        if (undefined === this.schedule) return 0;
 
         let index: any = 0;
 
-        for(let i=0; this.$store.state.messageTags.length>i; i++ ) {
-            if(this.$store.state.messageTags[i].id===this.schedule.tag) {
+        for (let i = 0; this.$store.state.messageTags.length > i; i++) {
+            if (this.$store.state.messageTags[i].id === this.schedule.tag) {
                 index = i;
                 break;
             }
@@ -225,8 +239,8 @@ export default class BroadcastScheduleComponent extends Vue{
     private addNewFitler() {
         this.filterList.createNewAttribute();
     }
-    
-    @Watch('$route.params.scheduleid')
+
+    @Watch("$route.params.scheduleid")
     async loadSchedule() {
         this.loadingToken.cancel();
         this.loadingToken = Axios.CancelToken.source();
@@ -235,22 +249,29 @@ export default class BroadcastScheduleComponent extends Vue{
 
         await Axios({
             url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/schedule/${this.$route.params.scheduleid}`,
-            method: 'get',
+            method: "get",
             cancelToken: this.loadingToken.token
-        }).then(res => {
-            this.schedule.init(res.data.data);
-            this.filterList = new BroadcastAttributeFilterListModel(this.$store.state.projectInfo.id);
-            this.filterList.id = this.schedule.id;
-            this.filterList.loadAttributes();
-            this.loadScheduleContent();
-            this.loading = false;
-        }).catch(err => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule info!');
-                alert(mesg);
+        })
+            .then(res => {
+                this.schedule.init(res.data.data);
+                this.filterList = new BroadcastAttributeFilterListModel(
+                    this.$store.state.projectInfo.id
+                );
+                this.filterList.id = this.schedule.id;
+                this.filterList.loadAttributes();
+                this.loadScheduleContent();
                 this.loading = false;
-            }
-        });
+            })
+            .catch(err => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to load schedule info!"
+                    );
+                    alert(mesg);
+                    this.loading = false;
+                }
+            });
     }
 
     async loadScheduleContent() {
@@ -263,29 +284,34 @@ export default class BroadcastScheduleComponent extends Vue{
         await Axios({
             url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.schedule.id}/section/${this.schedule.section.id}/content`,
             cancelToken: this.loadingContentToken.token
-        }).then((res: any) => {
-            this.contents = res.data.content;
-        }).catch((err: any) => {
-            if(err.response) {
-                let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
-                alert(mesg);
-            } else {
-                this.loadingContentToken.cancel();
-            }
-        });
+        })
+            .then((res: any) => {
+                this.contents = res.data.content;
+            })
+            .catch((err: any) => {
+                if (err.response) {
+                    let mesg = this.ajaxHandler.globalHandler(
+                        err,
+                        "Failed to load content!"
+                    );
+                    alert(mesg);
+                } else {
+                    this.loadingContentToken.cancel();
+                }
+            });
 
         this.loadingContent = false;
     }
 
-    @Watch('schedule.date')
-    @Watch('schedule.time')
-    @Watch('schedule.period')
-    @Watch('schedule.repeat')
-    @Watch('schedule.days', {deep: true})
+    @Watch("schedule.date")
+    @Watch("schedule.time")
+    @Watch("schedule.period")
+    @Watch("schedule.repeat")
+    @Watch("schedule.days", { deep: true })
     private async updateSchedule() {
-        if(this.loadingContent) return;
+        if (this.loadingContent) return;
         await this.schedule.updateSchedule();
-        console.log('time',  this.schedule.timeServerFormat);
+        console.log("time", this.schedule.timeServerFormat);
         this.$store.state.updateSchedule = {
             id: this.schedule.id,
             day: this.schedule.dateDate,
@@ -296,20 +322,20 @@ export default class BroadcastScheduleComponent extends Vue{
         };
     }
 
-    @Watch('schedule.tag')
+    @Watch("schedule.tag")
     private async updateTag() {
-        if(this.loadingContent) return;
+        if (this.loadingContent) return;
         await this.schedule.updateTag();
     }
 
     private async deleteBroadcast() {
-        if(confirm("Are you sure you want to delete this broadcast?")) {
+        if (confirm("Are you sure you want to delete this broadcast?")) {
             let del = await this.schedule.deleteBroadcast();
-            if(!del.status) {
+            if (!del.status) {
                 alert(del.mesg);
             } else {
                 this.$store.state.deleteSchedule = this.schedule.id;
-                this.$router.push({name: 'project.broadcast'});
+                this.$router.push({ name: "project.broadcast" });
             }
         }
     }

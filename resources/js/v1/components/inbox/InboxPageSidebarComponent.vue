@@ -1,8 +1,6 @@
 <template>
     <div>
-        <template v-if="undefined==$store.state.projectInfo.pageConnected">
-            Loading...
-        </template>
+        <template v-if="undefined==$store.state.projectInfo.pageConnected">Loading...</template>
         <template v-else>
             <template v-if="$store.state.projectInfo.pageConnected">
                 <div class="chatSbHeaderOption">
@@ -10,23 +8,23 @@
                         <div class="inboxOptionTitle">Inbox:</div>
                         <div class="inboxOptionSelector">
                             <div class="inboxSelectedOption">
-                                <span class="inboxSelectedOptionValue">{{ filters[$store.state.chatFilter].value }}</span>
+                                <span
+                                    class="inboxSelectedOptionValue"
+                                >{{ filters[$store.state.chatFilter].value }}</span>
                                 <span class="inboxFilterOptionIcon">
                                     <i class="material-icons" @click="showFilter=!showFilter">
-                                        <template v-if="showFilter">
-                                            arrow_drop_up
-                                        </template>
-                                        <template v-else>
-                                            arrow_drop_down
-                                        </template>
+                                        <template v-if="showFilter">arrow_drop_up</template>
+                                        <template v-else>arrow_drop_down</template>
                                     </i>
                                 </span>
                             </div>
                             <div class="inboxOptionsCon" v-if="showFilter">
                                 <ul>
-                                    <li v-for="(filter, index) in filters" :key="index" @click="$store.state.chatFilter=index;$store.state.selectedInbox=-1;showFilter=false">
-                                        {{ filter.value }}
-                                    </li>
+                                    <li
+                                        v-for="(filter, index) in filters"
+                                        :key="index"
+                                        @click="$store.state.chatFilter=index;$store.state.selectedInbox=-1;showFilter=false"
+                                    >{{ filter.value }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -34,7 +32,9 @@
 
                     <div class="chatFilterAction float-right">
                         <div @click="showUrgent=!showUrgent">
-                            <img :src="showUrgent ? '/images/icons/chat/urgent_active.png' : '/images/icons/chat/urgent.png' "/>
+                            <img
+                                :src="showUrgent ? '/images/icons/chat/urgent_active.png' : '/images/icons/chat/urgent.png' "
+                            />
                         </div>
                         <div @click="showFav=!showFav">
                             <template v-if="showFav">
@@ -49,18 +49,30 @@
 
                 <div class="availableUserList">
                     <template v-for="(user, index) in $store.state.inboxList">
-                        <div v-if="user.live_chat==filters[$store.state.chatFilter].state" :key="index" class="userBriefCon" :class="{'selected': $store.state.selectedInbox===index}">
+                        <div
+                            v-if="user.live_chat==filters[$store.state.chatFilter].state"
+                            :key="index"
+                            class="userBriefCon"
+                            :class="{'selected': $store.state.selectedInbox===index}"
+                        >
                             <figure class="userBriefImageCon" @click="selectInbox(index)">
-                                <img :src="user.profile_pic ? user.profile_pic : '/images/sample/logo.png'" class="userBriefImage"/>
+                                <img
+                                    :src="user.profile_pic ? user.profile_pic : '/images/sample/logo.png'"
+                                    class="userBriefImage"
+                                />
                             </figure>
                             <div class="userBriefInfoCon">
                                 <div class="userBriefContentCon" @click="selectInbox(index)">
-                                    <div class="userBriefName">{{ `${user.first_name} ${user.last_name}` }}</div>
+                                    <div
+                                        class="userBriefName"
+                                    >{{ `${user.first_name} ${user.last_name}` }}</div>
                                     <div class="userBriefLastMesg">{{ user.last_mesg }}</div>
                                 </div>
                                 <div class="userBriefActionCon">
                                     <div @click="urgentStatus(index)">
-                                        <img :src="user.urgent ? '/images/icons/chat/urgent_active.png' : '/images/icons/chat/urgent.png' "/>
+                                        <img
+                                            :src="user.urgent ? '/images/icons/chat/urgent_active.png' : '/images/icons/chat/urgent.png' "
+                                        />
                                     </div>
                                     <div @click="favStatus(index)">
                                         <template v-if="user.fav">
@@ -82,8 +94,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator';
-import Axios,{ CancelTokenSource } from 'axios';
+import { Vue, Component, Watch } from "vue-property-decorator";
+import Axios, { CancelTokenSource } from "axios";
 
 @Component
 export default class InboxPageSidebarComponent extends Vue {
@@ -91,13 +103,13 @@ export default class InboxPageSidebarComponent extends Vue {
         {
             key: 0,
             state: 1,
-            value: 'Live'
+            value: "Live"
         },
         {
             key: 1,
             state: 0,
-            value: 'Bot'
-        },
+            value: "Bot"
+        }
     ];
 
     private pageId: any = "";
@@ -108,45 +120,47 @@ export default class InboxPageSidebarComponent extends Vue {
     private loadInboxToken: CancelTokenSource = Axios.CancelToken.source();
 
     mounted() {
-        this.$store.commit('updateSelectedInbox', {
+        this.$store.commit("updateSelectedInbox", {
             selected: -1
         });
-        this.$store.commit('updateInboxList', {
+        this.$store.commit("updateInboxList", {
             inbox: []
         });
     }
 
     private selectInbox(index: number) {
-        this.$store.commit('updateSelectedInbox', {
+        this.$store.commit("updateSelectedInbox", {
             selected: index
         });
     }
 
-    @Watch('showUrgent')
-    @Watch('showFav')
+    @Watch("showUrgent")
+    @Watch("showFav")
     reloadFilter() {
-        this.$store.commit('updateInboxList', {
+        this.$store.commit("updateInboxList", {
             inbox: []
         });
-        this.$store.commit('updateSelectedInbox', {
+        this.$store.commit("updateSelectedInbox", {
             selected: -1
         });
         this.loadUserList();
     }
 
-    @Watch('$store.state.projectInfo', { immediate: true, deep: true })
+    @Watch("$store.state.projectInfo", { immediate: true, deep: true })
     loadUserEvent() {
+        if (
+            undefined == this.$store.state.projectInfo.pageId ||
+            this.pageId === this.$store.state.projectInfo.pageId
+        )
+            return;
 
-        if(undefined==this.$store.state.projectInfo.pageId || this.pageId===this.$store.state.projectInfo.pageId) return;
-
-        if(this.pageId!==this.$store.state.projectInfo.pageId) {
+        if (this.pageId !== this.$store.state.projectInfo.pageId) {
             this.pageId = this.$store.state.projectInfo.pageId;
         }
 
         this.loadUserList();
-
     }
-    
+
     async loadUserList() {
         this.loadingInbox = true;
         this.loadInboxToken.cancel();
@@ -158,7 +172,7 @@ export default class InboxPageSidebarComponent extends Vue {
         }).then((res: any) => {
             console.log("inbox res", res.data);
             var inboxList = res.data.data;
-            this.$store.commit('updateInboxList', {
+            this.$store.commit("updateInboxList", {
                 inbox: inboxList
             });
         });
@@ -170,37 +184,37 @@ export default class InboxPageSidebarComponent extends Vue {
         var status = !this.$store.state.inboxList[index].urgent;
 
         var data = new FormData();
-        data.append('status', status.toString());
+        data.append("status", status.toString());
 
         await Axios({
             url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[index].id}/urgent`,
             data: data,
-            method: 'post'
-        }).then((res) => {
-            this.$store.commit('updateInboxUrgentStatus', {
-                index: index,
-                status: status
-            });
-        }).catch((err) => {
-
-        });
+            method: "post"
+        })
+            .then(res => {
+                this.$store.commit("updateInboxUrgentStatus", {
+                    index: index,
+                    status: status
+                });
+            })
+            .catch(err => {});
     }
 
     async favStatus(index: number) {
         var status = !this.$store.state.inboxList[index].fav;
 
         var data = new FormData();
-        data.append('status', status.toString());
+        data.append("status", status.toString());
 
         await Axios({
             url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[index].id}/fav`,
             data: data,
-            method: 'post'
-        }).then((res) => {
-            this.$store.state.inboxList[index].fav = status;
-        }).catch((err) => {
-
-        });
+            method: "post"
+        })
+            .then(res => {
+                this.$store.state.inboxList[index].fav = status;
+            })
+            .catch(err => {});
     }
 }
 </script>

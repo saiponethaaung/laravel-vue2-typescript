@@ -8,7 +8,7 @@
             <figure class="chatGalleryImage">
                 <template v-if="listItem.image">
                     <div class="imageCon">
-                        <img :src="listItem.image">
+                        <img :src="listItem.image" />
                     </div>
                     <template v-if="listItem.imageDeleting">
                         <div class="deletingImage">
@@ -35,7 +35,7 @@
                         </template>
                         <template v-else>
                             <i class="material-icons">photo_camera</i>
-                            <input type="file" @change="listItem.imageUpload($event)">
+                            <input type="file" @change="listItem.imageUpload($event)" />
                         </template>
                     </label>
                 </template>
@@ -49,7 +49,7 @@
                         v-model="listItem.title"
                         :class="{'required': listItem.title=='' && listItem.canShowError}"
                         v-on:blur="listItem.saveContent()"
-                    >
+                    />
                     <span class="limitGalleryTitle limitSub">{{ listItem.textLimitTitle }}</span>
                 </div>
                 <div class="inputConLimitWrapper">
@@ -59,7 +59,7 @@
                         maxlength="80"
                         v-model="listItem.sub"
                         v-on:blur="listItem.saveContent()"
-                    >
+                    />
                     <span class="limitGalleryTitle limitSub limitGalSub">{{ listItem.textLimitSub }}</span>
                 </div>
                 <div>
@@ -68,7 +68,7 @@
                         placeholder="Url"
                         v-model="listItem.url"
                         v-on:blur="listItem.saveContent()"
-                    >
+                    />
                 </div>
             </div>
             <div class="chatGalleryButtons">
@@ -155,6 +155,5 @@ export default class GalleryItemComponent extends Vue {
 
     @Emit("delItem")
     deleteItem(index: any) {}
-
 }
 </script>

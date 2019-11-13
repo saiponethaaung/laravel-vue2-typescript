@@ -10,9 +10,14 @@
                     <i class="material-icons md-40">delete</i>
                 </div>
             </template>
-        </div> -->
+        </div>-->
         <div class="contentList">
-            <div v-for="(content, index) in contents" :key="index" class="conentItem" :class="{'deleting': content.isDeleting}">
+            <div
+                v-for="(content, index) in contents"
+                :key="index"
+                class="conentItem"
+                :class="{'deleting': content.isDeleting}"
+            >
                 <div class="optionSection">
                     <div class="deleteAction" @click="delItem(index)">
                         <i class="material-icons">delete</i>
@@ -21,8 +26,7 @@
                 <component :is="getComponent(content.type)" :content="content"></component>
                 <template v-if="content.isDeleting">
                     <div class="componentDeleting">
-                        <div class="deletingContainer">
-                        </div>
+                        <div class="deletingContainer"></div>
                     </div>
                 </template>
             </div>
@@ -78,25 +82,25 @@
 
 
 <script lang="ts">
-import { Component, Watch, Prop, Vue } from 'vue-property-decorator';
-import Axios,{ CancelTokenSource } from 'axios';
-import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
+import { Component, Watch, Prop, Vue } from "vue-property-decorator";
+import Axios, { CancelTokenSource } from "axios";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
 
-import TextComponent from './builder/TextComponent.vue';
-import TypingComponent from './builder/TypingComponent.vue';
-import ListComponent from './builder/ListComponent.vue';
-import GalleryComponent from './builder/GalleryComponent.vue';
-import QuickReplyComponent from './builder/QuickReplyComponent.vue';
-import UserInputComponent from './builder/UserInputComponent.vue';
-import ImageComponent from './builder/ImageComponent.vue';
+import TextComponent from "./builder/TextComponent.vue";
+import TypingComponent from "./builder/TypingComponent.vue";
+import ListComponent from "./builder/ListComponent.vue";
+import GalleryComponent from "./builder/GalleryComponent.vue";
+import QuickReplyComponent from "./builder/QuickReplyComponent.vue";
+import UserInputComponent from "./builder/UserInputComponent.vue";
+import ImageComponent from "./builder/ImageComponent.vue";
 
-import TextContentModel from '../../models/bots/TextContentModel';
-import TypingContentModel from '../../models/bots/TypingContentModel';
-import ListContentModel from '../../models/bots/ListContentModel';
-import GalleryContentModel from '../../models/bots/GalleryContentModel';
-import QuickReplyContentModel from '../../models/bots/QuickReplyContentModel';
-import UserInputContentModel from '../../models/bots/UserInputContentModel';
-import ImageContentModel from '../../models/bots/ImageContentModel';
+import TextContentModel from "../../models/bots/TextContentModel";
+import TypingContentModel from "../../models/bots/TypingContentModel";
+import ListContentModel from "../../models/bots/ListContentModel";
+import GalleryContentModel from "../../models/bots/GalleryContentModel";
+import QuickReplyContentModel from "../../models/bots/QuickReplyContentModel";
+import UserInputContentModel from "../../models/bots/UserInputContentModel";
+import ImageContentModel from "../../models/bots/ImageContentModel";
 
 @Component({
     components: {
@@ -118,61 +122,62 @@ export default class BuilderComponent extends Vue {
     @Prop({
         type: Array,
         default: []
-    }) value!: Array<any>;
+    })
+    value!: Array<any>;
 
     @Prop() section!: any;
 
     mounted() {
-        for(let i in this.value) {
+        for (let i in this.value) {
             this.buildConetnt(this.value[i]);
         }
     }
 
     async addText() {
         await this.appendComponent({
-            name: 'Text section',
+            name: "Text section",
             type: 1
         });
     }
 
     async addTyping() {
         await this.appendComponent({
-            name: 'Typing section',
+            name: "Typing section",
             type: 2
         });
     }
 
     async addQuickReply() {
         await this.appendComponent({
-            name: 'Quick Reply section',
+            name: "Quick Reply section",
             type: 3
         });
     }
 
     async addUserInput() {
         await this.appendComponent({
-            name: 'User Input section',
+            name: "User Input section",
             type: 4
         });
     }
 
     async addList() {
         await this.appendComponent({
-            name: 'List section',
+            name: "List section",
             type: 5
         });
     }
-    
+
     async addGallery() {
         await this.appendComponent({
-            name: 'Gallery section',
+            name: "Gallery section",
             type: 6
         });
     }
-    
+
     async addImage() {
         await this.appendComponent({
-            name: 'Image section',
+            name: "Image section",
             type: 7
         });
     }
@@ -182,92 +187,127 @@ export default class BuilderComponent extends Vue {
     }
 
     private buildConetnt(value: any) {
-        switch(value.type) {
-            case(1):
-                this.contents.push(new TextContentModel({
-                    id: 0,
-                    type: value.type,
-                    block: 0,
-                    section: 0,
-                    project: 0,
-                    content: {
-                        text: "",
-                        button: []
-                    }
-                }, ''));
+        switch (value.type) {
+            case 1:
+                this.contents.push(
+                    new TextContentModel(
+                        {
+                            id: 0,
+                            type: value.type,
+                            block: 0,
+                            section: 0,
+                            project: 0,
+                            content: {
+                                text: "",
+                                button: []
+                            }
+                        },
+                        ""
+                    )
+                );
                 break;
 
-            case(2):
-                this.contents.push(new TypingContentModel({
-                    id: 0,
-                    type: value.type,
-                    block: 0,
-                    section: 0,
-                    project: 0,
-                    content: {
-                        duration: "1"
-                    }
-                }, ''));
+            case 2:
+                this.contents.push(
+                    new TypingContentModel(
+                        {
+                            id: 0,
+                            type: value.type,
+                            block: 0,
+                            section: 0,
+                            project: 0,
+                            content: {
+                                duration: "1"
+                            }
+                        },
+                        ""
+                    )
+                );
                 break;
 
-            case(3):
-                this.contents.push(new QuickReplyContentModel({
-                    id: 0,
-                    type: value.type,
-                    block: 0,
-                    section: 0,
-                    project: 0,
-                    content: []
-                }, ''));
+            case 3:
+                this.contents.push(
+                    new QuickReplyContentModel(
+                        {
+                            id: 0,
+                            type: value.type,
+                            block: 0,
+                            section: 0,
+                            project: 0,
+                            content: []
+                        },
+                        ""
+                    )
+                );
                 break;
 
-            case(4):
-                this.contents.push(new UserInputContentModel({
-                    id: 0,
-                    type: value.type,
-                    block: 0,
-                    section: 0,
-                    project: 0,
-                    content: []
-                }, ''));
+            case 4:
+                this.contents.push(
+                    new UserInputContentModel(
+                        {
+                            id: 0,
+                            type: value.type,
+                            block: 0,
+                            section: 0,
+                            project: 0,
+                            content: []
+                        },
+                        ""
+                    )
+                );
                 break;
 
-            case(5):
-                this.contents.push(new ListContentModel({
-                    id: 0,
-                    type: value.type,
-                    block: 0,
-                    section: 0,
-                    project: 0,
-                    content: {
-                        content: [],
-                        button: []
-                    }
-                }, ''));
+            case 5:
+                this.contents.push(
+                    new ListContentModel(
+                        {
+                            id: 0,
+                            type: value.type,
+                            block: 0,
+                            section: 0,
+                            project: 0,
+                            content: {
+                                content: [],
+                                button: []
+                            }
+                        },
+                        ""
+                    )
+                );
                 break;
 
-            case(6):
-                this.contents.push(new GalleryContentModel({
-                    id: 0,
-                    type: value.type,
-                    block: 0,
-                    section: 0,
-                    project: 0,
-                    content: []
-                }, ''));
+            case 6:
+                this.contents.push(
+                    new GalleryContentModel(
+                        {
+                            id: 0,
+                            type: value.type,
+                            block: 0,
+                            section: 0,
+                            project: 0,
+                            content: []
+                        },
+                        ""
+                    )
+                );
                 break;
 
-            case(7):
-                this.contents.push(new ImageContentModel({
-                     id: 0,
-                    type: value.type,
-                    block: 0,
-                    section: 0,
-                    project: 0,
-                    content: {
-                        image: ""
-                    }
-                }, ''));
+            case 7:
+                this.contents.push(
+                    new ImageContentModel(
+                        {
+                            id: 0,
+                            type: value.type,
+                            block: 0,
+                            section: 0,
+                            project: 0,
+                            content: {
+                                image: ""
+                            }
+                        },
+                        ""
+                    )
+                );
                 break;
         }
     }
@@ -275,32 +315,32 @@ export default class BuilderComponent extends Vue {
     private getComponent(type: number) {
         let component = null;
 
-        switch(type) {
-            case(1):
+        switch (type) {
+            case 1:
                 component = TextComponent;
                 break;
 
-            case(2):
+            case 2:
                 component = TypingComponent;
                 break;
 
-            case(3):
+            case 3:
                 component = QuickReplyComponent;
                 break;
 
-            case(4):
+            case 4:
                 component = UserInputComponent;
                 break;
 
-            case(5):
+            case 5:
                 component = ListComponent;
                 break;
 
-            case(6):
+            case 6:
                 component = GalleryComponent;
                 break;
 
-            case(7):
+            case 7:
                 component = ImageComponent;
                 break;
         }
@@ -308,16 +348,12 @@ export default class BuilderComponent extends Vue {
         return component;
     }
 
-    async delItem(index:number) {
+    async delItem(index: number) {
         this.contents.splice(index, 1);
     }
 
-    async updateSection() {
-        
-    }
+    async updateSection() {}
 
-    async delSection() {
-        
-    }
+    async delSection() {}
 }
 </script>

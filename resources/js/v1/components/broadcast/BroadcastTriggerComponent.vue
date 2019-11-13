@@ -54,7 +54,8 @@
                     </template>
                 </div>
 
-                <div class="reachableUser">You have
+                <div class="reachableUser">
+                    You have
                     <b>4</b> users based on your filters.
                 </div>
 
@@ -63,7 +64,7 @@
 
                     <div class="bccTime bccDuration float-left">
                         <div class="timeOptionCon">
-                            <input type="number" v-model="trigger.duration" min="1">
+                            <input type="number" v-model="trigger.duration" min="1" />
                         </div>
                         <dropdown-keybase-component
                             :options="durationOption"
@@ -94,7 +95,12 @@
                 </div>
 
                 <div class="triggerAttribute" v-if="trigger.triggerType===3">
-                    <input type="text" v-model="trigger.attr" @blur="updateTrigger" placeholder="Attribute Name">
+                    <input
+                        type="text"
+                        v-model="trigger.attr"
+                        @blur="updateTrigger"
+                        placeholder="Attribute Name"
+                    />
                     <dropdown-keybase-component
                         :options="[
                             {
@@ -109,13 +115,13 @@
                         :selectedKey="trigger.condi"
                         v-model="trigger.condi"
                     ></dropdown-keybase-component>
-                    <input type="text" v-model="trigger.value" placeholder="Attribute Value">
+                    <input type="text" v-model="trigger.value" placeholder="Attribute Value" />
                 </div>
 
                 <div class="btnAction broadcastActionBtn">
                     <a href="javascript:void(0);" @click="deleteBroadcast()">
                         <figure>
-                            <img src="/images/icons/broadcast/delete.png">
+                            <img src="/images/icons/broadcast/delete.png" />
                         </figure>
                     </a>
                     <a
@@ -129,7 +135,7 @@
                         >
                             <img
                                 :src="'/images/icons/broadcast/'+(trigger.status ? 'broadcast_status_enable': 'broadcast_status')+'.png'"
-                            >
+                            />
                         </figure>
                     </a>
                 </div>
@@ -243,9 +249,7 @@ export default class BroadcastTriggerComponent extends Vue {
         this.loading = true;
 
         await Axios({
-            url: `/api/v1/project/${
-                this.$store.state.projectInfo.id
-            }/broadcast/trigger/${this.$route.params.triggerid}`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/trigger/${this.$route.params.triggerid}`,
             method: "get",
             cancelToken: this.loadingToken.token
         })
@@ -279,11 +283,7 @@ export default class BroadcastTriggerComponent extends Vue {
         this.contents = [];
 
         await Axios({
-            url: `/api/v1/project/${
-                this.$store.state.projectInfo.id
-            }/broadcast/${this.trigger.id}/section/${
-                this.trigger.section.id
-            }/content`,
+            url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.trigger.id}/section/${this.trigger.section.id}/content`,
             cancelToken: this.loadingContentToken.token
         })
             .then((res: any) => {

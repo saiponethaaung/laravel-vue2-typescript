@@ -93,7 +93,7 @@ export default class DeactivatedProjectComponent extends Vue {
     }
 
     async deleteProject() {
-        if(confirm("Are you sure you want to delete this project?")) {
+        if (confirm("Are you sure you want to delete this project?")) {
             this.processing = true;
             await Axios({
                 url: `/api/v1/project/${this.$store.state.projectList[this.index].id}`,
@@ -105,7 +105,8 @@ export default class DeactivatedProjectComponent extends Vue {
                 .catch((err: any) => {
                     if (err.response) {
                         this.$store.state.errorMesg.push(
-                            err.response.data.mesg || "Failed to delete project!"
+                            err.response.data.mesg ||
+                                "Failed to delete project!"
                         );
                     }
                 });

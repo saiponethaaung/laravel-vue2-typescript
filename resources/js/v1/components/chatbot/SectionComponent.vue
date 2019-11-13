@@ -3,56 +3,57 @@
         <div @click="selectBlock()">{{ section.shortenTitle }}</div>
         <div class="errorAlert" v-if="!section.check"></div>
 
-        <span 
+        <span
             class="blockOption"
             @click="section.option=!section.option"
-            :class="{'showOptions': section.option}">
-            
+            :class="{'showOptions': section.option}"
+        >
             <i class="material-icons">more_horiz</i>
         </span>
-        <span class="menuOption" ref="optionSelector" v-if="section.option" @click="delSection()">Delete</span>
+        <span
+            class="menuOption"
+            ref="optionSelector"
+            v-if="section.option"
+            @click="delSection()"
+        >Delete</span>
     </div>
 </template>
 
 <script lang="ts">
-import { Prop, Vue, Component, Emit } from 'vue-property-decorator';
-import ChatBlockSectionModel from '../../models/ChatBlockSectionModel';
+import { Prop, Vue, Component, Emit } from "vue-property-decorator";
+import ChatBlockSectionModel from "../../models/ChatBlockSectionModel";
 
 @Component
 export default class SectionComponent extends Vue {
     @Prop() section!: ChatBlockSectionModel;
     @Prop() index!: number;
     @Prop() sIndex!: number;
-    
-    @Emit('selectBlock')
+
+    @Emit("selectBlock")
     selectBlock() {
         return this.index, this.sIndex;
     }
 
-    @Emit('delSection')
-    delSection() {
+    @Emit("delSection")
+    delSection() {}
 
-    }
-
-    documentClick(e: any){
-        if(this.section.option) {
+    documentClick(e: any) {
+        if (this.section.option) {
             let el: any = this.$refs.optionSelector;
             let target = e.target;
-            if (undefined!==el && ( el !== target) && !el.contains(target)) {
+            if (undefined !== el && el !== target && !el.contains(target)) {
                 this.section.option = false;
             }
         }
     }
 
     created() {
-        document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
 
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
-
 }
-
 </script>

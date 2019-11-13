@@ -2,10 +2,14 @@
     <div class="persistentMenuComponent">
         <div class="persistentRootCon">
             <div @click="showOption=true" class="persistentMenuAction">
-                <span class="persistentMenuName">{{ menu.content.title ? menu.content.title : "Enter menu name" }}</span>
+                <span
+                    class="persistentMenuName"
+                >{{ menu.content.title ? menu.content.title : "Enter menu name" }}</span>
                 <template v-if="menu.content.type!==2">
                     <template v-if="menu.content.type==0">
-                        <span class="pmnSubContent">{{ menu.content.blocks.length>0 ? menu.content.blocks[0].title : '-' }}</span>
+                        <span
+                            class="pmnSubContent"
+                        >{{ menu.content.blocks.length>0 ? menu.content.blocks[0].title : '-' }}</span>
                     </template>
                     <template v-if="menu.content.type==1">
                         <span class="pmnSubContent">{{ menu.content.url }}</span>
@@ -33,12 +37,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import PersistentMenu from '../../models/PersistentMenu';
-import AjaxErrorHandler from '../../utils/AjaxErrorHandler';
-import { blockSuggestion } from '../../configuration/interface';
-import Axios,{ CancelTokenSource } from 'axios';
-import FirstMenuOption from './FirstMenuOption.vue';
+import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import PersistentMenu from "../../models/PersistentMenu";
+import AjaxErrorHandler from "../../utils/AjaxErrorHandler";
+import { blockSuggestion } from "../../configuration/interface";
+import Axios, { CancelTokenSource } from "axios";
+import FirstMenuOption from "./FirstMenuOption.vue";
 
 @Component({
     components: {
@@ -51,9 +55,9 @@ export default class FirstMenuComponent extends Vue {
     private showOption: boolean = false;
 
     @Emit("selected")
-    private selectedFirst(index: any){}
+    private selectedFirst(index: any) {}
 
-    @Emit('deleteFirst')
+    @Emit("deleteFirst")
     deleteMenu() {
         return this.index;
     }

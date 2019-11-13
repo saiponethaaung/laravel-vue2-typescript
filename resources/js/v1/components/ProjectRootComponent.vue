@@ -31,10 +31,12 @@ export default class ProjectRootComponent extends Vue {
             method: "get"
         })
             .then((res: any) => {
-                if(this.$store.state.user.facebook_connected) {
-                this.$store.state.user.facebook_connected = !res.data.reAuthenticate;
+                if (this.$store.state.user.facebook_connected) {
+                    this.$store.state.user.facebook_connected = !res.data
+                        .reAuthenticate;
                 }
-                this.$store.state.user.facebookReconnect = res.data.reAuthenticate;
+                this.$store.state.user.facebookReconnect =
+                    res.data.reAuthenticate;
                 this.$store.commit("setProjectInfo", {
                     project: res.data.data
                 });

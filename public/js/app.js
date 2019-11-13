@@ -25389,7 +25389,7 @@ module.exports = Component.exports
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AttributeModel__ = __webpack_require__(269);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AttributeModel__ = __webpack_require__(272);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -25567,9 +25567,9 @@ class UserListModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler_
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(270)
+var __vue_script__ = __webpack_require__(273)
 /* template */
-var __vue_template__ = __webpack_require__(271)
+var __vue_template__ = __webpack_require__(274)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -25615,7 +25615,7 @@ module.exports = Component.exports
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__SegmentModel__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__SegmentModel__ = __webpack_require__(278);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -25711,7 +25711,7 @@ class SegmentListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandl
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(45);
-module.exports = __webpack_require__(296);
+module.exports = __webpack_require__(299);
 
 
 /***/ }),
@@ -25751,7 +25751,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_common_TimeInputComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_common_TimeInputComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__configuration_bootstrap__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__configuration_route__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__configuration_store__ = __webpack_require__(294);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__configuration_store__ = __webpack_require__(297);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__utils_AjaxErrorHandler__ = __webpack_require__(3);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -33213,16 +33213,16 @@ let SpinnerDropDownComponent = class SpinnerDropDownComponent extends __WEBPACK_
     documentClick(e) {
         let el = this.$refs.spinnerDropDown;
         let target = e.target;
-        if ((el !== target) && !el.contains(target)) {
+        if (el !== target && !el.contains(target)) {
             this.showOption = false;
         }
     }
     created() {
-        document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 };
 __decorate([
@@ -33235,7 +33235,7 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({ default: -1 })
 ], SpinnerDropDownComponent.prototype, "selectedKey", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('input')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("input")
 ], SpinnerDropDownComponent.prototype, "selectNewOption", null);
 SpinnerDropDownComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -33273,13 +33273,7 @@ var render = function() {
                   { staticClass: "spinnerSelectedValue" },
                   [
                     undefined !== _vm.labelText && _vm.labelText !== ""
-                      ? [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.labelText) +
-                              "\n                "
-                          )
-                        ]
+                      ? [_vm._v(_vm._s(_vm.labelText))]
                       : _vm._e(),
                     _vm._v(
                       "\n                " +
@@ -33979,7 +33973,7 @@ let ButtonComponent = class ButtonComponent extends __WEBPACK_IMPORTED_MODULE_0_
         return __awaiter(this, void 0, void 0, function* () {
             this.updateToken.cancel();
             this.updateToken = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.CancelToken.source();
-            console.log('check restricted', this.ajaxHandler.restrictAttribute.indexOf(this.button.attribute.title.toLowerCase()));
+            console.log("check restricted", this.ajaxHandler.restrictAttribute.indexOf(this.button.attribute.title.toLowerCase()));
             if (this.ajaxHandler.restrictAttribute.indexOf(this.button.attribute.title.toLowerCase()) > -1) {
                 this.$store.state.errorMesg.push(`Cannot overwrite system attribute '${this.button.attribute.title}'!`);
                 return;
@@ -34206,7 +34200,9 @@ var render = function() {
                   "div",
                   { staticClass: "optionValue" },
                   [
-                    _vm._v("they receive the block\n                        "),
+                    _vm._v(
+                      "\n                        they receive the block\n                        "
+                    ),
                     _vm.button.block.length > 0
                       ? [
                           _c("div", { staticClass: "selectedBlockCon" }, [
@@ -34604,7 +34600,7 @@ var render = function() {
   return _c("div", { staticClass: "processWarning" }, [
     _vm._m(0),
     _vm._v(" "),
-    _c("p", [_vm._v("\n        " + _vm._s(_vm.mesg) + "\n    ")])
+    _c("p", [_vm._v(_vm._s(_vm.mesg))])
   ])
 }
 var staticRenderFns = [
@@ -34749,8 +34745,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     contentChange() {
         this.checkContent();
     }
-    checkContent() {
-    }
+    checkContent() { }
     mounted() {
         this.urlPath = this.isBroadcast
             ? `broadcast/${this.section.broadcast}`
@@ -35015,10 +35010,10 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], BuilderComponent.prototype, "section", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('contents', { deep: true, immediate: true })
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("contents", { deep: true, immediate: true })
 ], BuilderComponent.prototype, "contentChange", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('contentChanged')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("contentChanged")
 ], BuilderComponent.prototype, "checkContent", null);
 BuilderComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
@@ -35338,25 +35333,25 @@ let TypingComponent = class TypingComponent extends __WEBPACK_IMPORTED_MODULE_0_
     documentClick(e) {
         let el = this.$refs.dropdownMenu;
         let target = e.target;
-        if ((el !== target) && !el.contains(target)) {
+        if (el !== target && !el.contains(target)) {
             this.showOption = false;
         }
     }
     created() {
-        document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
-        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_TypingContentModel__["a" /* default */],
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_TypingContentModel__["a" /* default */]
     })
 ], TypingComponent.prototype, "content", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('content.duration')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("content.duration")
 ], TypingComponent.prototype, "durationChange", null);
 TypingComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -38184,7 +38179,7 @@ let ImageComponent = class ImageComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
-        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_ImageContentModel__["a" /* default */],
+        type: __WEBPACK_IMPORTED_MODULE_1__models_bots_ImageContentModel__["a" /* default */]
     })
 ], ImageComponent.prototype, "content", void 0);
 ImageComponent = __decorate([
@@ -39028,10 +39023,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 let PopupComponent = class PopupComponent extends __WEBPACK_IMPORTED_MODULE_0_vue__["default"] {
     get myClassName() {
-        let className = '';
+        let className = "";
         switch (this.type) {
             default:
-                className = 'defPopCon';
+                className = "defPopCon";
                 break;
         }
         return className;
@@ -39135,32 +39130,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 let TimeInputComponent = class TimeInputComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.content = '00:00';
-        this.allowKey = [
-            '0',
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9'
-        ];
+        this.content = "00:00";
+        this.allowKey = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
     }
     updateProp() {
         this.content = this.value;
     }
     validateContent(e) {
-        console.log('validate time input', e);
+        console.log("validate time input", e);
         if (this.allowKey.indexOf(e.key) > -1 && e.target.selectionStart < 5) {
             // set dummy value if value is empty
-            if (this.content === '') {
-                this.content = '00:00';
+            if (this.content === "") {
+                this.content = "00:00";
             }
             // get cursor position
-            let position = e.target.selectionStart === 2 ? e.target.selectionStart + 1 : e.target.selectionStart;
+            let position = e.target.selectionStart === 2
+                ? e.target.selectionStart + 1
+                : e.target.selectionStart;
             // get first part
             let output = this.content.slice(0, position === 0 ? position + 1 : position);
             // replace first part if positin is zero
@@ -39172,18 +39158,23 @@ let TimeInputComponent = class TimeInputComponent extends __WEBPACK_IMPORTED_MOD
                 output += e.key;
             }
             // join with the second part with 1 offset
-            output = [output, this.content.slice(position + 1)].join('');
+            output = [output, this.content.slice(position + 1)].join("");
             // validate hour is max 12 and min is max 59
             let calculate = output.split(":");
-            calculate[0] = parseInt(calculate[0]) > 12 ? '12' : calculate[0];
-            calculate[1] = parseInt(calculate[1]) > 59 ? '59' : calculate[1];
+            calculate[0] = parseInt(calculate[0]) > 12 ? "12" : calculate[0];
+            calculate[1] = parseInt(calculate[1]) > 59 ? "59" : calculate[1];
             output = calculate.join(":");
             this.content = output;
             // reposition a cursor
             setTimeout(() => {
                 let el = this.$refs.timeInput;
                 el.focus();
-                position = position < 5 ? position === 1 ? position + 2 : position + 1 : position;
+                position =
+                    position < 5
+                        ? position === 1
+                            ? position + 2
+                            : position + 1
+                        : position;
                 el.setSelectionRange(position, position + 1);
             }, 10);
             this.updateValue(this.content);
@@ -39196,14 +39187,14 @@ let TimeInputComponent = class TimeInputComponent extends __WEBPACK_IMPORTED_MOD
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])({
-        default: '00:00'
+        default: "00:00"
     })
 ], TimeInputComponent.prototype, "value", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('value', { immediate: true })
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("value", { immediate: true })
 ], TimeInputComponent.prototype, "updateProp", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('input')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("input")
 ], TimeInputComponent.prototype, "updateValue", null);
 TimeInputComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -45821,35 +45812,35 @@ Popper.Defaults = Defaults;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_inbox_InboxPageSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_inbox_InboxPageSidebarComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_ProjectListComponent_vue__ = __webpack_require__(217);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_ProjectListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_ProjectListComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_ProjectRootComponent_vue__ = __webpack_require__(220);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_ProjectRootComponent_vue__ = __webpack_require__(223);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_ProjectRootComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_ProjectRootComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_setting_AdminComponent_vue__ = __webpack_require__(223);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_setting_AdminComponent_vue__ = __webpack_require__(226);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_setting_AdminComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_setting_AdminComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_setting_MessengerUserInputComponent_vue__ = __webpack_require__(226);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_setting_MessengerUserInputComponent_vue__ = __webpack_require__(229);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_setting_MessengerUserInputComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_setting_MessengerUserInputComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_setting_PersistentMenuComponent_vue__ = __webpack_require__(229);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_setting_PersistentMenuComponent_vue__ = __webpack_require__(232);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_setting_PersistentMenuComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_setting_PersistentMenuComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_setting_ProfileComponent_vue__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_setting_ProfileComponent_vue__ = __webpack_require__(256);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_setting_ProfileComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_setting_ProfileComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_setting_ProjectConfigrationComponent_vue__ = __webpack_require__(256);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_setting_ProjectConfigrationComponent_vue__ = __webpack_require__(259);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_setting_ProjectConfigrationComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__components_setting_ProjectConfigrationComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_setting_SettingSidebarComponent_vue__ = __webpack_require__(263);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_setting_SettingSidebarComponent_vue__ = __webpack_require__(266);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_setting_SettingSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__components_setting_SettingSidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_user_SegmentListComponent_vue__ = __webpack_require__(266);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_user_SegmentListComponent_vue__ = __webpack_require__(269);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_user_SegmentListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__components_user_SegmentListComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_user_SegmentListSidebarComponent_vue__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_user_SegmentListSidebarComponent_vue__ = __webpack_require__(276);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_user_SegmentListSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__components_user_SegmentListSidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_user_UserListComponent_vue__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_user_UserListComponent_vue__ = __webpack_require__(280);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_user_UserListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__components_user_UserListComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_user_UserListSidebarComponent_vue__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_user_UserListSidebarComponent_vue__ = __webpack_require__(283);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_user_UserListSidebarComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__components_user_UserListSidebarComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__configuration_RouterViewComponent_vue__ = __webpack_require__(283);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__configuration_RouterViewComponent_vue__ = __webpack_require__(286);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__configuration_RouterViewComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__configuration_RouterViewComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__non_member_RegisterComponent_vue__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__non_member_RegisterComponent_vue__ = __webpack_require__(288);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__non_member_RegisterComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__non_member_RegisterComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__non_member_ResendOtpComponent_vue__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__non_member_ResendOtpComponent_vue__ = __webpack_require__(291);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__non_member_ResendOtpComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__non_member_ResendOtpComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__non_member_VerifyEmailComponent_vue__ = __webpack_require__(291);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__non_member_VerifyEmailComponent_vue__ = __webpack_require__(294);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__non_member_VerifyEmailComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_27__non_member_VerifyEmailComponent_vue__);
 
 
@@ -48783,7 +48774,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let AIComponent = class AIComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.groupList = new __WEBPACK_IMPORTED_MODULE_1__models_ai_AIGroupListModel__["a" /* default */]('');
+        this.groupList = new __WEBPACK_IMPORTED_MODULE_1__models_ai_AIGroupListModel__["a" /* default */]("");
     }
     mounted() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -48809,7 +48800,8 @@ let AIComponent = class AIComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_prop
     }
     activeGroup(index) {
         this.groupList.active = index;
-        if (!this.groupList.groups[index].loaded && !this.groupList.groups[index].loading) {
+        if (!this.groupList.groups[index].loaded &&
+            !this.groupList.groups[index].loading) {
             this.groupList.groups[index].loadRule();
         }
     }
@@ -49402,7 +49394,7 @@ let AIGroupComponent = class AIGroupComponent extends __WEBPACK_IMPORTED_MODULE_
     constructor() {
         super(...arguments);
         this.confirmDelete = false;
-        this.confirmText = '';
+        this.confirmText = "";
         this.errorAIGroup = "";
     }
     renameGroup() {
@@ -49413,7 +49405,7 @@ let AIGroupComponent = class AIGroupComponent extends __WEBPACK_IMPORTED_MODULE_
         }, 10);
     }
     deleteGroup() {
-        this.confirmText = '';
+        this.confirmText = "";
         this.confirmDelete = false;
         return this.index;
     }
@@ -49422,7 +49414,7 @@ let AIGroupComponent = class AIGroupComponent extends __WEBPACK_IMPORTED_MODULE_
     }
     saveRename() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.group.name === '') {
+            if (this.group.name === "") {
                 this.errorAIGroup = "Group name cannot be empty!";
                 return false;
             }
@@ -49442,17 +49434,17 @@ let AIGroupComponent = class AIGroupComponent extends __WEBPACK_IMPORTED_MODULE_
         if (this.group.option && !this.group.edit) {
             let el = this.$refs.optionSelector;
             let target = e.target;
-            if (undefined !== el && (el !== target) && !el.contains(target)) {
+            if (undefined !== el && el !== target && !el.contains(target)) {
                 this.group.option = false;
             }
         }
     }
     created() {
-        document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 };
 __decorate([
@@ -49462,10 +49454,10 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], AIGroupComponent.prototype, "index", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('deleteGroup')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("deleteGroup")
 ], AIGroupComponent.prototype, "deleteGroup", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('activeGroup')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("activeGroup")
 ], AIGroupComponent.prototype, "activeGroup", null);
 AIGroupComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -50233,7 +50225,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let AIResponseSection = class AIResponseSection extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.blockKeyword = '';
+        this.blockKeyword = "";
         this.blockList = [];
     }
     delBlock() {
@@ -50246,14 +50238,14 @@ let AIResponseSection = class AIResponseSection extends __WEBPACK_IMPORTED_MODUL
                 this.response.segmentId = selectedSegment;
             }
             else {
-                this.response.segmentName = '';
+                this.response.segmentName = "";
             }
         });
     }
     loadSuggestion() {
         return __awaiter(this, void 0, void 0, function* () {
             let suggestion = yield this.response.searchSections(this.blockKeyword, this.$route.params.projectid);
-            if (suggestion.type === 'cancel')
+            if (suggestion.type === "cancel")
                 return;
             if (suggestion.status === false) {
                 alert(suggestion.mesg);
@@ -50599,7 +50591,7 @@ var render = function() {
       _c(
         "h5",
         [
-          _vm._v("bot replies\n            "),
+          _vm._v("\n            bot replies\n            "),
           _vm.rule.response.length > 1
             ? [
                 _vm._v("\n                 \n                "),
@@ -50761,11 +50753,7 @@ var render = function() {
                     ? _c(
                         "li",
                         { staticClass: "aiC-groupCon-child addmore creating" },
-                        [
-                          _vm._v(
-                            "\n                    creating...\n                "
-                          )
-                        ]
+                        [_vm._v("creating...")]
                       )
                     : _c(
                         "li",
@@ -50803,11 +50791,7 @@ var render = function() {
                         _vm._v(" "),
                         _vm.groupList.groups[_vm.groupList.active].creating ||
                         _vm.groupList.groups[_vm.groupList.active].loading
-                          ? [
-                              _vm._v(
-                                "\n                        Loading...\n                    "
-                              )
-                            ]
+                          ? [_vm._v("Loading...")]
                           : [
                               _c(
                                 "button",
@@ -50835,7 +50819,7 @@ var render = function() {
                 2
               )
             ]
-          : [_vm._v("\n            Loading...\n        ")]
+          : [_vm._v("Loading...")]
       ],
       2
     )
@@ -50954,8 +50938,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 let BroadcastComponent = class BroadcastComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
-    mounted() {
-    }
+    mounted() { }
 };
 BroadcastComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -51279,45 +51262,45 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
             {
                 key: 2,
                 value: "pm"
-            },
+            }
         ];
         this.repeatOption = [
             {
                 key: 1,
-                value: 'None'
+                value: "None"
             },
             {
                 key: 2,
-                value: 'Daily'
+                value: "Daily"
             },
             {
                 key: 3,
-                value: 'Weekend'
+                value: "Weekend"
             },
             {
                 key: 4,
-                value: 'Every Month'
+                value: "Every Month"
             },
             {
                 key: 5,
-                value: 'Workdays'
+                value: "Workdays"
             },
             {
                 key: 6,
-                value: 'Yearly'
+                value: "Yearly"
             },
             {
                 key: 7,
-                value: 'Custom'
-            },
+                value: "Custom"
+            }
         ];
         this.showTags = false;
         this.schedule = new __WEBPACK_IMPORTED_MODULE_2__models_broadcast_ScheduleModel__["a" /* default */]();
     }
     get showDate() {
         if (undefined === this.schedule)
-            return '';
-        let date = '';
+            return "";
+        let date = "";
         let month = this.schedule.date.getMonth() + 1;
         return `${this.$store.state.months[month]} ${this.schedule.date.getDate()}, ${this.schedule.date.getFullYear()}`;
     }
@@ -51346,18 +51329,20 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
             this.loading = true;
             yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/schedule/${this.$route.params.scheduleid}`,
-                method: 'get',
+                method: "get",
                 cancelToken: this.loadingToken.token
-            }).then(res => {
+            })
+                .then(res => {
                 this.schedule.init(res.data.data);
                 this.filterList = new __WEBPACK_IMPORTED_MODULE_3__models_BroadcastAttributeFilterListModel__["a" /* default */](this.$store.state.projectInfo.id);
                 this.filterList.id = this.schedule.id;
                 this.filterList.loadAttributes();
                 this.loadScheduleContent();
                 this.loading = false;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule info!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load schedule info!");
                     alert(mesg);
                     this.loading = false;
                 }
@@ -51373,11 +51358,13 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
             yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.schedule.id}/section/${this.schedule.section.id}/content`,
                 cancelToken: this.loadingContentToken.token
-            }).then((res) => {
+            })
+                .then((res) => {
                 this.contents = res.data.content;
-            }).catch((err) => {
+            })
+                .catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load content!");
                     alert(mesg);
                 }
                 else {
@@ -51392,7 +51379,7 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
             if (this.loadingContent)
                 return;
             yield this.schedule.updateSchedule();
-            console.log('time', this.schedule.timeServerFormat);
+            console.log("time", this.schedule.timeServerFormat);
             this.$store.state.updateSchedule = {
                 id: this.schedule.id,
                 day: this.schedule.dateDate,
@@ -51419,24 +51406,24 @@ let BroadcastScheduleComponent = class BroadcastScheduleComponent extends __WEBP
                 }
                 else {
                     this.$store.state.deleteSchedule = this.schedule.id;
-                    this.$router.push({ name: 'project.broadcast' });
+                    this.$router.push({ name: "project.broadcast" });
                 }
             }
         });
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$route.params.scheduleid')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$route.params.scheduleid")
 ], BroadcastScheduleComponent.prototype, "loadSchedule", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.date'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.time'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.period'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.repeat'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.days', { deep: true })
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("schedule.date"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("schedule.time"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("schedule.period"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("schedule.repeat"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("schedule.days", { deep: true })
 ], BroadcastScheduleComponent.prototype, "updateSchedule", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('schedule.tag')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("schedule.tag")
 ], BroadcastScheduleComponent.prototype, "updateTag", null);
 BroadcastScheduleComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
@@ -51526,7 +51513,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     addText() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.appendComponent({
-                name: 'Text section',
+                name: "Text section",
                 type: 1
             });
         });
@@ -51534,7 +51521,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     addTyping() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.appendComponent({
-                name: 'Typing section',
+                name: "Typing section",
                 type: 2
             });
         });
@@ -51542,7 +51529,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     addQuickReply() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.appendComponent({
-                name: 'Quick Reply section',
+                name: "Quick Reply section",
                 type: 3
             });
         });
@@ -51550,7 +51537,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     addUserInput() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.appendComponent({
-                name: 'User Input section',
+                name: "User Input section",
                 type: 4
             });
         });
@@ -51558,7 +51545,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     addList() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.appendComponent({
-                name: 'List section',
+                name: "List section",
                 type: 5
             });
         });
@@ -51566,7 +51553,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     addGallery() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.appendComponent({
-                name: 'Gallery section',
+                name: "Gallery section",
                 type: 6
             });
         });
@@ -51574,7 +51561,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     addImage() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.appendComponent({
-                name: 'Image section',
+                name: "Image section",
                 type: 7
             });
         });
@@ -51586,7 +51573,7 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
     }
     buildConetnt(value) {
         switch (value.type) {
-            case (1):
+            case 1:
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_10__models_bots_TextContentModel__["a" /* default */]({
                     id: 0,
                     type: value.type,
@@ -51597,9 +51584,9 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                         text: "",
                         button: []
                     }
-                }, ''));
+                }, ""));
                 break;
-            case (2):
+            case 2:
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_11__models_bots_TypingContentModel__["a" /* default */]({
                     id: 0,
                     type: value.type,
@@ -51609,9 +51596,9 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     content: {
                         duration: "1"
                     }
-                }, ''));
+                }, ""));
                 break;
-            case (3):
+            case 3:
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_14__models_bots_QuickReplyContentModel__["a" /* default */]({
                     id: 0,
                     type: value.type,
@@ -51619,9 +51606,9 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     section: 0,
                     project: 0,
                     content: []
-                }, ''));
+                }, ""));
                 break;
-            case (4):
+            case 4:
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_15__models_bots_UserInputContentModel__["a" /* default */]({
                     id: 0,
                     type: value.type,
@@ -51629,9 +51616,9 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     section: 0,
                     project: 0,
                     content: []
-                }, ''));
+                }, ""));
                 break;
-            case (5):
+            case 5:
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_12__models_bots_ListContentModel__["a" /* default */]({
                     id: 0,
                     type: value.type,
@@ -51642,9 +51629,9 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                         content: [],
                         button: []
                     }
-                }, ''));
+                }, ""));
                 break;
-            case (6):
+            case 6:
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_13__models_bots_GalleryContentModel__["a" /* default */]({
                     id: 0,
                     type: value.type,
@@ -51652,9 +51639,9 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     section: 0,
                     project: 0,
                     content: []
-                }, ''));
+                }, ""));
                 break;
-            case (7):
+            case 7:
                 this.contents.push(new __WEBPACK_IMPORTED_MODULE_16__models_bots_ImageContentModel__["a" /* default */]({
                     id: 0,
                     type: value.type,
@@ -51664,32 +51651,32 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
                     content: {
                         image: ""
                     }
-                }, ''));
+                }, ""));
                 break;
         }
     }
     getComponent(type) {
         let component = null;
         switch (type) {
-            case (1):
+            case 1:
                 component = __WEBPACK_IMPORTED_MODULE_3__builder_TextComponent_vue___default.a;
                 break;
-            case (2):
+            case 2:
                 component = __WEBPACK_IMPORTED_MODULE_4__builder_TypingComponent_vue___default.a;
                 break;
-            case (3):
+            case 3:
                 component = __WEBPACK_IMPORTED_MODULE_7__builder_QuickReplyComponent_vue___default.a;
                 break;
-            case (4):
+            case 4:
                 component = __WEBPACK_IMPORTED_MODULE_8__builder_UserInputComponent_vue___default.a;
                 break;
-            case (5):
+            case 5:
                 component = __WEBPACK_IMPORTED_MODULE_5__builder_ListComponent_vue___default.a;
                 break;
-            case (6):
+            case 6:
                 component = __WEBPACK_IMPORTED_MODULE_6__builder_GalleryComponent_vue___default.a;
                 break;
-            case (7):
+            case 7:
                 component = __WEBPACK_IMPORTED_MODULE_9__builder_ImageComponent_vue___default.a;
                 break;
         }
@@ -51701,12 +51688,10 @@ let BuilderComponent = class BuilderComponent extends __WEBPACK_IMPORTED_MODULE_
         });
     }
     updateSection() {
-        return __awaiter(this, void 0, void 0, function* () {
-        });
+        return __awaiter(this, void 0, void 0, function* () { });
     }
     delSection() {
-        return __awaiter(this, void 0, void 0, function* () {
-        });
+        return __awaiter(this, void 0, void 0, function* () { });
     }
 };
 __decorate([
@@ -52197,7 +52182,7 @@ var render = function() {
     { staticClass: "inheritHFW broadcastRoot" },
     [
       _vm.loading && undefined !== _vm.schedule
-        ? [_vm._v("\n        Loading...\n    ")]
+        ? [_vm._v("Loading...")]
         : [
             _c(
               "div",
@@ -52369,7 +52354,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "broadcastCondition" }, [
                   _c("h5", { staticClass: "bccHeading float-left" }, [
-                    _vm._v("\n                    Schedule:\n                ")
+                    _vm._v("Schedule:")
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "bccCalender float-left" }, [
@@ -52558,7 +52543,7 @@ var render = function() {
                   ],
                   1
                 )
-              : _c("div", [_vm._v("\n            Loading...\n        ")])
+              : _c("div", [_vm._v("Loading...")])
           ]
     ],
     2
@@ -52570,9 +52555,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "reachableUser" }, [
-      _vm._v("You have "),
+      _vm._v("\n                You have\n                "),
       _c("b", [_vm._v("4")]),
-      _vm._v(" users based on your filters.")
+      _vm._v(" users based on your filters.\n            ")
     ])
   },
   function() {
@@ -52712,18 +52697,20 @@ let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPAC
             this.loading = true;
             yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/sendnow`,
-                method: 'get',
+                method: "get",
                 cancelToken: this.loadingToken.token
-            }).then(res => {
+            })
+                .then(res => {
                 this.broadcast.broadcastInit(res.data.data);
                 this.filterList = new __WEBPACK_IMPORTED_MODULE_2__models_BroadcastAttributeFilterListModel__["a" /* default */](this.$store.state.projectInfo.id);
                 this.filterList.id = this.broadcast.id;
                 this.filterList.loadAttributes();
                 this.loadBroadcastContent();
                 this.loading = false;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load broadcast info!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load broadcast info!");
                     alert(mesg);
                     this.loading = false;
                 }
@@ -52739,11 +52726,13 @@ let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPAC
             yield __WEBPACK_IMPORTED_MODULE_4_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/${this.broadcast.id}/section/${this.broadcast.section.id}/content`,
                 cancelToken: this.loadingContentToken.token
-            }).then((res) => {
+            })
+                .then((res) => {
                 this.contents = res.data.content;
-            }).catch((err) => {
+            })
+                .catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load content!");
                     alert(mesg);
                 }
                 else {
@@ -52772,7 +52761,7 @@ let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPAC
                 }
                 else {
                     this.$store.state.deleteTrigger = this.broadcast.id;
-                    this.$router.push({ name: 'project.broadcast' });
+                    this.$router.push({ name: "project.broadcast" });
                 }
             }
         });
@@ -52786,17 +52775,17 @@ let BroadcastSendNowComponent = class BroadcastSendNowComponent extends __WEBPAC
                 }
                 else {
                     this.$store.state.deleteTrigger = this.broadcast.id;
-                    this.$router.push({ name: 'project.broadcast' });
+                    this.$router.push({ name: "project.broadcast" });
                 }
             }
         });
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('input')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("input")
 ], BroadcastSendNowComponent.prototype, "selectNewOption", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('broadcast.tag')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("broadcast.tag")
 ], BroadcastSendNowComponent.prototype, "updateTag", null);
 BroadcastSendNowComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
@@ -52821,7 +52810,7 @@ var render = function() {
     { staticClass: "inheritHFW broadcastRoot" },
     [
       _vm.loading
-        ? [_vm._v("\n        Loading...\n    ")]
+        ? [_vm._v("Loading...")]
         : [
             _c("div", { staticClass: "broadcastFilterCon" }, [
               _vm.$store.state.messageTags.length > 0
@@ -53040,9 +53029,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "reachableUser" }, [
-      _vm._v("You have "),
+      _vm._v("\n                You have\n                "),
       _c("b", [_vm._v("4")]),
-      _vm._v(" users based on your filters.")
+      _vm._v(" users based on your filters.\n            ")
     ])
   },
   function() {
@@ -53204,7 +53193,7 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
         }
     }
     scheduleName(index) {
-        let name = '';
+        let name = "";
         let time = this.scheduleList[index].time.toString();
         let hour = time.slice(0, 2);
         let min = time.slice(2, 4);
@@ -53215,25 +53204,25 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
         }
         time = `${hour}:${min} ${timeOfDay}`;
         switch (this.scheduleList[index].interval_type) {
-            case (1):
+            case 1:
                 name = `${this.$store.state.months[parseInt(this.scheduleList[index].month)]} ${this.scheduleList[index].day} ${this.scheduleList[index].year} <span class='float-right'>${time}</span>`;
                 break;
-            case (2):
+            case 2:
                 name = `Daily <span class='float-right'>${time}</span>`;
                 break;
-            case (3):
+            case 3:
                 name = `Weekend <span class='float-right'>${time}</span>`;
                 break;
-            case (4):
+            case 4:
                 name = `Every month <span class='float-right'>${this.scheduleList[index].day} • ${time}</span>`;
                 break;
-            case (5):
+            case 5:
                 name = `Workdays <span class='float-right'>${time}</span>`;
                 break;
-            case (6):
+            case 6:
                 name = `Every year <span class='float-right'>${this.$store.state.months[parseInt(this.scheduleList[index].month)]} ${this.scheduleList[index].day} • ${time}</span>`;
                 break;
-            case (7):
+            case 7:
                 name = `Custom <span class='float-right'>${time}</span>`;
                 break;
         }
@@ -53245,13 +53234,15 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
                 return;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/schedule`,
-                method: 'get'
-            }).then(res => {
+                method: "get"
+            })
+                .then(res => {
                 this.scheduleList = res.data.data;
                 this.scheduleLoading = false;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load schedule list!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load schedule list!");
                     alert(mesg);
                     this.scheduleLoading = false;
                 }
@@ -53264,13 +53255,15 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
                 return;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast/trigger`,
-                method: 'get'
-            }).then(res => {
+                method: "get"
+            })
+                .then(res => {
                 this.triggerList = res.data.data;
                 this.triggerLoading = false;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load trigger list!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load trigger list!");
                     alert(mesg);
                     this.triggerLoading = false;
                 }
@@ -53282,12 +53275,14 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
             this.creatingSchedule = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast?section=schedule`,
-                method: 'post'
-            }).then(res => {
+                method: "post"
+            })
+                .then(res => {
                 this.scheduleList.push(res.data.data);
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new schedule!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to create new schedule!");
                     alert(mesg);
                 }
             });
@@ -53299,12 +53294,14 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
             this.creatingTrigger = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/broadcast?section=trigger`,
-                method: 'post'
-            }).then(res => {
+                method: "post"
+            })
+                .then(res => {
                 this.triggerList.push(res.data.data);
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new schedule!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to create new schedule!");
                     alert(mesg);
                 }
             });
@@ -53318,12 +53315,14 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
             this.$store.state.loadingMessageTags = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/message-tags`,
-                method: 'get'
-            }).then(res => {
+                method: "get"
+            })
+                .then(res => {
                 this.$store.state.messageTags = res.data.data;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load message tags!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load message tags!");
                     alert(mesg);
                 }
             });
@@ -53332,16 +53331,16 @@ let BroadcastSidebarComponent = class BroadcastSidebarComponent extends __WEBPAC
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.deleteTrigger')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.deleteTrigger")
 ], BroadcastSidebarComponent.prototype, "removeTrigger", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.updateTrigger', { deep: true })
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.updateTrigger", { deep: true })
 ], BroadcastSidebarComponent.prototype, "updateTrigger", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.deleteSchedule')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.deleteSchedule")
 ], BroadcastSidebarComponent.prototype, "removeSchedule", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.updateSchedule', { deep: true })
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.updateSchedule", { deep: true })
 ], BroadcastSidebarComponent.prototype, "updateSchedule", null);
 BroadcastSidebarComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -53372,11 +53371,7 @@ var render = function() {
           _c(
             "router-link",
             { attrs: { to: { name: "project.broadcast.sendnow" } } },
-            [
-              _vm._v(
-                "\n            Click here to send your message now\n        "
-              )
-            ]
+            [_vm._v("Click here to send your message now")]
           )
         ],
         1
@@ -53478,16 +53473,10 @@ var render = function() {
         : _vm._e(),
       _vm._v(" "),
       _vm.creatingTrigger
-        ? [
-            _c("div", { staticClass: "btnClick" }, [
-              _vm._v("\n            creating...\n        ")
-            ])
-          ]
+        ? [_c("div", { staticClass: "btnClick" }, [_vm._v("creating...")])]
         : [
             _vm.triggerLoading
-              ? _c("div", { staticClass: "btnClick" }, [
-                  _vm._v("\n            Loading...\n        ")
-                ])
+              ? _c("div", { staticClass: "btnClick" }, [_vm._v("Loading...")])
               : _c(
                   "div",
                   {
@@ -53548,16 +53537,10 @@ var render = function() {
         : _vm._e(),
       _vm._v(" "),
       _vm.creatingSchedule
-        ? [
-            _c("div", { staticClass: "btnClick" }, [
-              _vm._v("\n            creating...\n        ")
-            ])
-          ]
+        ? [_c("div", { staticClass: "btnClick" }, [_vm._v("creating...")])]
         : [
             _vm.scheduleLoading
-              ? _c("div", { staticClass: "btnClick" }, [
-                  _vm._v("\n            Loading...\n        ")
-                ])
+              ? _c("div", { staticClass: "btnClick" }, [_vm._v("Loading...")])
               : _c(
                   "div",
                   {
@@ -54490,7 +54473,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "reachableUser" }, [
-      _vm._v("You have\n                "),
+      _vm._v("\n                You have\n                "),
       _c("b", [_vm._v("4")]),
       _vm._v(" users based on your filters.\n            ")
     ])
@@ -54601,7 +54584,8 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
     }
     sectionChange() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.$store.state.chatBot.section > 0 && this.$store.state.chatBot.block > 0) {
+            if (this.$store.state.chatBot.section > 0 &&
+                this.$store.state.chatBot.block > 0) {
                 yield this.loadContent();
             }
         });
@@ -54633,13 +54617,15 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/chat-bot/block/${this.$store.state.chatBot.block}/section/${this.$store.state.chatBot.section}/content`,
                 cancelToken: this.loadingToken.token
-            }).then((res) => {
+            })
+                .then((res) => {
                 this.contents = res.data.content;
                 this.section = res.data.section;
                 this.isLoading = false;
-            }).catch((err) => {
+            })
+                .catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load content!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load content!");
                     alert(mesg);
                     this.isLoading = false;
                 }
@@ -54648,7 +54634,7 @@ let ContentComponent = class ContentComponent extends __WEBPACK_IMPORTED_MODULE_
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])('$store.state.chatBot')
+    Object(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["e" /* Watch */])("$store.state.chatBot")
 ], ContentComponent.prototype, "sectionChange", null);
 ContentComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["a" /* Component */]
@@ -54700,9 +54686,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "contentRoot" }, [
-      _c("div", { staticClass: "builderSectionInfo" }, [
-        _vm._v("\n                    Loading...\n                ")
-      ])
+      _c("div", { staticClass: "builderSectionInfo" }, [_vm._v("Loading...")])
     ])
   },
   function() {
@@ -54874,7 +54858,8 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                 if (this.blocks[i].id != this.$store.state.delBot.block)
                     continue;
                 for (let s in this.blocks[i].sections) {
-                    if (this.blocks[i].sections[s].id != this.$store.state.delBot.section)
+                    if (this.blocks[i].sections[s].id !=
+                        this.$store.state.delBot.section)
                         continue;
                     this.blocks[i].sections.splice(parseInt(s), 1);
                     this.selectedBlock = 0;
@@ -54894,7 +54879,8 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                 if (this.blocks[i].id != this.$store.state.updateBot.block)
                     continue;
                 for (let s in this.blocks[i].sections) {
-                    if (this.blocks[i].sections[s].id != this.$store.state.updateBot.section)
+                    if (this.blocks[i].sections[s].id !=
+                        this.$store.state.updateBot.section)
                         continue;
                     this.blocks[i].sections[s].title = this.$store.state.updateBot.title;
                     break;
@@ -54912,7 +54898,8 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                 if (this.blocks[i].id != this.$store.state.updateBotValid.block)
                     continue;
                 for (let s in this.blocks[i].sections) {
-                    if (this.blocks[i].sections[s].id != this.$store.state.updateBotValid.section)
+                    if (this.blocks[i].sections[s].id !=
+                        this.$store.state.updateBotValid.section)
                         continue;
                     this.blocks[i].sections[s].check = this.$store.state.updateBotValid.valid;
                     break;
@@ -54937,7 +54924,8 @@ let SidebarComponent = class SidebarComponent extends __WEBPACK_IMPORTED_MODULE_
                             for (let i in this.blocks) {
                                 if (this.blocks[i].id == chatBlock.block.id) {
                                     for (let s in this.blocks[i].sections) {
-                                        if (this.blocks[i].sections[s].id == chatBlock.sections[a].id) {
+                                        if (this.blocks[i].sections[s].id ==
+                                            chatBlock.sections[a].id) {
                                             this.blocks[i].sections[s].check = false;
                                         }
                                     }
@@ -55312,23 +55300,22 @@ let SectionComponent = class SectionComponent extends __WEBPACK_IMPORTED_MODULE_
     selectBlock() {
         return this.index, this.sIndex;
     }
-    delSection() {
-    }
+    delSection() { }
     documentClick(e) {
         if (this.section.option) {
             let el = this.$refs.optionSelector;
             let target = e.target;
-            if (undefined !== el && (el !== target) && !el.contains(target)) {
+            if (undefined !== el && el !== target && !el.contains(target)) {
                 this.section.option = false;
             }
         }
     }
     created() {
-        document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 };
 __decorate([
@@ -55341,10 +55328,10 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], SectionComponent.prototype, "sIndex", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('selectBlock')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("selectBlock")
 ], SectionComponent.prototype, "selectBlock", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('delSection')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("delSection")
 ], SectionComponent.prototype, "delSection", null);
 SectionComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -55478,9 +55465,9 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "\n                    " +
+                                      "\n                            " +
                                         _vm._s(section.title) +
-                                        "\n                    "
+                                        "\n                            "
                                     ),
                                     !section.check
                                       ? _c("div", { staticClass: "errorAlert" })
@@ -55645,7 +55632,7 @@ var render = function() {
                           _c("i", { staticClass: "material-icons" }, [
                             _vm._v("add")
                           ]),
-                          _vm._v(" Add More\n            ")
+                          _vm._v(" Add More\n                ")
                         ]
                       )
                     ],
@@ -58147,13 +58134,13 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
             {
                 key: 0,
                 state: 1,
-                value: 'Live'
+                value: "Live"
             },
             {
                 key: 1,
                 state: 0,
-                value: 'Bot'
-            },
+                value: "Bot"
+            }
         ];
         this.pageId = "";
         this.showFilter = false;
@@ -58163,29 +58150,30 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
         this.loadInboxToken = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.CancelToken.source();
     }
     mounted() {
-        this.$store.commit('updateSelectedInbox', {
+        this.$store.commit("updateSelectedInbox", {
             selected: -1
         });
-        this.$store.commit('updateInboxList', {
+        this.$store.commit("updateInboxList", {
             inbox: []
         });
     }
     selectInbox(index) {
-        this.$store.commit('updateSelectedInbox', {
+        this.$store.commit("updateSelectedInbox", {
             selected: index
         });
     }
     reloadFilter() {
-        this.$store.commit('updateInboxList', {
+        this.$store.commit("updateInboxList", {
             inbox: []
         });
-        this.$store.commit('updateSelectedInbox', {
+        this.$store.commit("updateSelectedInbox", {
             selected: -1
         });
         this.loadUserList();
     }
     loadUserEvent() {
-        if (undefined == this.$store.state.projectInfo.pageId || this.pageId === this.$store.state.projectInfo.pageId)
+        if (undefined == this.$store.state.projectInfo.pageId ||
+            this.pageId === this.$store.state.projectInfo.pageId)
             return;
         if (this.pageId !== this.$store.state.projectInfo.pageId) {
             this.pageId = this.$store.state.projectInfo.pageId;
@@ -58203,7 +58191,7 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
             }).then((res) => {
                 console.log("inbox res", res.data);
                 var inboxList = res.data.data;
-                this.$store.commit('updateInboxList', {
+                this.$store.commit("updateInboxList", {
                     inbox: inboxList
                 });
             });
@@ -58214,42 +58202,44 @@ let InboxPageSidebarComponent = class InboxPageSidebarComponent extends __WEBPAC
         return __awaiter(this, void 0, void 0, function* () {
             var status = !this.$store.state.inboxList[index].urgent;
             var data = new FormData();
-            data.append('status', status.toString());
+            data.append("status", status.toString());
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[index].id}/urgent`,
                 data: data,
-                method: 'post'
-            }).then((res) => {
-                this.$store.commit('updateInboxUrgentStatus', {
+                method: "post"
+            })
+                .then(res => {
+                this.$store.commit("updateInboxUrgentStatus", {
                     index: index,
                     status: status
                 });
-            }).catch((err) => {
-            });
+            })
+                .catch(err => { });
         });
     }
     favStatus(index) {
         return __awaiter(this, void 0, void 0, function* () {
             var status = !this.$store.state.inboxList[index].fav;
             var data = new FormData();
-            data.append('status', status.toString());
+            data.append("status", status.toString());
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/chat/user/${this.$store.state.inboxList[index].id}/fav`,
                 data: data,
-                method: 'post'
-            }).then((res) => {
+                method: "post"
+            })
+                .then(res => {
                 this.$store.state.inboxList[index].fav = status;
-            }).catch((err) => {
-            });
+            })
+                .catch(err => { });
         });
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('showUrgent'),
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('showFav')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("showUrgent"),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("showFav")
 ], InboxPageSidebarComponent.prototype, "reloadFilter", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.projectInfo', { immediate: true, deep: true })
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.projectInfo", { immediate: true, deep: true })
 ], InboxPageSidebarComponent.prototype, "loadUserEvent", null);
 InboxPageSidebarComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -58269,7 +58259,7 @@ var render = function() {
     "div",
     [
       undefined == _vm.$store.state.projectInfo.pageConnected
-        ? [_vm._v("\n        Loading...\n    ")]
+        ? [_vm._v("Loading...")]
         : [
             _vm.$store.state.projectInfo.pageConnected
               ? [
@@ -58306,16 +58296,8 @@ var render = function() {
                               },
                               [
                                 _vm.showFilter
-                                  ? [
-                                      _vm._v(
-                                        "\n                                        arrow_drop_up\n                                    "
-                                      )
-                                    ]
-                                  : [
-                                      _vm._v(
-                                        "\n                                        arrow_drop_down\n                                    "
-                                      )
-                                    ]
+                                  ? [_vm._v("arrow_drop_up")]
+                                  : [_vm._v("arrow_drop_down")]
                               ],
                               2
                             )
@@ -58339,13 +58321,7 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [
-                                      _vm._v(
-                                        "\n                                    " +
-                                          _vm._s(filter.value) +
-                                          "\n                                "
-                                      )
-                                    ]
+                                    [_vm._v(_vm._s(filter.value))]
                                   )
                                 })
                               )
@@ -58582,7 +58558,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(218)
 /* template */
-var __vue_template__ = __webpack_require__(219)
+var __vue_template__ = __webpack_require__(222)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -58630,7 +58606,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__projectlist_DeactivatedProjectComponent_vue__ = __webpack_require__(307);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__projectlist_DeactivatedProjectComponent_vue__ = __webpack_require__(219);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__projectlist_DeactivatedProjectComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__projectlist_DeactivatedProjectComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -58719,6 +58695,294 @@ ProjectListComponent = __decorate([
 
 /***/ }),
 /* 219 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(220)
+/* template */
+var __vue_template__ = __webpack_require__(221)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/v1/components/projectlist/DeactivatedProjectComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2bf18889", Component.options)
+  } else {
+    hotAPI.reload("data-v-2bf18889", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 220 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+let DeactivatedProjectComponent = class DeactivatedProjectComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
+    constructor() {
+        super(...arguments);
+        this.openOption = false;
+        this.processing = false;
+    }
+    deactivateProject() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.processing = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectList[this.index].id}/deactivate`,
+                method: "post"
+            })
+                .then(res => {
+                this.$store.state.projectList[this.index].status = 0;
+                this.openOption = false;
+            })
+                .catch((err) => {
+                if (err.response) {
+                    this.$store.state.errorMesg.push(err.response.data.mesg ||
+                        "Failed to deactivate project!");
+                }
+            });
+            this.processing = false;
+        });
+    }
+    activateProject() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.processing = true;
+            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                url: `/api/v1/project/${this.$store.state.projectList[this.index].id}/activate`,
+                method: "post"
+            })
+                .then(res => {
+                this.$store.state.projectList[this.index].status = 1;
+                this.openOption = false;
+            })
+                .catch((err) => {
+                if (err.response) {
+                    this.$store.state.errorMesg.push(err.response.data.mesg || "Failed to activate project!");
+                }
+            });
+            this.processing = false;
+        });
+    }
+    deleteProject() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to delete this project?")) {
+                this.processing = true;
+                yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                    url: `/api/v1/project/${this.$store.state.projectList[this.index].id}`,
+                    method: "delete"
+                })
+                    .then(res => {
+                    this.$store.state.projectList.splice(this.index, 1);
+                })
+                    .catch((err) => {
+                    if (err.response) {
+                        this.$store.state.errorMesg.push(err.response.data.mesg ||
+                            "Failed to delete project!");
+                    }
+                });
+                this.processing = false;
+            }
+        });
+    }
+    documentClick(e) {
+        let el = this.$refs.projectOption;
+        let target = e.target;
+        if (el !== target && !el.contains(target)) {
+            this.openOption = false;
+            return null;
+        }
+    }
+    created() {
+        document.addEventListener("click", this.documentClick);
+    }
+    destroyed() {
+        // important to clean up!!
+        document.removeEventListener("click", this.documentClick);
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
+], DeactivatedProjectComponent.prototype, "index", void 0);
+DeactivatedProjectComponent = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
+], DeactivatedProjectComponent);
+/* harmony default export */ __webpack_exports__["default"] = (DeactivatedProjectComponent);
+
+
+/***/ }),
+/* 221 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "router-link",
+        {
+          staticClass: "projectName",
+          attrs: {
+            to: {
+              name: "project.home",
+              params: { projectid: _vm.$store.state.projectList[_vm.index].id }
+            }
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "cardList" },
+            [
+              _c("figure", { staticClass: "addIcon" }, [
+                _c("img", {
+                  staticClass: "projectIcon",
+                  attrs: {
+                    src: _vm.$store.state.projectList[_vm.index].image
+                      ? _vm.$store.state.projectList[_vm.index].image
+                      : "/images/sample/logo.png"
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "btnProject" }, [
+                _vm._v(_vm._s(_vm.$store.state.projectList[_vm.index].name))
+              ]),
+              _vm._v(" "),
+              _vm.$store.state.projectList[_vm.index].status == 0
+                ? [
+                    _c("div", { staticClass: "projectDeactiveLabel" }, [
+                      _vm._v("Deactivated")
+                    ])
+                  ]
+                : _vm._e()
+            ],
+            2
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm.processing
+        ? [
+            _c(
+              "div",
+              { staticClass: "projectProcessing" },
+              [_c("loading-component")],
+              1
+            )
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "projectOption" },
+        [
+          _c(
+            "button",
+            {
+              on: {
+                click: function($event) {
+                  _vm.openOption = !_vm.openOption
+                }
+              }
+            },
+            [_c("i", { staticClass: "material-icons" }, [_vm._v("more_vert")])]
+          ),
+          _vm._v(" "),
+          _vm.openOption
+            ? [
+                _c(
+                  "ul",
+                  { ref: "projectOption" },
+                  [
+                    _vm.$store.state.projectList[_vm.index].status == 0
+                      ? [
+                          _c("li", { on: { click: _vm.activateProject } }, [
+                            _vm._v("Activate")
+                          ])
+                        ]
+                      : [
+                          _c("li", { on: { click: _vm.deactivateProject } }, [
+                            _vm._v("Deactivate")
+                          ])
+                        ],
+                    _vm._v(" "),
+                    _c("li", { on: { click: _vm.deleteProject } }, [
+                      _vm._v("Delete")
+                    ])
+                  ],
+                  2
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      )
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2bf18889", module.exports)
+  }
+}
+
+/***/ }),
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -59033,15 +59297,15 @@ if (false) {
 }
 
 /***/ }),
-/* 220 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(221)
+var __vue_script__ = __webpack_require__(224)
 /* template */
-var __vue_template__ = __webpack_require__(222)
+var __vue_template__ = __webpack_require__(225)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -59080,7 +59344,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 221 */
+/* 224 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59123,9 +59387,11 @@ let ProjectRootComponent = class ProjectRootComponent extends __WEBPACK_IMPORTED
             })
                 .then((res) => {
                 if (this.$store.state.user.facebook_connected) {
-                    this.$store.state.user.facebook_connected = !res.data.reAuthenticate;
+                    this.$store.state.user.facebook_connected = !res.data
+                        .reAuthenticate;
                 }
-                this.$store.state.user.facebookReconnect = res.data.reAuthenticate;
+                this.$store.state.user.facebookReconnect =
+                    res.data.reAuthenticate;
                 this.$store.commit("setProjectInfo", {
                     project: res.data.data
                 });
@@ -59161,7 +59427,7 @@ ProjectRootComponent = __decorate([
 
 
 /***/ }),
-/* 222 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -59194,15 +59460,15 @@ if (false) {
 }
 
 /***/ }),
-/* 223 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(224)
+var __vue_script__ = __webpack_require__(227)
 /* template */
-var __vue_template__ = __webpack_require__(225)
+var __vue_template__ = __webpack_require__(228)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -59241,7 +59507,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 224 */
+/* 227 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59304,13 +59570,14 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             }
             this.inviting = true;
             let data = new FormData();
-            data.append('email', this.memberInfo.email);
-            data.append('role', this.memberInfo.role);
+            data.append("email", this.memberInfo.email);
+            data.append("role", this.memberInfo.role);
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/member`,
                 data: data,
-                method: 'post'
-            }).then(res => {
+                method: "post"
+            })
+                .then(res => {
                 if (res.data.data.type == 1) {
                     this.inviteList.push(res.data.data.info);
                 }
@@ -59318,11 +59585,12 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
                     this.adminList.push(res.data.data.info);
                 }
                 this.openAdminInvite = false;
-                this.memberInfo.email = '';
+                this.memberInfo.email = "";
                 this.memberInfo.role = 0;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to invite new member!");
                     this.errorAdmin = mesg;
                 }
             });
@@ -59330,13 +59598,13 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
         });
     }
     getRole(role) {
-        let roleName = '';
+        let roleName = "";
         switch (role) {
             case 1:
-                roleName = 'Admin';
+                roleName = "Admin";
                 break;
             default:
-                roleName = 'Manager';
+                roleName = "Manager";
                 break;
         }
         return roleName;
@@ -59346,12 +59614,14 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             this.memberLoading = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/member`,
-                method: 'get'
-            }).then(res => {
+                method: "get"
+            })
+                .then(res => {
                 this.adminList = res.data.data;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to invite new member!");
                     this.errorAdmin = mesg;
                 }
             });
@@ -59363,12 +59633,14 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             this.inviteLoading = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/member/invite`,
-                method: 'get'
-            }).then(res => {
+                method: "get"
+            })
+                .then(res => {
                 this.inviteList = res.data.data;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to invite new member!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to invite new member!");
                     this.errorAdmin = mesg;
                 }
             });
@@ -59380,12 +59652,14 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             if (confirm("Are you sure you want to cancel this invitation?")) {
                 yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                     url: `/api/v1/project/${this.$route.params.projectid}/member/invite/${this.inviteList[index].id}`,
-                    method: 'delete'
-                }).then(res => {
+                    method: "delete"
+                })
+                    .then(res => {
                     this.inviteList.splice(index, 1);
-                }).catch(err => {
+                })
+                    .catch(err => {
                     if (err.response) {
-                        let mesg = this.ajaxHandler.globalHandler(err, 'Failed to cancel an invitation!');
+                        let mesg = this.ajaxHandler.globalHandler(err, "Failed to cancel an invitation!");
                         this.errorAdmin = mesg;
                     }
                 });
@@ -59397,12 +59671,14 @@ let AdminComponent = class AdminComponent extends __WEBPACK_IMPORTED_MODULE_0_vu
             if (confirm("Are you sure you want to delete this member?")) {
                 yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                     url: `/api/v1/project/${this.$route.params.projectid}/member/${this.adminList[index].id}`,
-                    method: 'delete'
-                }).then(res => {
+                    method: "delete"
+                })
+                    .then(res => {
                     this.adminList.splice(index, 1);
-                }).catch(err => {
+                })
+                    .catch(err => {
                     if (err.response) {
-                        let mesg = this.ajaxHandler.globalHandler(err, 'Failed to delete a member!');
+                        let mesg = this.ajaxHandler.globalHandler(err, "Failed to delete a member!");
                         this.errorAdmin = mesg;
                     }
                 });
@@ -59417,7 +59693,7 @@ AdminComponent = __decorate([
 
 
 /***/ }),
-/* 225 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -59507,31 +59783,19 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("td", { staticClass: "utlGenderColumn" }, [
                                   _c("div", { staticClass: "ultWrapper" }, [
-                                    _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(admin.email) +
-                                        "\n                                    "
-                                    )
+                                    _vm._v(_vm._s(admin.email))
                                   ])
                                 ]),
                                 _vm._v(" "),
                                 _c("td", [
                                   _c("div", { staticClass: "ultWrapper" }, [
-                                    _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(_vm.getRole(admin.role)) +
-                                        "\n                                    "
-                                    )
+                                    _vm._v(_vm._s(_vm.getRole(admin.role)))
                                   ])
                                 ]),
                                 _vm._v(" "),
                                 _c("td", { staticClass: "ultDateColumn" }, [
                                   _c("div", { staticClass: "ultWrapper" }, [
-                                    _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(admin.invited_on) +
-                                        "\n                                    "
-                                    )
+                                    _vm._v(_vm._s(admin.invited_on))
                                   ])
                                 ]),
                                 _vm._v(" "),
@@ -59583,31 +59847,19 @@ var render = function() {
                               return _c("tr", { key: index }, [
                                 _c("td", { staticClass: "utlGenderColumn" }, [
                                   _c("div", { staticClass: "ultWrapper" }, [
-                                    _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(invite.email) +
-                                        "\n                                    "
-                                    )
+                                    _vm._v(_vm._s(invite.email))
                                   ])
                                 ]),
                                 _vm._v(" "),
                                 _c("td", [
                                   _c("div", { staticClass: "ultWrapper" }, [
-                                    _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(_vm.getRole(invite.role)) +
-                                        "\n                                    "
-                                    )
+                                    _vm._v(_vm._s(_vm.getRole(invite.role)))
                                   ])
                                 ]),
                                 _vm._v(" "),
                                 _c("td", { staticClass: "ultDateColumn" }, [
                                   _c("div", { staticClass: "ultWrapper" }, [
-                                    _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(invite.invited_on) +
-                                        "\n                                    "
-                                    )
+                                    _vm._v(_vm._s(invite.invited_on))
                                   ])
                                 ]),
                                 _vm._v(" "),
@@ -59827,29 +60079,13 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [
-          _c("div", { staticClass: "ultWrapper" }, [
-            _vm._v(
-              "\n                                Name\n                            "
-            )
-          ])
-        ]),
+        _c("th", [_c("div", { staticClass: "ultWrapper" }, [_vm._v("Name")])]),
         _vm._v(" "),
         _c("th", { staticClass: "utlGenderColumn" }, [
-          _c("div", { staticClass: "ultWrapper" }, [
-            _vm._v(
-              "\n                                Email\n                            "
-            )
-          ])
+          _c("div", { staticClass: "ultWrapper" }, [_vm._v("Email")])
         ]),
         _vm._v(" "),
-        _c("th", [
-          _c("div", { staticClass: "ultWrapper" }, [
-            _vm._v(
-              "\n                                Role\n                            "
-            )
-          ])
-        ]),
+        _c("th", [_c("div", { staticClass: "ultWrapper" }, [_vm._v("Role")])]),
         _vm._v(" "),
         _c("th", { staticClass: "ultDateColumn" }, [
           _c("div", { staticClass: "ultWrapper" }, [
@@ -59894,20 +60130,10 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", [
         _c("th", { staticClass: "utlGenderColumn" }, [
-          _c("div", { staticClass: "ultWrapper" }, [
-            _vm._v(
-              "\n                                Email\n                            "
-            )
-          ])
+          _c("div", { staticClass: "ultWrapper" }, [_vm._v("Email")])
         ]),
         _vm._v(" "),
-        _c("th", [
-          _c("div", { staticClass: "ultWrapper" }, [
-            _vm._v(
-              "\n                                Role\n                            "
-            )
-          ])
-        ]),
+        _c("th", [_c("div", { staticClass: "ultWrapper" }, [_vm._v("Role")])]),
         _vm._v(" "),
         _c("th", { staticClass: "ultDateColumn" }, [
           _c("div", { staticClass: "ultWrapper" }, [
@@ -59953,15 +60179,15 @@ if (false) {
 }
 
 /***/ }),
-/* 226 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(227)
+var __vue_script__ = __webpack_require__(230)
 /* template */
-var __vue_template__ = __webpack_require__(228)
+var __vue_template__ = __webpack_require__(231)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -60000,7 +60226,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 227 */
+/* 230 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60041,16 +60267,18 @@ let MessengerUserInputComponent = class MessengerUserInputComponent extends __WE
                 return;
             this.updating = true;
             let data = new FormData();
-            data.append('status', this.$store.state.projectInfo.inputDisabled);
+            data.append("status", this.$store.state.projectInfo.inputDisabled);
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/user-input`,
                 data: data,
-                method: 'post'
-            }).then(res => {
-            }).catch(err => {
+                method: "post"
+            })
+                .then(res => { })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to update input status');
-                    this.$store.state.projectInfo.inputDisabled = !this.$store.state.projectInfo.inputDisabled;
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to update input status");
+                    this.$store.state.projectInfo.inputDisabled = !this.$store
+                        .state.projectInfo.inputDisabled;
                     alert(mesg);
                 }
             });
@@ -60059,7 +60287,7 @@ let MessengerUserInputComponent = class MessengerUserInputComponent extends __WE
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.projectInfo.inputDisabled')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.projectInfo.inputDisabled")
 ], MessengerUserInputComponent.prototype, "updateUserInput", null);
 MessengerUserInputComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -60068,7 +60296,7 @@ MessengerUserInputComponent = __decorate([
 
 
 /***/ }),
-/* 228 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -60144,15 +60372,15 @@ if (false) {
 }
 
 /***/ }),
-/* 229 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(230)
+var __vue_script__ = __webpack_require__(233)
 /* template */
-var __vue_template__ = __webpack_require__(252)
+var __vue_template__ = __webpack_require__(255)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -60191,21 +60419,21 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 230 */
+/* 233 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_PersistentMenu__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_PersistentMenu__ = __webpack_require__(234);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__FirstMenuComponent_vue__ = __webpack_require__(234);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__FirstMenuComponent_vue__ = __webpack_require__(237);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__FirstMenuComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__FirstMenuComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SecondMenuComponent_vue__ = __webpack_require__(240);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SecondMenuComponent_vue__ = __webpack_require__(243);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SecondMenuComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__SecondMenuComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ThirdMenuComponent_vue__ = __webpack_require__(246);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ThirdMenuComponent_vue__ = __webpack_require__(249);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ThirdMenuComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__ThirdMenuComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -60245,14 +60473,16 @@ let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IM
         return __awaiter(this, void 0, void 0, function* () {
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu`,
-                method: 'get'
-            }).then(res => {
+                method: "get"
+            })
+                .then(res => {
                 for (let i of res.data.data) {
                     this.menu.push(new __WEBPACK_IMPORTED_MODULE_1__models_PersistentMenu__["a" /* default */](i, this.$store.state.projectInfo.id));
                 }
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load persistent menu!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load persistent menu!");
                     alert(mesg);
                 }
             });
@@ -60264,12 +60494,14 @@ let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IM
             this.adding = true;
             yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                 url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu`,
-                method: 'post'
-            }).then(res => {
+                method: "post"
+            })
+                .then(res => {
                 this.menu.push(new __WEBPACK_IMPORTED_MODULE_1__models_PersistentMenu__["a" /* default */](res.data.data, this.$store.state.projectInfo.id));
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to create new persistent menu!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to create new persistent menu!");
                     alert(mesg);
                 }
             });
@@ -60297,8 +60529,9 @@ let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IM
             if (confirm("Are you sure you want to delete this menu?")) {
                 yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                     url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu[index].content.id}`,
-                    method: 'delete'
-                }).then(res => {
+                    method: "delete"
+                })
+                    .then(res => {
                     if (this.selectedFirst == index) {
                         this.selectedFirst = -1;
                         this.selectedSecond = -1;
@@ -60307,9 +60540,10 @@ let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IM
                         this.selectedFirst--;
                     }
                     this.menu.splice(index, 1);
-                }).catch(err => {
+                })
+                    .catch(err => {
                     if (err.response) {
-                        let mesg = this.ajaxHandler.globalHandler(err, 'Failed to remove persistent menu!');
+                        let mesg = this.ajaxHandler.globalHandler(err, "Failed to remove persistent menu!");
                         alert(mesg);
                     }
                 });
@@ -60321,8 +60555,9 @@ let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IM
             if (confirm("Are you sure you want to delete this menu?")) {
                 yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                     url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu[this.selectedFirst].content.id}/${this.menu[this.selectedFirst].item[index].content.id}`,
-                    method: 'delete'
-                }).then(res => {
+                    method: "delete"
+                })
+                    .then(res => {
                     if (this.selectedSecond == index) {
                         this.selectedSecond = -1;
                     }
@@ -60330,9 +60565,10 @@ let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IM
                         this.selectedSecond--;
                     }
                     this.menu[this.selectedFirst].item.splice(index, 1);
-                }).catch(err => {
+                })
+                    .catch(err => {
                     if (err.response) {
-                        let mesg = this.ajaxHandler.globalHandler(err, 'Failed to remove persistent menu!');
+                        let mesg = this.ajaxHandler.globalHandler(err, "Failed to remove persistent menu!");
                         alert(mesg);
                     }
                 });
@@ -60344,12 +60580,14 @@ let PersistentMenuComponent = class PersistentMenuComponent extends __WEBPACK_IM
             if (confirm("Are you sure you want to delete this menu?")) {
                 yield __WEBPACK_IMPORTED_MODULE_2_axios___default()({
                     url: `/api/v1/project/${this.$store.state.projectInfo.id}/persistent-menu/${this.menu[this.selectedFirst].content.id}/${this.menu[this.selectedFirst].item[this.selectedSecond].content.id}/${this.menu[this.selectedFirst].item[this.selectedSecond].item[index].content.id}`,
-                    method: 'delete'
-                }).then(res => {
+                    method: "delete"
+                })
+                    .then(res => {
                     this.menu[this.selectedFirst].item[this.selectedSecond].item.splice(index, 1);
-                }).catch(err => {
+                })
+                    .catch(err => {
                     if (err.response) {
-                        let mesg = this.ajaxHandler.globalHandler(err, 'Failed to remove persistent menu!');
+                        let mesg = this.ajaxHandler.globalHandler(err, "Failed to remove persistent menu!");
                         alert(mesg);
                     }
                 });
@@ -60370,14 +60608,14 @@ PersistentMenuComponent = __decorate([
 
 
 /***/ }),
-/* 231 */
+/* 234 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PersistentSecondMenu__ = __webpack_require__(232);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PersistentSecondMenu__ = __webpack_require__(235);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -60434,14 +60672,14 @@ class PersistentMenu extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler
 
 
 /***/ }),
-/* 232 */
+/* 235 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PersistentThirdMenu__ = __webpack_require__(233);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PersistentThirdMenu__ = __webpack_require__(236);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -60499,7 +60737,7 @@ class PersistentSecondMenu extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorH
 
 
 /***/ }),
-/* 233 */
+/* 236 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60519,15 +60757,15 @@ class PersistentThirdMenu extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHa
 
 
 /***/ }),
-/* 234 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(235)
+var __vue_script__ = __webpack_require__(238)
 /* template */
-var __vue_template__ = __webpack_require__(239)
+var __vue_template__ = __webpack_require__(242)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -60566,13 +60804,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 235 */
+/* 238 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue__ = __webpack_require__(236);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue__ = __webpack_require__(239);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__FirstMenuOption_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -60602,7 +60840,7 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("selected")
 ], FirstMenuComponent.prototype, "selectedFirst", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('deleteFirst')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("deleteFirst")
 ], FirstMenuComponent.prototype, "deleteMenu", null);
 FirstMenuComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
@@ -60615,15 +60853,15 @@ FirstMenuComponent = __decorate([
 
 
 /***/ }),
-/* 236 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(237)
+var __vue_script__ = __webpack_require__(240)
 /* template */
-var __vue_template__ = __webpack_require__(238)
+var __vue_template__ = __webpack_require__(241)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -60662,7 +60900,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 237 */
+/* 240 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60691,7 +60929,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let FirstMenuOption = class FirstMenuOption extends __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.blockKeyword = '';
+        this.blockKeyword = "";
         this.saveBlock = false;
         this.deleteBlock = false;
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */]();
@@ -60711,8 +60949,7 @@ let FirstMenuOption = class FirstMenuOption extends __WEBPACK_IMPORTED_MODULE_2_
             return null;
         }
     }
-    closeContent(status) {
-    }
+    closeContent(status) { }
     loadSuggestion() {
         return __awaiter(this, void 0, void 0, function* () {
             this.loading = true;
@@ -60830,7 +61067,7 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["c" /* Prop */])()
 ], FirstMenuOption.prototype, "menu", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["b" /* Emit */])('closeContent')
+    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["b" /* Emit */])("closeContent")
 ], FirstMenuOption.prototype, "closeContent", null);
 FirstMenuOption = __decorate([
     __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["a" /* Component */]
@@ -60839,7 +61076,7 @@ FirstMenuOption = __decorate([
 
 
 /***/ }),
-/* 238 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -60950,7 +61187,9 @@ var render = function() {
                   "div",
                   { staticClass: "optionValue" },
                   [
-                    _vm._v("they receive the block\n                        "),
+                    _vm._v(
+                      "\n                        they receive the block\n                        "
+                    ),
                     _vm.menu.content.blocks.length > 0
                       ? [
                           _c("div", { staticClass: "selectedBlockCon" }, [
@@ -61097,9 +61336,7 @@ var render = function() {
             _vm._v(" "),
             _vm.menu.content.type === 2
               ? _c("div", { staticClass: "optionValue" }, [
-                  _vm._v(
-                    "\n                        Create a submenu for this menu item\n                    "
-                  )
+                  _vm._v("Create a submenu for this menu item")
                 ])
               : _vm._e()
           ])
@@ -61119,7 +61356,7 @@ if (false) {
 }
 
 /***/ }),
-/* 239 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -61248,15 +61485,15 @@ if (false) {
 }
 
 /***/ }),
-/* 240 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(241)
+var __vue_script__ = __webpack_require__(244)
 /* template */
-var __vue_template__ = __webpack_require__(245)
+var __vue_template__ = __webpack_require__(248)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -61295,13 +61532,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 241 */
+/* 244 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SecondMenuOption_vue__ = __webpack_require__(242);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SecondMenuOption_vue__ = __webpack_require__(245);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SecondMenuOption_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__SecondMenuOption_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -61331,7 +61568,7 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("selected")
 ], SecondMenuComponent.prototype, "selectedSecond", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('deleteSecond')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("deleteSecond")
 ], SecondMenuComponent.prototype, "deleteMenu", null);
 SecondMenuComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
@@ -61344,15 +61581,15 @@ SecondMenuComponent = __decorate([
 
 
 /***/ }),
-/* 242 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(243)
+var __vue_script__ = __webpack_require__(246)
 /* template */
-var __vue_template__ = __webpack_require__(244)
+var __vue_template__ = __webpack_require__(247)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -61391,7 +61628,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 243 */
+/* 246 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61420,7 +61657,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let SecondMenuOption = class SecondMenuOption extends __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.blockKeyword = '';
+        this.blockKeyword = "";
         this.saveBlock = false;
         this.deleteBlock = false;
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */]();
@@ -61440,8 +61677,7 @@ let SecondMenuOption = class SecondMenuOption extends __WEBPACK_IMPORTED_MODULE_
             return null;
         }
     }
-    closeContent(status) {
-    }
+    closeContent(status) { }
     loadSuggestion() {
         return __awaiter(this, void 0, void 0, function* () {
             this.loading = true;
@@ -61559,7 +61795,7 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["c" /* Prop */])()
 ], SecondMenuOption.prototype, "menu", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["b" /* Emit */])('closeContent')
+    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["b" /* Emit */])("closeContent")
 ], SecondMenuOption.prototype, "closeContent", null);
 SecondMenuOption = __decorate([
     __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["a" /* Component */]
@@ -61568,7 +61804,7 @@ SecondMenuOption = __decorate([
 
 
 /***/ }),
-/* 244 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -61679,7 +61915,9 @@ var render = function() {
                   "div",
                   { staticClass: "optionValue" },
                   [
-                    _vm._v("they receive the block\n                        "),
+                    _vm._v(
+                      "\n                        they receive the block\n                        "
+                    ),
                     _vm.menu.content.blocks.length > 0
                       ? [
                           _c("div", { staticClass: "selectedBlockCon" }, [
@@ -61826,9 +62064,7 @@ var render = function() {
             _vm._v(" "),
             _vm.menu.content.type === 2
               ? _c("div", { staticClass: "optionValue" }, [
-                  _vm._v(
-                    "\n                        Create a submenu for this menu item\n                    "
-                  )
+                  _vm._v("Create a submenu for this menu item")
                 ])
               : _vm._e()
           ])
@@ -61848,7 +62084,7 @@ if (false) {
 }
 
 /***/ }),
-/* 245 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -61977,15 +62213,15 @@ if (false) {
 }
 
 /***/ }),
-/* 246 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(247)
+var __vue_script__ = __webpack_require__(250)
 /* template */
-var __vue_template__ = __webpack_require__(251)
+var __vue_template__ = __webpack_require__(254)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -62024,13 +62260,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 247 */
+/* 250 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ThirdMenuOption_vue__ = __webpack_require__(248);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ThirdMenuOption_vue__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ThirdMenuOption_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ThirdMenuOption_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -62060,7 +62296,7 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("selected")
 ], ThirdMenuComponent.prototype, "selectedSecond", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('deleteThird')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("deleteThird")
 ], ThirdMenuComponent.prototype, "deleteMenu", null);
 ThirdMenuComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */])({
@@ -62073,15 +62309,15 @@ ThirdMenuComponent = __decorate([
 
 
 /***/ }),
-/* 248 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(249)
+var __vue_script__ = __webpack_require__(252)
 /* template */
-var __vue_template__ = __webpack_require__(250)
+var __vue_template__ = __webpack_require__(253)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -62120,7 +62356,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 249 */
+/* 252 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62149,7 +62385,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let ThirdMenuOption = class ThirdMenuOption extends __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["d" /* Vue */] {
     constructor() {
         super(...arguments);
-        this.blockKeyword = '';
+        this.blockKeyword = "";
         this.saveBlock = false;
         this.deleteBlock = false;
         this.ajaxHandler = new __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__["a" /* default */]();
@@ -62169,8 +62405,7 @@ let ThirdMenuOption = class ThirdMenuOption extends __WEBPACK_IMPORTED_MODULE_2_
             return null;
         }
     }
-    closeContent(status) {
-    }
+    closeContent(status) { }
     loadSuggestion() {
         return __awaiter(this, void 0, void 0, function* () {
             this.loading = true;
@@ -62288,7 +62523,7 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["c" /* Prop */])()
 ], ThirdMenuOption.prototype, "menu", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["b" /* Emit */])('closeContent')
+    Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["b" /* Emit */])("closeContent")
 ], ThirdMenuOption.prototype, "closeContent", null);
 ThirdMenuOption = __decorate([
     __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["a" /* Component */]
@@ -62297,7 +62532,7 @@ ThirdMenuOption = __decorate([
 
 
 /***/ }),
-/* 250 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -62391,7 +62626,9 @@ var render = function() {
                   "div",
                   { staticClass: "optionValue" },
                   [
-                    _vm._v("they receive the block\n                        "),
+                    _vm._v(
+                      "\n                        they receive the block\n                        "
+                    ),
                     _vm.menu.content.blocks.length > 0
                       ? [
                           _c("div", { staticClass: "selectedBlockCon" }, [
@@ -62552,7 +62789,7 @@ if (false) {
 }
 
 /***/ }),
-/* 251 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -62628,7 +62865,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("\n                Edit Submenu >\n            ")]
+                  [_vm._v("Edit Submenu >")]
                 )
               ]
             : _vm._e()
@@ -62674,7 +62911,7 @@ if (false) {
 }
 
 /***/ }),
-/* 252 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -62688,7 +62925,7 @@ var render = function() {
       _c("h5", [_vm._v("Persistent menu")]),
       _vm._v(" "),
       _vm.loading
-        ? [_vm._v("\n        Loading...\n    ")]
+        ? [_vm._v("Loading...")]
         : [
             _c(
               "div",
@@ -62726,11 +62963,7 @@ var render = function() {
                                       {
                                         staticClass: "persistentMenuComponent"
                                       },
-                                      [
-                                        _vm._v(
-                                          "\n                            Loading...\n                        "
-                                        )
-                                      ]
+                                      [_vm._v("Loading...")]
                                     )
                                   ]
                                 : [
@@ -62750,6 +62983,7 @@ var render = function() {
                                           { staticClass: "material-icons" },
                                           [_vm._v("add")]
                                         ),
+                                        _vm._v(" "),
                                         _c("span", [_vm._v("Add Menu Item")])
                                       ]
                                     )
@@ -62827,11 +63061,7 @@ var render = function() {
                                         {
                                           staticClass: "persistentMenuComponent"
                                         },
-                                        [
-                                          _vm._v(
-                                            "\n                                Loading...\n                            "
-                                          )
-                                        ]
+                                        [_vm._v("Loading...")]
                                       )
                                     ]
                                   : [
@@ -62851,6 +63081,7 @@ var render = function() {
                                             { staticClass: "material-icons" },
                                             [_vm._v("add")]
                                           ),
+                                          _vm._v(" "),
                                           _c("span", [_vm._v("Add Menu Item")])
                                         ]
                                       )
@@ -62936,11 +63167,7 @@ var render = function() {
                                         {
                                           staticClass: "persistentMenuComponent"
                                         },
-                                        [
-                                          _vm._v(
-                                            "\n                                Loading...\n                            "
-                                          )
-                                        ]
+                                        [_vm._v("Loading...")]
                                       )
                                     ]
                                   : [
@@ -62960,6 +63187,7 @@ var render = function() {
                                             { staticClass: "material-icons" },
                                             [_vm._v("add")]
                                           ),
+                                          _vm._v(" "),
                                           _c("span", [_vm._v("Add Menu Item")])
                                         ]
                                       )
@@ -62990,15 +63218,15 @@ if (false) {
 }
 
 /***/ }),
-/* 253 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(254)
+var __vue_script__ = __webpack_require__(257)
 /* template */
-var __vue_template__ = __webpack_require__(255)
+var __vue_template__ = __webpack_require__(258)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -63037,7 +63265,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 254 */
+/* 257 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63067,9 +63295,9 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
         this.edit = false;
         this.profile = null;
         this.staticProfile = null;
-        this.qrpassword = '';
-        this.otpCode = '';
-        this.newpassword = '';
+        this.qrpassword = "";
+        this.otpCode = "";
+        this.newpassword = "";
         this.showQrCode = false;
         this.loading = true;
         this.changePassword = false;
@@ -63079,7 +63307,7 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
         this.otppassvalid = false;
         this.updatingPassword = false;
         this.updating = false;
-        this.qrCodeImage = '';
+        this.qrCodeImage = "";
         this.uploading = false;
     }
     initSendToMessenger() {
@@ -63093,14 +63321,14 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
         return __awaiter(this, void 0, void 0, function* () {
             console.log("logout called");
             FB.getLoginStatus((response) => __awaiter(this, void 0, void 0, function* () {
-                console.log('res', response);
+                console.log("res", response);
                 setTimeout(() => {
-                    console.log('logout');
+                    console.log("logout");
                     FB.logout((response) => __awaiter(this, void 0, void 0, function* () {
                         console.log("Am i log out");
                         yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                            url: '/api/v1/user/remove-facebook',
-                            method: 'post',
+                            url: "/api/v1/user/remove-facebook",
+                            method: "post"
                         }).then(res => {
                             this.$store.state.user.facebook_connected = false;
                             window.location.reload();
@@ -63115,15 +63343,17 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
         return __awaiter(this, void 0, void 0, function* () {
             this.loading = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: '/api/v1/user',
-                method: 'get'
-            }).then(res => {
+                url: "/api/v1/user",
+                method: "get"
+            })
+                .then(res => {
                 this.profile = res.data.data.profile;
                 this.staticProfile = JSON.parse(JSON.stringify(res.data.data.profile));
                 setTimeout(() => {
                     FB.XFBML.parse();
                 }, 30);
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
                     alert(err.response.data.mesg || "Failed to load user profile!");
                 }
@@ -63132,26 +63362,28 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
         });
     }
     logout() {
-        return __awaiter(this, void 0, void 0, function* () {
-        });
+        return __awaiter(this, void 0, void 0, function* () { });
     }
     updateProfile() {
         return __awaiter(this, void 0, void 0, function* () {
             this.updating = true;
             let data = new FormData();
-            data.append('name', this.profile.name);
-            data.append('email', this.profile.email);
+            data.append("name", this.profile.name);
+            data.append("email", this.profile.email);
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: '/api/v1/user',
+                url: "/api/v1/user",
                 data: data,
-                method: 'post'
-            }).then(res => {
+                method: "post"
+            })
+                .then(res => {
                 this.staticProfile = JSON.parse(JSON.stringify(this.profile));
                 this.edit = false;
                 this.changePassword = false;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    alert(err.response.data.mesg || "Failed to update user profile!");
+                    alert(err.response.data.mesg ||
+                        "Failed to update user profile!");
                 }
             });
             this.updating = false;
@@ -63159,23 +63391,25 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
     }
     validatePassword() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.qrpassword == '') {
+            if (this.qrpassword == "") {
                 alert("Password is required!");
                 return;
             }
             this.validatingPassword = true;
             let data = new FormData();
-            data.append('password', this.qrpassword);
+            data.append("password", this.qrpassword);
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: '/api/v1/user/get-qrcode',
+                url: "/api/v1/user/get-qrcode",
                 data: data,
-                method: 'post'
-            }).then(res => {
+                method: "post"
+            })
+                .then(res => {
                 this.qrpassvalid = true;
                 this.qrCodeImage = res.data.data.url;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    alert(err.response.data.mesg || 'Failed to validate password!');
+                    alert(err.response.data.mesg || "Failed to validate password!");
                 }
             });
             this.validatingPassword = false;
@@ -63183,22 +63417,24 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
     }
     validateOtp() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.otpCode == '') {
+            if (this.otpCode == "") {
                 alert("OTP is required!");
                 return;
             }
             this.validatingOTP = true;
             let data = new FormData();
-            data.append('otp', this.otpCode);
+            data.append("otp", this.otpCode);
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: '/api/v1/user/validate-otp',
+                url: "/api/v1/user/validate-otp",
                 data: data,
-                method: 'post'
-            }).then(res => {
+                method: "post"
+            })
+                .then(res => {
                 this.otppassvalid = true;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    alert(err.response.data.mesg || 'Failed to validate otp!');
+                    alert(err.response.data.mesg || "Failed to validate otp!");
                 }
             });
             this.validatingOTP = false;
@@ -63206,24 +63442,26 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
     }
     updatePassword() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.newpassword == '') {
+            if (this.newpassword == "") {
                 alert("Password is required!");
                 return;
             }
             this.updatingPassword = true;
             let data = new FormData();
-            data.append('password', this.newpassword);
+            data.append("password", this.newpassword);
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: '/api/v1/user/update-password',
+                url: "/api/v1/user/update-password",
                 data: data,
-                method: 'post'
-            }).then(res => {
+                method: "post"
+            })
+                .then(res => {
                 this.changePassword = false;
                 this.updatingPassword = false;
                 this.otppassvalid = false;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    alert(err.response.data.mesg || 'Failed to update otp!');
+                    alert(err.response.data.mesg || "Failed to update otp!");
                 }
             });
             this.updatingPassword = false;
@@ -63232,17 +63470,20 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
     uploadProfileImage(e) {
         return __awaiter(this, void 0, void 0, function* () {
             let data = new FormData();
-            data.append('image', e.target.files[0]);
+            data.append("image", e.target.files[0]);
             __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: '/api/v1/user/upload-image',
+                url: "/api/v1/user/upload-image",
                 data: data,
-                method: 'post'
-            }).then(res => {
+                method: "post"
+            })
+                .then(res => {
                 this.profile.image = res.data.data.image;
                 this.staticProfile.image = res.data.data.image;
-            }).catch(err => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    alert(err.response.data.mesg || 'Failed to upload user profile image!');
+                    alert(err.response.data.mesg ||
+                        "Failed to upload user profile image!");
                 }
             });
         });
@@ -63256,7 +63497,10 @@ let ProfileComponent = class ProfileComponent extends __WEBPACK_IMPORTED_MODULE_
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.user.facebook_connected", { immediate: true, deep: true }),
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.user.facebook_connected", {
+        immediate: true,
+        deep: true
+    }),
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.fbSdk", { immediate: true, deep: true })
 ], ProfileComponent.prototype, "initSendToMessenger", null);
 ProfileComponent = __decorate([
@@ -63266,7 +63510,7 @@ ProfileComponent = __decorate([
 
 
 /***/ }),
-/* 255 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -63280,7 +63524,7 @@ var render = function() {
       _c("h5", [_vm._v("Profile")]),
       _vm._v(" "),
       _vm.loading
-        ? [_vm._v("\n        Loading...\n    ")]
+        ? [_vm._v("Loading...")]
         : [
             _c(
               "div",
@@ -63318,9 +63562,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "profileInputCon" }, [
-                  _c("label", [
-                    _vm._v("\n                    Name:\n                ")
-                  ]),
+                  _c("label", [_vm._v("Name:")]),
                   _vm._v(" "),
                   _c("div", { staticClass: "profileInput" }, [
                     _c("input", {
@@ -63350,9 +63592,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "profileInputCon" }, [
-                  _c("label", [
-                    _vm._v("\n                    Email:\n                ")
-                  ]),
+                  _c("label", [_vm._v("Email:")]),
                   _vm._v(" "),
                   _c("div", { staticClass: "profileInput" }, [
                     _c("input", {
@@ -63401,11 +63641,7 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [
-                                      _vm._v(
-                                        "\n                                Cancel\n                            "
-                                      )
-                                    ]
+                                    [_vm._v("Cancel")]
                                   ),
                                   _vm._v(" "),
                                   _c(
@@ -63419,11 +63655,7 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [
-                                      _vm._v(
-                                        "\n                                Update\n                            "
-                                      )
-                                    ]
+                                    [_vm._v("Update")]
                                   )
                                 ])
                               ]
@@ -63440,11 +63672,7 @@ var render = function() {
                                 }
                               }
                             },
-                            [
-                              _vm._v(
-                                "\n                        Edit Profile\n                    "
-                              )
-                            ]
+                            [_vm._v("Edit Profile")]
                           )
                         ]
                   ],
@@ -63464,9 +63692,7 @@ var render = function() {
                                       { staticClass: "profileInputCon" },
                                       [
                                         _c("label", [
-                                          _vm._v(
-                                            "\n                                Enter new password:\n                            "
-                                          )
+                                          _vm._v("Enter new password:")
                                         ]),
                                         _vm._v(" "),
                                         _vm.updatingPassword
@@ -63538,9 +63764,7 @@ var render = function() {
                                       { staticClass: "profileInputCon" },
                                       [
                                         _c("label", [
-                                          _vm._v(
-                                            "\n                                Enter otp code:\n                            "
-                                          )
+                                          _vm._v("Enter otp code:")
                                         ]),
                                         _vm._v(" "),
                                         _vm.validatingOTP
@@ -63618,11 +63842,7 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [
-                                    _vm._v(
-                                      "\n                            Change Password\n                        "
-                                    )
-                                  ]
+                                  [_vm._v("Change Password")]
                                 )
                               ])
                             ]
@@ -63646,9 +63866,7 @@ var render = function() {
                                   { staticClass: "profileInputCon" },
                                   [
                                     _c("label", [
-                                      _vm._v(
-                                        "\n                                Enter password to see qr code:\n                            "
-                                      )
+                                      _vm._v("Enter password to see qr code:")
                                     ]),
                                     _vm._v(" "),
                                     _vm.validatingPassword
@@ -63726,11 +63944,7 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [
-                                    _vm._v(
-                                      "\n                            Show QR Code\n                        "
-                                    )
-                                  ]
+                                  [_vm._v("Show QR Code")]
                                 )
                               ]
                         ]
@@ -63788,15 +64002,15 @@ if (false) {
 }
 
 /***/ }),
-/* 256 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(257)
+var __vue_script__ = __webpack_require__(260)
 /* template */
-var __vue_template__ = __webpack_require__(262)
+var __vue_template__ = __webpack_require__(265)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -63835,7 +64049,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 257 */
+/* 260 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63843,9 +64057,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_ProjectPage__ = __webpack_require__(258);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_ProjectPage__ = __webpack_require__(261);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_AjaxErrorHandler__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue__ = __webpack_require__(259);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue__ = __webpack_require__(262);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__PageListComponent_vue__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -63882,7 +64096,9 @@ let ProjectConfigrationComponent = class ProjectConfigrationComponent extends __
                 }
             }
             else {
-                this.$router.push({ name: 'project.configuration.persistent-menu' });
+                this.$router.push({
+                    name: "project.configuration.persistent-menu"
+                });
             }
         });
     }
@@ -63902,14 +64118,16 @@ let ProjectConfigrationComponent = class ProjectConfigrationComponent extends __
             this.loadingPages = true;
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/pages`,
-                method: 'get'
-            }).then((res) => {
+                method: "get"
+            })
+                .then((res) => {
                 for (let p of res.data.data) {
                     this.pages.push(new __WEBPACK_IMPORTED_MODULE_2__models_ProjectPage__["a" /* default */](p));
                 }
-            }).catch((err) => {
+            })
+                .catch((err) => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to load pages!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to load pages!");
                     alert(mesg);
                 }
             });
@@ -63919,22 +64137,26 @@ let ProjectConfigrationComponent = class ProjectConfigrationComponent extends __
     connectPage(index) {
         return __awaiter(this, void 0, void 0, function* () {
             let data = new FormData();
-            data.append('id', this.pages[index].id.toString());
-            data.append('access_token', this.pages[index].token);
+            data.append("id", this.pages[index].id.toString());
+            data.append("access_token", this.pages[index].token);
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/pages/link`,
                 data: data,
-                method: 'post'
-            }).then((res) => {
+                method: "post"
+            })
+                .then(res => {
                 this.pages[index].connected = true;
                 this.pages[index].currentProject = true;
-                this.$store.commit('setProjectInfo', { project: res.data.data });
+                this.$store.commit("setProjectInfo", {
+                    project: res.data.data
+                });
                 this.pages.sort(function (a, b) {
                     return a.currentProject < b.currentProject;
                 });
-            }).catch((err) => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to connect a page!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to connect a page!");
                     alert(mesg);
                 }
             });
@@ -63943,22 +64165,26 @@ let ProjectConfigrationComponent = class ProjectConfigrationComponent extends __
     disconnectPage(index) {
         return __awaiter(this, void 0, void 0, function* () {
             let data = new FormData();
-            data.append('page_id', this.pages[index].id.toString());
-            data.append('_method', 'delete');
+            data.append("page_id", this.pages[index].id.toString());
+            data.append("_method", "delete");
             yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                 url: `/api/v1/project/${this.$route.params.projectid}/pages/link`,
                 data: data,
-                method: 'post'
-            }).then((res) => {
+                method: "post"
+            })
+                .then(res => {
                 this.pages[index].connected = false;
                 this.pages[index].currentProject = false;
-                this.$store.commit('setProjectInfo', { project: res.data.data });
+                this.$store.commit("setProjectInfo", {
+                    project: res.data.data
+                });
                 this.pages.sort(function (a, b) {
                     return a.currentProject < b.currentProject;
                 });
-            }).catch((err) => {
+            })
+                .catch(err => {
                 if (err.response) {
-                    let mesg = this.ajaxHandler.globalHandler(err, 'Failed to disconnect a page!');
+                    let mesg = this.ajaxHandler.globalHandler(err, "Failed to disconnect a page!");
                     alert(mesg);
                 }
             });
@@ -63976,7 +64202,7 @@ ProjectConfigrationComponent = __decorate([
 
 
 /***/ }),
-/* 258 */
+/* 261 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64017,15 +64243,15 @@ class ProjectPage extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler__[
 
 
 /***/ }),
-/* 259 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(260)
+var __vue_script__ = __webpack_require__(263)
 /* template */
-var __vue_template__ = __webpack_require__(261)
+var __vue_template__ = __webpack_require__(264)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -64064,7 +64290,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 260 */
+/* 263 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64091,17 +64317,17 @@ let PageList = class PageList extends __WEBPACK_IMPORTED_MODULE_0_vue_property_d
     documentClick(e) {
         let el = this.$refs.selectAction;
         let target = e.target;
-        if ((el !== target) && !el.contains(target)) {
+        if (el !== target && !el.contains(target)) {
             this.openDropDown = false;
             return null;
         }
     }
     created() {
-        document.addEventListener('click', this.documentClick);
+        document.addEventListener("click", this.documentClick);
     }
     destroyed() {
         // important to clean up!!
-        document.removeEventListener('click', this.documentClick);
+        document.removeEventListener("click", this.documentClick);
     }
 };
 __decorate([
@@ -64114,10 +64340,10 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
 ], PageList.prototype, "currentPage", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('disconnectPage')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("disconnectPage")
 ], PageList.prototype, "disconnectPage", null);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])('connectPage')
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["b" /* Emit */])("connectPage")
 ], PageList.prototype, "connectPage", null);
 PageList = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -64126,7 +64352,7 @@ PageList = __decorate([
 
 
 /***/ }),
-/* 261 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -64239,7 +64465,7 @@ if (false) {
 }
 
 /***/ }),
-/* 262 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -64289,19 +64515,11 @@ var render = function() {
                       ]
                     : [
                         _vm.loadingPages
-                          ? [
-                              _vm._v(
-                                "\n                    Loading pages...\n                "
-                              )
-                            ]
-                          : [
-                              _vm._v(
-                                "\n                    You don't have any page.\n                "
-                              )
-                            ]
+                          ? [_vm._v("Loading pages...")]
+                          : [_vm._v("You don't have any page.")]
                       ]
                 ]
-              : [_vm._v("\n            Connect a facebook account\n        ")]
+              : [_vm._v("Connect a facebook account")]
           ]
         : _vm._e()
     ],
@@ -64319,15 +64537,15 @@ if (false) {
 }
 
 /***/ }),
-/* 263 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(264)
+var __vue_script__ = __webpack_require__(267)
 /* template */
-var __vue_template__ = __webpack_require__(265)
+var __vue_template__ = __webpack_require__(268)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -64366,7 +64584,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 264 */
+/* 267 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64388,7 +64606,7 @@ SettingSidebarComponent = __decorate([
 
 
 /***/ }),
-/* 265 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -64414,7 +64632,7 @@ var render = function() {
                 },
                 attrs: { to: { name: "project.configuration" } }
               },
-              [_vm._v("\n            Facebook Pages\n        ")]
+              [_vm._v("Facebook Pages")]
             )
           ],
           1
@@ -64434,7 +64652,7 @@ var render = function() {
             },
             attrs: { to: { name: "project.configuration.persistent-menu" } }
           },
-          [_vm._v("\n            Persistent Menu\n        ")]
+          [_vm._v("Persistent Menu")]
         )
       ],
       1
@@ -64455,7 +64673,7 @@ var render = function() {
               to: { name: "project.configuration.messenger-user-input" }
             }
           },
-          [_vm._v("\n            Messenger user input\n        ")]
+          [_vm._v("Messenger user input")]
         )
       ],
       1
@@ -64474,7 +64692,7 @@ var render = function() {
                 },
                 attrs: { to: { name: "project.configuration.admins" } }
               },
-              [_vm._v("\n            Admins\n        ")]
+              [_vm._v("Admins")]
             )
           ],
           1
@@ -64497,7 +64715,7 @@ var render = function() {
             },
             attrs: { to: { name: "project.configuration.profile" } }
           },
-          [_vm._v("\n            Account Info\n        ")]
+          [_vm._v("Account Info")]
         )
       ],
       1
@@ -64546,15 +64764,15 @@ if (false) {
 }
 
 /***/ }),
-/* 266 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(267)
+var __vue_script__ = __webpack_require__(270)
 /* template */
-var __vue_template__ = __webpack_require__(272)
+var __vue_template__ = __webpack_require__(275)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -64593,13 +64811,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 267 */
+/* 270 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_AttributeFilterListModel__ = __webpack_require__(268);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_AttributeFilterListModel__ = __webpack_require__(271);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_users_UserListModel__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__UserTableComponent_vue__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__UserTableComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__UserTableComponent_vue__);
@@ -64727,7 +64945,7 @@ UserSegmentListComponent = __decorate([
 
 
 /***/ }),
-/* 268 */
+/* 271 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64832,7 +65050,7 @@ class AttributeFilterListModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxEr
 
 
 /***/ }),
-/* 269 */
+/* 272 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64931,7 +65149,7 @@ class AttributeModel extends __WEBPACK_IMPORTED_MODULE_0__utils_AjaxErrorHandler
 
 
 /***/ }),
-/* 270 */
+/* 273 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64992,24 +65210,24 @@ let UserTableComponent = class UserTableComponent extends __WEBPACK_IMPORTED_MOD
     updateAttributeName(user, attribute) {
         return __awaiter(this, void 0, void 0, function* () {
             let update = yield this.userList[user].attributes[attribute].updateAttributeName();
-            if (!update['status']) {
-                this.errorAttribute = update['mesg'];
+            if (!update["status"]) {
+                this.errorAttribute = update["mesg"];
             }
         });
     }
     updateAttributeValue(user, attribute) {
         return __awaiter(this, void 0, void 0, function* () {
             let update = yield this.userList[user].attributes[attribute].updateAttributeValue();
-            if (!update['status']) {
-                this.errorAttribute = update['mesg'];
+            if (!update["status"]) {
+                this.errorAttribute = update["mesg"];
             }
         });
     }
     createNewAttribute(user) {
         return __awaiter(this, void 0, void 0, function* () {
             let create = yield this.userList[user].createAttribute();
-            if (!create['status']) {
-                this.errorAttribute = create['mesg'];
+            if (!create["status"]) {
+                this.errorAttribute = create["mesg"];
             }
         });
     }
@@ -65017,8 +65235,8 @@ let UserTableComponent = class UserTableComponent extends __WEBPACK_IMPORTED_MOD
         return __awaiter(this, void 0, void 0, function* () {
             if (confirm("Are you sure you want to delete this attribute?")) {
                 let create = yield this.userList[user].deleteAttribute(attribute);
-                if (!create['status']) {
-                    this.errorAttribute = create['mesg'];
+                if (!create["status"]) {
+                    this.errorAttribute = create["mesg"];
                 }
             }
         });
@@ -65026,11 +65244,11 @@ let UserTableComponent = class UserTableComponent extends __WEBPACK_IMPORTED_MOD
     enableLiveChat(user) {
         return __awaiter(this, void 0, void 0, function* () {
             let liveChat = yield user.enabledLiveChat();
-            if (!liveChat['status']) {
-                this.errorAttribute = liveChat['mesg'];
+            if (!liveChat["status"]) {
+                this.errorAttribute = liveChat["mesg"];
                 return;
             }
-            this.$router.push({ name: 'project.inbox' });
+            this.$router.push({ name: "project.inbox" });
         });
     }
 };
@@ -65047,7 +65265,7 @@ UserTableComponent = __decorate([
 
 
 /***/ }),
-/* 271 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -65156,63 +65374,37 @@ var render = function() {
                           }
                         }
                       },
-                      [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(user.name) +
-                            "\n                        "
-                        )
-                      ]
+                      [_vm._v(_vm._s(user.name))]
                     )
                   ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "utlGenderColumn" }, [
                     _c("div", { staticClass: "ultWrapper" }, [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(user.gender) +
-                          "\n                        "
-                      )
+                      _vm._v(_vm._s(user.gender))
                     ])
                   ]),
                   _vm._v(" "),
                   _c("td", [
                     _c("div", { staticClass: "ultWrapper" }, [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(user.age > 0 ? user.age : "-") +
-                          "\n                        "
-                      )
+                      _vm._v(_vm._s(user.age > 0 ? user.age : "-"))
                     ])
                   ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "ultDateColumn" }, [
                     _c("div", { staticClass: "ultWrapper" }, [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(user.lastEngaged) +
-                          "\n                        "
-                      )
+                      _vm._v(_vm._s(user.lastEngaged))
                     ])
                   ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "ultDateColumn" }, [
                     _c("div", { staticClass: "ultWrapper" }, [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(user.lastSeen) +
-                          "\n                        "
-                      )
+                      _vm._v(_vm._s(user.lastSeen))
                     ])
                   ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "ultDateColumn" }, [
                     _c("div", { staticClass: "ultWrapper" }, [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(user.signup) +
-                          "\n                        "
-                      )
+                      _vm._v(_vm._s(user.signup))
                     ])
                   ]),
                   _vm._v(" "),
@@ -65525,9 +65717,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
-      _c("div", { staticClass: "ultWrapper" }, [
-        _vm._v("\n                        Name\n                    ")
-      ])
+      _c("div", { staticClass: "ultWrapper" }, [_vm._v("Name")])
     ])
   },
   function() {
@@ -65535,20 +65725,14 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", { staticClass: "utlGenderColumn" }, [
-      _c("div", { staticClass: "ultWrapper" }, [
-        _vm._v("\n                        Gender\n                    ")
-      ])
+      _c("div", { staticClass: "ultWrapper" }, [_vm._v("Gender")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("th", [
-      _c("div", { staticClass: "ultWrapper" }, [
-        _vm._v("\n                        Age\n                    ")
-      ])
-    ])
+    return _c("th", [_c("div", { staticClass: "ultWrapper" }, [_vm._v("Age")])])
   },
   function() {
     var _vm = this
@@ -65609,11 +65793,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("td", { staticClass: "utlSessinColumn" }, [
-      _c("div", { staticClass: "ultWrapper" }, [
-        _vm._v(
-          "\n                            Session\n                        "
-        )
-      ])
+      _c("div", { staticClass: "ultWrapper" }, [_vm._v("Session")])
     ])
   },
   function() {
@@ -65677,7 +65857,7 @@ if (false) {
 }
 
 /***/ }),
-/* 272 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -65964,15 +66144,15 @@ if (false) {
 }
 
 /***/ }),
-/* 273 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(274)
+var __vue_script__ = __webpack_require__(277)
 /* template */
-var __vue_template__ = __webpack_require__(276)
+var __vue_template__ = __webpack_require__(279)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -66011,7 +66191,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 274 */
+/* 277 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -66049,8 +66229,8 @@ let SegmentListSidebarComponent = class SegmentListSidebarComponent extends __WE
                 return;
             this.segmentList.setProjectId = this.$store.state.projectInfo.id;
             let loadSegment = yield this.segmentList.loadSegment();
-            if (!loadSegment['status']) {
-                alert(loadSegment['mesg']);
+            if (!loadSegment["status"]) {
+                alert(loadSegment["mesg"]);
             }
         });
     }
@@ -66075,7 +66255,7 @@ let SegmentListSidebarComponent = class SegmentListSidebarComponent extends __WE
     }
     deleteFilter(index) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (confirm('Are you sure you want to delete this filter condition?')) {
+            if (confirm("Are you sure you want to delete this filter condition?")) {
                 let deleteFilter = yield this.segmentList.segments[this.editSegment].deleteFilter(index);
                 if (!deleteFilter.status) {
                     alert(deleteFilter.mesg);
@@ -66096,7 +66276,7 @@ let SegmentListSidebarComponent = class SegmentListSidebarComponent extends __WE
     }
     deleteSegment(index) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (confirm('Are you sure you want to delete this segment?')) {
+            if (confirm("Are you sure you want to delete this segment?")) {
                 let delId = this.segmentList.segments[index].id;
                 let deleteSegment = yield this.segmentList.deleteSegment(index);
                 if (!deleteSegment.status) {
@@ -66115,7 +66295,7 @@ let SegmentListSidebarComponent = class SegmentListSidebarComponent extends __WE
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])('$store.state.projectInfo', { immediate: true })
+    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["e" /* Watch */])("$store.state.projectInfo", { immediate: true })
 ], SegmentListSidebarComponent.prototype, "initSegment", null);
 SegmentListSidebarComponent = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
@@ -66124,7 +66304,7 @@ SegmentListSidebarComponent = __decorate([
 
 
 /***/ }),
-/* 275 */
+/* 278 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -66324,7 +66504,7 @@ class SegmentModel extends __WEBPACK_IMPORTED_MODULE_1__utils_AjaxErrorHandler__
 
 
 /***/ }),
-/* 276 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -66355,16 +66535,8 @@ var render = function() {
                 },
                 [
                   _vm.showFilter
-                    ? [
-                        _vm._v(
-                          "\n                                arrow_drop_up\n                            "
-                        )
-                      ]
-                    : [
-                        _vm._v(
-                          "\n                                arrow_drop_down\n                            "
-                        )
-                      ]
+                    ? [_vm._v("arrow_drop_up")]
+                    : [_vm._v("arrow_drop_down")]
                 ],
                 2
               )
@@ -66380,11 +66552,7 @@ var render = function() {
                       _c(
                         "router-link",
                         { attrs: { to: { name: "project.users" } } },
-                        [
-                          _vm._v(
-                            "\n                                Accounts\n                            "
-                          )
-                        ]
+                        [_vm._v("Accounts")]
                       )
                     ],
                     1
@@ -66396,11 +66564,7 @@ var render = function() {
                       _c(
                         "router-link",
                         { attrs: { to: { name: "project.users.segments" } } },
-                        [
-                          _vm._v(
-                            "\n                                Segments\n                            "
-                          )
-                        ]
+                        [_vm._v("Segments")]
                       )
                     ],
                     1
@@ -66590,11 +66754,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _vm.segmentList.segments[_vm.editSegment].isAttrLoading
-                    ? [
-                        _vm._v(
-                          "\n                    Loading...\n                "
-                        )
-                      ]
+                    ? [_vm._v("Loading...")]
                     : [
                         _c(
                           "div",
@@ -66681,11 +66841,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.segmentList.segments[_vm.editSegment]
                               .isAttrCreating
-                              ? [
-                                  _vm._v(
-                                    "\n                            Creating...\n                        "
-                                  )
-                                ]
+                              ? [_vm._v("Creating...")]
                               : _vm._e()
                           ],
                           2
@@ -66768,15 +66924,15 @@ if (false) {
 }
 
 /***/ }),
-/* 277 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(278)
+var __vue_script__ = __webpack_require__(281)
 /* template */
-var __vue_template__ = __webpack_require__(279)
+var __vue_template__ = __webpack_require__(282)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -66815,7 +66971,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 278 */
+/* 281 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67049,7 +67205,7 @@ UserListComponent = __decorate([
 
 
 /***/ }),
-/* 279 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67311,15 +67467,15 @@ if (false) {
 }
 
 /***/ }),
-/* 280 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(281)
+var __vue_script__ = __webpack_require__(284)
 /* template */
-var __vue_template__ = __webpack_require__(282)
+var __vue_template__ = __webpack_require__(285)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67358,7 +67514,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 281 */
+/* 284 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67482,7 +67638,7 @@ UserListSidebarComponent = __decorate([
 
 
 /***/ }),
-/* 282 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67701,7 +67857,7 @@ if (false) {
 }
 
 /***/ }),
-/* 283 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -67709,7 +67865,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(284)
+var __vue_template__ = __webpack_require__(287)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67748,7 +67904,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 284 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67768,15 +67924,15 @@ if (false) {
 }
 
 /***/ }),
-/* 285 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(286)
+var __vue_script__ = __webpack_require__(289)
 /* template */
-var __vue_template__ = __webpack_require__(287)
+var __vue_template__ = __webpack_require__(290)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67815,7 +67971,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 286 */
+/* 289 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67885,7 +68041,7 @@ RegisterComponent = __decorate([
 
 
 /***/ }),
-/* 287 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -68079,15 +68235,15 @@ if (false) {
 }
 
 /***/ }),
-/* 288 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(289)
+var __vue_script__ = __webpack_require__(292)
 /* template */
-var __vue_template__ = __webpack_require__(290)
+var __vue_template__ = __webpack_require__(293)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -68126,7 +68282,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 289 */
+/* 292 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68193,7 +68349,7 @@ ResendOtpComponent = __decorate([
 
 
 /***/ }),
-/* 290 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -68325,15 +68481,15 @@ if (false) {
 }
 
 /***/ }),
-/* 291 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(292)
+var __vue_script__ = __webpack_require__(295)
 /* template */
-var __vue_template__ = __webpack_require__(293)
+var __vue_template__ = __webpack_require__(296)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -68372,7 +68528,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 292 */
+/* 295 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68440,7 +68596,7 @@ VerifyEmailComponent = __decorate([
 
 
 /***/ }),
-/* 293 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -68605,12 +68761,12 @@ if (false) {
 }
 
 /***/ }),
-/* 294 */
+/* 297 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(295);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(298);
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
@@ -68757,7 +68913,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_1_vue
 
 
 /***/ }),
-/* 295 */
+/* 298 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -69702,307 +69858,10 @@ var index_esm = {
 
 
 /***/ }),
-/* 296 */
+/* 299 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 297 */,
-/* 298 */,
-/* 299 */,
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(308)
-/* template */
-var __vue_template__ = __webpack_require__(309)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/v1/components/projectlist/DeactivatedProjectComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2bf18889", Component.options)
-  } else {
-    hotAPI.reload("data-v-2bf18889", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 308 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-
-
-let DeactivatedProjectComponent = class DeactivatedProjectComponent extends __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["d" /* Vue */] {
-    constructor() {
-        super(...arguments);
-        this.openOption = false;
-        this.processing = false;
-    }
-    deactivateProject() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.processing = true;
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/project/${this.$store.state.projectList[this.index].id}/deactivate`,
-                method: "post"
-            })
-                .then(res => {
-                this.$store.state.projectList[this.index].status = 0;
-                this.openOption = false;
-            })
-                .catch((err) => {
-                if (err.response) {
-                    this.$store.state.errorMesg.push(err.response.data.mesg ||
-                        "Failed to deactivate project!");
-                }
-            });
-            this.processing = false;
-        });
-    }
-    activateProject() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.processing = true;
-            yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                url: `/api/v1/project/${this.$store.state.projectList[this.index].id}/activate`,
-                method: "post"
-            })
-                .then(res => {
-                this.$store.state.projectList[this.index].status = 1;
-                this.openOption = false;
-            })
-                .catch((err) => {
-                if (err.response) {
-                    this.$store.state.errorMesg.push(err.response.data.mesg || "Failed to activate project!");
-                }
-            });
-            this.processing = false;
-        });
-    }
-    deleteProject() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (confirm("Are you sure you want to delete this project?")) {
-                this.processing = true;
-                yield __WEBPACK_IMPORTED_MODULE_1_axios___default()({
-                    url: `/api/v1/project/${this.$store.state.projectList[this.index].id}`,
-                    method: "delete"
-                })
-                    .then(res => {
-                    this.$store.state.projectList.splice(this.index, 1);
-                })
-                    .catch((err) => {
-                    if (err.response) {
-                        this.$store.state.errorMesg.push(err.response.data.mesg || "Failed to delete project!");
-                    }
-                });
-                this.processing = false;
-            }
-        });
-    }
-    documentClick(e) {
-        let el = this.$refs.projectOption;
-        let target = e.target;
-        if (el !== target && !el.contains(target)) {
-            this.openOption = false;
-            return null;
-        }
-    }
-    created() {
-        document.addEventListener("click", this.documentClick);
-    }
-    destroyed() {
-        // important to clean up!!
-        document.removeEventListener("click", this.documentClick);
-    }
-};
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["c" /* Prop */])()
-], DeactivatedProjectComponent.prototype, "index", void 0);
-DeactivatedProjectComponent = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["a" /* Component */]
-], DeactivatedProjectComponent);
-/* harmony default export */ __webpack_exports__["default"] = (DeactivatedProjectComponent);
-
-
-/***/ }),
-/* 309 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "router-link",
-        {
-          staticClass: "projectName",
-          attrs: {
-            to: {
-              name: "project.home",
-              params: { projectid: _vm.$store.state.projectList[_vm.index].id }
-            }
-          }
-        },
-        [
-          _c(
-            "div",
-            { staticClass: "cardList" },
-            [
-              _c("figure", { staticClass: "addIcon" }, [
-                _c("img", {
-                  staticClass: "projectIcon",
-                  attrs: {
-                    src: _vm.$store.state.projectList[_vm.index].image
-                      ? _vm.$store.state.projectList[_vm.index].image
-                      : "/images/sample/logo.png"
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "btnProject" }, [
-                _vm._v(_vm._s(_vm.$store.state.projectList[_vm.index].name))
-              ]),
-              _vm._v(" "),
-              _vm.$store.state.projectList[_vm.index].status == 0
-                ? [
-                    _c("div", { staticClass: "projectDeactiveLabel" }, [
-                      _vm._v("Deactivated")
-                    ])
-                  ]
-                : _vm._e()
-            ],
-            2
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _vm.processing
-        ? [
-            _c(
-              "div",
-              { staticClass: "projectProcessing" },
-              [_c("loading-component")],
-              1
-            )
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "projectOption" },
-        [
-          _c(
-            "button",
-            {
-              on: {
-                click: function($event) {
-                  _vm.openOption = !_vm.openOption
-                }
-              }
-            },
-            [_c("i", { staticClass: "material-icons" }, [_vm._v("more_vert")])]
-          ),
-          _vm._v(" "),
-          _vm.openOption
-            ? [
-                _c(
-                  "ul",
-                  { ref: "projectOption" },
-                  [
-                    _vm.$store.state.projectList[_vm.index].status == 0
-                      ? [
-                          _c("li", { on: { click: _vm.activateProject } }, [
-                            _vm._v("Activate")
-                          ])
-                        ]
-                      : [
-                          _c("li", { on: { click: _vm.deactivateProject } }, [
-                            _vm._v("Deactivate")
-                          ])
-                        ],
-                    _vm._v(" "),
-                    _c("li", { on: { click: _vm.deleteProject } }, [
-                      _vm._v("Delete")
-                    ])
-                  ],
-                  2
-                )
-              ]
-            : _vm._e()
-        ],
-        2
-      )
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2bf18889", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

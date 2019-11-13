@@ -3,7 +3,7 @@
         <div class="componentTypeOne">
             <figure class="imageComponentCon">
                 <template v-if="content.image">
-                    <img :src="content.image"/>
+                    <img :src="content.image" />
                     <template v-if="content.deletingImage">
                         <div class="deletingImage">
                             <div class="galleLoader">
@@ -29,7 +29,7 @@
                         </template>
                         <template v-else>
                             <i class="material-icons">photo_camera</i>
-                            <input type="file" @change="content.imageUpload($event)"/>
+                            <input type="file" @change="content.imageUpload($event)" />
                         </template>
                     </label>
                 </template>
@@ -40,13 +40,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch, Prop, Vue } from 'vue-property-decorator';
-import ImageContentModel from '../../../models/bots/ImageContentModel';
+import { Component, Watch, Prop, Vue } from "vue-property-decorator";
+import ImageContentModel from "../../../models/bots/ImageContentModel";
 
 @Component
 export default class ImageComponent extends Vue {
     @Prop({
-        type: ImageContentModel,
-    }) content!: ImageContentModel;
+        type: ImageContentModel
+    })
+    content!: ImageContentModel;
 }
 </script>

@@ -18,7 +18,7 @@
         "cross-env": "^5.1",
         "jquery": "^3.2",
         "laravel-mix": "^2.1.14",
-        "lodash": "^4.17.4",
+        "lodash": "^4.17.19",
         "popper.js": "^1.12",
         "ts-loader": "^3.5.0",
         "typescript": "^2.9.2",
